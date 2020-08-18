@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Average Quantities &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Wormlike Chain Theory" href="wlctheory.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="average-quantities">
+<span id="wlcave"></span><h1>Average Quantities<a class="headerlink" href="#average-quantities" title="Permalink to this headline">¶</a></h1>
+<p>The orientation Green function can be used to evaluate any average quantity that can be
+expressed in terms of the tangent orientations.
+The Green function operates as a conditional probability, such that <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L)\)</span> gives the
+probability that a chain of length <span class="math notranslate nohighlight">\(L\)</span> with an initial tangent orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> will have a final
+tangent orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span>.
+We consider an arbitrary orientation-only average quantity <span class="math notranslate nohighlight">\(A =
+\langle A_{n}(s_{n}) A_{n-1}(s_{n-1}) \ldots A_{1}(s_{1}) \rangle\)</span>,
+where <span class="math notranslate nohighlight">\(A_{m}(s_{m})\)</span> is a function that is expressible only in terms of the tangent orientation at arclength
+position <span class="math notranslate nohighlight">\(s_{m}\)</span>.
+The arclength positions are ordered such that <span class="math notranslate nohighlight">\(s_{1} &lt; s_{2} &lt; \ldots &lt; s_{n-1} &lt; s_{n}\)</span>.
+The average quantity <span class="math notranslate nohighlight">\(A\)</span> is evaluated using the following procedure:</p>
+<ul>
+<li><p>An orientation Green function
+<span class="math notranslate nohighlight">\(G(\vec{u_{1}}|\vec{u}_{0};s_{1})\)</span> is inserted into <span class="math notranslate nohighlight">\(A\)</span> to propagate from the initial orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> at <span class="math notranslate nohighlight">\(s=0\)</span> to the first orientation <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span> at <span class="math notranslate nohighlight">\(s_{1}\)</span></p></li>
+<li><p>An orientation Green function
+<span class="math notranslate nohighlight">\(G(\vec{u_{m+1}}|\vec{u}_{m};s_{m+1}-s_{m})\)</span> is inserted into</p>
+<blockquote>
+<div><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(A\)</span> between <span class="math notranslate nohighlight">\(A_{m+1}\)</span> and <span class="math notranslate nohighlight">\(A_{m}\)</span>, resulting</dt><dd><p>in a product of <span class="math notranslate nohighlight">\(n-1\)</span> Green functions that propagate between the internal orientations in the average</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{n};L-s_{n})\)</span>
+is inserted into <span class="math notranslate nohighlight">\(A\)</span> to propagate from the <span class="math notranslate nohighlight">\(n\)</span> th orientation <span class="math notranslate nohighlight">\(\vec{u}_{n}\)</span> at <span class="math notranslate nohighlight">\(s_{n}\)</span> to the final orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span> at <span class="math notranslate nohighlight">\(L\)</span></p></li>
+<li><p>The average <span class="math notranslate nohighlight">\(A\)</span> is normalized by a factor that represents the orientational integral over the full-chain Green function, i.e. the same quantity as the average without the product of <span class="math notranslate nohighlight">\(A_{m}\)</span></p></li>
+<li><p>The average is then evaluated by integrating over the orientations <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span>, <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span>, ldots, <span class="math notranslate nohighlight">\(\vec{u}_{n}\)</span>, and <span class="math notranslate nohighlight">\(\vec{u}\)</span></p></li>
+</ul>
+<p>This procedure is amenable to the evaluation of arbitrary average quantities that are expressible in terms of the
+tangent orientations <span class="math notranslate nohighlight">\(\vec{u}_{m}\)</span> along the chain at positions <span class="math notranslate nohighlight">\(s_{m}\)</span>.</p>
+<p>For example, the average <span class="math notranslate nohighlight">\(\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle\)</span> (where <span class="math notranslate nohighlight">\(s_{1} &lt; s_{2}\)</span>) is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
+\frac{1}{\mathcal{N}}
+\int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+G(\vec{u}|\vec{u}_{2};L-s_{2})
+G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
+G(\vec{u}_{1}|\vec{u}_{0};s_{1})
+\vec{u}_{2} \cdot \vec{u}_{1}
+\nonumber \\
+&amp; = &amp;
+\frac{3}{\mathcal{N}}
+\int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+G(\vec{u}|\vec{u}_{2};L-s_{2})
+G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
+G(\vec{u}_{1}|\vec{u}_{0};s_{1})
+u_{2}^{(z)} u_{1}^{(z)},\end{split}\]</div>
+<p>where rotational symmetry implies <span class="math notranslate nohighlight">\(\langle u^{(x)}(s_{2}) u^{(x)}(s_{1}) \rangle =\langle u^{(y)}(s_{2}) u^{(y)}(s_{1}) \rangle = \langle u^{(z)}(s_{2}) u^{(z)}(s_{1}) \rangle\)</span> and, consequently, <span class="math notranslate nohighlight">\(\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle = 3 \langle u^{(z)}(s_{2}) u^{(z)}(s_{1}) \rangle\)</span>.
+The normalization factor <span class="math notranslate nohighlight">\(\mathcal{N}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{N} = \int d \vec{u} d \vec{u}_{0} G(\vec{u}|\vec{u}_{0};L) = 4 \pi.\]</div>
+<p>Inserting Eq.~ref{eq:guwlc} into Eq.~ref{eq:u1u2} gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
+\frac{3}{4 \pi} \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d
+\vec{u}_{0} \sum_{l_{2}=0}^{\infty} \sum_{m_{2}=-l_{2}}^{l_{2}}
+\sum_{l_{1}=0}^{\infty} \sum_{m_{1}=-l_{1}}^{l_{1}}
+\sum_{l_{0}=0}^{\infty} \sum_{m_{0}=-l_{0}}^{l_{0}} \times
+\nonumber \\ &amp;  &amp; Y_{l_{2}}^{m_{2}} (\vec{u})
+Y_{l_{2}}^{m_{2}*}(\vec{u}_{2})  Y_{l_{1}}^{m_{1}} (\vec{u}_{2})
+Y_{l_{1}}^{m_{1}*}(\vec{u}_{1})  Y_{l_{0}}^{m_{0}} (\vec{u}_{1})
+Y_{l_{0}}^{m_{0}*}(\vec{u}_{0})  \cos \theta_{2} \cos \theta_{1}
+\times \nonumber \\ &amp;  &amp; \exp \! \left[
+-l_{2}(l_{2}+1)\frac{L-s_{2}}{2l_{p}}
+-l_{1}(l_{1}+1)\frac{s_{2}-s_{1}}{2l_{p}}
+-l_{0}(l_{0}+1)\frac{s_{1}}{2l_{p}}  \right],\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(u_{2}^{(z)}=\cos \theta_{2}\)</span>.
+Using the properties of the spherical harmonics~cite{arfken},
+we note that <span class="math notranslate nohighlight">\(\cos \theta = 2 \sqrt{\pi/3} Y_{1}^{0}(\vec{u})\)</span>,
+and the average is written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
+\int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+ \sum_{l_{2}=0}^{\infty} \sum_{m_{2}=-l_{2}}^{l_{2}}
+ \sum_{l_{1}=0}^{\infty} \sum_{m_{1}=-l_{1}}^{l_{1}}
+ \sum_{l_{0}=0}^{\infty} \sum_{m_{0}=-l_{0}}^{l_{0}} \times
+ \nonumber \\
+ &amp;  &amp;
+ Y_{l_{2}}^{m_{2}} (\vec{u})
+ Y_{l_{2}}^{m_{2}*}(\vec{u}_{2})
+ Y_{l_{1}}^{m_{1}} (\vec{u}_{2})
+ Y_{l_{1}}^{m_{1}*}(\vec{u}_{1})
+ Y_{l_{0}}^{m_{0}} (\vec{u}_{1})
+ Y_{l_{0}}^{m_{0}*}(\vec{u}_{0})
+ Y_{1}^{0*}(\vec{u}_{2})
+ Y_{1}^{0}(\vec{u}_{1})
+ \times
+ \nonumber \\
+ &amp;  &amp;
+ \exp \! \left[
+ -l_{2}(l_{2}+1)\frac{L-s_{2}}{2l_{p}}
+ -l_{1}(l_{1}+1)\frac{s_{2}-s_{1}}{2l_{p}}
+ -l_{0}(l_{0}+1)\frac{s_{1}}{2l_{p}}
+ \right]\end{split}\]</div>
+<p>Integration over <span class="math notranslate nohighlight">\(\vec{u}\)</span> and <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> force <span class="math notranslate nohighlight">\(l_{2}=m_{2}=l_{0}=m_{0}=0\)</span>,
+and the subsequent integration over <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span> and <span class="math notranslate nohighlight">\(\vec{u}_{2}\)</span> result in
+<span class="math notranslate nohighlight">\(l_{1}=1\)</span> and <span class="math notranslate nohighlight">\(m_{1}=0\)</span>.
+The final expression is given by</p>
+<div class="math notranslate nohighlight">
+\[\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle = \exp \! \left(
+- \frac{s_{2} - s_{1}}{l_{p}}
+\right),\]</div>
+<p>which demonstrates the role of the persistence length <span class="math notranslate nohighlight">\(l_{p}\)</span> as a correlation length for
+the tangent orientation.</p>
+<p>This average shows that the orientation statistics can be used to directly evaluate averages that are expressed in
+terms of the tangent vector <span class="math notranslate nohighlight">\(\vec{u}\)</span>.
+However, other average quantities can be evaluated using the orientation Green function if the quantity can be expressed in terms of the
+tangent orientation.
+For example, the mean-square end-to-end vector is written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle
+\vec{R}^{2}
+\rangle &amp; = &amp;
+\int_{0}^{L} \int_{0}^{L} ds_{2} ds_{1} \langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle
+= 2 \int_{0}^{L} \int_{0}^{s_{2}} ds_{2} ds_{1} \exp \! \left(
+- \frac{s_{2} - s_{1}}{l_{p}}
+\right)  \\
+&amp; = &amp;
+2l_{p}^{2} \left[
+2N - 1 + \exp \left( -2N \right)
+\right],\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N=L/(2 l_{p})\)</span>.</p>
+<p>The`wlcave.py’ module provides scripts to calculate a number of
+average quantities for the wormlike chain model. These include the
+following:</p>
+<ul class="simple">
+<li><p>The mean-square end-to-end vector <span class="math notranslate nohighlight">\(\langle \vec{R}^{2} \rangle\)</span></p></li>
+<li><p>The mean-square radius of gyration</p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">wlcstat</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="wlctheory.html">          Wormlike Chain Theory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">          Average Quantities</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="wlctheory.html" title="previous chapter">Wormlike Chain Theory</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andy Spakowitz.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/wlcave.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
