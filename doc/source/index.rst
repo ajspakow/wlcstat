@@ -1,16 +1,13 @@
 Wormlike Chain Model Statistics (wlcstat)
 ===========================================
 
-.. automodule:: wlcstat.wlcave
-    :members:
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-	     Wormlike Chain Theory <wlctheory>
+    Wormlike Chain Theory <wlctheory>
 
-	     Average Quantities <wlcave>
+    Average Quantities <wlcave>
 
 
 Indices and tables

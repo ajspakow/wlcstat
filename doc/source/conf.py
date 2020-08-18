@@ -12,9 +12,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('../../'))
-import wlcstat
+sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
@@ -22,6 +21,7 @@ project = 'wlcstat'
 copyright = '2020, Andy Spakowitz'
 author = 'Andy Spakowitz'
 
+import wlcstat
 
 # -- General configuration ---------------------------------------------------
 
@@ -29,6 +29,18 @@ author = 'Andy Spakowitz'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'nbsphinx',
+    'sphinx.ext.doctest',
+    'sphinx.ext.todo',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.githubpages',
+    'matplotlib.sphinxext.plot_directive'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

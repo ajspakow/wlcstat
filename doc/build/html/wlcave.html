@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Average Quantities &#8212; wlcstat  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -12,9 +13,12 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="wlcstat.wlcave" href="generated/wlcstat.wlcave.html" />
     <link rel="prev" title="Wormlike Chain Theory" href="wlctheory.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -45,20 +49,10 @@ where <span class="math notranslate nohighlight">\(A_{m}(s_{m})\)</span> is a fu
 position <span class="math notranslate nohighlight">\(s_{m}\)</span>.
 The arclength positions are ordered such that <span class="math notranslate nohighlight">\(s_{1} &lt; s_{2} &lt; \ldots &lt; s_{n-1} &lt; s_{n}\)</span>.
 The average quantity <span class="math notranslate nohighlight">\(A\)</span> is evaluated using the following procedure:</p>
-<ul>
-<li><p>An orientation Green function
-<span class="math notranslate nohighlight">\(G(\vec{u_{1}}|\vec{u}_{0};s_{1})\)</span> is inserted into <span class="math notranslate nohighlight">\(A\)</span> to propagate from the initial orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> at <span class="math notranslate nohighlight">\(s=0\)</span> to the first orientation <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span> at <span class="math notranslate nohighlight">\(s_{1}\)</span></p></li>
-<li><p>An orientation Green function
-<span class="math notranslate nohighlight">\(G(\vec{u_{m+1}}|\vec{u}_{m};s_{m+1}-s_{m})\)</span> is inserted into</p>
-<blockquote>
-<div><dl class="simple">
-<dt><span class="math notranslate nohighlight">\(A\)</span> between <span class="math notranslate nohighlight">\(A_{m+1}\)</span> and <span class="math notranslate nohighlight">\(A_{m}\)</span>, resulting</dt><dd><p>in a product of <span class="math notranslate nohighlight">\(n-1\)</span> Green functions that propagate between the internal orientations in the average</p>
-</dd>
-</dl>
-</div></blockquote>
-</li>
-<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{n};L-s_{n})\)</span>
-is inserted into <span class="math notranslate nohighlight">\(A\)</span> to propagate from the <span class="math notranslate nohighlight">\(n\)</span> th orientation <span class="math notranslate nohighlight">\(\vec{u}_{n}\)</span> at <span class="math notranslate nohighlight">\(s_{n}\)</span> to the final orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span> at <span class="math notranslate nohighlight">\(L\)</span></p></li>
+<ul class="simple">
+<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u_{1}}|\vec{u}_{0};s_{1})\)</span> is inserted into <span class="math notranslate nohighlight">\(A\)</span> to propagate from the initial orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> at <span class="math notranslate nohighlight">\(s=0\)</span> to the first orientation <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span> at <span class="math notranslate nohighlight">\(s_{1}\)</span></p></li>
+<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u_{m+1}}|\vec{u}_{m};s_{m+1}-s_{m})\)</span> is inserted into <span class="math notranslate nohighlight">\(A\)</span> between <span class="math notranslate nohighlight">\(A_{m+1}\)</span> and <span class="math notranslate nohighlight">\(A_{m}\)</span>, resulting in a product of <span class="math notranslate nohighlight">\(n-1\)</span> Green functions that propagate between the internal orientations in the average</p></li>
+<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{n};L-s_{n})\)</span> is inserted into <span class="math notranslate nohighlight">\(A\)</span> to propagate from the <span class="math notranslate nohighlight">\(n\)</span> th orientation <span class="math notranslate nohighlight">\(\vec{u}_{n}\)</span> at <span class="math notranslate nohighlight">\(s_{n}\)</span> to the final orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span> at <span class="math notranslate nohighlight">\(L\)</span></p></li>
 <li><p>The average <span class="math notranslate nohighlight">\(A\)</span> is normalized by a factor that represents the orientational integral over the full-chain Green function, i.e. the same quantity as the average without the product of <span class="math notranslate nohighlight">\(A_{m}\)</span></p></li>
 <li><p>The average is then evaluated by integrating over the orientations <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span>, <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span>, ldots, <span class="math notranslate nohighlight">\(\vec{u}_{n}\)</span>, and <span class="math notranslate nohighlight">\(\vec{u}\)</span></p></li>
 </ul>
@@ -163,6 +157,21 @@ following:</p>
 <li><p>The mean-square end-to-end vector <span class="math notranslate nohighlight">\(\langle \vec{R}^{2} \rangle\)</span></p></li>
 <li><p>The mean-square radius of gyration</p></li>
 </ul>
+<div class="section" id="example-usage-of-r2-ave">
+<span id="sum-wlcave"></span><h2>Example usage of ‘r2_ave’<a class="headerlink" href="#example-usage-of-r2-ave" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/wlcstat.wlcave.html#module-wlcstat.wlcave" title="wlcstat.wlcave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wlcave</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>(<a class="reference external" href=".//wlcave-1.py">Source code</a>)</p>
+</div>
 </div>
 
 
@@ -184,8 +193,11 @@ following:</p>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="wlctheory.html">          Wormlike Chain Theory</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">          Average Quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wlctheory.html"> Wormlike Chain Theory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"> Average Quantities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-usage-of-r2-ave">Example usage of ‘r2_ave’</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
@@ -193,6 +205,7 @@ following:</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="wlctheory.html" title="previous chapter">Wormlike Chain Theory</a></li>
+      <li>Next: <a href="generated/wlcstat.wlcave.html" title="next chapter">wlcstat.wlcave</a></li>
   </ul></li>
 </ul>
 </div>
@@ -222,7 +235,7 @@ following:</p>
       &copy;2020, Andy Spakowitz.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

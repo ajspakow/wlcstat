@@ -1,4 +1,6 @@
 .. _wlcave:
+.. currentmodule:: wlcstat
+
 
 Average Quantities
 ======================
@@ -15,11 +17,9 @@ position :math:`s_{m}`.
 The arclength positions are ordered such that :math:`s_{1} < s_{2} < \ldots < s_{n-1} < s_{n}`.
 The average quantity :math:`A` is evaluated using the following procedure:
 
-- An orientation Green function
-  :math:`G(\vec{u_{1}}|\vec{u}_{0};s_{1})` is inserted into :math:`A` to propagate from the initial orientation :math:`\vec{u}_{0}` at :math:`s=0` to the first orientation :math:`\vec{u}_{1}` at :math:`s_{1}`
+- An orientation Green function :math:`G(\vec{u_{1}}|\vec{u}_{0};s_{1})` is inserted into :math:`A` to propagate from the initial orientation :math:`\vec{u}_{0}` at :math:`s=0` to the first orientation :math:`\vec{u}_{1}` at :math:`s_{1}`
 
-- An orientation Green function
-  :math:`G(\vec{u_{m+1}}|\vec{u}_{m};s_{m+1}-s_{m})` is inserted into :math:`A` between :math:`A_{m+1}` and :math:`A_{m}`, resulting in a product of :math:`n-1` Green functions that propagate between the internal orientations in the average
+- An orientation Green function :math:`G(\vec{u_{m+1}}|\vec{u}_{m};s_{m+1}-s_{m})` is inserted into :math:`A` between :math:`A_{m+1}` and :math:`A_{m}`, resulting in a product of :math:`n-1` Green functions that propagate between the internal orientations in the average
 
 - An orientation Green function :math:`G(\vec{u}|\vec{u}_{n};L-s_{n})` is inserted into :math:`A` to propagate from the :math:`n` th orientation :math:`\vec{u}_{n}` at :math:`s_{n}` to the final orientation :math:`\vec{u}` at :math:`L`
 
@@ -145,4 +145,26 @@ following:
 
 - The mean-square radius of gyration
 
-.. highlight:: r2_ave(n)
+.. _sum_wlcave:
+
+Example usage of 'r2_ave'
+--------------------------
+
+.. autosummary::
+    :toctree: generated
+    :template: autosummary_module.rst
+
+    wlcave
+
+.. _concat_wlcave:
+
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    length_kuhn = np.logspace(-4, 4, 50)
+    r2 = r2_ave(length_kuhn)
+    plt.loglog(length_kuhn, r2)
+    plt.show()
+
