@@ -37,22 +37,23 @@
             
   <div class="section" id="wlcstat-wlcave">
 <span id="id1"></span><h1>wlcstat.wlcave<a class="headerlink" href="#wlcstat-wlcave" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-wlcstat.wlcave"></span><dl class="py function">
+<span class="target" id="module-wlcstat.wlcave"></span><span class="target" id="module-wlcave"></span><dl class="py function">
 <dt id="wlcstat.wlcave.r2_ave">
 <code class="sig-prename descclassname">wlcstat.wlcave.</code><code class="sig-name descname">r2_ave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wlcstat/wlcave.html#r2_ave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcave.r2_ave" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the average end-to-end distance squared for the wormlike chain model</p>
+<dd><p>r2_ave - Calculate the average end-to-end distance squared for the wormlike chain model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
 <li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>r2</strong> – The mean-square end-to-end distance for the wormlike chain model</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>r2</strong> (<em>float (array)</em>) – The mean-square end-to-end distance for the wormlike chain model</p></li>
+<li><p><strong>Notes</strong> (<em>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).</em>)</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
