@@ -1,2 +1,4 @@
 # wlcstat
-WLC Statistics Package
+WLC Statistics Package:
+
+See Sphinx documentation in 'doc' directory
