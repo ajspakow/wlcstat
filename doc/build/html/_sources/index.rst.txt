@@ -9,6 +9,9 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Average Quantities <wlcave_notes>
 
+    Wormlike Chain Green's Function <wlcgreen_notes>
+
+    References <references>
 
 Indices and tables
 ==================
