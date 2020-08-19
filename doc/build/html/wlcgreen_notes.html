@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wormlike Chain Green’s Function &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Average Quantities" href="wlcave_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlcave_notes.html" title="Average Quantities"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chain Green’s Function</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="wlcgreen-notes"></span><div class="section" id="wormlike-chain-green-s-function">
+<h1>Wormlike Chain Green’s Function<a class="headerlink" href="#wormlike-chain-green-s-function" title="Permalink to this headline">¶</a></h1>
+<p>We consider the end-to-end distribution function <span class="math notranslate nohighlight">\(G(\vec{R},\vec{u}|\vec{u}_{0};L)\)</span> (or Green’s function),
+which gives the probability that a chain that begins at the origin with initial
+orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> will have end position <span class="math notranslate nohighlight">\(\vec{R}\)</span> and final orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span>.
+The Green’s function
+<span class="math notranslate nohighlight">\(G(\vec{R},\vec{u}|\vec{u}_{0};L)\)</span> is written as</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{R},\vec{u}|\vec{u}_{0};L) = \int_{\vec{u}(s=0)=\vec{u}_{0}}^{\vec{u}(s=L)=\vec{u}}
+\hspace{-0.3in} \mathcal{D}[\vec{u}(s)]
+\exp \left\{ -\beta \mathcal{H}_{0} [\vec{u}(s)] \right\}
+\delta \left( \vec{R}-\int_{0}^{L}ds \vec{u} \right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta\)</span> is a Dirac delta function that restricts the path integration
+to those paths that satisfy the fixed end separation <span class="math notranslate nohighlight">\(\vec{R}\)</span>.
+The path integral formulation of the Green function is used to find the
+governing “Schrödinger” equation <a class="reference internal" href="references.html#yamakawa1997" id="id1"><span>[Yamakawa1997]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\left(
+\frac{\partial}{\partial L} - \frac{1}{2l_{p}} \tilde{\nabla}^{2}_{D} + \vec{u} \cdot \vec{\nabla}_{R}
+\right)
+G(\vec{R},\vec{u}|\vec{u}_{0};L)=
+\delta \left( L \right) \delta ( \vec{R} ) \delta \left( \vec{u} - \vec{u}_{0} \right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{\nabla}^{2}_{D}\)</span> is the <span class="math notranslate nohighlight">\(D\)</span>-dimensional angular Laplacian,
+and <span class="math notranslate nohighlight">\(\vec{\nabla}_{R}\)</span> is the <span class="math notranslate nohighlight">\(D\)</span>-dimensional gradient operator.</p>
+<p>Upon <span class="math notranslate nohighlight">\(D\)</span>-dimensional Fourier transforming
+from the variable <span class="math notranslate nohighlight">\(\vec{R}\)</span> to the wavevector <span class="math notranslate nohighlight">\(\vec{k}\)</span>,
+our problem becomes that of a single wormlike chain
+with Hamiltonian</p>
+<div class="math notranslate nohighlight">
+\[\beta \mathcal{H} = \beta \mathcal{H}_{0} + \beta \mathcal{H}_{ext} =
+\frac{l_{p}}{2} \int_{0}^{L} ds
+\left( \frac{\partial \vec{u}}{\partial s} \right)^{\! \! 2}
+-i\vec{k} \cdot \int_{0}^{L}ds \vec{u}.\]</div>
+<p>The external Hamiltonian <span class="math notranslate nohighlight">\(\beta \mathcal{H}_{ext}\)</span>
+naturally emerges
+in the Fourier transform of the end-to-end distribution function <span class="math notranslate nohighlight">\(G(\vec{R},\vec{u}|\vec{u}_{0};L)\)</span>
+due to the end-position constraint.
+The corresponding “Schrödinger” equation in Fourier space is</p>
+<div class="math notranslate nohighlight">
+\[\left(
+\frac{\partial}{\partial L} - \frac{1}{2l_{p}} \tilde{\nabla}^{2}_{D} - i \vec{k}\cdot \vec{u}
+\right)
+G(\vec{k},\vec{u}|\vec{u}_{0};L)=
+\delta \left( L \right) \delta \left( \vec{u} - \vec{u}_{0} \right),\]</div>
+<p>which demonstrates the direct correspondence between our problem and that of a rigid rotor
+in a dipole field.</p>
+<p>Exact results for the Green’s function are provided in Refs.
+<a class="reference internal" href="references.html#spakowitz2004" id="id2"><span>[Spakowitz2004]</span></a>, <a class="reference internal" href="references.html#spakowitz2005" id="id3"><span>[Spakowitz2005]</span></a>, <a class="reference internal" href="references.html#spakowitz2006" id="id4"><span>[Spakowitz2006]</span></a>,  and <a class="reference internal" href="references.html#mehraeen2008" id="id5"><span>[Mehraeen2008]</span></a>,
+which give solutions with and without end constraints and in arbitrary dimensions <span class="math notranslate nohighlight">\(D\)</span>.
+For example, the solution to the orientation-independent Green function in Fourier-Laplace space
+(i.e. Fourier transformed from <span class="math notranslate nohighlight">\(\vec{R}\)</span> to <span class="math notranslate nohighlight">\(\vec{k}\)</span> and Laplace transformed
+from <span class="math notranslate nohighlight">\(N\)</span> to <span class="math notranslate nohighlight">\(p\)</span>)</p>
+<div class="math notranslate nohighlight" id="equation-gwlc">
+<span class="eqno">(1)<a class="headerlink" href="#equation-gwlc" title="Permalink to this equation">¶</a></span>\[G(\vec{K};p) = \frac{1}{P_{0}+\frac{\left(a_{1} K\right)^2}{P_{1}+
+\frac{\left(a_{2} K\right)^2}{P_{2}+\frac{\left(a_{3} K\right)^2}{\cdots}}}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{K}=2l_{p} \vec{k}\)</span>,
+<span class="math notranslate nohighlight">\(K\)</span> is the magnitude of <span class="math notranslate nohighlight">\(\vec{K}\)</span>,
+<span class="math notranslate nohighlight">\(P_{\lambda}=p+ \lambda (\lambda+D-2)\)</span>, and
+<span class="math notranslate nohighlight">\(a_{\lambda} = \left[\frac{\lambda (\lambda+D-3)}{(2\lambda+D-2)(2\lambda+D-4)}\right]^{1/2}\)</span>.
+A detailed derivation of this <span class="math notranslate nohighlight">\(D\)</span>-dimensional solution are found in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a>.
+We note that this exact solution produces identical results as those given in
+Ref. <a class="reference internal" href="references.html#spakowitz2004" id="id7"><span>[Spakowitz2004]</span></a>
+for 2- and 3-dimensional solutions.</p>
+<div class="section" id="methods-to-evaluate-the-wormlike-chain-green-s-function">
+<h2>Methods to Evaluate the Wormlike Chain Green’s Function<a class="headerlink" href="#methods-to-evaluate-the-wormlike-chain-green-s-function" title="Permalink to this headline">¶</a></h2>
+<p>The Green’s function (e.g. <a class="reference internal" href="#equation-gwlc">(1)</a>) is written in Fourier-Laplace space.
+Thus, evaluation of the Green’s function requires inversion to real space
+<span class="math notranslate nohighlight">\(\vec{R}\)</span> and <span class="math notranslate nohighlight">\(N\)</span>.
+The python module ‘wlcgreen’ contains python code to numerically invert the
+Fourier and Laplace transforms to render real-space solutions.
+The procedure followed in this module is as follows:</p>
+<ul class="simple">
+<li><p>Laplace-space inversion (from <span class="math notranslate nohighlight">\(p\)</span> to <span class="math notranslate nohighlight">\(N\)</span>): Numerical Laplace inversion using residue theorem based on evaluation of the singularities in <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<li><p>Fourier-space inversion (from <span class="math notranslate nohighlight">\(\vec{k}\)</span> to <span class="math notranslate nohighlight">\(\vec{R}\)</span>): Numerical Fourier inversion by numerical integration over <span class="math notranslate nohighlight">\(\vec{k}\)</span></p></li>
+</ul>
+<p>These steps are performed sequentially, such that Laplace inversion is first followed by Fourier inversion.
+The Spakowitz lab has utilized other numerical approaches for these steps.
+For example, numerical Laplace inversion can also be performed by numerical
+complex integration of the Bromwich integral, but this approach is not integrated into the ‘wlcgreen’ module.</p>
+<p>The orientation-independent Green’s function <span class="math notranslate nohighlight">\(G(\vec{K};p)\)</span>
+in <a class="reference internal" href="#equation-gwlc">(1)</a> serves as a useful example for our numerical procedures.</p>
+</div>
+<div class="section" id="module-wlcstat.wlcgreen">
+<span id="functions-contained-with-the-wlcgreen-module"></span><h2>Functions contained with the ‘wlcgreen’ module<a class="headerlink" href="#module-wlcstat.wlcgreen" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="wlcstat.wlcgreen.wlc_residue">
+<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">wlc_residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#wlc_residue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.wlc_residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>r2_ave - Calculate the average end-to-end distance squared <span class="math notranslate nohighlight">\(\langle R^{2} \rangle / (2 l_{p})^{2}\)</span>
+for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>r2</strong> – The mean-square end-to-end distance for the wormlike chain model (non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p})\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (array)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wormlike Chain Green’s Function</a><ul>
+<li><a class="reference internal" href="#methods-to-evaluate-the-wormlike-chain-green-s-function">Methods to Evaluate the Wormlike Chain Green’s Function</a></li>
+<li><a class="reference internal" href="#module-wlcstat.wlcgreen">Functions contained with the ‘wlcgreen’ module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlcave_notes.html"
+                        title="previous chapter">Average Quantities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">References</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wlcgreen_notes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlcave_notes.html" title="Average Quantities"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chain Green’s Function</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

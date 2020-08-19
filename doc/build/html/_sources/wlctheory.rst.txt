@@ -14,15 +14,20 @@ a fixed length (like the freely jointed chain model), which is
 enforced by setting
 
 .. math::
-    \left( \frac{\partial \vec{r}(s)}{\partial s} \right)^{\! \! 2} = 1
+    \left( \frac{\partial \vec{r}(s)}{\partial s} \right)^{\! \! 2} =
+    \left( \vec{u}(s) \right)^{2}
+    = 1
 
-at all values of :math:`s` along the chain.
+at all values of :math:`s` along the chain, where we define the tangent vector
+:math:`\vec{u}(s) = \frac{\partial \vec{r}(s)}{\partial s}`.
 The chain opposes bending deformation, and the bending energy is 
 quadratic in the curvature of the chain.  This gives the bending energy
 
 .. math::
     E_{bend} = \frac{k_{B}T l_{p}}{2} \int_{0}^{L} ds \left(
-    \frac{\partial^{2} \vec{r}(s)}{\partial s^{2}} \right)^{\! \! 2}
+    \frac{\partial^{2} \vec{r}(s)}{\partial s^{2}} \right)^{\! \! 2} =
+    \frac{k_{B}T l_{p}}{2} \int_{0}^{L} ds \left(
+    \frac{\partial \vec{u}(s)}{\partial s} \right)^{\! 2}
 
 .. figure:: figures/wlc-model.pdf
     :width: 600
@@ -248,7 +253,7 @@ The integral of the Green function over the position :math:`\vec{r}` is equivale
     G(\vec{u}|\vec{u}_{0};L) = \int d \vec{r} G(\vec{r}, \vec{u}, L | \vec{r}_{0}, \vec{u}_{0}, 0)
     = \tilde{G}(\vec{k}=\vec{0},\vec{u}|\vec{u}_{0};L),
 
-which gives the orientation-only chain statistics, \emph{i.e.} the probability that a chain begin with
+which gives the orientation-only chain statistics, i.e. the probability that a chain begin with
 orientation :math:`\vec{u}_{0}` and ends with orientation :math:`\vec{u}` regardless of the end positions.
 The orientation Green function :math:`G(\vec{u}|\vec{u}_{0};L)` satisfies
 
@@ -292,11 +297,3 @@ is captured by noting that
     Y_{l}^{m*}(\vec{u}_{0}) = \delta \left( \vec{u} - \vec{u}_{0} \right).
 
 This development enables the evaluations of average quantities (as discussed in the Average Quantities section).
-
-.. List of References
-
-.. [Kratky1949]
-    Kratky, Otto, and Günther Porod. "Röntgenuntersuchung gelöster fadenmoleküle." Recueil des Travaux Chimiques des Pays‐Bas 68.12 (1949): 1106-1122.
-
-.. [Arfken1999]
-    Arfken, George B., and Hans J. Weber. "Mathematical methods for physicists." (1999): 165-169.

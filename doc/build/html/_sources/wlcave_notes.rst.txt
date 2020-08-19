@@ -1,5 +1,5 @@
 .. _wlcave_notes:
-.. automodule:: wlcstat
+.. .. automodule:: wlcstat
 
 
 Average Quantities
@@ -139,7 +139,9 @@ For example, the mean-square end-to-end vector is written as
 where :math:`N=L/(2 l_{p})`.
 
 An alternative approach to calculating averages is to use the Fourier-transformed Green's
-function as a generator of averages. Development of this approach is provided in our
+function as a generator of averages
+(see Refs. [Spakowitz2004]_, [Spakowitz2005]_, [Spakowitz2006]_, and [Mehraeen2008]_.
+Development of this approach is provided in our
 discussion of the Green's function.
 
 The 'wlcave.py' module provides scripts to calculate a number of
@@ -153,14 +155,14 @@ following:
 - The 4th moment of the end-to-end distribution :math:`\langle R_{z}^{4} \rangle / (2 l_{p})^{4}`
 
 Functions contained with the 'wlcave' module
----------------------------------------------
+--------------------------------------------
 
 .. automodule:: wlcstat.wlcave
     :members:
 
 
 Example usage of 'r2_ave'
---------------------------
+-------------------------
 
 This example gives the mean-square end-to-end distance :math:`\langle R^{2} \rangle / (2 l_{p})^{2}`
 (i.e. length non-dimensionalized by :math:`2 l_{p}`) versus
