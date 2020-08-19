@@ -3,7 +3,7 @@
 
 
 Average Quantities
-======================
+==================
 
 The orientation Green function can be used to evaluate any average quantity that can be
 expressed in terms of the tangent orientations.
