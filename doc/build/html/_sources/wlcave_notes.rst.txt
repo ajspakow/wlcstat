@@ -139,18 +139,18 @@ For example, the mean-square end-to-end vector is written as
 where :math:`N=L/(2 l_{p})`.
 
 An alternative approach to calculating averages is to use the Fourier-transformed Green's
-function as a generator of averages. Further development of this approach is developed in our
-discussion of the Green's function
+function as a generator of averages. Development of this approach is provided in our
+discussion of the Green's function.
 
 The 'wlcave.py' module provides scripts to calculate a number of
 average quantities for the wormlike chain model. These include the
 following:
 
-- The mean-square end-to-end vector :math:`\langle \vec{R}^{2} \rangle`
+- The mean-square end-to-end distance :math:`\langle R^{2} \rangle`
+
+- The mean-square radius of gyration :math:`\langle \vec{R}_{G}^{2} \rangle`
 
 - The 4th moment of the end-to-end distribution :math:`\langle R_{z}^{4} \rangle / (2 l_{p})^{4}`
-
-- The mean-square radius of gyration (to be developed)
 
 Functions contained with the 'wlcave' module
 ---------------------------------------------
@@ -182,15 +182,55 @@ limiting behaviors.
     length_kuhn = np.logspace(np.log10(length_kuhn_0), np.log10(length_kuhn_f), num_pts)
     dimensions = 3
     r2 = r2_ave(length_kuhn, dimensions)
+    r2short = length_kuhn ** 2
+    r2long = length_kuhn * 2 / (dimensions - 1)
+    plt.figure(figsize=(10,8))
     font = {'family' : 'serif',
         'weight':'normal',
         'size': 18}
     plt.rc('font', **font)
     plt.loglog(length_kuhn, r2)
-    plt.loglog(length_kuhn[0:60], length_kuhn[0:60] ** 2)        # Short length asymptotic solution
-    plt.loglog(length_kuhn[40:100], length_kuhn[40:100] * 2 / (dimensions - 1)) # Long length asymptotic solution
+    plt.loglog(length_kuhn[0:60], r2short[0:60])        # Short length asymptotic solution
+    plt.loglog(length_kuhn[40:100], r2long[40:100]) # Long length asymptotic solution
     plt.xlabel(r'Chain length $N = L/(2l_{p})$')
     plt.ylabel(r'End-to-end distance $\langle R^{2} \rangle$')
+    plt.tight_layout()
+    plt.show()
+
+Example usage of 'rg2_ave'
+--------------------------
+
+This example gives the mean-square radius of gyration :math:`\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}`
+(i.e. length non-dimensionalized by :math:`2 l_{p}`) versus
+chain length :math:`N = L/(2 l_{p})` for 3 dimensions.  The short-length asymptotic behavior
+:math:`\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow N^{2}/12`
+and long-length asymptotic behavior
+:math:`\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow N/[3 (d-1)]` are included to show the
+limiting behaviors.
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlcave import *
+    num_pts = 100
+    length_kuhn_0 = 1e-3
+    length_kuhn_f = 1e3
+    length_kuhn = np.logspace(np.log10(length_kuhn_0), np.log10(length_kuhn_f), num_pts)
+    dimensions = 3
+    rg2 = rg2_ave(length_kuhn, dimensions)
+    rg2short = length_kuhn ** 2 / 12
+    rg2long = length_kuhn / (3 * (dimensions - 1))
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+    plt.loglog(length_kuhn, rg2)
+    plt.loglog(length_kuhn[0:60], rg2short[0:60])        # Short length asymptotic solution
+    plt.loglog(length_kuhn[40:100], rg2long[40:100]) # Long length asymptotic solution
+    plt.xlabel(r'Chain length $N = L/(2l_{p})$')
+    plt.ylabel(r'Mean-square radius of gyration $\langle \vec{R}_{G}^{2} \rangle$')
     plt.tight_layout()
     plt.show()
 
@@ -219,6 +259,7 @@ limiting behaviors.
     rz4 = rz4_ave(length_kuhn, dimensions)
     rz4short = length_kuhn ** 4 * 3 / (dimensions * (dimensions + 2))
     rz4long = length_kuhn ** 2 * 12 / (dimensions * (dimensions - 1)) ** 2
+    plt.figure(figsize=(10,8))
     font = {'family' : 'serif',
         'weight':'normal',
         'size': 18}

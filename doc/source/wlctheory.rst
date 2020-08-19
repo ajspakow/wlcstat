@@ -84,3 +84,6 @@ will contribute to the integral.  Expand the Green function
 :math:`G(\vec{r}_{1}, \vec{u}_{1}, L| \vec{r}_{0},\vec{u}_{0},0)` about :math:`\vec{r}`
 and :math:`\vec{u}` to quadratic order in the deviation to find the
 leading order change in the propagated Green function.
+
+.. .. bibliography:: references.bib
+   :style: unsrt

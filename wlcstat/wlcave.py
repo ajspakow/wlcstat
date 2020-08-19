@@ -28,6 +28,34 @@ def r2_ave(length_kuhn, dimensions=3):
     return r2
 
 
+def rg2_ave(length_kuhn, dimensions=3):
+    r"""
+    rg2_ave - Calculate the radius of gyration
+    :math:`\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}` for the wormlike chain model
+
+    Parameters
+    ----------
+    length_kuhn : float (array)
+        The length of the chain in Kuhn lengths
+    dimensions : int
+        The number of dimensions (default to 3 dimensions)
+
+    Returns
+    -------
+    rg2 : float (array)
+        The mean-square radius of gyration for the wormlike chain model (non-dimensionalized by :math:`2 l_{p})`
+
+    Notes
+    -----
+    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).
+    """
+    rg2 = 2 * (length_kuhn / (6 * (dimensions - 1)) - 1 / (2 * (dimensions - 1) ** 2)
+               + length_kuhn ** -1 / (dimensions - 1) ** 3
+               - length_kuhn ** -2 * (1 - np.exp(-(dimensions - 1) * length_kuhn)) / (dimensions - 1) ** 4)
+
+    return rg2
+
+
 def rz4_ave(length_kuhn, dimensions=3):
     r"""
     rz4_ave - Calculate the 4th moment of the end-to-end distribution
@@ -43,7 +71,7 @@ def rz4_ave(length_kuhn, dimensions=3):
     Returns
     -------
     rz4 : float (array)
-        The mean-square end-to-end distance for the wormlike chain model
+        The mean-square end-to-end distance for the wormlike chain model (non-dimensionalized by :math:`2 l_{p})`
 
     Notes
     -----
@@ -72,8 +100,3 @@ def rz4_ave(length_kuhn, dimensions=3):
     rz4 = 24 * (diagram1 + diagram2)
 
     return rz4
-
-
-def rg2_ave(length_kuhn):
-    pass
-

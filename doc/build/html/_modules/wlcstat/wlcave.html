@@ -70,6 +70,34 @@
     <span class="k">return</span> <span class="n">r2</span></div>
 
 
+<div class="viewcode-block" id="rg2_ave"><a class="viewcode-back" href="../../wlcave_notes.html#wlcstat.wlcave.rg2_ave">[docs]</a><span class="k">def</span> <span class="nf">rg2_ave</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    rg2_ave - Calculate the radius of gyration</span>
+<span class="sd">    :math:`\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}` for the wormlike chain model</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    length_kuhn : float (array)</span>
+<span class="sd">        The length of the chain in Kuhn lengths</span>
+<span class="sd">    dimensions : int</span>
+<span class="sd">        The number of dimensions (default to 3 dimensions)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rg2 : float (array)</span>
+<span class="sd">        The mean-square radius of gyration for the wormlike chain model (non-dimensionalized by :math:`2 l_{p})`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rg2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">length_kuhn</span> <span class="o">/</span> <span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+               <span class="o">+</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span>
+               <span class="o">-</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">dimensions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rg2</span></div>
+
+
 <div class="viewcode-block" id="rz4_ave"><a class="viewcode-back" href="../../wlcave_notes.html#wlcstat.wlcave.rz4_ave">[docs]</a><span class="k">def</span> <span class="nf">rz4_ave</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    rz4_ave - Calculate the 4th moment of the end-to-end distribution</span>
@@ -85,7 +113,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    rz4 : float (array)</span>
-<span class="sd">        The mean-square end-to-end distance for the wormlike chain model</span>
+<span class="sd">        The mean-square end-to-end distance for the wormlike chain model (non-dimensionalized by :math:`2 l_{p})`</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -114,11 +142,6 @@
     <span class="n">rz4</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="p">(</span><span class="n">diagram1</span> <span class="o">+</span> <span class="n">diagram2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">rz4</span></div>
-
-
-<span class="k">def</span> <span class="nf">rg2_ave</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">):</span>
-    <span class="k">pass</span>
-
 </pre></div>
 
             <div class="clearer"></div>

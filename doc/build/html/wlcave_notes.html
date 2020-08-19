@@ -159,15 +159,15 @@ For example, the mean-square end-to-end vector is written as</p>
 \right],\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(N=L/(2 l_{p})\)</span>.</p>
 <p>An alternative approach to calculating averages is to use the Fourier-transformed Green’s
-function as a generator of averages. Further development of this approach is developed in our
-discussion of the Green’s function</p>
+function as a generator of averages. Development of this approach is provided in our
+discussion of the Green’s function.</p>
 <p>The ‘wlcave.py’ module provides scripts to calculate a number of
 average quantities for the wormlike chain model. These include the
 following:</p>
 <ul class="simple">
-<li><p>The mean-square end-to-end vector <span class="math notranslate nohighlight">\(\langle \vec{R}^{2} \rangle\)</span></p></li>
+<li><p>The mean-square end-to-end distance <span class="math notranslate nohighlight">\(\langle R^{2} \rangle\)</span></p></li>
+<li><p>The mean-square radius of gyration <span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle\)</span></p></li>
 <li><p>The 4th moment of the end-to-end distribution <span class="math notranslate nohighlight">\(\langle R_{z}^{4} \rangle / (2 l_{p})^{4}\)</span></p></li>
-<li><p>The mean-square radius of gyration (to be developed)</p></li>
 </ul>
 <div class="section" id="module-wlcstat.wlcave">
 <span id="functions-contained-with-the-wlcave-module"></span><h2>Functions contained with the ‘wlcave’ module<a class="headerlink" href="#module-wlcstat.wlcave" title="Permalink to this headline">¶</a></h2>
@@ -195,6 +195,29 @@ for the wormlike chain model</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="wlcstat.wlcave.rg2_ave">
+<code class="sig-prename descclassname">wlcstat.wlcave.</code><code class="sig-name descname">rg2_ave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcave.html#rg2_ave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcave.rg2_ave" title="Permalink to this definition">¶</a></dt>
+<dd><p>rg2_ave - Calculate the radius of gyration
+<span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}\)</span> for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>rg2</strong> – The mean-square radius of gyration for the wormlike chain model (non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p})\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (array)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.wlcave.rz4_ave">
 <code class="sig-prename descclassname">wlcstat.wlcave.</code><code class="sig-name descname">rz4_ave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcave.html#rz4_ave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcave.rz4_ave" title="Permalink to this definition">¶</a></dt>
 <dd><p>rz4_ave - Calculate the 4th moment of the end-to-end distribution
@@ -207,7 +230,7 @@ for the wormlike chain model</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>rz4</strong> – The mean-square end-to-end distance for the wormlike chain model</p>
+<dd class="field-even"><p><strong>rz4</strong> – The mean-square end-to-end distance for the wormlike chain model (non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p})\)</span></p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float (array)</p>
@@ -232,6 +255,20 @@ limiting behaviors.</p>
 <img alt="_images/wlcave_notes-1.png" src="_images/wlcave_notes-1.png" />
 </div>
 </div>
+<div class="section" id="example-usage-of-rg2-ave">
+<h2>Example usage of ‘rg2_ave’<a class="headerlink" href="#example-usage-of-rg2-ave" title="Permalink to this headline">¶</a></h2>
+<p>This example gives the mean-square radius of gyration <span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}\)</span>
+(i.e. length non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p}\)</span>) versus
+chain length <span class="math notranslate nohighlight">\(N = L/(2 l_{p})\)</span> for 3 dimensions.  The short-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow N^{2}/12\)</span>
+and long-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow N/[3 (d-1)]\)</span> are included to show the
+limiting behaviors.</p>
+<p>(<a class="reference external" href=".//wlcave_notes-2.py">Source code</a>, <a class="reference external" href=".//wlcave_notes-2.png">png</a>, <a class="reference external" href=".//wlcave_notes-2.hires.png">hires.png</a>, <a class="reference external" href=".//wlcave_notes-2.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcave_notes-2.png" src="_images/wlcave_notes-2.png" />
+</div>
+</div>
 <div class="section" id="example-usage-of-rz4-ave">
 <h2>Example usage of ‘rz4_ave’<a class="headerlink" href="#example-usage-of-rz4-ave" title="Permalink to this headline">¶</a></h2>
 <p>This example gives the 4th moment of the end-to-end distribution <span class="math notranslate nohighlight">\(\langle R_{z}^{4} \rangle / (2 l_{p})^{4}\)</span>
@@ -241,9 +278,9 @@ chain length <span class="math notranslate nohighlight">\(N = L/(2 l_{p})\)</spa
 and long-length asymptotic behavior
 <span class="math notranslate nohighlight">\(\langle R_{z}^{2} \rangle / (2 l_{p})^{2} \rightarrow 12 N^2/[d^2 (d-1)^2]\)</span> are included to show the
 limiting behaviors.</p>
-<p>(<a class="reference external" href=".//wlcave_notes-2.py">Source code</a>, <a class="reference external" href=".//wlcave_notes-2.png">png</a>, <a class="reference external" href=".//wlcave_notes-2.hires.png">hires.png</a>, <a class="reference external" href=".//wlcave_notes-2.pdf">pdf</a>)</p>
+<p>(<a class="reference external" href=".//wlcave_notes-3.py">Source code</a>, <a class="reference external" href=".//wlcave_notes-3.png">png</a>, <a class="reference external" href=".//wlcave_notes-3.hires.png">hires.png</a>, <a class="reference external" href=".//wlcave_notes-3.pdf">pdf</a>)</p>
 <div class="figure align-default">
-<img alt="_images/wlcave_notes-2.png" src="_images/wlcave_notes-2.png" />
+<img alt="_images/wlcave_notes-3.png" src="_images/wlcave_notes-3.png" />
 </div>
 </div>
 </div>
@@ -260,6 +297,7 @@ limiting behaviors.</p>
 <li><a class="reference internal" href="#">Average Quantities</a><ul>
 <li><a class="reference internal" href="#module-wlcstat.wlcave">Functions contained with the ‘wlcave’ module</a></li>
 <li><a class="reference internal" href="#example-usage-of-r2-ave">Example usage of ‘r2_ave’</a></li>
+<li><a class="reference internal" href="#example-usage-of-rg2-ave">Example usage of ‘rg2_ave’</a></li>
 <li><a class="reference internal" href="#example-usage-of-rz4-ave">Example usage of ‘rz4_ave’</a></li>
 </ul>
 </li>
