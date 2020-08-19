@@ -7,7 +7,7 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Wormlike Chain Theory <wlctheory>
 
-    Average Quantities <wlcave>
+    Average Quantities <wlcave_notes>
 
 
 Indices and tables

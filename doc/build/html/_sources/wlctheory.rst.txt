@@ -4,7 +4,7 @@ Wormlike Chain Theory
 ======================
 
 The wormlike chain model describes the polymer chain as a continuous
-thread through space that resists bending deformation~\cite{kratky-wlc}.
+thread through space that resists bending deformation :cite:'Kratky1949'.
 Subjecting the chain to thermal fluctuations results in a wiggling wormlike
 polymer chain.
 
@@ -84,4 +84,3 @@ will contribute to the integral.  Expand the Green function
 :math:`G(\vec{r}_{1}, \vec{u}_{1}, L| \vec{r}_{0},\vec{u}_{0},0)` about :math:`\vec{r}`
 and :math:`\vec{u}` to quadratic order in the deviation to find the
 leading order change in the propagated Green function.
-
