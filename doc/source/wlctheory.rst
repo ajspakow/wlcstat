@@ -1,10 +1,10 @@
 .. _wlctheory:
 
 Wormlike Chain Theory
-======================
+=====================
 
 The wormlike chain model describes the polymer chain as a continuous
-thread through space that resists bending deformation :cite:'Kratky1949'.
+thread through space that resists bending deformation [Kratky1949]_.
 Subjecting the chain to thermal fluctuations results in a wiggling wormlike
 polymer chain.
 
@@ -25,7 +25,7 @@ quadratic in the curvature of the chain.  This gives the bending energy
    \frac{\partial^{2} \vec{r}(s)}{\partial s^{2}} \right)^{\! \! 2}
 
 Wormlike Chain model Green function---Path integral formulation and the Diffusion equation
------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
 
 The governing differential equation for the Wormlike Chain model~\cite{kratky-wlc} is
 given through the application of the path integral in the 
@@ -85,5 +85,5 @@ will contribute to the integral.  Expand the Green function
 and :math:`\vec{u}` to quadratic order in the deviation to find the
 leading order change in the propagated Green function.
 
-.. .. bibliography:: references.bib
-   :style: unsrt
+.. [Kratky1949]
+    Kratky, Otto, and Günther Porod. "Röntgenuntersuchung gelöster fadenmoleküle." Recueil des Travaux Chimiques des Pays‐Bas 68.12 (1949): 1106-1122.
