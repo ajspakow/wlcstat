@@ -109,6 +109,77 @@ complex integration of the Bromwich integral, but this approach is not integrate
 
 The orientation-independent Green's function :math:`G(\vec{K};p)`
 in :eq:`gwlc` serves as a useful example for our numerical procedures.
+Below, we discuss the two steps for the real-space inversion for this function.
+
+Step 1: Laplace-space inversion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Laplace-space inversion requires us to determine the poles :math:`\mathcal{E}_{\alpha})`
+(all simple and generally complex).
+Mathematically, this is written as
+
+.. math::
+    j (K; p = \mathcal{E}_{\alpha}) = \frac{1}{G(K; p = \mathcal{E}_{\alpha})} = 0
+
+for :math:`\alpha = 0, 1, \ldots` gives the infinite set of poles within the infinite continued
+fraction.  In practice, the real part of :math:`\mathcal{E}_{\alpha}` becomes increasingly negative
+with increasing :math:`\alpha`, and a cutoff :math:`\alpha = \alpha_{\mathrm{max}}` is invoked for
+any given :math:`N`. We note that :math:`\mathcal{E}_{\alpha} \rightarrow -\alpha (\alpha+D-2)`
+(unperturbed eigenvalues of the hyperspherical harmonics) as
+:math:`K \rightarrow 0` and becomes more negative with increasing :math:`K` (see Ref [Mehraeen2008]_).
+We determine :math:`\alpha_{\mathrm{max}}` based on the :math:`K=0` magnitude of :math:`G` for a given :math:`N`.
+
+The Laplace inversion is then determined by evaluating the residues in the complex plane.
+The is written as
+
+.. math::
+    G (K; N) = \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}}
+    \mathop{\mathrm{Res}}_{p = \mathcal{E}_{\alpha}} \left[
+    G(K; p) \exp \left( p N \right) \right]
+    = \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}} \lim_{p \rightarrow \mathcal{E}_{\alpha}}
+    \left[
+    ( p - \mathcal{E}_{\alpha}) G(K; p) \exp \left( p N \right) \right] =
+    \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}} \frac{1}{\partial_{p} j (K; p = \mathcal{E}_{\alpha})}
+    \exp \left( \mathcal{E}_{\alpha} N \right)
+
+The final form arises from the fact that all of the poles :math:`\mathcal{E}_{\alpha}` are simple.
+From this development, the Laplace inversion requires evaluation of two quantities:
+:math:`\mathcal{E}_{\alpha}` (for :math:`\alpha = 0, 1, \ldots, \alpha_{\mathrm{max}}`)
+and :math:`\partial_{p} j (K; p = \mathcal{E}_{\alpha}) = \frac{\partial j (K; p = \mathcal{E}_{\alpha})}{\partial p}`.
+We leverage several numerical and asymptotic methods to find the poles :math:`\mathcal{E}_{\alpha}`
+(see [Mehraeen2008]_ for a detailed description of these methods).
+
+This basic approach is extended to Green's function evaluation with fixed end orientation
+(i.e. the orientation-dependent Green's function).
+This necessitates determination of poles and residues that depends
+on an additional index :math:`\mu`, which defines the :math:`z`-component of the
+angular momentum (noting the Quantum Mechanical analogy of our problem).
+Inclusion of :math:`\mu` requires definition of the cutoff :math:`\mu = \mu_{\mathrm{max}}`
+that restricts the otherwise infinite summations within the inversion.
+
+We define a data structure that facilitates evaluation of the Laplace inversion
+but also enables the 'wlcgreen' module to dynamically grow the data structure,
+so residues and poles do not require re-evaluation if already evaluated at a given
+:math:`K`.
+We define the 'green_laplace' library as follows
+
+.. code:: python
+
+    green_laplace = { k_val1:[mu_zero_only, lam_zero_only, poles, residues], \
+                      k_val2:[mu_zero_only, lam_zero_only, poles, residues], ... }
+
+For a given key in the library 'k_val', the elements are as follows
+
+- 'mu_zero_only' is a boolean (True or False) that determines whether the poles and residues are evaluated for non-zero values of :math:`\mu`
+
+- 'lam_zero_only' is a boolean (True or False) that determines whether the residues are evaluated for non-zero :math:`\lambda`
+
+- 'poles' is an array of poles [size :math:`(\alpha_{\mathrm{max}} + 1) \times (\mu_{\mathrm{max}} + 1)`], which accounts for the value of 'mu_zero_only'
+
+- 'residues' is an array of residues [size :math:`(\alpha_{\mathrm{max}} + 1) \times (\mu_{\mathrm{max}} + 1)`] (to be discussed further)
+
+Step 2: Fourier-space inversion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 Functions contained with the 'wlcgreen' module

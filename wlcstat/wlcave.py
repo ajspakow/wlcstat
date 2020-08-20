@@ -20,7 +20,7 @@ def r2_ave(length_kuhn, dimensions=3):
 
     Notes
     -----
-    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).
+    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref [Mehraeen2008]_)
     """
     r2 = 2 * (length_kuhn / (dimensions - 1)
               - (1 - np.exp(-(dimensions - 1) * length_kuhn)) / (dimensions - 1) ** 2)
@@ -47,7 +47,7 @@ def rg2_ave(length_kuhn, dimensions=3):
 
     Notes
     -----
-    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).
+    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref [Mehraeen2008]_)
     """
     rg2 = 2 * (length_kuhn / (6 * (dimensions - 1)) - 1 / (2 * (dimensions - 1) ** 2)
                + length_kuhn ** -1 / (dimensions - 1) ** 3
@@ -75,7 +75,7 @@ def rz4_ave(length_kuhn, dimensions=3):
 
     Notes
     -----
-    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).
+    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref [Mehraeen2008]_)
     """
 
     # Calculate the coefficients from the ladder operations on the hyperspherical harmonics (dimensions)
