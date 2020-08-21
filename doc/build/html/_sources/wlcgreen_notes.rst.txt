@@ -114,7 +114,7 @@ Below, we discuss the two steps for the real-space inversion for this function.
 Step 1: Laplace-space inversion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Laplace-space inversion requires us to determine the poles :math:`\mathcal{E}_{\alpha})`
+The Laplace-space inversion requires us to determine the poles :math:`\mathcal{E}_{\alpha}`
 (all simple and generally complex).
 Mathematically, this is written as
 
@@ -163,7 +163,8 @@ we have
     \mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p).
 
 This spherical harmonic expansion requires evaluation of the Laplace inverse
-of the :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu_{1}}(K;p)`.
+of :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu_{1}}(K;p)`
+(i.e. spherical-harmonic transform of the Green's function).
 The evaluation of poles and residues of :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p)`
 utilizes similar approaches as outlined above and discussed in detail in Ref. [Mehraeen2008]_.
 The primary difference is whether the residues and poles require evaluation for non-zero
@@ -300,5 +301,50 @@ This plot is a reproduction of Fig. 1 in Ref. [Mehraeen2008]_.
 
     plt.xlabel(r'$K = (2l_{p}) k$')
     plt.ylabel(r'Imag ($\mathcal{E}_{\alpha}$)')
+    plt.tight_layout()
+    plt.show()
+
+Another way to look at the poles is to consider the weight of the individual poles on the
+Fourier inversion.  We consider a chain length :math:`N=0.1`, which is quite rigid.
+This plot shows the weight :math:`\exp \left[ \mathrm{Real} (\mathcal{E}_{\alpha} ) N \right)`
+over a range of :math:`K`.
+We note that the :math:`y`-scale in this plot is roughly coincident with machine precision
+:math:`10^{-14}`, so the :math:`k`-range and the number of poles are the complete set necessary
+for Laplace inversion to machine precision accuracy for this chain length.
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlcgreen import *
+
+    length_kuhn = 0.1
+    alpha_max = 25
+    num_k = 100
+    k_val_0 = 1e-1
+    k_val_f = 1e5
+    k_val = np.logspace(np.log10(k_val_0), np.log10(k_val_f), num_k)
+    mu=0
+    dimensions = 3
+    num_poles = min(18, alpha_max + 1 - mu)
+    poles = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
+    for i_k_val in range(num_k):
+        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,dimensions)
+        for i_pole in range(num_poles):
+            poles[i_k_val, i_pole] = poles_k_val[i_pole]
+
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+
+    for i_pole in range(num_poles):
+        plt.loglog(k_val, np.exp(np.real(poles[:, i_pole]) * length_kuhn))
+
+    plt.ylim((10 ** -14, 1))
+    plt.xlim((10 ** -1, 10 ** 5))
+    plt.xlabel(r'$K = (2l_{p}) k$')
+    plt.ylabel(r'$\exp \left[ \mathrm{Real} (\mathcal{E}_{\alpha}) N \right]$')
     plt.tight_layout()
     plt.show()

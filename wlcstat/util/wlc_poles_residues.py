@@ -120,39 +120,16 @@ def eval_h_matrix(num_total, k_val, mu, dimensions=3):
     See [Mehraeen2009]_ for intermediate-k algorithms
 
     """
-    h_matrix = np.zeros((num_total, num_total), dtype=type(1 + 1j))
-    left = (0 + 0j) * np.NaN
+    lam = mu + np.arange(0, num_total)
 
-    for row in range(0, num_total):
-        j = row + 1
-        if k_val <= 1:
-            # for above diagonal
-            right = -1j * k_val * eval_a_lam_mu(j + mu, mu, dimensions)
-            if row > 0:
-                # for below diagonal
-                left = -1j * k_val * eval_a_lam_mu(j + mu - 1, mu, dimensions)
-            # diagonal element
-            diag = (mu + j - 1) * (mu + j + dimensions - 3)
-            if row == 0:
-                h_matrix[row, 0:2] = [diag, right]
-            elif row == num_total - 1:
-                h_matrix[row, row-1:row+1] = [left, diag]
-            else:
-                h_matrix[row, row-1:row+2] = [left, diag, right]
-        else:
-            # for above diagonal
-            right = -1j * eval_a_lam_mu(j + mu, mu, dimensions)
-            if row > 0:
-                # for below diagonal
-                left = -1j * eval_a_lam_mu(j + mu - 1, mu, dimensions)
-            # diagonal element
-            diag = (mu + j - 1) * (mu + j + dimensions - 3.0) / k_val
-            if row == 0:
-                h_matrix[row, 0:2] = [diag, right]
-            elif row == num_total - 1:
-                h_matrix[row, row-1:row+1] = [left, diag]
-            else:
-                h_matrix[row, row-1:row+2] = [left, diag, right]
+    if k_val <= 1:
+        diagonal = lam * (lam + dimensions - 2)
+        diagonal_plus1 = -1j * k_val * eval_a_lam_mu(lam[1:num_total], mu, dimensions)
+        h_matrix = np.diag(diagonal) + np.diag(diagonal_plus1, 1) + np.diag(diagonal_plus1, -1)
+    else:
+        diagonal = lam * (lam + dimensions - 2) / k_val
+        diagonal_plus1 = -1j * eval_a_lam_mu(lam[1:num_total], mu, dimensions)
+        h_matrix = np.diag(diagonal) + np.diag(diagonal_plus1, 1) + np.diag(diagonal_plus1, -1)
 
     return h_matrix
 
@@ -181,14 +158,13 @@ def eval_poles_large_k_val(k_val, mu, dimensions=3, alpha_max=25):
     See [Mehraeen2009]_ for large-k algorithms
 
     """
-    # k, ORDEig, mu, d=3):
 
     poles_total = np.zeros(alpha_max + 1, dtype='complex') * np.NaN
     for l_val in range(0, alpha_max, 2):
         poles_total[l_val] = 1j * k_val - mu * (mu + dimensions - 2) - eval_epsilon(l_val / 2.0, dimensions, k_val, mu)
         poles_total[l_val + 1] = np.conj(poles_total[l_val])
 
-    poles = poles_total[0:(alpha_max - abs(mu)+1)]
+    poles = poles_total[0:(alpha_max - abs(mu) + 1)]
 
     return poles
 
@@ -242,7 +218,7 @@ Functions for residue evaluation
 """
 
 
-def eval_residues(k_val, eig, lam, mu, nlam=10, dimensions=3, lam_max=500, cutoff=10**-11):
+def eval_residues(k_val, poles, lam, mu, nlam=10, dimensions=3, lam_max=500, cutoff=10**-11):
     r"""
 
     if k_val < 10 ** -3:
@@ -287,6 +263,6 @@ def eval_a_lam_mu(lam, mu, dimensions=3):
     and Arfken (1999) (Ref [Arfken1999]_)
     """
     a_lam_mu = np.sqrt((lam - mu) * (lam + mu + dimensions - 3) /
-                       float((2 * lam + dimensions - 2) * (2 * lam + dimensions - 4)))
+                       ((2 * lam + dimensions - 2) * (2 * lam + dimensions - 4)))
 
     return a_lam_mu

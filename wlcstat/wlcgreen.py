@@ -12,7 +12,7 @@ def eval_poles_and_residues(k_val, mu, dimensions=3):
     k_val : float
         The value of the Fourier vector magnitude :math:`K`
     mu : int
-        Value of the mu parameter
+        Value of the mu parameter (:math:`z`-component of the angular momentum)
     dimensions : int
         The number of dimensions (default to 3 dimensions)
 
