@@ -161,18 +161,71 @@ We leverage several numerical and asymptotic methods to find the poles <span cla
 (see <a class="reference internal" href="references.html#mehraeen2008" id="id9"><span>[Mehraeen2008]</span></a> for a detailed description of these methods).</p>
 <p>This basic approach is extended to Green’s function evaluation with fixed end orientation
 (i.e. the orientation-dependent Green’s function).
-This necessitates determination of poles and residues that depends
-on an additional index <span class="math notranslate nohighlight">\(\mu\)</span>, which defines the <span class="math notranslate nohighlight">\(z\)</span>-component of the
+Turning back to the general Green’s function (i.e. including end orientations),
+we have</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{K},\vec{u}|\vec{u}_{0};p) =
+\frac{1}{\Omega_{D}}
+\sum_{\lambda}  \sum_{\lambda_{0}} \sum_{\mathbf{\mu}}
+Y^{(D)*}_{\lambda;\mathbf{\mu}} (\vec{u}')
+Y^{(D)}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
+\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p).\]</div>
+<p>This spherical harmonic expansion requires evaluation of the Laplace inverse
+of the <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda_{0},\lambda}^{\mu_{1}}(K;p)\)</span>.
+The evaluation of poles and residues of <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p)\)</span>
+utilizes similar approaches as outlined above and discussed in detail in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id10"><span>[Mehraeen2008]</span></a>.
+The primary difference is whether the residues and poles require evaluation for non-zero
+values of <span class="math notranslate nohighlight">\(\mu\)</span> and the residue evaluation must account for different
+<span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\lambda_{0}\)</span>.
+Poles and residues are evaluated
+for the additional index <span class="math notranslate nohighlight">\(\mu\)</span>, which defines the <span class="math notranslate nohighlight">\(z\)</span>-component of the
 angular momentum (noting the Quantum Mechanical analogy of our problem).
 Inclusion of <span class="math notranslate nohighlight">\(\mu\)</span> requires definition of the cutoff <span class="math notranslate nohighlight">\(\mu = \mu_{\mathrm{max}}\)</span>
-that restricts the otherwise infinite summations within the inversion.</p>
+that restricts the otherwise infinite summations within the inversion.
+Evaluation of the residues for all possible values of <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\lambda_{0}\)</span>
+(with a cutoff <span class="math notranslate nohighlight">\(\lambda_{\mathrm{max}}\)</span>)
+results in a residue matrix defined by
+<span class="math notranslate nohighlight">\([\partial_{p} j_{\lambda_{0},\lambda}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}\)</span>,
+which is a <span class="math notranslate nohighlight">\((\lambda_{\mathrm{max}} - \mu + 1) \times (\lambda_{\mathrm{max}} - \mu + 1)\)</span>
+tensor for a given <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}^{\mu}\)</span>.</p>
+<p>The following table shows the cases of whether non-zero values of
+<span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> need to be evaluated for the Laplace-inversion.
+We define the boolean parameters
+‘mu_zero_only’ and ‘lam_zero_only’ to determine the family of residues and poles that need to
+be determined for a given Green’s function evaluation.</p>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(G(K;N)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(G(K,\vec{u}_{0};N)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(G(K,\vec{u}|\vec{u}_{0};N)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>‘mu_zero_only’</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘lam_zero_only’</p></td>
+<td><p>True</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
 <p>We define a data structure that facilitates evaluation of the Laplace inversion
 but also enables the ‘wlcgreen’ module to dynamically grow the data structure,
-so residues and poles do not require re-evaluation if already evaluated at a given
-<span class="math notranslate nohighlight">\(K\)</span>.
-We define the ‘green_laplace’ library as follows</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">green_laplace</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k_val1</span><span class="p">:[</span><span class="n">mu_zero_only</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span><span class="p">],</span> \
-                  <span class="n">k_val2</span><span class="p">:[</span><span class="n">mu_zero_only</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span><span class="p">],</span> <span class="o">...</span> <span class="p">}</span>
+so residues and poles do not require re-evaluation if already evaluated at a given <span class="math notranslate nohighlight">\(K\)</span>.
+We define the ‘green_properties’ library as follows</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">green_properties</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k_val1</span><span class="p">:[</span><span class="n">mu_zero_only</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span><span class="p">],</span>
+                     <span class="n">k_val2</span><span class="p">:[</span><span class="n">mu_zero_only</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span><span class="p">],</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
 </div>
 <p>For a given key in the library ‘k_val’, the elements are as follows</p>
@@ -191,15 +244,14 @@ We define the ‘green_laplace’ library as follows</p>
 <span id="functions-contained-with-the-wlcgreen-module"></span><h2>Functions contained with the ‘wlcgreen’ module<a class="headerlink" href="#module-wlcstat.wlcgreen" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="wlcstat.wlcgreen.eval_poles_and_residues">
-<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">eval_poles_and_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_val</span></em>, <em class="sig-param"><span class="n">mu_zero_only</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">lam_zero_only</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#eval_poles_and_residues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.eval_poles_and_residues" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">eval_poles_and_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_val</span></em>, <em class="sig-param"><span class="n">mu</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#eval_poles_and_residues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.eval_poles_and_residues" title="Permalink to this definition">¶</a></dt>
 <dd><p>eval_poles_and_residues - Evaluate the poles and the residues for a given value of the
 Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k_val</strong> (<em>float</em>) – The value of the Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span></p></li>
-<li><p><strong>mu_zero_only</strong> (<em>boolean</em>) – Determines whether poles and residues are determined for non-zero <span class="math notranslate nohighlight">\(\mu\)</span> (default True)</p></li>
-<li><p><strong>lam_zero_only</strong> (<em>boolean</em>) – Determines whether residues are determined for non_zero <span class="math notranslate nohighlight">\(\lambda\)</span> (default True)</p></li>
+<li><p><strong>mu</strong> (<em>int</em>) – Value of the mu parameter</p></li>
 <li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
 </ul>
 </dd>
@@ -212,9 +264,22 @@ Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id10"><span>[Mehraeen2008]</span></a>)</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id11"><span>[Mehraeen2008]</span></a>)</p>
 </dd></dl>
 
+</div>
+<div class="section" id="example-usage-of-eval-poles-and-residues">
+<h2>Example usage of ‘eval_poles_and_residues’<a class="headerlink" href="#example-usage-of-eval-poles-and-residues" title="Permalink to this headline">¶</a></h2>
+<p>This plot shows the poles for the wormlike chain in 3 dimensions over a range of <span class="math notranslate nohighlight">\(K\)</span>.
+This plot is a reproduction of Fig. 1 in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id12"><span>[Mehraeen2008]</span></a>.</p>
+<p>(<a class="reference external" href=".//wlcgreen_notes-1.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-1.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-1.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcgreen_notes-1.png" src="_images/wlcgreen_notes-1.png" />
+</div>
+<p>(<a class="reference external" href=".//wlcgreen_notes-2.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-2.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-2.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-2.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcgreen_notes-2.png" src="_images/wlcgreen_notes-2.png" />
+</div>
 </div>
 </div>
 
@@ -234,6 +299,7 @@ Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-wlcstat.wlcgreen">Functions contained with the ‘wlcgreen’ module</a></li>
+<li><a class="reference internal" href="#example-usage-of-eval-poles-and-residues">Example usage of ‘eval_poles_and_residues’</a></li>
 </ul>
 </li>
 </ul>

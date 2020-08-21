@@ -151,22 +151,64 @@ We leverage several numerical and asymptotic methods to find the poles :math:`\m
 
 This basic approach is extended to Green's function evaluation with fixed end orientation
 (i.e. the orientation-dependent Green's function).
-This necessitates determination of poles and residues that depends
-on an additional index :math:`\mu`, which defines the :math:`z`-component of the
+Turning back to the general Green's function (i.e. including end orientations),
+we have
+
+.. math::
+    G(\vec{K},\vec{u}|\vec{u}_{0};p) =
+    \frac{1}{\Omega_{D}}
+    \sum_{\lambda}  \sum_{\lambda_{0}} \sum_{\mathbf{\mu}}
+    Y^{(D)*}_{\lambda;\mathbf{\mu}} (\vec{u}')
+    Y^{(D)}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
+    \mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p).
+
+This spherical harmonic expansion requires evaluation of the Laplace inverse
+of the :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu_{1}}(K;p)`.
+The evaluation of poles and residues of :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p)`
+utilizes similar approaches as outlined above and discussed in detail in Ref. [Mehraeen2008]_.
+The primary difference is whether the residues and poles require evaluation for non-zero
+values of :math:`\mu` and the residue evaluation must account for different
+:math:`\lambda` and :math:`\lambda_{0}`.
+Poles and residues are evaluated
+for the additional index :math:`\mu`, which defines the :math:`z`-component of the
 angular momentum (noting the Quantum Mechanical analogy of our problem).
 Inclusion of :math:`\mu` requires definition of the cutoff :math:`\mu = \mu_{\mathrm{max}}`
 that restricts the otherwise infinite summations within the inversion.
+Evaluation of the residues for all possible values of :math:`\lambda` and :math:`\lambda_{0}`
+(with a cutoff :math:`\lambda_{\mathrm{max}}`)
+results in a residue matrix defined by
+:math:`[\partial_{p} j_{\lambda_{0},\lambda}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}`,
+which is a :math:`(\lambda_{\mathrm{max}} - \mu + 1) \times (\lambda_{\mathrm{max}} - \mu + 1)`
+tensor for a given :math:`\mu` and :math:`\mathcal{E}_{\alpha}^{\mu}`.
+
+The following table shows the cases of whether non-zero values of
+:math:`\mu` and :math:`\lambda` need to be evaluated for the Laplace-inversion.
+We define the boolean parameters
+'mu_zero_only' and 'lam_zero_only' to determine the family of residues and poles that need to
+be determined for a given Green's function evaluation.
+
+.. table::
+    :widths: 30 30 30 30
+    :align: center
+
+    +-----------------+----------------+----------------------------+------------------------------------+
+    |                 | :math:`G(K;N)` | :math:`G(K,\vec{u}_{0};N)` | :math:`G(K,\vec{u}|\vec{u}_{0};N)` |
+    +=================+================+============================+====================================+
+    | 'mu_zero_only'  |      True      |           True             |               False                |
+    +-----------------+----------------+----------------------------+------------------------------------+
+    | 'lam_zero_only' |      True      |           False            |               False                |
+    +-----------------+----------------+----------------------------+------------------------------------+
+
 
 We define a data structure that facilitates evaluation of the Laplace inversion
 but also enables the 'wlcgreen' module to dynamically grow the data structure,
-so residues and poles do not require re-evaluation if already evaluated at a given
-:math:`K`.
-We define the 'green_laplace' library as follows
+so residues and poles do not require re-evaluation if already evaluated at a given :math:`K`.
+We define the 'green_properties' library as follows
 
 .. code:: python
 
-    green_laplace = { k_val1:[mu_zero_only, lam_zero_only, poles, residues], \
-                      k_val2:[mu_zero_only, lam_zero_only, poles, residues], ... }
+    green_properties = { k_val1:[mu_zero_only, lam_zero_only, poles, residues],
+                         k_val2:[mu_zero_only, lam_zero_only, poles, residues], ... }
 
 For a given key in the library 'k_val', the elements are as follows
 
@@ -187,3 +229,76 @@ Functions contained with the 'wlcgreen' module
 
 .. automodule:: wlcstat.wlcgreen
     :members:
+
+
+Example usage of 'eval_poles_and_residues'
+------------------------------------------
+
+This plot shows the poles for the wormlike chain in 3 dimensions over a range of :math:`K`.
+This plot is a reproduction of Fig. 1 in Ref. [Mehraeen2008]_.
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlcgreen import *
+
+    num_k = 100
+    k_val_0 = 1e-1
+    k_val_f = 1e3
+    k_val = np.logspace(np.log10(k_val_0), np.log10(k_val_f), num_k)
+    mu=0
+    dimensions = 3
+    num_poles = min(12, 26-mu)
+    poles = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
+    for i_k_val in range(num_k):
+        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,dimensions)
+        for i_pole in range(num_poles):
+            poles[i_k_val, i_pole] = poles_k_val[i_pole]
+
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+
+    for i_pole in range(num_poles):
+        plt.semilogx(k_val, np.real(poles[:, i_pole]))
+
+    plt.xlabel(r'$K = (2l_{p}) k$')
+    plt.ylabel(r'Real ($\mathcal{E}_{\alpha}$)')
+    plt.tight_layout()
+    plt.show()
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlcgreen import *
+
+    num_k = 100
+    k_val_0 = 1e-1
+    k_val_f = 1e3
+    k_val = np.logspace(np.log10(k_val_0), np.log10(k_val_f), num_k)
+    mu=0
+    dimensions = 3
+    num_poles = min(12, 26-mu)
+    poles = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
+    for i_k_val in range(num_k):
+        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,dimensions)
+        for i_pole in range(num_poles):
+            poles[i_k_val, i_pole] = poles_k_val[i_pole]
+
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+
+    for i_pole in range(num_poles):
+        plt.semilogx(k_val, np.imag(poles[:, i_pole]))
+
+    plt.xlabel(r'$K = (2l_{p}) k$')
+    plt.ylabel(r'Imag ($\mathcal{E}_{\alpha}$)')
+    plt.tight_layout()
+    plt.show()
