@@ -109,6 +109,120 @@ complex integration of the Bromwich integral, but this approach is not integrate
 
 The orientation-independent Green's function :math:`G(\vec{K};p)`
 in :eq:`gwlc` serves as a useful example for our numerical procedures.
+Below, we discuss the two steps for the real-space inversion for this function.
+
+Step 1: Laplace-space inversion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Laplace-space inversion requires us to determine the poles :math:`\mathcal{E}_{\alpha}`
+(all simple and generally complex).
+Mathematically, this is written as
+
+.. math::
+    j (K; p = \mathcal{E}_{\alpha}) = \frac{1}{G(K; p = \mathcal{E}_{\alpha})} = 0
+
+for :math:`\alpha = 0, 1, \ldots` gives the infinite set of poles within the infinite continued
+fraction.  In practice, the real part of :math:`\mathcal{E}_{\alpha}` becomes increasingly negative
+with increasing :math:`\alpha`, and a cutoff :math:`\alpha = \alpha_{\mathrm{max}}` is invoked for
+any given :math:`N`. We note that :math:`\mathcal{E}_{\alpha} \rightarrow -\alpha (\alpha+D-2)`
+(unperturbed eigenvalues of the hyperspherical harmonics) as
+:math:`K \rightarrow 0` and becomes more negative with increasing :math:`K` (see Ref [Mehraeen2008]_).
+We determine :math:`\alpha_{\mathrm{max}}` based on the :math:`K=0` magnitude of :math:`G` for a given :math:`N`.
+
+The Laplace inversion is then determined by evaluating the residues in the complex plane.
+The is written as
+
+.. math::
+    G (K; N) = \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}}
+    \mathop{\mathrm{Res}}_{p = \mathcal{E}_{\alpha}} \left[
+    G(K; p) \exp \left( p N \right) \right]
+    = \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}} \lim_{p \rightarrow \mathcal{E}_{\alpha}}
+    \left[
+    ( p - \mathcal{E}_{\alpha}) G(K; p) \exp \left( p N \right) \right] =
+    \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}} \frac{1}{\partial_{p} j (K; p = \mathcal{E}_{\alpha})}
+    \exp \left( \mathcal{E}_{\alpha} N \right)
+
+The final form arises from the fact that all of the poles :math:`\mathcal{E}_{\alpha}` are simple.
+From this development, the Laplace inversion requires evaluation of two quantities:
+:math:`\mathcal{E}_{\alpha}` (for :math:`\alpha = 0, 1, \ldots, \alpha_{\mathrm{max}}`)
+and :math:`\partial_{p} j (K; p = \mathcal{E}_{\alpha}) = \frac{\partial j (K; p = \mathcal{E}_{\alpha})}{\partial p}`.
+We leverage several numerical and asymptotic methods to find the poles :math:`\mathcal{E}_{\alpha}`
+(see [Mehraeen2008]_ for a detailed description of these methods).
+
+This basic approach is extended to Green's function evaluation with fixed end orientation
+(i.e. the orientation-dependent Green's function).
+Turning back to the general Green's function (i.e. including end orientations),
+we have
+
+.. math::
+    G(\vec{K},\vec{u}|\vec{u}_{0};p) =
+    \frac{1}{\Omega_{D}}
+    \sum_{\lambda}  \sum_{\lambda_{0}} \sum_{\mathbf{\mu}}
+    Y^{(D)*}_{\lambda;\mathbf{\mu}} (\vec{u}')
+    Y^{(D)}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
+    \mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p).
+
+This spherical harmonic expansion requires evaluation of the Laplace inverse
+of :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu_{1}}(K;p)`
+(i.e. spherical-harmonic transform of the Green's function).
+The evaluation of poles and residues of :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p)`
+utilizes similar approaches as outlined above and discussed in detail in Ref. [Mehraeen2008]_.
+The primary difference is whether the residues and poles require evaluation for non-zero
+values of :math:`\mu` and the residue evaluation must account for different
+:math:`\lambda` and :math:`\lambda_{0}`.
+Poles and residues are evaluated
+for the additional index :math:`\mu`, which defines the :math:`z`-component of the
+angular momentum (noting the Quantum Mechanical analogy of our problem).
+Inclusion of :math:`\mu` requires definition of the cutoff :math:`\mu = \mu_{\mathrm{max}}`
+that restricts the otherwise infinite summations within the inversion.
+Evaluation of the residues for all possible values of :math:`\lambda` and :math:`\lambda_{0}`
+(with a cutoff :math:`\lambda_{\mathrm{max}}`)
+results in a residue matrix defined by
+:math:`[\partial_{p} j_{\lambda_{0},\lambda}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}`,
+which is a :math:`(\lambda_{\mathrm{max}} - \mu + 1) \times (\lambda_{\mathrm{max}} - \mu + 1)`
+tensor for a given :math:`\mu` and :math:`\mathcal{E}_{\alpha}^{\mu}`.
+
+The following table shows the cases of whether non-zero values of
+:math:`\mu` and :math:`\lambda` need to be evaluated for the Laplace-inversion.
+We define the boolean parameters
+'mu_zero_only' and 'lam_zero_only' to determine the family of residues and poles that need to
+be determined for a given Green's function evaluation.
+
+.. table::
+    :widths: 30 30 30 30
+    :align: center
+
+    +-----------------+----------------+----------------------------+------------------------------------+
+    |                 | :math:`G(K;N)` | :math:`G(K,\vec{u}_{0};N)` | :math:`G(K,\vec{u}|\vec{u}_{0};N)` |
+    +=================+================+============================+====================================+
+    | 'mu_zero_only'  |      True      |           True             |               False                |
+    +-----------------+----------------+----------------------------+------------------------------------+
+    | 'lam_zero_only' |      True      |           False            |               False                |
+    +-----------------+----------------+----------------------------+------------------------------------+
+
+
+We define a data structure that facilitates evaluation of the Laplace inversion
+but also enables the 'wlcgreen' module to dynamically grow the data structure,
+so residues and poles do not require re-evaluation if already evaluated at a given :math:`K`.
+We define the 'green_properties' library as follows
+
+.. code:: python
+
+    green_properties = { k_val1:[mu_zero_only, lam_zero_only, poles, residues],
+                         k_val2:[mu_zero_only, lam_zero_only, poles, residues], ... }
+
+For a given key in the library 'k_val', the elements are as follows
+
+- 'mu_zero_only' is a boolean (True or False) that determines whether the poles and residues are evaluated for non-zero values of :math:`\mu`
+
+- 'lam_zero_only' is a boolean (True or False) that determines whether the residues are evaluated for non-zero :math:`\lambda`
+
+- 'poles' is an array of poles [size :math:`(\alpha_{\mathrm{max}} + 1) \times (\mu_{\mathrm{max}} + 1)`], which accounts for the value of 'mu_zero_only'
+
+- 'residues' is an array of residues [size :math:`(\alpha_{\mathrm{max}} + 1) \times (\mu_{\mathrm{max}} + 1)`] (to be discussed further)
+
+Step 2: Fourier-space inversion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 Functions contained with the 'wlcgreen' module
@@ -116,3 +230,121 @@ Functions contained with the 'wlcgreen' module
 
 .. automodule:: wlcstat.wlcgreen
     :members:
+
+
+Example usage of 'eval_poles_and_residues'
+------------------------------------------
+
+This plot shows the poles for the wormlike chain in 3 dimensions over a range of :math:`K`.
+This plot is a reproduction of Fig. 1 in Ref. [Mehraeen2008]_.
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlcgreen import *
+
+    num_k = 100
+    k_val_0 = 1e-1
+    k_val_f = 1e3
+    k_val = np.logspace(np.log10(k_val_0), np.log10(k_val_f), num_k)
+    mu=0
+    dimensions = 3
+    num_poles = min(12, 26-mu)
+    poles = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
+    for i_k_val in range(num_k):
+        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,dimensions)
+        for i_pole in range(num_poles):
+            poles[i_k_val, i_pole] = poles_k_val[i_pole]
+
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+
+    for i_pole in range(num_poles):
+        plt.semilogx(k_val, np.real(poles[:, i_pole]))
+
+    plt.xlabel(r'$K = (2l_{p}) k$')
+    plt.ylabel(r'Real ($\mathcal{E}_{\alpha}$)')
+    plt.tight_layout()
+    plt.show()
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlcgreen import *
+
+    num_k = 100
+    k_val_0 = 1e-1
+    k_val_f = 1e3
+    k_val = np.logspace(np.log10(k_val_0), np.log10(k_val_f), num_k)
+    mu=0
+    dimensions = 3
+    num_poles = min(12, 26-mu)
+    poles = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
+    for i_k_val in range(num_k):
+        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,dimensions)
+        for i_pole in range(num_poles):
+            poles[i_k_val, i_pole] = poles_k_val[i_pole]
+
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+
+    for i_pole in range(num_poles):
+        plt.semilogx(k_val, np.imag(poles[:, i_pole]))
+
+    plt.xlabel(r'$K = (2l_{p}) k$')
+    plt.ylabel(r'Imag ($\mathcal{E}_{\alpha}$)')
+    plt.tight_layout()
+    plt.show()
+
+Another way to look at the poles is to consider the weight of the individual poles on the
+Fourier inversion.  We consider a chain length :math:`N=0.1`, which is quite rigid.
+This plot shows the weight :math:`\exp \left[ \mathrm{Real} (\mathcal{E}_{\alpha} ) N \right)`
+over a range of :math:`K`.
+We note that the :math:`y`-scale in this plot is roughly coincident with machine precision
+:math:`10^{-14}`, so the :math:`k`-range and the number of poles are the complete set necessary
+for Laplace inversion to machine precision accuracy for this chain length.
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlcgreen import *
+
+    length_kuhn = 0.1
+    alpha_max = 25
+    num_k = 100
+    k_val_0 = 1e-1
+    k_val_f = 1e5
+    k_val = np.logspace(np.log10(k_val_0), np.log10(k_val_f), num_k)
+    mu=0
+    dimensions = 3
+    num_poles = min(18, alpha_max + 1 - mu)
+    poles = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
+    for i_k_val in range(num_k):
+        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,dimensions)
+        for i_pole in range(num_poles):
+            poles[i_k_val, i_pole] = poles_k_val[i_pole]
+
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+
+    for i_pole in range(num_poles):
+        plt.loglog(k_val, np.exp(np.real(poles[:, i_pole]) * length_kuhn))
+
+    plt.ylim((10 ** -14, 1))
+    plt.xlim((10 ** -1, 10 ** 5))
+    plt.xlabel(r'$K = (2l_{p}) k$')
+    plt.ylabel(r'$\exp \left[ \mathrm{Real} (\mathcal{E}_{\alpha}) N \right]$')
+    plt.tight_layout()
+    plt.show()

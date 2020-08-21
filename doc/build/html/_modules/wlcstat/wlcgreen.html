@@ -41,30 +41,46 @@
             
   <h1>Source code for wlcstat.wlcgreen</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">wlcstat.util.wlc_poles_residues</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-<div class="viewcode-block" id="wlc_residue"><a class="viewcode-back" href="../../wlcgreen_notes.html#wlcstat.wlcgreen.wlc_residue">[docs]</a><span class="k">def</span> <span class="nf">wlc_residue</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<div class="viewcode-block" id="eval_poles_and_residues"><a class="viewcode-back" href="../../wlcgreen_notes.html#wlcstat.wlcgreen.eval_poles_and_residues">[docs]</a><span class="k">def</span> <span class="nf">eval_poles_and_residues</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    r2_ave - Calculate the average end-to-end distance squared :math:`\langle R^{2} \rangle / (2 l_{p})^{2}`</span>
-<span class="sd">    for the wormlike chain model</span>
+<span class="sd">    eval_poles_and_residues - Evaluate the poles and the residues for a given value of the</span>
+<span class="sd">    Fourier vector magnitude :math:`K`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    length_kuhn : float (array)</span>
-<span class="sd">        The length of the chain in Kuhn lengths</span>
+<span class="sd">    k_val : float</span>
+<span class="sd">        The value of the Fourier vector magnitude :math:`K`</span>
+<span class="sd">    mu : int</span>
+<span class="sd">        Value of the mu parameter (:math:`z`-component of the angular momentum)</span>
 <span class="sd">    dimensions : int</span>
 <span class="sd">        The number of dimensions (default to 3 dimensions)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    r2 : float (array)</span>
-<span class="sd">        The mean-square end-to-end distance for the wormlike chain model (non-dimensionalized by :math:`2 l_{p})`</span>
+<span class="sd">    poles : float (complex)</span>
+
+<span class="sd">    residues : float (complex)</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008).</span>
+<span class="sd">    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref [Mehraeen2008]_)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+
+    <span class="n">residues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">poles</span> <span class="o">=</span> <span class="n">eval_poles</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span></div>
+
+
+<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    mu_zero_only : boolean</span>
+<span class="sd">        Determines whether poles and residues are determined for non-zero :math:`\mu` (default True)</span>
+<span class="sd">    lam_zero_only : boolean</span>
+<span class="sd">        Determines whether residues are determined for non_zero :math:`\lambda` (default True)</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 
             <div class="clearer"></div>
