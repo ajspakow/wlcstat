@@ -245,7 +245,7 @@ We define the ‘green_properties’ library as follows</p>
 <span id="functions-contained-with-the-wlcgreen-module"></span><h2>Functions contained with the ‘wlcgreen’ module<a class="headerlink" href="#module-wlcstat.wlcgreen" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="wlcstat.wlcgreen.eval_poles_and_residues">
-<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">eval_poles_and_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_val</span></em>, <em class="sig-param"><span class="n">mu</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#eval_poles_and_residues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.eval_poles_and_residues" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">eval_poles_and_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_val</span></em>, <em class="sig-param"><span class="n">mu</span></em>, <em class="sig-param"><span class="n">mu_zero_only</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">lam_zero_only</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#eval_poles_and_residues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.eval_poles_and_residues" title="Permalink to this definition">¶</a></dt>
 <dd><p>eval_poles_and_residues - Evaluate the poles and the residues for a given value of the
 Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span></p>
 <dl class="field-list simple">
@@ -253,6 +253,8 @@ Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k_val</strong> (<em>float</em>) – The value of the Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span></p></li>
 <li><p><strong>mu</strong> (<em>int</em>) – Value of the mu parameter (<span class="math notranslate nohighlight">\(z\)</span>-component of the angular momentum)</p></li>
+<li><p><strong>mu_zero_only</strong> (<em>boolean</em>) – Determines whether poles and residues are determined for non-zero <span class="math notranslate nohighlight">\(\mu\)</span> (default True)</p></li>
+<li><p><strong>lam_zero_only</strong> (<em>boolean</em>) – Determines whether residues are determined for non_zero <span class="math notranslate nohighlight">\(\lambda\)</span> (default True)</p></li>
 <li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
 </ul>
 </dd>
@@ -291,6 +293,17 @@ for Laplace inversion to machine precision accuracy for this chain length.</p>
 <p>(<a class="reference external" href=".//wlcgreen_notes-3.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-3.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-3.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-3.pdf">pdf</a>)</p>
 <div class="figure align-default">
 <img alt="_images/wlcgreen_notes-3.png" src="_images/wlcgreen_notes-3.png" />
+</div>
+<p>We now demonstrate the evaluation of the residues for
+<span class="math notranslate nohighlight">\(\lambda = \lambda_{0} = 0\)</span> and
+<span class="math notranslate nohighlight">\(\mu = 0\)</span>
+We show the residues values for the first 10 eigenvalues <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span>.
+Our numerical procedure utilizes the small-<span class="math notranslate nohighlight">\(k\)</span> and intermediate-<span class="math notranslate nohighlight">\(k\)</span> algorithms
+given in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id13"><span>[Mehraeen2008]</span></a>,
+with a cross-over frequency of <span class="math notranslate nohighlight">\(K_{\mathrm{cutoff}} = 0.01\)</span>.</p>
+<p>(<a class="reference external" href=".//wlcgreen_notes-4.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-4.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-4.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-4.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcgreen_notes-4.png" src="_images/wlcgreen_notes-4.png" />
 </div>
 </div>
 </div>

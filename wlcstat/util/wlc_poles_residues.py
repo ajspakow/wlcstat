@@ -1,6 +1,11 @@
 import numpy as np
 
 
+"""
+Functions for pole evaluation
+"""
+
+
 def eval_poles(k_val, mu, dimensions=3, alpha_max=25, k_val_cutoff=8000):
     r"""
     eval_poles - Evaluate the poles for the wormlike chain Green's function for a given :math:`K`
@@ -30,9 +35,6 @@ def eval_poles(k_val, mu, dimensions=3, alpha_max=25, k_val_cutoff=8000):
     See [Mehraeen2009]_ for intermediate-k and large-k algorithms
 
     """
-
-    # Size of 'poles' set by the pole index running from :math:`\mu` to :math:`\alpha_{max}`
-    poles = np.zeros((alpha_max + 1 - abs(mu)), dtype='complex')
 
     # Use the intermediate-k or large-k algorithm based on k_val_cutoff
     if abs(k_val) < k_val_cutoff:
@@ -75,8 +77,18 @@ def eval_poles_intermediate_k_val(k_val, mu, dimensions=3, alpha_max=25):
 
     num_total = int(4 * 2 * (np.ceil(alpha_max / 2.0)))  # Eigenvalues come in pairs
 
-    h_matrix = eval_h_matrix(num_total, k_val, mu, dimensions)
+    # Build the h-matrix used to evaluate the poles of the Green function
+    lam = mu + np.arange(0, num_total)
+    if k_val <= 1:
+        diagonal = lam * (lam + dimensions - 2)
+        diagonal_plus1 = -1j * k_val * eval_a_lam_mu(lam[1:num_total], mu, dimensions)
+        h_matrix = np.diag(diagonal) + np.diag(diagonal_plus1, 1) + np.diag(diagonal_plus1, -1)
+    else:
+        diagonal = lam * (lam + dimensions - 2) / k_val
+        diagonal_plus1 = -1j * eval_a_lam_mu(lam[1:num_total], mu, dimensions)
+        h_matrix = np.diag(diagonal) + np.diag(diagonal_plus1, 1) + np.diag(diagonal_plus1, -1)
 
+    # Find the poles as the eigenvalues of the h-matrix
     poles_total = -1 * np.linalg.eigvals(h_matrix)
     poles_total = np.sort(poles_total)[::-1]
 
@@ -88,50 +100,9 @@ def eval_poles_intermediate_k_val(k_val, mu, dimensions=3, alpha_max=25):
     if k_val > 1:
         poles_total = poles_total * k_val
 
-    poles = poles_total[0:(alpha_max - abs(mu)+1)]
+    poles = poles_total[0:(alpha_max - abs(mu) + 1)]
 
     return poles
-
-
-def eval_h_matrix(num_total, k_val, mu, dimensions=3):
-    r"""
-    eval_h_matrix - Build the h-matrix used to evaluate the poles of the Green function
-
-    Parameters
-    ----------
-    num_total : int
-        The rank of the h-matrix that determines the number of poles to evaluate by eigenvalue decomposition
-    mu : int
-        Value of the mu parameter
-    k_val : float
-        The value of the Fourier vector magnitude :math:`K`
-    mu : int
-        Value of the mu parameter
-    dimensions : int
-        The number of dimensions (default to 3 dimensions)
-
-    Returns
-    -------
-    h_matrix : complex float (num_total x num_total)
-        h_matrix for evaluation of the poles for the given :math:`K` and :math:`\mu`
-
-    Notes
-    -----
-    See [Mehraeen2009]_ for intermediate-k algorithms
-
-    """
-    lam = mu + np.arange(0, num_total)
-
-    if k_val <= 1:
-        diagonal = lam * (lam + dimensions - 2)
-        diagonal_plus1 = -1j * k_val * eval_a_lam_mu(lam[1:num_total], mu, dimensions)
-        h_matrix = np.diag(diagonal) + np.diag(diagonal_plus1, 1) + np.diag(diagonal_plus1, -1)
-    else:
-        diagonal = lam * (lam + dimensions - 2) / k_val
-        diagonal_plus1 = -1j * eval_a_lam_mu(lam[1:num_total], mu, dimensions)
-        h_matrix = np.diag(diagonal) + np.diag(diagonal_plus1, 1) + np.diag(diagonal_plus1, -1)
-
-    return h_matrix
 
 
 def eval_poles_large_k_val(k_val, mu, dimensions=3, alpha_max=25):
@@ -210,35 +181,217 @@ def eval_epsilon(l_val, d, k_val, mu):
     return epsilon_sum
 
 
-
 """
-
 Functions for residue evaluation
-
 """
 
 
-def eval_residues(k_val, poles, lam, mu, nlam=10, dimensions=3, lam_max=500, cutoff=10**-11):
+def eval_residues(k_val, mu, poles=None, lam_zero_only=True, dimensions=3, lam_max=25, alpha_max=25,
+                  lam_cont_frac_max=500, k_val_cutoff=10**-2):  #10**-3):
     r"""
 
-    if k_val < 10 ** -3:
-        res = np.zeros((nlam, nlam), dtype=type(1+1j))*np.NaN
-        for lam in range(abs(mu),nlam):
-            for lam0 in range(abs(mu),nlam):
-                smallK = SmallAysmpRes(k_val, l, lam, lam0, mu, dimensions)
-                res[lam0, lam] = smallK
+    eval_residues - Evaluate the residues for the wormlike chain Green's function for a given :math:`K`
+    and :math:`z`-component quantum index :math:`\mu`
 
-    res = largeKResidues(K, eig, mu, nlam, lam_max)
+    Parameters
+    ----------
 
-    for lam in range(abs(mu),nlam):
-        for lam0 in range(abs(mu),nlam):
-            smallK=SmallAysmpRes(K,l,lam,lam0,mu,d=d)
-            if abs(smallK)<cutoff:
-                res[lam0,lam]=smallK
-    return res
+    k_val : float
+        The value of the Fourier vector magnitude :math:`K`
+    mu : int
+        Value of the mu parameter
+    poles : complex float array (length [alpha_max + 1])
+        Values of the poles for a given :math:`K` and :math:`\mu` (default to None)
+    lam_zero_only : boolean
+        Indicates whether the residues will be evaluated over the range of :math:`\lambda` and :math:`lambda_{0}`
+    dimensions : int
+        The number of dimensions (default to 3 dimensions)
+    lam_max : int
+        Maximum lambda value evaluated
+    alpha_max : int
+        Maximum number of poles evaluated (default 25)
+    k_val_cutoff : float
+        Cutoff value of :math:`K` for crossover from small-k algorithm to intermediate-k algorithm
+
+    Returns
+    -------
+    residues : complex float
+        Evaluated residues for the given :math:`K` and :math:`\mu`
+
+    Notes
+    -----
+    See [Mehraeen2009]_ for intermediate-k and large-k algorithms
+
     """
 
-    pass
+    # Determine the poles if not provided as input
+    if poles is None:
+        poles = eval_poles(k_val, mu, dimensions, alpha_max)
+
+    # Evaluate the residues base on the small-k and intermediate-k algorithms
+    if abs(k_val) < k_val_cutoff:
+        residues = eval_residues_small_k_val(k_val, mu, lam_zero_only, lam_max, alpha_max, dimensions)
+    else:
+        residues = eval_residues_intermediate_k_val(k_val, mu, poles, lam_zero_only, lam_max, alpha_max,
+                                                    dimensions, lam_cont_frac_max=500)
+
+    return residues
+
+
+def eval_residues_intermediate_k_val(k_val, mu, poles, lam_zero_only=True, lam_max=25, alpha_max=25,
+                                     dimensions=3, lam_cont_frac_max=100):
+    r"""
+    eval_residues_intermediate_k_val -
+    Evaluate the residues using the intermediate-k algorithm provided in Ref. [Mehraeen2008]_
+
+    Parameters
+    ----------
+    k_val : float
+        The value of the Fourier vector magnitude :math:`K`
+    mu : int
+        Value of the mu parameter
+    poles : complex float
+        Evaluated poles for the given :math:`K` and :math:`\mu`
+    lam_zero_only : boolean
+        Indicates whether the residues will be evaluated over the range of :math:`\lambda` and :math:`lambda_{0}`
+    lam_max : int
+        Maximum lambda value evaluated
+    alpha_max : int
+        Maximum number of poles evaluated (default 25)
+    dimensions : int
+        The number of dimensions (default to 3 dimensions)
+
+    Returns
+    -------
+    residues : complex float
+        Evaluated residues for the given :math:`K` and :math:`\mu`
+
+    Notes
+    -----
+    See [Mehraeen2009]_ for intermediate-k algorithms
+
+    """
+
+    # Initialize the residue array based on whether lam_zero_only
+    if lam_zero_only:
+        residues = np.zeros((alpha_max - abs(mu) + 1), dtype=type(1+1j))
+    else:
+        residues = np.zeros((lam_max - abs(mu) + 1, lam_max - abs(mu) + 1, alpha_max - abs(mu) + 1), dtype=type(1+1j))
+
+    for alpha in range(abs(mu), alpha_max + 1):
+        ind_alpha = alpha - abs(mu)
+
+        # Build the continued fractions
+        j_plus = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
+        djdp_plus = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
+        j_minus = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
+        djdp_minus = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
+        a_lam_mu = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
+
+        lam = lam_cont_frac_max
+        ind_lam = lam - abs(mu)
+        j_plus[ind_lam] = poles[ind_alpha] + lam * (lam + dimensions - 2)
+        djdp_plus[ind_lam] = 1
+        a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
+        for lam in reversed(range(abs(mu), lam_cont_frac_max)):
+            ind_lam = lam - abs(mu)
+            a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
+            j_plus[ind_lam] = (poles[ind_alpha] + lam * (lam + dimensions - 2)
+                               + (a_lam_mu[ind_lam + 1] * k_val) ** 2 / j_plus[ind_lam + 1])
+            djdp_plus[ind_lam] = 1 - (a_lam_mu[ind_lam + 1] * k_val /
+                                      j_plus[ind_lam + 1]) ** 2 * djdp_plus[ind_lam + 1]
+
+        lam = abs(mu)
+        j_minus[0] = poles[ind_alpha] + lam * (lam + dimensions - 2)
+        djdp_minus[0] = 1
+        for lam in range(abs(mu) + 1, max(lam_max, alpha_max) + 1):
+            ind_lam = lam - abs(mu)
+            j_minus[ind_lam] = (poles[ind_alpha] + lam * (lam + dimensions - 2)
+                                + (a_lam_mu[ind_lam] * k_val) ** 2 / j_minus[ind_lam - 1])
+            djdp_minus[ind_lam] = 1 - (a_lam_mu[ind_lam] * k_val /
+                                       j_minus[ind_lam - 1]) ** 2 * djdp_minus[ind_lam - 1]
+
+        if lam_zero_only:
+            if ind_alpha == 0:
+                residues[ind_alpha] = 1 / djdp_plus[0]
+            else:
+                w_alpha = 1 / (djdp_plus[ind_alpha] - (a_lam_mu[ind_alpha] * k_val /
+                                                       j_minus[ind_alpha - 1]) ** 2 * djdp_minus[ind_alpha - 1])
+                w_prod_left = np.prod(1j * k_val * a_lam_mu[1:(ind_alpha + 1)] / j_minus[0:ind_alpha])
+                residues[ind_alpha] = w_prod_left ** 2 * w_alpha
+        else:
+            if ind_alpha == 0:
+                w_alpha = 1 / djdp_plus[0]
+            else:
+                w_alpha = 1 / (djdp_plus[ind_alpha] -
+                               (a_lam_mu[ind_alpha] * k_val / j_minus[ind_alpha - 1]) ** 2 * djdp_minus[ind_alpha - 1])
+
+            w_prod_left = np.flip(np.cumprod(np.flip(1j * k_val * a_lam_mu[1:(ind_alpha + 1)] / j_minus[0:ind_alpha])))
+            w_prod_right = np.cumprod(1j * k_val * a_lam_mu[(ind_alpha + 1):(lam_max - abs(mu) + 1)] /
+                                      j_plus[(ind_alpha + 1):(lam_max - abs(mu) + 1)])
+            w_prod = np.concatenate((w_prod_left, np.ones(1), w_prod_right))
+            residues[:, :, ind_alpha] = np.outer(w_prod, w_prod) * w_alpha
+
+    return residues
+
+
+def eval_residues_small_k_val(k_val, mu, lam_zero_only=True, lam_max=25, alpha_max=25, dimensions=3):
+    r"""
+    eval_residues_small_k_val - Evaluate the residues using the small-k algorithm provided in Ref. [Mehraeen2008]_
+
+    Parameters
+    ----------
+    k_val : float
+        The value of the Fourier vector magnitude :math:`K`
+    mu : int
+        Value of the mu parameter
+    lam_zero_only : boolean
+        Indicates whether the residues will be evaluated over the range of :math:`\lambda` and :math:`lambda_{0}`
+    lam_max : int
+        Maximum lambda value evaluated
+    alpha_max : int
+        Maximum number of poles evaluated (default 25)
+    dimensions : int
+        The number of dimensions (default to 3 dimensions)
+
+    Returns
+    -------
+    residues : complex float
+        Evaluated residues for the given :math:`K` and :math:`\mu`
+
+    Notes
+    -----
+    See [Mehraeen2009]_ for small-k algorithms
+
+    """
+
+    # Initialize the residue array based on whether lam_zero_only
+    if lam_zero_only:
+        residues = np.zeros((alpha_max - abs(mu) + 1), dtype=type(1+1j))
+    else:
+        residues = np.zeros((lam_max - abs(mu) + 1, lam_max - abs(mu) + 1, alpha_max - abs(mu) + 1), dtype=type(1+1j))
+
+    # Evaluate the coefficient array for the small-k approximation (see [Mehraeen2008]_)
+    lam = np.arange(abs(mu), lam_max + 1)
+    a_lam_mu = eval_a_lam_mu(lam, mu, dimensions)
+    prod_vector = - 1j * k_val * a_lam_mu
+    for alpha in range(abs(mu), alpha_max + 1):
+        pole_diff_vec = alpha * (alpha + dimensions - 2) - lam * (lam + dimensions - 2)
+        ind_alpha = alpha - abs(mu)
+
+        prod_vector_left = np.flip(np.cumprod(np.flip(prod_vector[1:(ind_alpha + 1)]
+                                                      / pole_diff_vec[0:ind_alpha])))
+        prod_vector_right = np.cumprod(prod_vector[(ind_alpha+1):(lam_max - abs(mu) + 1)]
+                                       / pole_diff_vec[(ind_alpha+1):(lam_max - abs(mu) + 1)])
+
+        c_vec = np.concatenate((prod_vector_left, np.ones(1), prod_vector_right))
+
+        if lam_zero_only:
+            residues[ind_alpha] = c_vec[0] ** 2
+        else:
+            residues[:, :, ind_alpha] = np.outer(c_vec, c_vec)
+
+    return residues
 
 
 def eval_a_lam_mu(lam, mu, dimensions=3):
@@ -248,7 +401,7 @@ def eval_a_lam_mu(lam, mu, dimensions=3):
 
     Parameters
     ----------
-    lam : int
+    lam : int (array)
         The angular kinetic energy quantum index of the spherical harmonic :math:`Y_{\lambda;\mu}`
 
     mu : int
@@ -266,3 +419,5 @@ def eval_a_lam_mu(lam, mu, dimensions=3):
                        ((2 * lam + dimensions - 2) * (2 * lam + dimensions - 4)))
 
     return a_lam_mu
+
+
