@@ -69,8 +69,8 @@ The average quantity <span class="math notranslate nohighlight">\(A^{n}\)</span>
 <p>This procedure is amenable to the evaluation of arbitrary average quantities that are expressible in terms of the
 tangent orientations <span class="math notranslate nohighlight">\(\vec{u}_{m}\)</span> along the chain at positions <span class="math notranslate nohighlight">\(s_{m}\)</span>.</p>
 <p>For example, the average <span class="math notranslate nohighlight">\(\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle\)</span> (where <span class="math notranslate nohighlight">\(s_{1} &lt; s_{2}\)</span>) is given by</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
+<div class="math notranslate nohighlight" id="equation-u1u2">
+<span class="eqno">(1)<a class="headerlink" href="#equation-u1u2" title="Permalink to this equation">¶</a></span>\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
 \frac{1}{\mathcal{N}}
 \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
 G(\vec{u}|\vec{u}_{2};L-s_{2})
@@ -90,7 +90,7 @@ u_{2}^{(z)} u_{1}^{(z)},\end{split}\]</div>
 The normalization factor <span class="math notranslate nohighlight">\(\mathcal{N}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{N} = \int d \vec{u} d \vec{u}_{0} G(\vec{u}|\vec{u}_{0};L) = 4 \pi.\]</div>
-<p>Inserting Eq.~ref{eq:guwlc} into Eq.~ref{eq:u1u2} gives</p>
+<p>Inserting <a class="reference internal" href="wlctheory.html#equation-guwlc">(2)</a> into <a class="reference internal" href="#equation-u1u2">(1)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
 \frac{3}{4 \pi} \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d
@@ -106,7 +106,7 @@ Y_{l_{0}}^{m_{0}*}(\vec{u}_{0})  \cos \theta_{2} \cos \theta_{1}
 -l_{1}(l_{1}+1)\frac{s_{2}-s_{1}}{2l_{p}}
 -l_{0}(l_{0}+1)\frac{s_{1}}{2l_{p}}  \right],\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(u_{2}^{(z)}=\cos \theta_{2}\)</span>.
-Using the properties of the spherical harmonics~cite{arfken},
+Using the properties of the spherical harmonics <a class="reference internal" href="references.html#arfken1999" id="id1"><span>[Arfken1999]</span></a>,
 we note that <span class="math notranslate nohighlight">\(\cos \theta = 2 \sqrt{\pi/3} Y_{1}^{0}(\vec{u})\)</span>,
 and the average is written as</p>
 <div class="math notranslate nohighlight">
@@ -163,7 +163,7 @@ For example, the mean-square end-to-end vector is written as</p>
 <p>where <span class="math notranslate nohighlight">\(N=L/(2 l_{p})\)</span>.</p>
 <p>An alternative approach to calculating averages is to use the Fourier-transformed Green’s
 function as a generator of averages
-(see Refs. <a class="reference internal" href="references.html#spakowitz2004" id="id1"><span>[Spakowitz2004]</span></a>, <a class="reference internal" href="references.html#spakowitz2005" id="id2"><span>[Spakowitz2005]</span></a>, <a class="reference internal" href="references.html#spakowitz2006" id="id3"><span>[Spakowitz2006]</span></a>, and <a class="reference internal" href="references.html#mehraeen2008" id="id4"><span>[Mehraeen2008]</span></a>.
+(see Refs. <a class="reference internal" href="references.html#spakowitz2004" id="id2"><span>[Spakowitz2004]</span></a>, <a class="reference internal" href="references.html#spakowitz2005" id="id3"><span>[Spakowitz2005]</span></a>, <a class="reference internal" href="references.html#spakowitz2006" id="id4"><span>[Spakowitz2006]</span></a>, and <a class="reference internal" href="references.html#mehraeen2008" id="id5"><span>[Mehraeen2008]</span></a>.
 Development of this approach is provided in our
 discussion of the Green’s function.</p>
 <p>The ‘wlcave.py’ module provides scripts to calculate a number of
@@ -196,7 +196,7 @@ for the wormlike chain model</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id5"><span>[Mehraeen2008]</span></a>)</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a>)</p>
 </dd></dl>
 
 <dl class="py function">
@@ -219,7 +219,7 @@ for the wormlike chain model</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a>)</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id7"><span>[Mehraeen2008]</span></a>)</p>
 </dd></dl>
 
 <dl class="py function">
@@ -242,7 +242,7 @@ for the wormlike chain model</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id7"><span>[Mehraeen2008]</span></a>)</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id8"><span>[Mehraeen2008]</span></a>)</p>
 </dd></dl>
 
 </div>

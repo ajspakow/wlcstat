@@ -18,7 +18,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="References" href="references.html" />
+    <link rel="next" title="Structure Factor" href="wlcstruc_notes.html" />
     <link rel="prev" title="Average Quantities" href="wlcave_notes.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,7 +31,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="references.html" title="References"
+          <a href="wlcstruc_notes.html" title="Structure Factor"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="wlcave_notes.html" title="Average Quantities"
@@ -105,7 +105,7 @@ from <span class="math notranslate nohighlight">\(N\)</span> to <span class="mat
 <span class="math notranslate nohighlight">\(K\)</span> is the magnitude of <span class="math notranslate nohighlight">\(\vec{K}\)</span>,
 <span class="math notranslate nohighlight">\(P_{\lambda}=p+ \lambda (\lambda+D-2)\)</span>, and
 <span class="math notranslate nohighlight">\(a_{\lambda} = \left[\frac{\lambda (\lambda+D-3)}{(2\lambda+D-2)(2\lambda+D-4)}\right]^{1/2}\)</span>.
-A detailed derivation of this <span class="math notranslate nohighlight">\(D\)</span>-dimensional solution are found in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a>.
+A detailed derivation of this <span class="math notranslate nohighlight">\(D\)</span>-dimensional solution is found in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a>.
 We note that this exact solution produces identical results as those given in
 Ref. <a class="reference internal" href="references.html#spakowitz2004" id="id7"><span>[Spakowitz2004]</span></a>
 for 2- and 3-dimensional solutions.</p>
@@ -239,6 +239,30 @@ We define the ‘green_properties’ library as follows</p>
 </div>
 <div class="section" id="step-2-fourier-space-inversion">
 <h3>Step 2: Fourier-space inversion<a class="headerlink" href="#step-2-fourier-space-inversion" title="Permalink to this headline">¶</a></h3>
+<p>The Fourier inversion is found by numerically performing the integral</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(\vec{R};N) &amp; = &amp;
+\frac{1}{(2\pi)^{D}} \int d\vec{k} \exp \left(
+-i \vec{k} \cdot \vec{R} \right) G(K;N)
+\nonumber \\
+&amp; = &amp;
+\frac{1}{(2 l_{p})^{D}}
+\frac{1}{(2 \pi)^{D/2}}
+\int_{0}^{\infty} d K K^{D-1}
+\frac{J_{D/2-1}(NrK)}{\left(NrK\right)^{D/2-1}}
+G(K;N)\end{split}\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(\vec{K} = 2 l_{p} \vec{k}\)</span> (<span class="math notranslate nohighlight">\(K = |\vec{K}|\)</span>),
+<span class="math notranslate nohighlight">\(\vec{r} = \vec{R}/L\)</span> (<span class="math notranslate nohighlight">\(r = |\vec{r}|\)</span>),
+and <span class="math notranslate nohighlight">\(J_{n}(z)\)</span> is the Bessel function of the first kind.</p>
+<p>Integration over <span class="math notranslate nohighlight">\(K\)</span> is performed numerically
+from <span class="math notranslate nohighlight">\(K=0\)</span> to <span class="math notranslate nohighlight">\(K=K_{\mathrm{cutoff}}\)</span>,
+where <span class="math notranslate nohighlight">\(K_{\mathrm{cutoff}}\)</span> is a cutoff value
+that is sufficiently large to achieve convergence.
+The <span class="math notranslate nohighlight">\(K\)</span>-step size in the numerical integration
+is chosen such that it satisfies a global accuracy threshold.
+In our calculation, we use a tolerance of <span class="math notranslate nohighlight">\(10^{-20}\)</span>, which leads to
+an overall accuracy of <span class="math notranslate nohighlight">\(10^{-15}\)</span> for the real-space Green function.</p>
 </div>
 </div>
 <div class="section" id="module-wlcstat.wlcgreen">
@@ -260,8 +284,8 @@ Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>poles</strong> (<em>float (complex)</em>)</p></li>
-<li><p><strong>residues</strong> (<em>float (complex)</em>)</p></li>
+<li><p><strong>poles</strong> (<em>complex float</em>) – Evaluated poles for the given <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p><strong>residues</strong> (<em>complex float</em>) – Evaluated residues for the given <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
 </ul>
 </p>
 </dd>
@@ -270,11 +294,37 @@ Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span>
 <p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id11"><span>[Mehraeen2008]</span></a>)</p>
 </dd></dl>
 
+<dl class="py function">
+<dt id="wlcstat.wlcgreen.gwlc_r">
+<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">gwlc_r</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r_val</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">k_val_max</span><span class="o">=</span><span class="default_value">100000.0</span></em>, <em class="sig-param"><span class="n">delta_k_val_max</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#gwlc_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.gwlc_r" title="Permalink to this definition">¶</a></dt>
+<dd><p>gwlc_r - Evaluate the orientation-independent Green’s function for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_val</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The values of the end-to-end distance <span class="math notranslate nohighlight">\(r = R/L\)</span> to be evaluated</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+<li><p><strong>k_val_max</strong> (<em>float</em>) – Cutoff value of <span class="math notranslate nohighlight">\(K\)</span> for numerical integration</p></li>
+<li><p><strong>delta_k_val_max</strong> (<em>float</em>) – Maximum value of the integration step size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>gwlc</strong> – The orientation-independent Green’s function [size len(r_val) x len(length_kuhn)]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id12"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
 </div>
 <div class="section" id="example-usage-of-eval-poles-and-residues">
 <h2>Example usage of ‘eval_poles_and_residues’<a class="headerlink" href="#example-usage-of-eval-poles-and-residues" title="Permalink to this headline">¶</a></h2>
 <p>This plot shows the poles for the wormlike chain in 3 dimensions over a range of <span class="math notranslate nohighlight">\(K\)</span>.
-This plot is a reproduction of Fig. 1 in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id12"><span>[Mehraeen2008]</span></a>.</p>
+This plot is a reproduction of Fig. 1 in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id13"><span>[Mehraeen2008]</span></a>.</p>
 <p>(<a class="reference external" href=".//wlcgreen_notes-1.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-1.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-1.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-1.pdf">pdf</a>)</p>
 <div class="figure align-default">
 <img alt="_images/wlcgreen_notes-1.png" src="_images/wlcgreen_notes-1.png" />
@@ -299,7 +349,7 @@ for Laplace inversion to machine precision accuracy for this chain length.</p>
 <span class="math notranslate nohighlight">\(\mu = 0\)</span>
 We show the residues values for the first 10 eigenvalues <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span>.
 Our numerical procedure utilizes the small-<span class="math notranslate nohighlight">\(k\)</span> and intermediate-<span class="math notranslate nohighlight">\(k\)</span> algorithms
-given in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id13"><span>[Mehraeen2008]</span></a>,
+given in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id14"><span>[Mehraeen2008]</span></a>,
 with a cross-over frequency of <span class="math notranslate nohighlight">\(K_{\mathrm{cutoff}} = 0.01\)</span>.</p>
 <p>(<a class="reference external" href=".//wlcgreen_notes-4.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-4.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-4.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-4.pdf">pdf</a>)</p>
 <div class="figure align-default">
@@ -333,8 +383,8 @@ with a cross-over frequency of <span class="math notranslate nohighlight">\(K_{\
   <p class="topless"><a href="wlcave_notes.html"
                         title="previous chapter">Average Quantities</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="references.html"
-                        title="next chapter">References</a></p>
+  <p class="topless"><a href="wlcstruc_notes.html"
+                        title="next chapter">Structure Factor</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -366,7 +416,7 @@ with a cross-over frequency of <span class="math notranslate nohighlight">\(K_{\
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="references.html" title="References"
+          <a href="wlcstruc_notes.html" title="Structure Factor"
              >next</a> |</li>
         <li class="right" >
           <a href="wlcave_notes.html" title="Average Quantities"

@@ -254,10 +254,10 @@ f(\vec{r}) =
 <p>which gives the orientation-only chain statistics, i.e. the probability that a chain begin with
 orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> and ends with orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span> regardless of the end positions.
 The orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L)\)</span> satisfies</p>
-<div class="math notranslate nohighlight">
-\[\frac{\partial G(\vec{u}|\vec{u}_{0};L)}{\partial L} =
+<div class="math notranslate nohighlight" id="equation-gudiffeqn">
+<span class="eqno">(1)<a class="headerlink" href="#equation-gudiffeqn" title="Permalink to this equation">¶</a></span>\[\frac{\partial G(\vec{u}|\vec{u}_{0};L)}{\partial L} =
 \frac{1}{2 l_{p}} \vec{\nabla}_{u}^{2}
-G(\vec{u}|\vec{u}_{0};L) \label{eq:gudiffeqn}\]</div>
+G(\vec{u}|\vec{u}_{0};L)\]</div>
 <p>with initial condition <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L) = \delta(\vec{u}-\vec{u}_{0})\)</span>.</p>
 <p>Here, we note that the operator <span class="math notranslate nohighlight">\(\vec{\nabla}_{u}^{2}\)</span> has eigenfunctions <span class="math notranslate nohighlight">\(Y_{l}^{m}\)</span> that satisfy</p>
 <div class="math notranslate nohighlight">
@@ -272,12 +272,12 @@ The spherical harmonics satisfy</p>
 \[\int d \vec{u} Y_{l}^{m} (\vec{u})
 Y_{l'}^{m'*}(\vec{u}) = \delta_{ll'} \delta_{mm'}\]</div>
 <p>The solution for <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L)\)</span> is constructed as an expansion in the spherical harmonics, such that</p>
-<div class="math notranslate nohighlight">
-\[G(\vec{u}|\vec{u}_{0};L) = \sum_{l=0}^{\infty} \sum_{m=-l}^{l}
+<div class="math notranslate nohighlight" id="equation-guwlc">
+<span class="eqno">(2)<a class="headerlink" href="#equation-guwlc" title="Permalink to this equation">¶</a></span>\[G(\vec{u}|\vec{u}_{0};L) = \sum_{l=0}^{\infty} \sum_{m=-l}^{l}
 Y_{l}^{m} (\vec{u})
-Y_{l}^{m*}(\vec{u}_{0}) \exp [-l(l+1)N] \label{eq:guwlc}\]</div>
+Y_{l}^{m*}(\vec{u}_{0}) \exp [-l(l+1)N]\]</div>
 <p>where <span class="math notranslate nohighlight">\(N=L/(2l_{p})\)</span>.
-This form satisfies the governing Schr&quot;{o}dinger equation (Eq.~ref{eq:gudiffeqn}), and the initial condition
+This form satisfies the governing Schr&quot;{o}dinger equation (Eq. <a class="reference internal" href="#equation-gudiffeqn">(1)</a>), and the initial condition
 is captured by noting that</p>
 <div class="math notranslate nohighlight">
 \[\sum_{l=0}^{\infty} \sum_{m=-l}^{l}

@@ -6,7 +6,7 @@ Functions for pole evaluation
 """
 
 
-def eval_poles(k_val, mu, dimensions=3, alpha_max=25, k_val_cutoff=8000):
+def eval_poles(k_val, mu, dimensions=3, alpha_max=25, k_val_cutoff=1e5):
     r"""
     eval_poles - Evaluate the poles for the wormlike chain Green's function for a given :math:`K`
     and :math:`z`-component quantum index :math:`\mu`
@@ -187,7 +187,7 @@ Functions for residue evaluation
 
 
 def eval_residues(k_val, mu, poles=None, lam_zero_only=True, dimensions=3, lam_max=25, alpha_max=25,
-                  lam_cont_frac_max=500, k_val_cutoff=10**-2):  #10**-3):
+                  lam_cont_frac_max=500, k_val_cutoff=10 ** -2):
     r"""
 
     eval_residues - Evaluate the residues for the wormlike chain Green's function for a given :math:`K`
@@ -210,6 +210,8 @@ def eval_residues(k_val, mu, poles=None, lam_zero_only=True, dimensions=3, lam_m
         Maximum lambda value evaluated
     alpha_max : int
         Maximum number of poles evaluated (default 25)
+    lam_cont_frac_max : int
+        Maximum :math:`\lambda` value in the continued fraction evaluation
     k_val_cutoff : float
         Cutoff value of :math:`K` for crossover from small-k algorithm to intermediate-k algorithm
 
@@ -233,13 +235,13 @@ def eval_residues(k_val, mu, poles=None, lam_zero_only=True, dimensions=3, lam_m
         residues = eval_residues_small_k_val(k_val, mu, lam_zero_only, lam_max, alpha_max, dimensions)
     else:
         residues = eval_residues_intermediate_k_val(k_val, mu, poles, lam_zero_only, lam_max, alpha_max,
-                                                    dimensions, lam_cont_frac_max=500)
+                                                    dimensions, lam_cont_frac_max)
 
     return residues
 
 
 def eval_residues_intermediate_k_val(k_val, mu, poles, lam_zero_only=True, lam_max=25, alpha_max=25,
-                                     dimensions=3, lam_cont_frac_max=100):
+                                     dimensions=3, lam_cont_frac_max=50):
     r"""
     eval_residues_intermediate_k_val -
     Evaluate the residues using the intermediate-k algorithm provided in Ref. [Mehraeen2008]_
@@ -260,6 +262,8 @@ def eval_residues_intermediate_k_val(k_val, mu, poles, lam_zero_only=True, lam_m
         Maximum number of poles evaluated (default 25)
     dimensions : int
         The number of dimensions (default to 3 dimensions)
+    lam_cont_frac_max : int
+        Maximum :math:`\lambda` value in the continued fraction evaluation
 
     Returns
     -------
@@ -295,7 +299,8 @@ def eval_residues_intermediate_k_val(k_val, mu, poles, lam_zero_only=True, lam_m
         a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
         for lam in reversed(range(abs(mu), lam_cont_frac_max)):
             ind_lam = lam - abs(mu)
-            a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
+            if lam != abs(mu):
+                a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
             j_plus[ind_lam] = (poles[ind_alpha] + lam * (lam + dimensions - 2)
                                + (a_lam_mu[ind_lam + 1] * k_val) ** 2 / j_plus[ind_lam + 1])
             djdp_plus[ind_lam] = 1 - (a_lam_mu[ind_lam + 1] * k_val /
@@ -419,5 +424,3 @@ def eval_a_lam_mu(lam, mu, dimensions=3):
                        ((2 * lam + dimensions - 2) * (2 * lam + dimensions - 4)))
 
     return a_lam_mu
-
-

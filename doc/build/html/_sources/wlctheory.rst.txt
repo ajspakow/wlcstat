@@ -260,7 +260,9 @@ The orientation Green function :math:`G(\vec{u}|\vec{u}_{0};L)` satisfies
 .. math::
     \frac{\partial G(\vec{u}|\vec{u}_{0};L)}{\partial L} =
     \frac{1}{2 l_{p}} \vec{\nabla}_{u}^{2}
-    G(\vec{u}|\vec{u}_{0};L) \label{eq:gudiffeqn}
+    G(\vec{u}|\vec{u}_{0};L)
+    :label: gudiffeqn
+.. \label{eq:gudiffeqn}
 
 with initial condition :math:`G(\vec{u}|\vec{u}_{0};L) = \delta(\vec{u}-\vec{u}_{0})`.
 
@@ -285,10 +287,12 @@ The solution for :math:`G(\vec{u}|\vec{u}_{0};L)` is constructed as an expansion
 .. math::
     G(\vec{u}|\vec{u}_{0};L) = \sum_{l=0}^{\infty} \sum_{m=-l}^{l}
     Y_{l}^{m} (\vec{u})
-    Y_{l}^{m*}(\vec{u}_{0}) \exp [-l(l+1)N] \label{eq:guwlc}
+    Y_{l}^{m*}(\vec{u}_{0}) \exp [-l(l+1)N]
+    :label: guwlc
+.. \label{eq:guwlc}
 
 where :math:`N=L/(2l_{p})`.
-This form satisfies the governing Schr\"{o}dinger equation (Eq.~\ref{eq:gudiffeqn}), and the initial condition
+This form satisfies the governing Schr\"{o}dinger equation (Eq. :eq:`gudiffeqn`), and the initial condition
 is captured by noting that
 
 .. math::

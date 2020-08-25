@@ -11,6 +11,8 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Wormlike Chain Green's Function <wlcgreen_notes>
 
+    Structure Factor <wlcstruc_notes>
+
     References <references>
 
 Indices and tables

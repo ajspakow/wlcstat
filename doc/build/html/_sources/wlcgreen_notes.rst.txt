@@ -1,7 +1,6 @@
 .. _wlcgreen_notes:
 .. .. automodule:: wlcstat
 
-
 Wormlike Chain Green's Function
 ===============================
 
@@ -83,7 +82,7 @@ where :math:`\vec{K}=2l_{p} \vec{k}`,
 :math:`K` is the magnitude of :math:`\vec{K}`,
 :math:`P_{\lambda}=p+ \lambda (\lambda+D-2)`, and
 :math:`a_{\lambda} = \left[\frac{\lambda (\lambda+D-3)}{(2\lambda+D-2)(2\lambda+D-4)}\right]^{1/2}`.
-A detailed derivation of this :math:`D`-dimensional solution are found in Ref. [Mehraeen2008]_.
+A detailed derivation of this :math:`D`-dimensional solution is found in Ref. [Mehraeen2008]_.
 We note that this exact solution produces identical results as those given in
 Ref. [Spakowitz2004]_
 for 2- and 3-dimensional solutions.
@@ -224,6 +223,33 @@ For a given key in the library 'k_val', the elements are as follows
 Step 2: Fourier-space inversion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The Fourier inversion is found by numerically performing the integral
+
+.. math::
+    G(\vec{R};N) & = &
+    \frac{1}{(2\pi)^{D}} \int d\vec{k} \exp \left(
+    -i \vec{k} \cdot \vec{R} \right) G(K;N)
+    \nonumber \\
+    & = &
+    \frac{1}{(2 l_{p})^{D}}
+    \frac{1}{(2 \pi)^{D/2}}
+    \int_{0}^{\infty} d K K^{D-1}
+    \frac{J_{D/2-1}(NrK)}{\left(NrK\right)^{D/2-1}}
+    G(K;N)
+
+where
+:math:`\vec{K} = 2 l_{p} \vec{k}` (:math:`K = |\vec{K}|`),
+:math:`\vec{r} = \vec{R}/L` (:math:`r = |\vec{r}|`),
+and :math:`J_{n}(z)` is the Bessel function of the first kind.
+
+Integration over :math:`K` is performed numerically
+from :math:`K=0` to :math:`K=K_{\mathrm{cutoff}}`,
+where :math:`K_{\mathrm{cutoff}}` is a cutoff value
+that is sufficiently large to achieve convergence.
+The :math:`K`-step size in the numerical integration
+is chosen such that it satisfies a global accuracy threshold.
+In our calculation, we use a tolerance of :math:`10^{-20}`, which leads to
+an overall accuracy of :math:`10^{-15}` for the real-space Green function.
 
 Functions contained with the 'wlcgreen' module
 ----------------------------------------------
