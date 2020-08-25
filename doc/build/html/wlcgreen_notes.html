@@ -18,7 +18,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="References" href="references.html" />
+    <link rel="next" title="Structure Factor" href="wlcstruc_notes.html" />
     <link rel="prev" title="Average Quantities" href="wlcave_notes.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,7 +31,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="references.html" title="References"
+          <a href="wlcstruc_notes.html" title="Structure Factor"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="wlcave_notes.html" title="Average Quantities"
@@ -304,6 +304,9 @@ Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span>
 <li><p><strong>r_val</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The values of the end-to-end distance <span class="math notranslate nohighlight">\(r = R/L\)</span> to be evaluated</p></li>
 <li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
 <li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+<li><p><strong>k_val_max</strong> (<em>float</em>) – Cutoff value of <span class="math notranslate nohighlight">\(K\)</span> for numerical integration</p></li>
+<li><p><strong>delta_k_val_max</strong> (<em>float</em>) – Maximum value of the integration step size</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -380,8 +383,8 @@ with a cross-over frequency of <span class="math notranslate nohighlight">\(K_{\
   <p class="topless"><a href="wlcave_notes.html"
                         title="previous chapter">Average Quantities</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="references.html"
-                        title="next chapter">References</a></p>
+  <p class="topless"><a href="wlcstruc_notes.html"
+                        title="next chapter">Structure Factor</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -413,7 +416,7 @@ with a cross-over frequency of <span class="math notranslate nohighlight">\(K_{\
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="references.html" title="References"
+          <a href="wlcstruc_notes.html" title="Structure Factor"
              >next</a> |</li>
         <li class="right" >
           <a href="wlcave_notes.html" title="Average Quantities"

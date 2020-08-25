@@ -299,7 +299,8 @@ def eval_residues_intermediate_k_val(k_val, mu, poles, lam_zero_only=True, lam_m
         a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
         for lam in reversed(range(abs(mu), lam_cont_frac_max)):
             ind_lam = lam - abs(mu)
-            a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
+            if lam != abs(mu):
+                a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
             j_plus[ind_lam] = (poles[ind_alpha] + lam * (lam + dimensions - 2)
                                + (a_lam_mu[ind_lam + 1] * k_val) ** 2 / j_plus[ind_lam + 1])
             djdp_plus[ind_lam] = 1 - (a_lam_mu[ind_lam + 1] * k_val /

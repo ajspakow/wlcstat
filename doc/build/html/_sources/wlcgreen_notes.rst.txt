@@ -1,7 +1,6 @@
 .. _wlcgreen_notes:
 .. .. automodule:: wlcstat
 
-
 Wormlike Chain Green's Function
 ===============================
 

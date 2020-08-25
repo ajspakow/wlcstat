@@ -33,21 +33,22 @@ tangent orientations :math:`\vec{u}_{m}` along the chain at positions :math:`s_{
 For example, the average :math:`\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle` (where :math:`s_{1} < s_{2}`) is given by
 
 .. math::
-   \langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle & = & 
-   \frac{1}{\mathcal{N}}
-   \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0} 
-   G(\vec{u}|\vec{u}_{2};L-s_{2})
-   G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
-   G(\vec{u}_{1}|\vec{u}_{0};s_{1})
-   \vec{u}_{2} \cdot \vec{u}_{1} 
-   \nonumber \\
-   & = &
-   \frac{3}{\mathcal{N}}
-   \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0} 
-   G(\vec{u}|\vec{u}_{2};L-s_{2})
-   G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
-   G(\vec{u}_{1}|\vec{u}_{0};s_{1})
-   u_{2}^{(z)} u_{1}^{(z)},
+    \langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle & = &
+    \frac{1}{\mathcal{N}}
+    \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+    G(\vec{u}|\vec{u}_{2};L-s_{2})
+    G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
+    G(\vec{u}_{1}|\vec{u}_{0};s_{1})
+    \vec{u}_{2} \cdot \vec{u}_{1}
+    \nonumber \\
+    & = &
+    \frac{3}{\mathcal{N}}
+    \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+    G(\vec{u}|\vec{u}_{2};L-s_{2})
+    G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
+    G(\vec{u}_{1}|\vec{u}_{0};s_{1})
+    u_{2}^{(z)} u_{1}^{(z)},
+    :label: u1u2
 ..   \label{eq:u1u2}
 
 where rotational symmetry implies
@@ -57,7 +58,7 @@ The normalization factor :math:`\mathcal{N}` is given by
 .. math::
    \mathcal{N} = \int d \vec{u} d \vec{u}_{0} G(\vec{u}|\vec{u}_{0};L) = 4 \pi.
 
-Inserting Eq.~\ref{eq:guwlc} into Eq.~\ref{eq:u1u2} gives
+Inserting :eq:`guwlc` into :eq:`u1u2` gives
 
 .. math::
    \langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle & = &
@@ -75,7 +76,7 @@ Inserting Eq.~\ref{eq:guwlc} into Eq.~\ref{eq:u1u2} gives
    -l_{0}(l_{0}+1)\frac{s_{1}}{2l_{p}}  \right],
 
 where :math:`u_{2}^{(z)}=\cos \theta_{2}`.
-Using the properties of the spherical harmonics~\cite{arfken},
+Using the properties of the spherical harmonics [Arfken1999]_,
 we note that :math:`\cos \theta = 2 \sqrt{\pi/3} Y_{1}^{0}(\vec{u})`,
 and the average is written as
 

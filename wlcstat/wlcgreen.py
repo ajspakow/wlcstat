@@ -3,6 +3,7 @@ from wlcstat.util.wlc_poles_residues import *
 import numpy as np
 import scipy.special as sp
 
+
 def eval_poles_and_residues(k_val, mu, mu_zero_only=True, lam_zero_only=True, dimensions=3):
     r"""
     eval_poles_and_residues - Evaluate the poles and the residues for a given value of the
@@ -51,6 +52,12 @@ def gwlc_r(r_val, length_kuhn, dimensions=3, alpha_max=25, k_val_max=1e5, delta_
         The length of the chain in Kuhn lengths
     dimensions : int
         The number of dimensions (default to 3 dimensions)
+    alpha_max : int
+        Maximum number of poles evaluated (default 25)
+    k_val_max : float
+        Cutoff value of :math:`K` for numerical integration
+    delta_k_val_max : float
+        Maximum value of the integration step size
 
     Returns
     -------
@@ -69,7 +76,11 @@ def gwlc_r(r_val, length_kuhn, dimensions=3, alpha_max=25, k_val_max=1e5, delta_
     r_val[r_val == 1] = 1-1e-10
 
     # Initialize the Green's function
-    gwlc = np.zeros((len(r_val), len(length_kuhn)), dtype=type(1+1j))
+    if type(length_kuhn) == float or type(length_kuhn) == int:
+        gwlc = np.zeros((len(r_val)), dtype=type(1+1j))
+    else:
+        gwlc = np.zeros((len(r_val), len(length_kuhn)), dtype=type(1+1j))
+
     tolerance = 1e-15
 
     k_val_output = k_val_max / 100
@@ -93,9 +104,13 @@ def gwlc_r(r_val, length_kuhn, dimensions=3, alpha_max=25, k_val_max=1e5, delta_
 
         for alpha in range(0, alpha_max + 1):
             gkwlc_kval = residues[alpha] * np.exp(poles[alpha] * length_kuhn)
-            integrand = (int_coef * k_val ** (dimensions / 2)
-                         * sp.jv(dimensions / 2 - 1, k_val * np.outer(r_val, length_kuhn))
-                         * np.outer(np.ones((len(r_val)), dtype=type(1+1j)), gkwlc_kval))
+            if type(length_kuhn) == float or type(length_kuhn) == int:
+                integrand = (int_coef * k_val ** (dimensions / 2)
+                             * sp.jv(dimensions / 2 - 1, k_val * r_val * length_kuhn) * gkwlc_kval)
+            else:
+                integrand = (int_coef * k_val ** (dimensions / 2)
+                             * sp.jv(dimensions / 2 - 1, k_val * np.outer(r_val, length_kuhn))
+                             * np.outer(np.ones((len(r_val)), dtype=type(1+1j)), gkwlc_kval))
             if not contains_nan:
                 contains_nan = np.isnan(integrand).any()
             if not contains_nan:
