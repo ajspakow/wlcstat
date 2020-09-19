@@ -30,3 +30,8 @@ References
 
 .. [Arfken1999]
     Arfken, George B., and Hans J. Weber. "Mathematical methods for physicists." (1999): 165-169.
+
+.. Polymer dynamics references
+
+.. [Doi1988]
+    Doi, Masao, Samuel Frederick Edwards, and Samuel Frederick Edwards. The theory of polymer dynamics. Vol. 73. oxford university press, 1988.
