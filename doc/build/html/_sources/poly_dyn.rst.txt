@@ -57,7 +57,7 @@ on the :math:`m`-th bead
 
 .. \label{eq:restoringforce}
 
-where :math:`b` is the Kuhn statistical segment length of the polymer~\cite{doi1988theory},
+where :math:`b` is the Kuhn statistical segment length of the polymer [Doi1988]_,
 and :math:`g` is the number of Kuhn lengths
 per bead.  We set :math:`g = N/n_{\mathrm{b}}`, giving
 a total chain length of :math:`N` Kuhn lengths.
@@ -208,7 +208,7 @@ This results in the expression
 
 .. math::
     \langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle = 3 \frac{k_{B}T}{k_{p}}
-    \exp \! \left( - \frac{k_{p}}{N \xi} t \right)
+    \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \delta_{pp'}
 
 Inserting this into our definition of :math:`\mathrm{MSCD}` results in the
 expression for the linear chain

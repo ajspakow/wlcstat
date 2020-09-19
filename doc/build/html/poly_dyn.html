@@ -59,9 +59,9 @@ chain segments relative to each other.  We define this relative motion
 as the mean-square change in displacment (MSCD).
 In this development, we present a detailed derivation for the linear chain,
 and we provide the results for the ring polymer.</p>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id4">
 <a class="reference internal image-reference" href="_images/rouse-mscd.pdf"><img alt="Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation." src="_images/rouse-mscd.pdf" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 <p>We start by defining a discrete
 polymer chain with bead positions
@@ -86,7 +86,7 @@ on the <span class="math notranslate nohighlight">\(m\)</span>-th bead
             m = n_{\mathrm{b}},
             \end{array}
     \right.\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(b\)</span> is the Kuhn statistical segment length of the polymer~cite{doi1988theory},
+<p>where <span class="math notranslate nohighlight">\(b\)</span> is the Kuhn statistical segment length of the polymer <a class="reference internal" href="references.html#doi1988" id="id2"><span>[Doi1988]</span></a>,
 and <span class="math notranslate nohighlight">\(g\)</span> is the number of Kuhn lengths
 per bead.  We set <span class="math notranslate nohighlight">\(g = N/n_{\mathrm{b}}\)</span>, giving
 a total chain length of <span class="math notranslate nohighlight">\(N\)</span> Kuhn lengths.</p>
@@ -194,11 +194,11 @@ to find</p>
 \left[ \phi_{p}(N/2 + \Delta) - \phi_{p}(N/2 - \Delta) \right]
 \left[ \phi_{p'}(N/2 + \Delta) - \phi_{p'}(N/2 - \Delta) \right]\]</div>
 <p>The equation of motion (Eq. <a class="reference internal" href="#equation-eom-normal">(2)</a>) can be used to determine the correlation function
-<span class="math notranslate nohighlight">\(\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle\)</span> (detailed discussion is found in Ref. <a class="reference internal" href="references.html#doi1988" id="id2"><span>[Doi1988]</span></a>).
+<span class="math notranslate nohighlight">\(\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle\)</span> (detailed discussion is found in Ref. <a class="reference internal" href="references.html#doi1988" id="id3"><span>[Doi1988]</span></a>).
 This results in the expression</p>
 <div class="math notranslate nohighlight">
 \[\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle = 3 \frac{k_{B}T}{k_{p}}
-\exp \! \left( - \frac{k_{p}}{N \xi} t \right)\]</div>
+\exp \! \left( - \frac{k_{p}}{N \xi} t \right) \delta_{pp'}\]</div>
 <p>Inserting this into our definition of <span class="math notranslate nohighlight">\(\mathrm{MSCD}\)</span> results in the
 expression for the linear chain</p>
 <div class="math notranslate nohighlight">
