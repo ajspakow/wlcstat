@@ -48,8 +48,8 @@
             
   <div class="section" id="polymer-dynamics">
 <span id="poly-dyn"></span><h1>Polymer Dynamics<a class="headerlink" href="#polymer-dynamics" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="dynamics-of-a-flexible-linear-and-ring-gaussian-chains-rouse-model">
-<h2>Dynamics of a flexible linear and ring Gaussian chains (Rouse model)<a class="headerlink" href="#dynamics-of-a-flexible-linear-and-ring-gaussian-chains-rouse-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dynamics-of-a-linear-and-ring-flexible-gaussian-chains-rouse-model">
+<h2>Dynamics of a linear and ring flexible Gaussian chains (Rouse model)<a class="headerlink" href="#dynamics-of-a-linear-and-ring-flexible-gaussian-chains-rouse-model" title="Permalink to this headline">¶</a></h2>
 <p>We consider a flexible polymer chain
 that is subject
 Brownian forces <a class="reference internal" href="references.html#doi1988" id="id1"><span>[Doi1988]</span></a>.
@@ -122,7 +122,7 @@ We define the normal modes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}&amp; &amp; \phi_{p}(n)=
 \left\{ \begin{array}{c}
-            \sqrt{2} \cos \left( \frac{p \pi n}{N} \right), \ \ p = 1,2,\ldots \\
+            \sqrt{2} \cos \left( \frac{\pi p n}{N} \right), \ \ p = 1,2,\ldots \\
             1, \ \ \ \ \ \ \ \ \ \  p = 0.
             \end{array}
     \right.\end{split}\]</div>
@@ -156,7 +156,24 @@ is given by</p>
 2 k_{B}T \xi N \delta_{pp'} \delta (t - t') \mathbf{I}.\]</div>
 <p>A similar derivation for a ring polymer results in a treatment that
 is identical to the linear chain, but the normal modes for the
-ring polymer are continuous across the ends (i.e. <span class="math notranslate nohighlight">\(\vec{r}(n=0,t) = \vec{r}(n=N,t)\)</span>).</p>
+ring polymer are continuous across the ends [i.e. <span class="math notranslate nohighlight">\(\vec{r}(n=0,t) = \vec{r}(n=N,t)\)</span>].
+Specifically, the complete normal-mode set is separated into even and odd functions,
+respectively
+defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; &amp; \phi_{p}^{(e)}(n)=
+\left\{ \begin{array}{c}
+            \sqrt{2} \cos \left( \frac{2 p \pi n}{N} \right), \ \ p = 1,2,\ldots \\
+            1, \ \ \ \ \ \ \ \ \ \  p = 0.
+            \end{array}
+    \right.\end{split}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\phi_{p}^{(o)}(n)=
+            \sqrt{2} \sin \left( \frac{2 \pi p  n}{N} \right), \ \ p = 1,2,\ldots\]</div>
+<p>The even and odd normal modes satisfy the equation of motion defined in Eq. <a class="reference internal" href="#equation-eom-normal">(2)</a>
+with
+<span class="math notranslate nohighlight">\(k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span></p>
 <div class="section" id="mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers">
 <h3>Mean-squared change in distance (MSCD) for linear and ring polymers<a class="headerlink" href="#mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers" title="Permalink to this headline">¶</a></h3>
 <p>We now consider the mean-square change in distance (MSCD) for a linear polymer
@@ -183,13 +200,27 @@ This results in the expression</p>
 \[\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle = 3 \frac{k_{B}T}{k_{p}}
 \exp \! \left( - \frac{k_{p}}{N \xi} t \right)\]</div>
 <p>Inserting this into our definition of <span class="math notranslate nohighlight">\(\mathrm{MSCD}\)</span> results in the
-expression for the linear-chain</p>
+expression for the linear chain</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{MSCD} = \sum_{p \, \mathrm{odd}} 24 \frac{k_{B}T}{k_{p}}
+\[\begin{split}\mathrm{MSCD}^{\mathrm{(linear)}}
+&amp; = &amp; \sum_{p \, \mathrm{odd}} 24 \frac{k_{B}T}{k_{p}}
 \left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
-\sin^{2} \left( \frac{p \pi \Delta}{N} \right)\]</div>
+\sin^{2} \left( \frac{\pi p \Delta}{N} \right) \\
+&amp; = &amp; \sum_{p = 0}^{\infty} 24 \frac{k_{B}T}{k_{2p+1}}
+\left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
+\sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span>.</p>
-<p>We follow a parallel derivation for the ring polymer…</p>
+<p>We follow a parallel derivation for the ring polymer.
+We note that only the odd set of normal modes contribute to <span class="math notranslate nohighlight">\(\mathrm{MSCD}\)</span>
+for the ring polymer.
+Taking similar steps as in the linear case,
+we arrive at the expression for the ring polymer</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSCD}^{\mathrm{(ring)}}
+= \sum_{p = 1}^{\infty} 24 \frac{k_{B}T}{k_{p}}
+\left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
+\sin^{2} \left( \frac{2 \pi p \Delta}{N} \right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span> for the ring polymer.</p>
 </div>
 </div>
 </div>
@@ -204,7 +235,7 @@ expression for the linear-chain</p>
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Polymer Dynamics</a><ul>
-<li><a class="reference internal" href="#dynamics-of-a-flexible-linear-and-ring-gaussian-chains-rouse-model">Dynamics of a flexible linear and ring Gaussian chains (Rouse model)</a><ul>
+<li><a class="reference internal" href="#dynamics-of-a-linear-and-ring-flexible-gaussian-chains-rouse-model">Dynamics of a linear and ring flexible Gaussian chains (Rouse model)</a><ul>
 <li><a class="reference internal" href="#mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers">Mean-squared change in distance (MSCD) for linear and ring polymers</a></li>
 </ul>
 </li>

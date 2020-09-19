@@ -8,7 +8,7 @@ Polymer Dynamics
 
 
 
-Dynamics of a flexible linear and ring Gaussian chains (Rouse model)
+Dynamics of a linear and ring flexible Gaussian chains (Rouse model)
 --------------------------------------------------------------------
 
 We consider a flexible polymer chain
@@ -105,7 +105,7 @@ We define the normal modes
 .. math::
     & & \phi_{p}(n)=
     \left\{ \begin{array}{c}
-		\sqrt{2} \cos \left( \frac{p \pi n}{N} \right), \ \ p = 1,2,\ldots \\
+		\sqrt{2} \cos \left( \frac{\pi p n}{N} \right), \ \ p = 1,2,\ldots \\
 		1, \ \ \ \ \ \ \ \ \ \  p = 0.
 		\end{array}
 	\right.
@@ -153,7 +153,29 @@ and satisfies the fluctuation dissipation theorem
 
 A similar derivation for a ring polymer results in a treatment that
 is identical to the linear chain, but the normal modes for the
-ring polymer are continuous across the ends (i.e. :math:`\vec{r}(n=0,t) = \vec{r}(n=N,t)`).
+ring polymer are continuous across the ends [i.e. :math:`\vec{r}(n=0,t) = \vec{r}(n=N,t)`].
+Specifically, the complete normal-mode set is separated into even and odd functions,
+respectively
+defined by
+
+.. math::
+    & & \phi_{p}^{(e)}(n)=
+    \left\{ \begin{array}{c}
+		\sqrt{2} \cos \left( \frac{2 p \pi n}{N} \right), \ \ p = 1,2,\ldots \\
+		1, \ \ \ \ \ \ \ \ \ \  p = 0.
+		\end{array}
+	\right.
+
+and
+
+.. math::
+    \phi_{p}^{(o)}(n)=
+		\sqrt{2} \sin \left( \frac{2 \pi p  n}{N} \right), \ \ p = 1,2,\ldots
+
+The even and odd normal modes satisfy the equation of motion defined in Eq. :eq:`eom-normal`
+with
+:math:`k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}`
+
 
 Mean-squared change in distance (MSCD) for linear and ring polymers
 *******************************************************************
@@ -189,14 +211,30 @@ This results in the expression
     \exp \! \left( - \frac{k_{p}}{N \xi} t \right)
 
 Inserting this into our definition of :math:`\mathrm{MSCD}` results in the
-expression for the linear-chain
+expression for the linear chain
 
 .. math::
-    \mathrm{MSCD} = \sum_{p \, \mathrm{odd}} 24 \frac{k_{B}T}{k_{p}}
+    \mathrm{MSCD}^{\mathrm{(linear)}}
+    & = & \sum_{p \, \mathrm{odd}} 24 \frac{k_{B}T}{k_{p}}
     \left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
-    \sin^{2} \left( \frac{p \pi \Delta}{N} \right)
+    \sin^{2} \left( \frac{\pi p \Delta}{N} \right) \\
+    & = & \sum_{p = 0}^{\infty} 24 \frac{k_{B}T}{k_{2p+1}}
+    \left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
+    \sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]
 
 where :math:`k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}`.
 
+We follow a parallel derivation for the ring polymer.
+We note that only the odd set of normal modes contribute to :math:`\mathrm{MSCD}`
+for the ring polymer.
+Taking similar steps as in the linear case,
+we arrive at the expression for the ring polymer
 
-We follow a parallel derivation for the ring polymer...
+.. math::
+    \mathrm{MSCD}^{\mathrm{(ring)}}
+    = \sum_{p = 1}^{\infty} 24 \frac{k_{B}T}{k_{p}}
+    \left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
+    \sin^{2} \left( \frac{2 \pi p \Delta}{N} \right)
+
+where :math:`k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}` for the ring polymer.
+
