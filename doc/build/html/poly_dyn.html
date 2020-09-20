@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polymer Dynamics &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Structure Factor" href="wlcstruc_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polymer Dynamics</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="polymer-dynamics">
+<span id="poly-dyn"></span><h1>Polymer Dynamics<a class="headerlink" href="#polymer-dynamics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dynamics-of-a-linear-and-ring-flexible-gaussian-chains-rouse-model">
+<h2>Dynamics of a linear and ring flexible Gaussian chains (Rouse model)<a class="headerlink" href="#dynamics-of-a-linear-and-ring-flexible-gaussian-chains-rouse-model" title="Permalink to this headline">¶</a></h2>
+<p>We consider a flexible polymer chain
+that is subject
+Brownian forces <a class="reference internal" href="references.html#doi1988" id="id1"><span>[Doi1988]</span></a>.
+Our goals is to determine specific dynamic properties of a linear and ring
+Gaussian chain. For example, we consider the dynamic motion of two
+chain segments relative to each other.  We define this relative motion
+as the mean-square change in displacment (MSCD).
+In this development, we present a detailed derivation for the linear chain,
+and we provide the results for the ring polymer.</p>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/rouse-mscd.pdf"><img alt="Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation." src="_images/rouse-mscd.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>We start by defining a discrete
+polymer chain with bead positions
+<span class="math notranslate nohighlight">\(\vec{R}_{m}\)</span>, where <span class="math notranslate nohighlight">\(m\)</span> runs from 0
+to <span class="math notranslate nohighlight">\(n_{\mathrm{b}}\)</span>.
+Each bead is connected to their
+neighboring beads by Hookean springs,
+resulting in a potential force
+on the <span class="math notranslate nohighlight">\(m\)</span>-th bead
+<span class="math notranslate nohighlight">\(\vec{F}_{V_{m}}\)</span> that is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; &amp; \vec{F}_{V_{m}}=
+\left\{ \begin{array}{c}
+            \frac{3 k_{B}T}{g b^{2}} \left( \vec{R}_{m+1} - 2 \vec{R}_{m} + \vec{R}_{m-1} \right),
+    \hspace{0.3in}
+            m = 1,\ldots, n_{\mathrm{b}}-1 \\
+            \frac{3 k_{B}T}{g b^{2}} \left( \vec{R}_{1} - \vec{R}_{0} \right),
+    \hspace{2in}
+            m = 0 \\
+            -\frac{3 k_{B}T}{g b^{2}}   \left( \vec{R}_{n_{\mathrm{b}}} - \vec{R}_{n_{\mathrm{b}}-1} \right),
+    \hspace{1.65in}
+            m = n_{\mathrm{b}},
+            \end{array}
+    \right.\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(b\)</span> is the Kuhn statistical segment length of the polymer <a class="reference internal" href="references.html#doi1988" id="id2"><span>[Doi1988]</span></a>,
+and <span class="math notranslate nohighlight">\(g\)</span> is the number of Kuhn lengths
+per bead.  We set <span class="math notranslate nohighlight">\(g = N/n_{\mathrm{b}}\)</span>, giving
+a total chain length of <span class="math notranslate nohighlight">\(N\)</span> Kuhn lengths.</p>
+<p>The Langevin equation of motion for the <span class="math notranslate nohighlight">\(m\)</span>-th bead is given by</p>
+<div class="math notranslate nohighlight">
+\[g \xi \frac{d\vec{R}_{m}(t)}{dt}=\vec{F}_{V_{m}} + \vec{F}_{B_{m}}\]</div>
+<p>where the drag coefficient <span class="math notranslate nohighlight">\(\xi\)</span> is defined as the viscous drag per Kuhn length.
+We now take the limit of
+<span class="math notranslate nohighlight">\(n_{\mathrm{b}} \rightarrow \infty\)</span>
+for fixed chain length <span class="math notranslate nohighlight">\(N\)</span>, resulting in
+a continuous-chain representation
+of the chain <span class="math notranslate nohighlight">\(\vec{r}(n,t)\)</span> where <span class="math notranslate nohighlight">\(n\)</span>
+is a path-length variable that runs
+from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(N\)</span>.
+The Langevin equation for the chain is
+given by</p>
+<div class="math notranslate nohighlight" id="equation-eom-cont">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eom-cont" title="Permalink to this equation">¶</a></span>\[\xi \frac{\partial \vec{r}(n, t)}{\partial t}=
+\frac{3 k_{B}T}{b^{2}}
+\frac{\partial^{2} \vec{r}(n, t)}{\partial n^{2}}
++ \vec{f}_{B}(n,t),\]</div>
+<p>which is subject to the end conditions</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \vec{r}(n=0,t)}{\partial n} =
+\frac{\partial \vec{r}(n=N,t)}{\partial n} = 0.\]</div>
+<p>The Brownian forces satisfy the fluctuation dissipation theorem</p>
+<div class="math notranslate nohighlight">
+\[\langle \vec{f}_{B}(n,t)\vec{f}_{B}(n',t')\rangle =
+2k_{B}T \xi \delta (n - n') \delta(t-t') \textbf{I}.\]</div>
+<p>It is convenient to define a set of normal coordinates that
+effectively decouple the interactions implicit within the equation of motion (Eq. <a class="reference internal" href="#equation-eom-cont">(1)</a>).
+We define the normal modes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; &amp; \phi_{p}(n)=
+\left\{ \begin{array}{c}
+            \sqrt{2} \cos \left( \frac{\pi p n}{N} \right), \ \ p = 1,2,\ldots \\
+            1, \ \ \ \ \ \ \ \ \ \  p = 0.
+            \end{array}
+    \right.\end{split}\]</div>
+<p>These modes represent a complete basis set that satisfy the boundary conditions for <span class="math notranslate nohighlight">\(\vec{r}(n,t)\)</span>.
+Orthogonality is demonstrated by noting</p>
+<div class="math notranslate nohighlight">
+\[\int_{0}^{N} \! \! dn \phi_{p}(n) \phi_{p'}(n) = N \delta_{p,p'}.\]</div>
+<p>The amplitude of the <span class="math notranslate nohighlight">\(p\)</span>-th mode <span class="math notranslate nohighlight">\(\vec{X}_{p}(t)\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\vec{X}_{p}(t) = \frac{1}{N} \int_{0}^{N} \! \! dn \, \vec{r}(n,t) \phi_{p}(n),\]</div>
+<p>and the inversion back to chain coordinates is written as</p>
+<div class="math notranslate nohighlight">
+\[\vec{r}(n,t) = \sum_{p=0}^{\infty} \vec{X}_{p}(t) \phi_{p}(n).\]</div>
+<p>Upon performing a transform to normal
+coordinates, we find the governing
+equation of motion</p>
+<div class="math notranslate nohighlight" id="equation-eom-normal">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eom-normal" title="Permalink to this equation">¶</a></span>\[\xi N \frac{d \vec{X}_{p}}{d t} =
+- k_{p} \vec{X}_{p}
++ \vec{f}_{B_{p}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span>.
+The <span class="math notranslate nohighlight">\(p\)</span>-mode Brownian force <span class="math notranslate nohighlight">\(\vec{f}_{B_{p}}\)</span>
+is given by</p>
+<div class="math notranslate nohighlight">
+\[\vec{f}_{B_{p}} = \int_{0}^{N} \! \! dn \, \vec{f}_{B}(n,t) \phi_{p}(n)\]</div>
+<p>and satisfies the fluctuation dissipation theorem</p>
+<div class="math notranslate nohighlight">
+\[\langle
+\vec{f}_{B_{p}} (t) \vec{f}_{B_{p'}}(t')
+\rangle =
+2 k_{B}T \xi N \delta_{pp'} \delta (t - t') \mathbf{I}.\]</div>
+<p>A similar derivation for a ring polymer results in a treatment that
+is identical to the linear chain, but the normal modes for the
+ring polymer are continuous across the ends [i.e. <span class="math notranslate nohighlight">\(\vec{r}(n=0,t) = \vec{r}(n=N,t)\)</span>].
+Specifically, the complete normal-mode set is separated into even and odd functions,
+respectively
+defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; &amp; \phi_{p}^{(e)}(n)=
+\left\{ \begin{array}{c}
+            \sqrt{2} \cos \left( \frac{2 p \pi n}{N} \right), \ \ p = 1,2,\ldots \\
+            1, \ \ \ \ \ \ \ \ \ \  p = 0.
+            \end{array}
+    \right.\end{split}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\phi_{p}^{(o)}(n)=
+            \sqrt{2} \sin \left( \frac{2 \pi p  n}{N} \right), \ \ p = 1,2,\ldots\]</div>
+<p>The even and odd normal modes satisfy the equation of motion defined in Eq. <a class="reference internal" href="#equation-eom-normal">(2)</a>
+with
+<span class="math notranslate nohighlight">\(k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span></p>
+<div class="section" id="mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers">
+<h3>Mean-squared change in distance (MSCD) for linear and ring polymers<a class="headerlink" href="#mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers" title="Permalink to this headline">¶</a></h3>
+<p>We now consider the mean-square change in distance (MSCD) for a linear polymer
+chain.
+This quantity is defined as</p>
+<div class="math notranslate nohighlight" id="equation-mscd">
+<span class="eqno">(3)<a class="headerlink" href="#equation-mscd" title="Permalink to this equation">¶</a></span>\[\mathrm{MSCD} = \langle \left( \Delta \vec{R}(t) - \Delta \vec{R}(0) \right)^{2} \rangle\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta \vec{R}(t) = \vec{r}(N/2 + \Delta, t) - \vec{r}(N/2 - \Delta,t)\)</span> where
+the total chain length is <span class="math notranslate nohighlight">\(N = 2N_{s} + 2 \Delta\)</span>.
+We insert our normal-mode representation into Eq. <a class="reference internal" href="#equation-mscd">(3)</a>
+to find</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSCD} = \sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
+\langle
+\left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
+\left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right)
+\rangle
+\left[ \phi_{p}(N/2 + \Delta) - \phi_{p}(N/2 - \Delta) \right]
+\left[ \phi_{p'}(N/2 + \Delta) - \phi_{p'}(N/2 - \Delta) \right]\]</div>
+<p>The equation of motion (Eq. <a class="reference internal" href="#equation-eom-normal">(2)</a>) can be used to determine the correlation function
+<span class="math notranslate nohighlight">\(\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle\)</span> (detailed discussion is found in Ref. <a class="reference internal" href="references.html#doi1988" id="id3"><span>[Doi1988]</span></a>).
+This results in the expression</p>
+<div class="math notranslate nohighlight">
+\[\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle = 3 \frac{k_{B}T}{k_{p}}
+\exp \! \left( - \frac{k_{p}}{N \xi} t \right) \delta_{pp'}\]</div>
+<p>Inserting this into our definition of <span class="math notranslate nohighlight">\(\mathrm{MSCD}\)</span> results in the
+expression for the linear chain</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathrm{MSCD}^{\mathrm{(linear)}}
+&amp; = &amp; \sum_{p \, \mathrm{odd}} 24 \frac{k_{B}T}{k_{p}}
+\left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
+\sin^{2} \left( \frac{\pi p \Delta}{N} \right) \\
+&amp; = &amp; \sum_{p = 0}^{\infty} 24 \frac{k_{B}T}{k_{2p+1}}
+\left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
+\sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span>.</p>
+<p>We follow a parallel derivation for the ring polymer.
+We note that only the odd set of normal modes contribute to <span class="math notranslate nohighlight">\(\mathrm{MSCD}\)</span>
+for the ring polymer.
+Taking similar steps as in the linear case,
+we arrive at the expression for the ring polymer</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSCD}^{\mathrm{(ring)}}
+= \sum_{p = 1}^{\infty} 24 \frac{k_{B}T}{k_{p}}
+\left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
+\sin^{2} \left( \frac{2 \pi p \Delta}{N} \right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span> for the ring polymer.</p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Polymer Dynamics</a><ul>
+<li><a class="reference internal" href="#dynamics-of-a-linear-and-ring-flexible-gaussian-chains-rouse-model">Dynamics of a linear and ring flexible Gaussian chains (Rouse model)</a><ul>
+<li><a class="reference internal" href="#mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers">Mean-squared change in distance (MSCD) for linear and ring polymers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlcstruc_notes.html"
+                        title="previous chapter">Structure Factor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">References</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/poly_dyn.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polymer Dynamics</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

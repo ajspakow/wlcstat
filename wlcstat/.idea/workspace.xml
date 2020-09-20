@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc2d17da-d209-4c9a-aefe-68c48cf61ce8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/wlcave.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../subroutines/calcg.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../subroutines/gkwlc.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../subroutines/wlcstat.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/source/wlctheory.rst" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/source/wlctheory.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../wlcstatexample.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../wlcstatexample.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
