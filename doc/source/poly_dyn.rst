@@ -177,6 +177,56 @@ The even and odd normal modes satisfy the equation of motion defined in Eq. :eq:
 with
 :math:`k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}`
 
+Mean-square displacement (MSD) for linear polymers
+**************************************************
+
+The mean-square displacement of a segment of the polymer chain is define a
+
+.. math::
+    \mathrm{MSD} = \langle \left( \vec{r}(n, t) - \vec{r}(n, 0) \right)^{2} \rangle
+    :label: msd
+
+for the nth segment of the chain with total length :math:`N`.
+We insert our normal-mode representation into Eq. :eq:`msd`,
+resulting in the expression
+
+.. math::
+    \mathrm{MSD} =
+    \sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
+    \langle
+    \left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
+    \left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right) \rangle
+    \phi_{p}(n) \phi_{p'}(n)
+
+The equation of motion (Eq. :eq:`eom-normal`) can be used to determine the correlation function
+:math:`\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle` (detailed discussion is found in Ref. [Doi1988]_).
+This results in the expression
+
+.. math::
+    \langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle = 3 \frac{k_{B}T}{k_{p}}
+    \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \delta_{pp'}
+
+for :math:`p \ge 1` and
+
+.. math::
+    \langle
+    \left( \vec{X}_{0}(t) - \vec{X}_{0}(0) \right)^{2} \rangle = 6 \frac{k_{B}T}{N \xi}
+
+We focus on the :math:`\mathrm{MSD}` for the midpoint of a linear chain,
+thus :math:`n=N/2`.
+Inserting this into our definition of :math:`\mathrm{MSD}` results in the
+expression for the MSD of the midpoint of a linear chain
+
+.. math::
+    \mathrm{MSD}
+    & = &
+    6 \frac{k_{B}T}{\xi N} t +
+    \sum_{p \, \mathrm{even}} 12 \frac{k_{B}T}{k_{p}}
+    \left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right] \\
+    & = &
+    6 \frac{k_{B}T}{\xi N} t +
+    \sum_{p = 1}^{\infty} 12 \frac{k_{B}T}{k_{2p}}
+    \left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right] \\
 
 Mean-squared change in distance (MSCD) for linear and ring polymers
 *******************************************************************
@@ -195,7 +245,8 @@ We insert our normal-mode representation into Eq. :eq:`mscd`
 to find
 
 .. math::
-    \mathrm{MSCD} = \sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
+    \mathrm{MSCD} =
+    \sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
     \langle
     \left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
     \left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right)
@@ -250,7 +301,7 @@ Example usage of 'linear_mscd' and 'ring_mscd'
 ----------------------------------------------
 
 We show the solution for the MSCD for chain length :math:`N=100` and :math:`\Delta = 25` for both
-linear and ring polymers. In this plot, we also show the MSD (using 'rouse_mid_msd') multiplied by
+linear and ring polymers. In this plot, we also show the MSD (using 'linear_mid_msd') multiplied by
 2, which coincides with the short-time asymptotic behavior.
 The long-time asymptotic behavior is found by noting
 
@@ -287,7 +338,7 @@ These asymptotic solutions are also included in the plot.
     Ndel=25
     mscdl = linear_mscd(t_val, 1, Ndel, N, 1, 20000)
     mscdr = ring_mscd(t_val, 1, Ndel, N, 1, 20000)
-    msd = rouse_mid_msd(t_val, 1, N, 1, 10000)
+    msd = linear_mid_msd(t_val, 1, N, 1, 10000)
     mscdl_inf = 2 * 2 * Ndel
     mscdr_inf = 2 * 1 / (1 / (2 * Ndel) + 1  / (N - 2 * Ndel))
     plt.figure(figsize=(10,8))

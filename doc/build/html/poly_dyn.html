@@ -59,9 +59,9 @@ chain segments relative to each other.  We define this relative motion
 as the mean-square change in displacment (MSCD).
 In this development, we present a detailed derivation for the linear chain,
 and we provide the results for the ring polymer.</p>
-<div class="figure align-center" id="id4">
+<div class="figure align-center" id="id5">
 <a class="reference internal image-reference" href="_images/rouse-mscd.pdf"><img alt="Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation." src="_images/rouse-mscd.pdf" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <p>We start by defining a discrete
 polymer chain with bead positions
@@ -174,19 +174,60 @@ defined by</p>
 <p>The even and odd normal modes satisfy the equation of motion defined in Eq. <a class="reference internal" href="#equation-eom-normal">(2)</a>
 with
 <span class="math notranslate nohighlight">\(k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span></p>
+<div class="section" id="mean-square-displacement-msd-for-linear-polymers">
+<h3>Mean-square displacement (MSD) for linear polymers<a class="headerlink" href="#mean-square-displacement-msd-for-linear-polymers" title="Permalink to this headline">¶</a></h3>
+<p>The mean-square displacement of a segment of the polymer chain is define a</p>
+<div class="math notranslate nohighlight" id="equation-msd">
+<span class="eqno">(3)<a class="headerlink" href="#equation-msd" title="Permalink to this equation">¶</a></span>\[\mathrm{MSD} = \langle \left( \vec{r}(n, t) - \vec{r}(n, 0) \right)^{2} \rangle\]</div>
+<p>for the nth segment of the chain with total length <span class="math notranslate nohighlight">\(N\)</span>.
+We insert our normal-mode representation into Eq. <a class="reference internal" href="#equation-msd">(3)</a>,
+resulting in the expression</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSD} =
+\sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
+\langle
+\left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
+\left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right) \rangle
+\phi_{p}(n) \phi_{p'}(n)\]</div>
+<p>The equation of motion (Eq. <a class="reference internal" href="#equation-eom-normal">(2)</a>) can be used to determine the correlation function
+<span class="math notranslate nohighlight">\(\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle\)</span> (detailed discussion is found in Ref. <a class="reference internal" href="references.html#doi1988" id="id3"><span>[Doi1988]</span></a>).
+This results in the expression</p>
+<div class="math notranslate nohighlight">
+\[\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle = 3 \frac{k_{B}T}{k_{p}}
+\exp \! \left( - \frac{k_{p}}{N \xi} t \right) \delta_{pp'}\]</div>
+<p>for <span class="math notranslate nohighlight">\(p \ge 1\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[\langle
+\left( \vec{X}_{0}(t) - \vec{X}_{0}(0) \right)^{2} \rangle = 6 \frac{k_{B}T}{N \xi}\]</div>
+<p>We focus on the <span class="math notranslate nohighlight">\(\mathrm{MSD}\)</span> for the midpoint of a linear chain,
+thus <span class="math notranslate nohighlight">\(n=N/2\)</span>.
+Inserting this into our definition of <span class="math notranslate nohighlight">\(\mathrm{MSD}\)</span> results in the
+expression for the MSD of the midpoint of a linear chain</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathrm{MSD}
+&amp; = &amp;
+6 \frac{k_{B}T}{\xi N} t +
+\sum_{p \, \mathrm{even}} 12 \frac{k_{B}T}{k_{p}}
+\left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right] \\
+&amp; = &amp;
+6 \frac{k_{B}T}{\xi N} t +
+\sum_{p = 1}^{\infty} 12 \frac{k_{B}T}{k_{2p}}
+\left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right] \\\end{split}\]</div>
+</div>
 <div class="section" id="mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers">
 <h3>Mean-squared change in distance (MSCD) for linear and ring polymers<a class="headerlink" href="#mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers" title="Permalink to this headline">¶</a></h3>
 <p>We now consider the mean-square change in distance (MSCD) for a linear polymer
 chain.
 This quantity is defined as</p>
 <div class="math notranslate nohighlight" id="equation-mscd">
-<span class="eqno">(3)<a class="headerlink" href="#equation-mscd" title="Permalink to this equation">¶</a></span>\[\mathrm{MSCD} = \langle \left( \Delta \vec{R}(t) - \Delta \vec{R}(0) \right)^{2} \rangle\]</div>
+<span class="eqno">(4)<a class="headerlink" href="#equation-mscd" title="Permalink to this equation">¶</a></span>\[\mathrm{MSCD} = \langle \left( \Delta \vec{R}(t) - \Delta \vec{R}(0) \right)^{2} \rangle\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Delta \vec{R}(t) = \vec{r}(N/2 + \Delta, t) - \vec{r}(N/2 - \Delta,t)\)</span> where
 the total chain length is <span class="math notranslate nohighlight">\(N = 2N_{s} + 2 \Delta\)</span>.
-We insert our normal-mode representation into Eq. <a class="reference internal" href="#equation-mscd">(3)</a>
+We insert our normal-mode representation into Eq. <a class="reference internal" href="#equation-mscd">(4)</a>
 to find</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{MSCD} = \sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
+\[\mathrm{MSCD} =
+\sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
 \langle
 \left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
 \left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right)
@@ -194,7 +235,7 @@ to find</p>
 \left[ \phi_{p}(N/2 + \Delta) - \phi_{p}(N/2 - \Delta) \right]
 \left[ \phi_{p'}(N/2 + \Delta) - \phi_{p'}(N/2 - \Delta) \right]\]</div>
 <p>The equation of motion (Eq. <a class="reference internal" href="#equation-eom-normal">(2)</a>) can be used to determine the correlation function
-<span class="math notranslate nohighlight">\(\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle\)</span> (detailed discussion is found in Ref. <a class="reference internal" href="references.html#doi1988" id="id3"><span>[Doi1988]</span></a>).
+<span class="math notranslate nohighlight">\(\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle\)</span> (detailed discussion is found in Ref. <a class="reference internal" href="references.html#doi1988" id="id4"><span>[Doi1988]</span></a>).
 This results in the expression</p>
 <div class="math notranslate nohighlight">
 \[\langle \vec{X}_{p}(t) \cdot \vec{X}_{p'}(0) \rangle = 3 \frac{k_{B}T}{k_{p}}
@@ -259,8 +300,14 @@ formulas, e.g. MSD.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="wlcstat.poly_dyn.linear_mid_msd">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_mid_msd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_mid_msd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_mid_msd" title="Permalink to this definition">¶</a></dt>
+<dd><p>modified from Weber Phys Rev E 2010, Eq. 24.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.poly_dyn.linear_mscd">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_mscd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_mscd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_mscd" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_mscd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_mscd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_mscd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute mscd for two points on a linear polymer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -286,7 +333,7 @@ being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
 
 <dl class="py function">
 <dt id="wlcstat.poly_dyn.ring_mscd">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">ring_mscd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#ring_mscd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.ring_mscd" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">ring_mscd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#ring_mscd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.ring_mscd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute mscd for two points on a ring.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -310,12 +357,6 @@ being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wlcstat.poly_dyn.rouse_mid_msd">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">rouse_mid_msd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#rouse_mid_msd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.rouse_mid_msd" title="Permalink to this definition">¶</a></dt>
-<dd><p>modified from Weber Phys Rev E 2010, Eq. 24.</p>
-</dd></dl>
-
-<dl class="py function">
 <dt id="wlcstat.poly_dyn.rouse_mode">
 <code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">rouse_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">N</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#rouse_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.rouse_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Eigenbasis for Rouse model.</p>
@@ -334,7 +375,7 @@ N=1 by default.</p>
 <div class="section" id="example-usage-of-linear-mscd-and-ring-mscd">
 <h2>Example usage of ‘linear_mscd’ and ‘ring_mscd’<a class="headerlink" href="#example-usage-of-linear-mscd-and-ring-mscd" title="Permalink to this headline">¶</a></h2>
 <p>We show the solution for the MSCD for chain length <span class="math notranslate nohighlight">\(N=100\)</span> and <span class="math notranslate nohighlight">\(\Delta = 25\)</span> for both
-linear and ring polymers. In this plot, we also show the MSD (using ‘rouse_mid_msd’) multiplied by
+linear and ring polymers. In this plot, we also show the MSD (using ‘linear_mid_msd’) multiplied by
 2, which coincides with the short-time asymptotic behavior.
 The long-time asymptotic behavior is found by noting</p>
 <div class="math notranslate nohighlight">
@@ -368,6 +409,7 @@ The long-time asymptotic behavior is found by noting</p>
   <ul>
 <li><a class="reference internal" href="#">Polymer Dynamics</a><ul>
 <li><a class="reference internal" href="#dynamics-of-a-linear-and-ring-flexible-gaussian-chains-rouse-model">Dynamics of a linear and ring flexible Gaussian chains (Rouse model)</a><ul>
+<li><a class="reference internal" href="#mean-square-displacement-msd-for-linear-polymers">Mean-square displacement (MSD) for linear polymers</a></li>
 <li><a class="reference internal" href="#mean-squared-change-in-distance-mscd-for-linear-and-ring-polymers">Mean-squared change in distance (MSCD) for linear and ring polymers</a></li>
 </ul>
 </li>

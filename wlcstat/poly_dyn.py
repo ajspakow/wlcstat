@@ -30,11 +30,13 @@ def rouse_mode(p, n, N=1):
     phi[p == 0] = 1
     return phi
 
+
 @jit(nopython=True)
 def rouse_mode_coef(p, b, N, kbT=1):
     """k_p: Weber Phys Rev E 2010, after Eq. 18."""
     # alternate: k*pi**2/N * p**2, i.e. k = 3kbT/b**2
     return 3*np.pi**2*kbT/(N*b**2)*p**2
+
 
 @jit(nopython=True)
 def kp_over_kbt(p : float, b : float, N : float):
@@ -42,19 +44,18 @@ def kp_over_kbt(p : float, b : float, N : float):
     formulas, e.g. MSD."""
     return (3*np.pi*np.pi)/(N*b*b) * p*p
 
+
 @jit(nopython=True)
-def rouse_mid_msd(t, b, N, D, num_modes=1000):
+def linear_mid_msd(t, b, N, D, num_modes=20000):
     """
     modified from Weber Phys Rev E 2010, Eq. 24.
     """
-    rouse_corr = np.zeros_like(t)
+    msd = np.zeros_like(t)
     for p in range(1, num_modes+1):
-        # k2p = rouse_mode_coef(2*p, b, N, kbT)
-        # rouse_corr += 12*kbT/k2p*(1 - np.exp(-k2p*t/(N*xi)))
         k2p_norm = kp_over_kbt(2*p, b, N)
-        rouse_corr += (1/k2p_norm)*(1 - np.exp(-k2p_norm*(D/N)*t))
-    # return rouse_corr + 6*kbT/xi/N*t
-    return 12 * rouse_corr + 6 * D * t / N
+        msd += (1 / k2p_norm) * (1 - np.exp(-k2p_norm * (D / N) * t))
+    return 12 * msd + 6 * D * t / N
+
 
 @jit(nopython=True)
 def gaussian_G(r, N, b):
@@ -63,12 +64,14 @@ def gaussian_G(r, N, b):
     r2 = np.power(r, 2)
     return np.power(3/(2*np.pi*b*b*N), 3/2)*np.exp(-(3/2)*r2/(N*b*b))
 
+
 @jit(nopython=True)
 def gaussian_Ploop(a, N, b):
     """Looping probability for two loci on a Gaussian chain N kuhn lengths
     apart, when the Kuhn length is b, and the capture radius is a"""
     Nb2 = N*b*b
     return spycial.erf(a*np.sqrt(3/2/Nb2)) - a*np.sqrt(6/np.pi/Nb2)/np.exp(3*a*a/2/Nb2)
+
 
 @jit(nopython=True)
 def _cart_to_sph(x, y, z):
@@ -78,6 +81,7 @@ def _cart_to_sph(x, y, z):
     phi = np.arctan2(y, x)
     theta = np.arccos(z/r)
     return r, phi, theta
+
 
 def confined_G(r, rp, N, b, a, n_max=100, l_max=50):
     # first precompute the zeros of the spherical bessel functions, since our
@@ -123,50 +127,8 @@ def confined_G(r, rp, N, b, a, n_max=100, l_max=50):
     return G
 confined_G.zl_n = None
 
-def ring_mscd(t, D, Ndel, N, b=1, num_modes=1000):
-    r"""
-    Compute mscd for two points on a ring.
 
-    Parameters
-    ----------
-    t : (M,) float, array_like
-        Times at which to evaluate the MSCD.
-    D : float
-        Diffusion coefficient, (in desired output length units). Equal to
-        :math:`k_BT/\xi` for :math:`\xi` in units of "per Kuhn length".
-    Ndel : float
-        (1/2)*separation between the loci on loop (in Kuhn lengths)
-    N : float
-        full length of the loop (in Kuhn lengths)
-    b : float
-        The Kuhn length, in desired output length units.
-    num_modes : int
-        How many Rouse modes to include in the sum.
-
-    Returns
-    -------
-    mscd : (M,) np.array<float>
-        result
-    """
-    mscd = np.zeros_like(t)
-    # 24*kbT / k_p, omitting the "p^2"
-    sum_coeff =  2*N*b**2 / np.pi**2
-    # k_p / (N*xi), omitting the "p^2"
-    k1 = 12 * np.pi ** 2 / (N * (b ** 2))
-    sum_coeff = 48 / k1
-
-    exp_coeff = k1 * D / N
-    sin_coeff = 2 * np.pi * Ndel / N
-    for p in range(1, num_modes+1):
-        mscd += (1 / p ** 2) * (1 - np.exp(-exp_coeff * p ** 2 * t)) \
-                * np.sin(sin_coeff * p) ** 2
-        # mscd += np.real(np.abs(np.exp(1j*2*np.pi*p*Ndel/N) - 1)**2 \
-        #       * (1 - np.exp(-D*t*p**2/N**2)) \
-        #       * 2*N/((2*np.pi*p)**2))
-    return sum_coeff * mscd
-
-
-def linear_mscd(t, D, Ndel, N, b=1, num_modes=10000):
+def linear_mscd(t, D, Ndel, N, b=1, num_modes=20000):
     r"""
     Compute mscd for two points on a linear polymer.
 
@@ -194,24 +156,53 @@ def linear_mscd(t, D, Ndel, N, b=1, num_modes=10000):
     """
     mscd = np.zeros_like(t)
 
-    # 24*kbT/k_p, omitting the p^2
     k1 = 3 * np.pi ** 2 / (N * (b ** 2))
     sum_coeff = 48 / k1
-    #sum_coeff = 8*b**2*N / np.pi**2
-    # kp/(N*xi), omitting the p**2
     exp_coeff = k1 * D / N
-    #exp_coeff = 3 * np.pi ** 2 * D / (N * b) ** 2
     sin_coeff = np.pi * Ndel / N
+
     for p in range(1, num_modes+1, 2):
         mscd += (1/p**2) * (1 - np.exp(-exp_coeff * (p ** 2) * t)) \
                 * np.sin(sin_coeff*p)**2
-        # mscd += 16*N/np.pi**2*(1/(2*p + 1)**2) \
-        #         * np.sin((2*p + 1)*np.pi*(Ndel/N)/2)**2 \
-        #         * (1 - np.exp(-t*(2*p + 1)**2/N**2))
-        # mscd += np.real(np.abs(np.exp(1j*np.pi*p/N) - 1)**2 \
-        #       * (1 - np.exp(-D*t*p**2/N**2)) \
-        #       * 2*N**3/(2*N - 1)/((np.pi*p)**2))
 
+    return sum_coeff * mscd
+
+
+def ring_mscd(t, D, Ndel, N, b=1, num_modes=20000):
+    r"""
+    Compute mscd for two points on a ring.
+
+    Parameters
+    ----------
+    t : (M,) float, array_like
+        Times at which to evaluate the MSCD.
+    D : float
+        Diffusion coefficient, (in desired output length units). Equal to
+        :math:`k_BT/\xi` for :math:`\xi` in units of "per Kuhn length".
+    Ndel : float
+        (1/2)*separation between the loci on loop (in Kuhn lengths)
+    N : float
+        full length of the loop (in Kuhn lengths)
+    b : float
+        The Kuhn length, in desired output length units.
+    num_modes : int
+        How many Rouse modes to include in the sum.
+
+    Returns
+    -------
+    mscd : (M,) np.array<float>
+        result
+    """
+    mscd = np.zeros_like(t)
+
+    k1 = 12 * np.pi ** 2 / (N * (b ** 2))
+    sum_coeff = 48 / k1
+    exp_coeff = k1 * D / N
+    sin_coeff = 2 * np.pi * Ndel / N
+
+    for p in range(1, num_modes+1):
+        mscd += (1 / p ** 2) * (1 - np.exp(-exp_coeff * p ** 2 * t)) \
+                * np.sin(sin_coeff * p) ** 2
     return sum_coeff * mscd
 
 

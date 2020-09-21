@@ -72,11 +72,13 @@
     <span class="n">phi</span><span class="p">[</span><span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">phi</span></div>
 
+
 <div class="viewcode-block" id="rouse_mode_coef"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.rouse_mode_coef">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">rouse_mode_coef</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">kbT</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;k_p: Weber Phys Rev E 2010, after Eq. 18.&quot;&quot;&quot;</span>
     <span class="c1"># alternate: k*pi**2/N * p**2, i.e. k = 3kbT/b**2</span>
     <span class="k">return</span> <span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">kbT</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span></div>
+
 
 <div class="viewcode-block" id="kp_over_kbt"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.kp_over_kbt">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">kp_over_kbt</span><span class="p">(</span><span class="n">p</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">N</span> <span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -84,19 +86,18 @@
 <span class="sd">    formulas, e.g. MSD.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span><span class="o">*</span><span class="n">p</span></div>
 
-<div class="viewcode-block" id="rouse_mid_msd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.rouse_mid_msd">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">rouse_mid_msd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+
+<div class="viewcode-block" id="linear_mid_msd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.linear_mid_msd">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">linear_mid_msd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    modified from Weber Phys Rev E 2010, Eq. 24.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rouse_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">msd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="c1"># k2p = rouse_mode_coef(2*p, b, N, kbT)</span>
-        <span class="c1"># rouse_corr += 12*kbT/k2p*(1 - np.exp(-k2p*t/(N*xi)))</span>
         <span class="n">k2p_norm</span> <span class="o">=</span> <span class="n">kp_over_kbt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-        <span class="n">rouse_corr</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">k2p_norm</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">k2p_norm</span><span class="o">*</span><span class="p">(</span><span class="n">D</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="p">))</span>
-    <span class="c1"># return rouse_corr + 6*kbT/xi/N*t</span>
-    <span class="k">return</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">rouse_corr</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">D</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">N</span></div>
+        <span class="n">msd</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">k2p_norm</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">k2p_norm</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">msd</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">D</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">N</span></div>
+
 
 <div class="viewcode-block" id="gaussian_G"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.gaussian_G">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">gaussian_G</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
@@ -105,12 +106,14 @@
     <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="p">),</span> <span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">r2</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">))</span></div>
 
+
 <div class="viewcode-block" id="gaussian_Ploop"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.gaussian_Ploop">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">gaussian_Ploop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Looping probability for two loci on a Gaussian chain N kuhn lengths</span>
 <span class="sd">    apart, when the Kuhn length is b, and the capture radius is a&quot;&quot;&quot;</span>
     <span class="n">Nb2</span> <span class="o">=</span> <span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">b</span>
     <span class="k">return</span> <span class="n">spycial</span><span class="o">.</span><span class="n">erf</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">Nb2</span><span class="p">))</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">Nb2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">Nb2</span><span class="p">)</span></div>
+
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_cart_to_sph</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
@@ -120,6 +123,7 @@
     <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">r</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span>
+
 
 <span class="k">def</span> <span class="nf">confined_G</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">rp</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">l_max</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
     <span class="c1"># first precompute the zeros of the spherical bessel functions, since our</span>
@@ -165,50 +169,8 @@
     <span class="k">return</span> <span class="n">G</span>
 <span class="n">confined_G</span><span class="o">.</span><span class="n">zl_n</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="ring_mscd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.ring_mscd">[docs]</a><span class="k">def</span> <span class="nf">ring_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute mscd for two points on a ring.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    t : (M,) float, array_like</span>
-<span class="sd">        Times at which to evaluate the MSCD.</span>
-<span class="sd">    D : float</span>
-<span class="sd">        Diffusion coefficient, (in desired output length units). Equal to</span>
-<span class="sd">        :math:`k_BT/\xi` for :math:`\xi` in units of &quot;per Kuhn length&quot;.</span>
-<span class="sd">    Ndel : float</span>
-<span class="sd">        (1/2)*separation between the loci on loop (in Kuhn lengths)</span>
-<span class="sd">    N : float</span>
-<span class="sd">        full length of the loop (in Kuhn lengths)</span>
-<span class="sd">    b : float</span>
-<span class="sd">        The Kuhn length, in desired output length units.</span>
-<span class="sd">    num_modes : int</span>
-<span class="sd">        How many Rouse modes to include in the sum.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    mscd : (M,) np.array&lt;float&gt;</span>
-<span class="sd">        result</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mscd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="c1"># 24*kbT / k_p, omitting the &quot;p^2&quot;</span>
-    <span class="n">sum_coeff</span> <span class="o">=</span>  <span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span>
-    <span class="c1"># k_p / (N*xi), omitting the &quot;p^2&quot;</span>
-    <span class="n">k1</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">sum_coeff</span> <span class="o">=</span> <span class="mi">48</span> <span class="o">/</span> <span class="n">k1</span>
-
-    <span class="n">exp_coeff</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">D</span> <span class="o">/</span> <span class="n">N</span>
-    <span class="n">sin_coeff</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Ndel</span> <span class="o">/</span> <span class="n">N</span>
-    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">mscd</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">exp_coeff</span> <span class="o">*</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span> \
-                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sin_coeff</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-        <span class="c1"># mscd += np.real(np.abs(np.exp(1j*2*np.pi*p*Ndel/N) - 1)**2 \</span>
-        <span class="c1">#       * (1 - np.exp(-D*t*p**2/N**2)) \</span>
-        <span class="c1">#       * 2*N/((2*np.pi*p)**2))</span>
-    <span class="k">return</span> <span class="n">sum_coeff</span> <span class="o">*</span> <span class="n">mscd</span></div>
-
-
-<div class="viewcode-block" id="linear_mscd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.linear_mscd">[docs]</a><span class="k">def</span> <span class="nf">linear_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<div class="viewcode-block" id="linear_mscd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.linear_mscd">[docs]</a><span class="k">def</span> <span class="nf">linear_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute mscd for two points on a linear polymer.</span>
 
@@ -236,24 +198,53 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mscd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
-    <span class="c1"># 24*kbT/k_p, omitting the p^2</span>
     <span class="n">k1</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">sum_coeff</span> <span class="o">=</span> <span class="mi">48</span> <span class="o">/</span> <span class="n">k1</span>
-    <span class="c1">#sum_coeff = 8*b**2*N / np.pi**2</span>
-    <span class="c1"># kp/(N*xi), omitting the p**2</span>
     <span class="n">exp_coeff</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">D</span> <span class="o">/</span> <span class="n">N</span>
-    <span class="c1">#exp_coeff = 3 * np.pi ** 2 * D / (N * b) ** 2</span>
     <span class="n">sin_coeff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Ndel</span> <span class="o">/</span> <span class="n">N</span>
+
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
         <span class="n">mscd</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">exp_coeff</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span> \
                 <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sin_coeff</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-        <span class="c1"># mscd += 16*N/np.pi**2*(1/(2*p + 1)**2) \</span>
-        <span class="c1">#         * np.sin((2*p + 1)*np.pi*(Ndel/N)/2)**2 \</span>
-        <span class="c1">#         * (1 - np.exp(-t*(2*p + 1)**2/N**2))</span>
-        <span class="c1"># mscd += np.real(np.abs(np.exp(1j*np.pi*p/N) - 1)**2 \</span>
-        <span class="c1">#       * (1 - np.exp(-D*t*p**2/N**2)) \</span>
-        <span class="c1">#       * 2*N**3/(2*N - 1)/((np.pi*p)**2))</span>
 
+    <span class="k">return</span> <span class="n">sum_coeff</span> <span class="o">*</span> <span class="n">mscd</span></div>
+
+
+<div class="viewcode-block" id="ring_mscd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.ring_mscd">[docs]</a><span class="k">def</span> <span class="nf">ring_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute mscd for two points on a ring.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : (M,) float, array_like</span>
+<span class="sd">        Times at which to evaluate the MSCD.</span>
+<span class="sd">    D : float</span>
+<span class="sd">        Diffusion coefficient, (in desired output length units). Equal to</span>
+<span class="sd">        :math:`k_BT/\xi` for :math:`\xi` in units of &quot;per Kuhn length&quot;.</span>
+<span class="sd">    Ndel : float</span>
+<span class="sd">        (1/2)*separation between the loci on loop (in Kuhn lengths)</span>
+<span class="sd">    N : float</span>
+<span class="sd">        full length of the loop (in Kuhn lengths)</span>
+<span class="sd">    b : float</span>
+<span class="sd">        The Kuhn length, in desired output length units.</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        How many Rouse modes to include in the sum.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mscd : (M,) np.array&lt;float&gt;</span>
+<span class="sd">        result</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mscd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">k1</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">sum_coeff</span> <span class="o">=</span> <span class="mi">48</span> <span class="o">/</span> <span class="n">k1</span>
+    <span class="n">exp_coeff</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">D</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">sin_coeff</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Ndel</span> <span class="o">/</span> <span class="n">N</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">mscd</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">exp_coeff</span> <span class="o">*</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span> \
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sin_coeff</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">sum_coeff</span> <span class="o">*</span> <span class="n">mscd</span></div>
 
 
