@@ -259,7 +259,7 @@ The long-time asymptotic behavior is found by noting
     \langle \Delta \vec{R}(t)^{2} \rangle
     - 2 \langle \Delta \vec{R}(t) \cdot \Delta \vec{R}(0) \rangle
     + \langle \Delta \vec{R}(0) ^{2} \rangle \rightarrow
-    2 \langle \Delta \vec{R}(t)^{2} \rangle
+    2 \langle \Delta \vec{R}^{2} \rangle
 
 which leads to the asymptotic solutions
 
@@ -271,7 +271,7 @@ and
 .. math::
     \mathrm{MSCD}^{\mathrm{(ring)}} \rightarrow \frac{2}{\frac{1}{2 \Delta} + \frac{1}{N-2 \Delta}}.
 
-These asymptotic solutions are included in the plot.
+These asymptotic solutions are also included in the plot.
 
 .. plot::
 
@@ -298,9 +298,9 @@ These asymptotic solutions are included in the plot.
     plt.loglog(t_val, mscdl)
     plt.loglog(t_val, mscdr)
     plt.loglog(t_val, 2 * msd)
-    plt.loglog(t_val, 2 * 6 * t_val /N)
-    plt.loglog(t_val, mscdl_inf + 0*t_val)
-    plt.loglog(t_val, mscdr_inf + 0*t_val)
+    plt.loglog(t_val, 2 * 6 * t_val /N,'--')
+    plt.loglog(t_val, mscdl_inf + 0*t_val,'--')
+    plt.loglog(t_val, mscdr_inf + 0*t_val,'--')
     plt.xlabel(r'$t$')
     plt.ylabel(r'$MSCD$')
     plt.tight_layout()
