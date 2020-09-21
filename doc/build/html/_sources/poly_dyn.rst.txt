@@ -28,6 +28,8 @@ and we provide the results for the ring polymer.
     :alt: Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.
 
     Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.
+    The total chain length is :math:`N = 2 N_{s}`, and we consider two points on the chain located at
+    :math:`n_{1} = N_{s} - \Delta = N/2 - \Delta` and :math:`n_{2} = N_{s} + \Delta = N/2 + \Delta`.
 
 
 We start by defining a discrete
@@ -240,7 +242,7 @@ This quantity is defined as
     :label: mscd
 
 where :math:`\Delta \vec{R}(t) = \vec{r}(N/2 + \Delta, t) - \vec{r}(N/2 - \Delta,t)` where
-the total chain length is :math:`N = 2N_{s} + 2 \Delta`.
+the total chain length is :math:`N = 2 N_{s}`.
 We insert our normal-mode representation into Eq. :eq:`mscd`
 to find
 
@@ -274,7 +276,7 @@ expression for the linear chain
     \left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
     \sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]
 
-where :math:`k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}`.
+where :math:`k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}` for the linear chain.
 
 We follow a parallel derivation for the ring polymer.
 We note that only the odd set of normal modes contribute to :math:`\mathrm{MSCD}`

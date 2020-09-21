@@ -61,7 +61,9 @@ In this development, we present a detailed derivation for the linear chain,
 and we provide the results for the ring polymer.</p>
 <div class="figure align-center" id="id5">
 <a class="reference internal image-reference" href="_images/rouse-mscd.pdf"><img alt="Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation." src="_images/rouse-mscd.pdf" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.
+The total chain length is <span class="math notranslate nohighlight">\(N = 2 N_{s}\)</span>, and we consider two points on the chain located at
+<span class="math notranslate nohighlight">\(n_{1} = N_{s} - \Delta = N/2 - \Delta\)</span> and <span class="math notranslate nohighlight">\(n_{2} = N_{s} + \Delta = N/2 + \Delta\)</span>.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <p>We start by defining a discrete
 polymer chain with bead positions
@@ -222,7 +224,7 @@ This quantity is defined as</p>
 <div class="math notranslate nohighlight" id="equation-mscd">
 <span class="eqno">(4)<a class="headerlink" href="#equation-mscd" title="Permalink to this equation">¶</a></span>\[\mathrm{MSCD} = \langle \left( \Delta \vec{R}(t) - \Delta \vec{R}(0) \right)^{2} \rangle\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Delta \vec{R}(t) = \vec{r}(N/2 + \Delta, t) - \vec{r}(N/2 - \Delta,t)\)</span> where
-the total chain length is <span class="math notranslate nohighlight">\(N = 2N_{s} + 2 \Delta\)</span>.
+the total chain length is <span class="math notranslate nohighlight">\(N = 2 N_{s}\)</span>.
 We insert our normal-mode representation into Eq. <a class="reference internal" href="#equation-mscd">(4)</a>
 to find</p>
 <div class="math notranslate nohighlight">
@@ -250,7 +252,7 @@ expression for the linear chain</p>
 &amp; = &amp; \sum_{p = 0}^{\infty} 48 \frac{k_{B}T}{k_{2p+1}}
 \left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
 \sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span> for the linear chain.</p>
 <p>We follow a parallel derivation for the ring polymer.
 We note that only the odd set of normal modes contribute to <span class="math notranslate nohighlight">\(\mathrm{MSCD}\)</span>
 for the ring polymer.
