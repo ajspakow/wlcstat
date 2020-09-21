@@ -210,7 +210,7 @@ for :math:`p \ge 1` and
 
 .. math::
     \langle
-    \left( \vec{X}_{0}(t) - \vec{X}_{0}(0) \right)^{2} \rangle = 6 \frac{k_{B}T}{N \xi}
+    \left( \vec{X}_{0}(t) - \vec{X}_{0}(0) \right)^{2} \rangle = 6 \frac{k_{B}T}{N \xi} t
 
 We focus on the :math:`\mathrm{MSD}` for the midpoint of a linear chain,
 thus :math:`n=N/2`.
