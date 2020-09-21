@@ -6,6 +6,8 @@
 
 import wlcstat.wlcave
 import wlcstat.wlcgreen
+import wlcstat.wlcstruc
+import wlcstat.poly_dyn
 
 def start():
     "This starts this module running ..."

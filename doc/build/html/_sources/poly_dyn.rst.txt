@@ -1,4 +1,5 @@
 .. _poly_dyn:
+.. .. automodule:: poly_dyn
 
 Polymer Dynamics
 ================
@@ -215,10 +216,10 @@ expression for the linear chain
 
 .. math::
     \mathrm{MSCD}^{\mathrm{(linear)}}
-    & = & \sum_{p \, \mathrm{odd}} 24 \frac{k_{B}T}{k_{p}}
+    & = & \sum_{p \, \mathrm{odd}} 48 \frac{k_{B}T}{k_{p}}
     \left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
     \sin^{2} \left( \frac{\pi p \Delta}{N} \right) \\
-    & = & \sum_{p = 0}^{\infty} 24 \frac{k_{B}T}{k_{2p+1}}
+    & = & \sum_{p = 0}^{\infty} 48 \frac{k_{B}T}{k_{2p+1}}
     \left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
     \sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]
 
@@ -232,9 +233,75 @@ we arrive at the expression for the ring polymer
 
 .. math::
     \mathrm{MSCD}^{\mathrm{(ring)}}
-    = \sum_{p = 1}^{\infty} 24 \frac{k_{B}T}{k_{p}}
+    = \sum_{p = 1}^{\infty} 48 \frac{k_{B}T}{k_{p}}
     \left[ 1 - \exp \! \left( - \frac{k_{p}}{N \xi} t \right) \right]
     \sin^{2} \left( \frac{2 \pi p \Delta}{N} \right)
 
 where :math:`k_{p} = \frac{12 \pi^{2} k_{B}T}{b^{2} N} p^{2}` for the ring polymer.
 
+Functions contained with the 'poly_dyn' module
+----------------------------------------------
+
+.. automodule:: wlcstat.poly_dyn
+    :members:
+
+
+Example usage of 'linear_mscd' and 'ring_mscd'
+----------------------------------------------
+
+We show the solution for the MSCD for chain length :math:`N=100` and :math:`\Delta = 25` for both
+linear and ring polymers. In this plot, we also show the MSD (using 'rouse_mid_msd') multiplied by
+2, which coincides with the short-time asymptotic behavior.
+The long-time asymptotic behavior is found by noting
+
+.. math::
+    \mathrm{MSCD} = \langle \left( \Delta \vec{R}(t) - \Delta \vec{R}(0) \right)^{2} \rangle =
+    \langle \Delta \vec{R}(t)^{2} \rangle
+    - 2 \langle \Delta \vec{R}(t) \cdot \Delta \vec{R}(0) \rangle
+    + \langle \Delta \vec{R}(0) ^{2} \rangle \rightarrow
+    2 \langle \Delta \vec{R}(t)^{2} \rangle
+
+which leads to the asymptotic solutions
+
+.. math::
+    \mathrm{MSCD}^{\mathrm{(linear)}} \rightarrow 4 \Delta
+
+and
+
+.. math::
+    \mathrm{MSCD}^{\mathrm{(ring)}} \rightarrow \frac{2}{\frac{1}{2 \Delta} + \frac{1}{N-2 \Delta}}.
+
+These asymptotic solutions are included in the plot.
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.poly_dyn import *
+
+    num_t = 100
+    t_val_0 = 1e-4
+    t_val_f = 1e6
+    t_val = np.logspace(np.log10(t_val_0), np.log10(t_val_f), num_t)
+    N=100
+    Ndel=25
+    mscdl = linear_mscd(t_val, 1, Ndel, N, 1, 20000)
+    mscdr = ring_mscd(t_val, 1, Ndel, N, 1, 20000)
+    msd = rouse_mid_msd(t_val, 1, N, 1, 10000)
+    mscdl_inf = 2 * 2 * Ndel
+    mscdr_inf = 2 * 1 / (1 / (2 * Ndel) + 1  / (N - 2 * Ndel))
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+    plt.loglog(t_val, mscdl)
+    plt.loglog(t_val, mscdr)
+    plt.loglog(t_val, 2 * msd)
+    plt.loglog(t_val, 2 * 6 * t_val /N)
+    plt.loglog(t_val, mscdl_inf + 0*t_val)
+    plt.loglog(t_val, mscdr_inf + 0*t_val)
+    plt.xlabel(r'$t$')
+    plt.ylabel(r'$MSCD$')
+    plt.tight_layout()
+    plt.show()

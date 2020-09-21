@@ -10,7 +10,7 @@ beads, each of which can represent an arbitrary number of Kuhn lengths.
 """
 import numpy as np
 from numba import jit
-import mpmath
+# import mpmath
 
 from functools import lru_cache
 from pathlib import Path
@@ -54,7 +54,7 @@ def rouse_mid_msd(t, b, N, D, num_modes=1000):
         k2p_norm = kp_over_kbt(2*p, b, N)
         rouse_corr += (1/k2p_norm)*(1 - np.exp(-k2p_norm*(D/N)*t))
     # return rouse_corr + 6*kbT/xi/N*t
-    return 12*rouse_corr + 6*D*t/N
+    return 12 * rouse_corr + 6 * D * t / N
 
 @jit(nopython=True)
 def gaussian_G(r, N, b):
@@ -152,15 +152,18 @@ def ring_mscd(t, D, Ndel, N, b=1, num_modes=1000):
     # 24*kbT / k_p, omitting the "p^2"
     sum_coeff =  2*N*b**2 / np.pi**2
     # k_p / (N*xi), omitting the "p^2"
-    exp_coeff = 12*np.pi**2*D / (N*b)**2
-    sin_coeff = 2*np.pi*Ndel/N
+    k1 = 12 * np.pi ** 2 / (N * (b ** 2))
+    sum_coeff = 48 / k1
+
+    exp_coeff = k1 * D / N
+    sin_coeff = 2 * np.pi * Ndel / N
     for p in range(1, num_modes+1):
-        mscd += (1/p**2) * (1 - np.exp(-exp_coeff*p**2*t)) \
-                * np.sin(sin_coeff*p)**2
+        mscd += (1 / p ** 2) * (1 - np.exp(-exp_coeff * p ** 2 * t)) \
+                * np.sin(sin_coeff * p) ** 2
         # mscd += np.real(np.abs(np.exp(1j*2*np.pi*p*Ndel/N) - 1)**2 \
         #       * (1 - np.exp(-D*t*p**2/N**2)) \
         #       * 2*N/((2*np.pi*p)**2))
-    return sum_coeff*mscd
+    return sum_coeff * mscd
 
 
 def linear_mscd(t, D, Ndel, N, b=1, num_modes=10000):
@@ -190,13 +193,17 @@ def linear_mscd(t, D, Ndel, N, b=1, num_modes=10000):
         result
     """
     mscd = np.zeros_like(t)
+
     # 24*kbT/k_p, omitting the p^2
-    sum_coeff = 8*b**2*N / np.pi**2
+    k1 = 3 * np.pi ** 2 / (N * (b ** 2))
+    sum_coeff = 48 / k1
+    #sum_coeff = 8*b**2*N / np.pi**2
     # kp/(N*xi), omitting the p**2
-    exp_coeff = 3*np.pi**2*D / (N*b)**2
-    sin_coeff = np.pi*Ndel/N
+    exp_coeff = k1 * D / N
+    #exp_coeff = 3 * np.pi ** 2 * D / (N * b) ** 2
+    sin_coeff = np.pi * Ndel / N
     for p in range(1, num_modes+1, 2):
-        mscd += (1/p**2) * (1 - np.exp(-exp_coeff*p**2*t)) \
+        mscd += (1/p**2) * (1 - np.exp(-exp_coeff * (p ** 2) * t)) \
                 * np.sin(sin_coeff*p)**2
         # mscd += 16*N/np.pi**2*(1/(2*p + 1)**2) \
         #         * np.sin((2*p + 1)*np.pi*(Ndel/N)/2)**2 \
@@ -204,7 +211,8 @@ def linear_mscd(t, D, Ndel, N, b=1, num_modes=10000):
         # mscd += np.real(np.abs(np.exp(1j*np.pi*p/N) - 1)**2 \
         #       * (1 - np.exp(-D*t*p**2/N**2)) \
         #       * 2*N**3/(2*N - 1)/((np.pi*p)**2))
-    return sum_coeff*mscd
+
+    return sum_coeff * mscd
 
 
 def end_to_end_corr(t, D, N, num_modes=10000):
