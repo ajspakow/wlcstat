@@ -292,7 +292,7 @@ The solution for :math:`G(\vec{u}|\vec{u}_{0};L)` is constructed as an expansion
 .. \label{eq:guwlc}
 
 where :math:`N=L/(2l_{p})`.
-This form satisfies the governing Schr\"{o}dinger equation (Eq. :eq:`gudiffeqn`), and the initial condition
+This form satisfies the governing Schrödinger equation (Eq. :eq:`gudiffeqn`), and the initial condition
 is captured by noting that
 
 .. math::
