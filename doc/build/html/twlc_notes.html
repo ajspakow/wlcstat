@@ -56,9 +56,9 @@ For a polymer of any appreciable molecular weight, an all-atom representation is
 for analytical theory and is computationally limited to short time scales.
 Here, we will focus on effective-chain representations in order to develop
 theoretical descriptions that can address length and time scales relevant to biological processes.</p>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id8">
 <a class="reference internal image-reference" href="_images/space-curve.pdf"><img alt="Definition of effective-chain representation" src="_images/space-curve.pdf" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">Definition of effective-chain representation</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Definition of effective-chain representation</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 <p>Define the space curve <span class="math notranslate nohighlight">\(\vec{r}(s)\)</span> with pathlength variable <span class="math notranslate nohighlight">\(s\)</span> that runs from <span class="math notranslate nohighlight">\(0\)</span> at one end of the chain to <span class="math notranslate nohighlight">\(L\)</span> at the
 other end.
@@ -67,9 +67,8 @@ Define the unit tangent vector <span class="math notranslate nohighlight">\(\vec
 \[\vec{u}(s) = \frac{1}{\gamma(s)} \frac{\partial \vec{r}(s)}{\partial s},\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[\]</div>
-<p>gamma(s) = left| frac{partial vec{r}(s)}{partial s} right|.</p>
-<p>The local curvature of the chain~cite{struik} is defined by</p>
+\[\gamma(s) = \left| \frac{\partial \vec{r}(s)}{\partial s} \right|.\]</div>
+<p>The local curvature of the chain is defined by</p>
 <div class="math notranslate nohighlight">
 \[\frac{\partial \vec{u}(s)}{\partial s} =
 \frac{1}{\gamma} \left( \mathbf{I} - \vec{u} \vec{u} \right) \cdot \frac{\partial^{2} \vec{r}}{\partial s^{2}}
@@ -78,7 +77,7 @@ Define the unit tangent vector <span class="math notranslate nohighlight">\(\vec
 of the curve (note, <span class="math notranslate nohighlight">\(\kappa(s) \ge 0\)</span>).
 The local curvature <span class="math notranslate nohighlight">\(\kappa\)</span> is related to the radius <span class="math notranslate nohighlight">\(R\)</span> of a circle that is drawn tangent to the curve, such that
 <span class="math notranslate nohighlight">\(R = \kappa^{-1}\)</span>.
-Define the unit binormal to the curve <span class="math notranslate nohighlight">\(\vec{b}=\vec{u} \times \vec{n}\)</span> to define a unit triad to the space curve, emph{i.e.}</p>
+Define the unit binormal to the curve <span class="math notranslate nohighlight">\(\vec{b}=\vec{u} \times \vec{n}\)</span> to define a unit triad to the space curve, i.e.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}&amp;  &amp;
 \vec{u} \cdot \vec{u} = 1, \hspace{0.1in}
@@ -109,9 +108,9 @@ Define the rotation vector <span class="math notranslate nohighlight">\(\vec{\om
 <p>This representation is related to the previous representation as
 <span class="math notranslate nohighlight">\(\kappa = \sqrt{\omega_{1}^{2}+\omega_{2}^{2}}\)</span> and
 <span class="math notranslate nohighlight">\(\vec{n} = \frac{\omega_{2}}{\sqrt{\omega_{1}^{2}+\omega_{2}^{2}}} \vec{t}_{1} - \frac{\omega_{1}}{\sqrt{\omega_{1}^{2}+\omega_{2}^{2}}} \vec{t}_{2}\)</span></p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id9">
 <a class="reference internal image-reference" href="_images/space-curve2.pdf"><img alt="Definition of effective-chain representation including internal twist degree of freedom" src="_images/space-curve2.pdf" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">Definition of effective-chain representation including internal twist degree of freedom</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Definition of effective-chain representation including internal twist degree of freedom</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="geometry-and-topology-of-space-curves">
@@ -175,7 +174,7 @@ state of the chain and are insensitive to local geometric changes</p>
 <div class="section" id="topological-quantities">
 <h3>Topological quantities<a class="headerlink" href="#topological-quantities" title="Permalink to this headline">¶</a></h3>
 <p>Topological quantities are typically defined for closed curves,
-emph{i.e.} curves whose ends are joined together into a closed ring.
+i.e. curves whose ends are joined together into a closed ring.
 Consider a smooth, closed curve whose ends are continuous, thus
 <span class="math notranslate nohighlight">\(\frac{\partial^{n} \vec{r}(s=0)}{\partial s^{n}}=
 \frac{\partial^{n} \vec{r}(s=L)}{\partial s^{n}}\)</span> for all <span class="math notranslate nohighlight">\(n\)</span>.
@@ -188,10 +187,10 @@ r(s) \sin \theta(s) \hat{y}\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[Wi = \frac{1}{2 \pi} \left[ \theta(s=L)-\theta(s=0) \right]=
 \frac{1}{2 \pi} \int_{0}^{L} \! \! ds \, \frac{\partial \theta(s)}{\partial s}.\]</div>
-<div class="figure align-center" id="id7">
-<a class="reference internal image-reference" href="_images/winding-number.pdf"><img alt="Schematic of the Winding Number :math:`Wi` (in 2 dimensions) of various curves (see \emph{http://en.wikipedia.org/wiki/Winding\_\,number})" src="_images/winding-number.pdf" style="width: 600px;" /></a>
+<div class="figure align-center" id="id10">
+<a class="reference internal image-reference" href="_images/winding-number.pdf"><img alt="Schematic of the Winding Number :math:`Wi` (in 2 dimensions) of various curves (see http://en.wikipedia.org/wiki/Winding\_\,number)" src="_images/winding-number.pdf" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">Schematic of the Winding Number <span class="math notranslate nohighlight">\(Wi\)</span> (in 2 dimensions) of various curves
-(see emph{<a class="reference external" href="http://en.wikipedia.org/wiki/Winding_,number">http://en.wikipedia.org/wiki/Winding_,number</a>})</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+(see <a class="reference external" href="http://en.wikipedia.org/wiki/Winding_,number">http://en.wikipedia.org/wiki/Winding_,number</a>)</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
 <p>The Winding Number is related to <span class="math notranslate nohighlight">\(\vec{r}(s)\)</span> through</p>
 <div class="math notranslate nohighlight">
@@ -233,10 +232,10 @@ Wi = \frac{1}{2 \pi} \int_{0}^{L} \! \! ds \,
 Define the Linking Number <span class="math notranslate nohighlight">\(Lk\)</span> that gives the number of times the two curves wind
 around each other.  This quantity is invariant to changes, provided
 you do not pass the curves through each other.</p>
-<div class="figure align-center" id="id8">
-<a class="reference internal image-reference" href="_images/linking-number.pdf"><img alt="Schematic of the Linking Number :math:`Lk` of various curve pairs (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})" src="_images/linking-number.pdf" style="width: 600px;" /></a>
+<div class="figure align-center" id="id11">
+<a class="reference internal image-reference" href="_images/linking-number.pdf"><img alt="Schematic of the Linking Number :math:`Lk` of various curve pairs (see http://en.wikipedia.org/wiki/Linking\_\,number)" src="_images/linking-number.pdf" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">Schematic of the Linking Number <span class="math notranslate nohighlight">\(Lk\)</span> of various curve pairs
-(see emph{<a class="reference external" href="http://en.wikipedia.org/wiki/Linking_,number">http://en.wikipedia.org/wiki/Linking_,number</a>})</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+(see <a class="reference external" href="http://en.wikipedia.org/wiki/Linking_,number">http://en.wikipedia.org/wiki/Linking_,number</a>)</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </div>
 <p>Mathematically, the Linking Number is defined as</p>
 <div class="math notranslate nohighlight">
@@ -254,18 +253,18 @@ you do not pass the curves through each other.</p>
 of curve one around curve 2, summed over curve 2.
 Although the Linking Number is a topological invariant for two curves that
 are entangled, a non-zero Linking Number is not a unique designation of entanglement,
-emph{i.e.} <span class="math notranslate nohighlight">\(Lk=0\)</span> does not necessarily mean the curves are not entangled.</p>
-<div class="figure align-center" id="id9">
-<a class="reference internal image-reference" href="_images/zero-link.pdf"><img alt="Two examples where :math:`Lk=0`, but the curves are exhibit entanglement (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})" src="_images/zero-link.pdf" style="width: 600px;" /></a>
+i.e. <span class="math notranslate nohighlight">\(Lk=0\)</span> does not necessarily mean the curves are not entangled.</p>
+<div class="figure align-center" id="id12">
+<a class="reference internal image-reference" href="_images/zero-link.pdf"><img alt="Two examples where :math:`Lk=0`, but the curves are exhibit entanglement (see http://en.wikipedia.org/wiki/Linking\_\,number)" src="_images/zero-link.pdf" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">Two examples where <span class="math notranslate nohighlight">\(Lk=0\)</span>, but the curves are exhibit entanglement
-(see emph{<a class="reference external" href="http://en.wikipedia.org/wiki/Linking_,number">http://en.wikipedia.org/wiki/Linking_,number</a>})</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+(see <a class="reference external" href="http://en.wikipedia.org/wiki/Linking_,number">http://en.wikipedia.org/wiki/Linking_,number</a>)</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </div>
 <p>Knot theory provides further classifications for self-knotting and entanglement between
 multiple rings.
 Other topological quantities are used for knot classification.</p>
-<div class="figure align-center" id="id10">
+<div class="figure align-center" id="id13">
 <a class="reference internal image-reference" href="_images/knots.pdf"><img alt="Knot classification of 1, 2, and 3 rings" src="_images/knots.pdf" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">Knot classification of 1, 2, and 3 rings</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Knot classification of 1, 2, and 3 rings</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
 <p>Now consider the self-linking of a curve by defining the first curve
 <span class="math notranslate nohighlight">\(\vec{r}_{1}(s_{1})=\vec{r}(s_{1})\)</span> and the second curve
@@ -361,22 +360,23 @@ Note that
 The Linking Number <span class="math notranslate nohighlight">\(Lk\)</span> is the sum of the Twist <span class="math notranslate nohighlight">\(Tw\)</span> and
 Writhe <span class="math notranslate nohighlight">\(Wr\)</span> (<span class="math notranslate nohighlight">\(Lk=Tw+Wr\)</span>). The Linking Number does not change with chain
 deformation, but the Twist and Writhe are affected.</p>
-<div class="figure align-center" id="id11">
+<div class="figure align-center" id="id14">
 <a class="reference internal image-reference" href="_images/twwr.png"><img alt="Schematic showing a closed path (extend the ends to infinity) with Linking Number :math:`Lk=-2`.  The top image has :math:`Tw=-2` and :math:`Wr=0`, and the bottom image has :math:`Tw=0` and :math:`Wr=-2`." src="_images/twwr.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">Schematic showing a closed path (extend the ends to infinity) with Linking
 Number <span class="math notranslate nohighlight">\(Lk=-2\)</span>.  The top image has <span class="math notranslate nohighlight">\(Tw=-2\)</span> and <span class="math notranslate nohighlight">\(Wr=0\)</span>, and the
-bottom image has <span class="math notranslate nohighlight">\(Tw=0\)</span> and <span class="math notranslate nohighlight">\(Wr=-2\)</span>.</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+bottom image has <span class="math notranslate nohighlight">\(Tw=0\)</span> and <span class="math notranslate nohighlight">\(Wr=-2\)</span>.</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </div>
-<div class="figure align-center" id="id12">
-<a class="reference internal image-reference" href="_images/DNAsupercoil.png"><img alt="Electron micrographs of DNA with increasing values of Linking Number (see \emph{www.imsb.au.dk/:math:`\sim`raybrown})" src="_images/DNAsupercoil.png" style="width: 600px;" /></a>
+<div class="figure align-center" id="id15">
+<a class="reference internal image-reference" href="_images/DNAsupercoil.png"><img alt="Electron micrographs of DNA with increasing values of Linking Number (see www.imsb.au.dk/:math:`\sim`raybrown)" src="_images/DNAsupercoil.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">Electron micrographs of DNA with increasing values of Linking Number
-(see emph{www.imsb.au.dk/:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>sim`raybrown})</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+(see www.imsb.au.dk/:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>sim`raybrown)</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 <div class="legend">
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="models-for-the-deformation-energy">
-<h3>Models for the deformation energy<a class="headerlink" href="#models-for-the-deformation-energy" title="Permalink to this headline">¶</a></h3>
+<h2>Models for the deformation energy<a class="headerlink" href="#models-for-the-deformation-energy" title="Permalink to this headline">¶</a></h2>
 <p>The elastic deformation energy <span class="math notranslate nohighlight">\(E_{elas}\)</span>
 must be invariant to translation and rotation of the chain.
 If the energy function is only dependent on the local deformation of the chain,
@@ -393,7 +393,7 @@ and <span class="math notranslate nohighlight">\(\vec{\Omega}^{(0)}\)</span> def
 chain.
 The modulus tensor <span class="math notranslate nohighlight">\(A_{ij}\)</span> must have four positive eigenvalues for the
 minimum-energy shape to be stable to fluctuations.
-The Gaussian Chain model in 3-D~cite{doi} has a deformation energy</p>
+The Gaussian Chain model in 3-D <a class="reference internal" href="references.html#doi1988" id="id5"><span>[Doi1988]</span></a> has a deformation energy</p>
 <div class="math notranslate nohighlight">
 \[E_{elas}
 =
@@ -403,7 +403,7 @@ The Gaussian Chain model in 3-D~cite{doi} has a deformation energy</p>
 \frac{3 k_{B}T}{2 b^{2}}
 \int_{0}^{N} \! \! dn \left( \frac{\partial \vec{r}}{\partial n} \right)^{\! 2}\]</div>
 <p>where <span class="math notranslate nohighlight">\(n=s/b\)</span> and <span class="math notranslate nohighlight">\(N=L/b\)</span>.</p>
-<p>The Wormlike Chain model in 3-D~cite{kratky-wlc} has a deformation energy</p>
+<p>The Wormlike Chain model in 3-D <a class="reference internal" href="references.html#kratky1949" id="id6"><span>[Kratky1949]</span></a> has a deformation energy</p>
 <div class="math notranslate nohighlight">
 \[\beta E_{elas}
 =
@@ -416,7 +416,7 @@ The Gaussian Chain model in 3-D~cite{doi} has a deformation energy</p>
 for all <span class="math notranslate nohighlight">\(s\)</span>, and <span class="math notranslate nohighlight">\(\beta=\frac{1}{k_{B}T}\)</span>.
 The persistence length <span class="math notranslate nohighlight">\(l_{p}\)</span> gives the bending modulus of the chain
 (to be discussed further in coming chapters).</p>
-<p>The Helical Wormlike Chain model~cite{yamakawa} has a deformation energy</p>
+<p>The Helical Wormlike Chain model <a class="reference internal" href="references.html#yamakawa1997" id="id7"><span>[Yamakawa1997]</span></a> has a deformation energy</p>
 <div class="math notranslate nohighlight">
 \[\beta E_{elas} =
 \int_{0}^{L} \! \! ds
@@ -441,7 +441,6 @@ The minimum-energy shape is a helix with radius</p>
 \[h = \frac{2 \pi \tau}{\kappa^{2} + \tau^{2}}.\]</div>
 </div>
 </div>
-</div>
 
 
             <div class="clearer"></div>
@@ -457,9 +456,9 @@ The minimum-energy shape is a helix with radius</p>
 <li><a class="reference internal" href="#geometry-and-topology-of-space-curves">Geometry and topology of space curves</a><ul>
 <li><a class="reference internal" href="#geometric-quantities">Geometric quantities</a></li>
 <li><a class="reference internal" href="#topological-quantities">Topological quantities</a></li>
-<li><a class="reference internal" href="#models-for-the-deformation-energy">Models for the deformation energy</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#models-for-the-deformation-energy">Models for the deformation energy</a></li>
 </ul>
 </li>
 </ul>

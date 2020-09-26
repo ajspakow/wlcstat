@@ -29,12 +29,13 @@ Define the unit tangent vector :math:`\vec{u}(s)` to be
 
 .. math::
     \vec{u}(s) = \frac{1}{\gamma(s)} \frac{\partial \vec{r}(s)}{\partial s},
+
 where
 
 .. math::
-\gamma(s) = \left| \frac{\partial \vec{r}(s)}{\partial s} \right|.
+    \gamma(s) = \left| \frac{\partial \vec{r}(s)}{\partial s} \right|.
 
-The local curvature of the chain~\cite{struik} is defined by
+The local curvature of the chain is defined by
 
 .. math::
     \frac{\partial \vec{u}(s)}{\partial s} =
@@ -45,7 +46,7 @@ where :math:`\vec{n}(s)` is the curve normal at :math:`s` (note, :math:`\vec{n} 
 of the curve (note, :math:`\kappa(s) \ge 0`).
 The local curvature :math:`\kappa` is related to the radius :math:`R` of a circle that is drawn tangent to the curve, such that
 :math:`R = \kappa^{-1}`.
-Define the unit binormal to the curve :math:`\vec{b}=\vec{u} \times \vec{n}` to define a unit triad to the space curve, \emph{i.e.}
+Define the unit binormal to the curve :math:`\vec{b}=\vec{u} \times \vec{n}` to define a unit triad to the space curve, i.e.
 
 .. math::
     &  &
@@ -163,7 +164,7 @@ Topological quantities
 **********************
 
 Topological quantities are typically defined for closed curves,
-\emph{i.e.} curves whose ends are joined together into a closed ring.
+i.e. curves whose ends are joined together into a closed ring.
 Consider a smooth, closed curve whose ends are continuous, thus
 :math:`\frac{\partial^{n} \vec{r}(s=0)}{\partial s^{n}}=
 \frac{\partial^{n} \vec{r}(s=L)}{\partial s^{n}}` for all :math:`n`.
@@ -182,10 +183,10 @@ r(s) \sin \theta(s) \hat{y}`, we have
 .. figure:: figures/winding-number.pdf
     :width: 600
     :align: center
-    :alt: Schematic of the Winding Number :math:`Wi` (in 2 dimensions) of various curves (see \emph{http://en.wikipedia.org/wiki/Winding\_\,number})
+    :alt: Schematic of the Winding Number :math:`Wi` (in 2 dimensions) of various curves (see http://en.wikipedia.org/wiki/Winding\_\,number)
 
     Schematic of the Winding Number :math:`Wi` (in 2 dimensions) of various curves
-    (see \emph{http://en.wikipedia.org/wiki/Winding\_\,number})
+    (see http://en.wikipedia.org/wiki/Winding\_\,number)
 
 
 The Winding Number is related to :math:`\vec{r}(s)` through
@@ -234,10 +235,10 @@ you do not pass the curves through each other.
 .. figure:: figures/linking-number.pdf
     :width: 600
     :align: center
-    :alt: Schematic of the Linking Number :math:`Lk` of various curve pairs (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})
+    :alt: Schematic of the Linking Number :math:`Lk` of various curve pairs (see http://en.wikipedia.org/wiki/Linking\_\,number)
 
     Schematic of the Linking Number :math:`Lk` of various curve pairs
-    (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})
+    (see http://en.wikipedia.org/wiki/Linking\_\,number)
 
 
 Mathematically, the Linking Number is defined as
@@ -258,15 +259,15 @@ which is essentially the 3-D extension of the winding number
 of curve one around curve 2, summed over curve 2.
 Although the Linking Number is a topological invariant for two curves that
 are entangled, a non-zero Linking Number is not a unique designation of entanglement,
-\emph{i.e.} :math:`Lk=0` does not necessarily mean the curves are not entangled.
+i.e. :math:`Lk=0` does not necessarily mean the curves are not entangled.
 
 .. figure:: figures/zero-link.pdf
     :width: 600
     :align: center
-    :alt: Two examples where :math:`Lk=0`, but the curves are exhibit entanglement (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})
+    :alt: Two examples where :math:`Lk=0`, but the curves are exhibit entanglement (see http://en.wikipedia.org/wiki/Linking\_\,number)
 
     Two examples where :math:`Lk=0`, but the curves are exhibit entanglement
-    (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})
+    (see http://en.wikipedia.org/wiki/Linking\_\,number)
 
 Knot theory provides further classifications for self-knotting and entanglement between
 multiple rings.
@@ -399,15 +400,15 @@ deformation, but the Twist and Writhe are affected.
 .. figure:: figures/DNAsupercoil.png
     :width: 600
     :align: center
-    :alt: Electron micrographs of DNA with increasing values of Linking Number (see \emph{www.imsb.au.dk/:math:`\sim`raybrown})
+    :alt: Electron micrographs of DNA with increasing values of Linking Number (see www.imsb.au.dk/:math:`\sim`raybrown)
 
 
     Electron micrographs of DNA with increasing values of Linking Number
-    (see \emph{www.imsb.au.dk/:math:`\sim`raybrown})
+    (see www.imsb.au.dk/:math:`\sim`raybrown)
 
 
 Models for the deformation energy
-*********************************
+---------------------------------
 
 The elastic deformation energy :math:`E_{elas}`
 must be invariant to translation and rotation of the chain.
@@ -427,7 +428,7 @@ and :math:`\vec{\Omega}^{(0)}` defines the equilibrium (minimum energy) shape of
 chain.
 The modulus tensor :math:`A_{ij}` must have four positive eigenvalues for the
 minimum-energy shape to be stable to fluctuations.
-The Gaussian Chain model in 3-D~\cite{doi} has a deformation energy
+The Gaussian Chain model in 3-D [Doi1988]_ has a deformation energy
 
 .. math::
     E_{elas}
@@ -440,7 +441,7 @@ The Gaussian Chain model in 3-D~\cite{doi} has a deformation energy
 
 where :math:`n=s/b` and :math:`N=L/b`.
 
-The Wormlike Chain model in 3-D~\cite{kratky-wlc} has a deformation energy
+The Wormlike Chain model in 3-D [Kratky1949]_ has a deformation energy
 
 .. math::
     \beta E_{elas}
@@ -456,7 +457,7 @@ for all :math:`s`, and :math:`\beta=\frac{1}{k_{B}T}`.
 The persistence length :math:`l_{p}` gives the bending modulus of the chain
 (to be discussed further in coming chapters).
 
-The Helical Wormlike Chain model~\cite{yamakawa} has a deformation energy
+The Helical Wormlike Chain model [Yamakawa1997]_ has a deformation energy
 
 .. math::
     \beta E_{elas} =
