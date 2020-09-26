@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wormlike Chains with Twist, Helices, and Ribbons &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polymer Dynamics" href="poly_dyn.html" />
+    <link rel="prev" title="Structure Factor" href="wlcstruc_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="poly_dyn.html" title="Polymer Dynamics"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chains with Twist, Helices, and Ribbons</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="twlc"></span><div class="section" id="wormlike-chains-with-twist-helices-and-ribbons">
+<h1>Wormlike Chains with Twist, Helices, and Ribbons<a class="headerlink" href="#wormlike-chains-with-twist-helices-and-ribbons" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="polymer-chain-representations">
+<h2>Polymer chain representations<a class="headerlink" href="#polymer-chain-representations" title="Permalink to this headline">¶</a></h2>
+<p>The conformation of a polymer chain can be defined by either an all-atom representation or an
+effective-chain representation.
+For a polymer of any appreciable molecular weight, an all-atom representation is impractical
+for analytical theory and is computationally limited to short time scales.
+Here, we will focus on effective-chain representations in order to develop
+theoretical descriptions that can address length and time scales relevant to biological processes.</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/space-curve.pdf"><img alt="Definition of effective-chain representation" src="_images/space-curve.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Definition of effective-chain representation</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<p>Define the space curve <span class="math notranslate nohighlight">\(\vec{r}(s)\)</span> with pathlength variable <span class="math notranslate nohighlight">\(s\)</span> that runs from <span class="math notranslate nohighlight">\(0\)</span> at one end of the chain to <span class="math notranslate nohighlight">\(L\)</span> at the
+other end.
+Define the unit tangent vector <span class="math notranslate nohighlight">\(\vec{u}(s)\)</span> to be</p>
+<div class="math notranslate nohighlight">
+\[\vec{u}(s) = \frac{1}{\gamma(s)} \frac{\partial \vec{r}(s)}{\partial s},\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\]</div>
+<p>gamma(s) = left| frac{partial vec{r}(s)}{partial s} right|.</p>
+<p>The local curvature of the chain~cite{struik} is defined by</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \vec{u}(s)}{\partial s} =
+\frac{1}{\gamma} \left( \mathbf{I} - \vec{u} \vec{u} \right) \cdot \frac{\partial^{2} \vec{r}}{\partial s^{2}}
+=\kappa (s) \vec{n}(s),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{n}(s)\)</span> is the curve normal at <span class="math notranslate nohighlight">\(s\)</span> (note, <span class="math notranslate nohighlight">\(\vec{n} \cdot \vec{u} = 0\)</span>), and <span class="math notranslate nohighlight">\(\kappa(s)\)</span> is the local curvature
+of the curve (note, <span class="math notranslate nohighlight">\(\kappa(s) \ge 0\)</span>).
+The local curvature <span class="math notranslate nohighlight">\(\kappa\)</span> is related to the radius <span class="math notranslate nohighlight">\(R\)</span> of a circle that is drawn tangent to the curve, such that
+<span class="math notranslate nohighlight">\(R = \kappa^{-1}\)</span>.
+Define the unit binormal to the curve <span class="math notranslate nohighlight">\(\vec{b}=\vec{u} \times \vec{n}\)</span> to define a unit triad to the space curve, emph{i.e.}</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+\vec{u} \cdot \vec{u} = 1, \hspace{0.1in}
+\vec{n} \cdot \vec{n} = 1, \hspace{0.1in}
+\vec{b} \cdot \vec{b} = 1, \hspace{0.1in} \nonumber \\
+&amp;  &amp;
+\vec{u} \cdot \vec{n} = 0, \hspace{0.1in}
+\vec{u} \cdot \vec{b} = 0, \hspace{0.1in}
+\vec{n} \cdot \vec{b} = 0 \hspace{0.1in}\end{split}\]</div>
+<p>Our current representation does not include an internal degree of freedom associated with the twisting of the chain.
+%which is important for a variety of applications
+Define a unit triad to the curve
+<span class="math notranslate nohighlight">\(\vec{t}_{i}\)</span> (<span class="math notranslate nohighlight">\(i=1,2,3\)</span>),
+where <span class="math notranslate nohighlight">\(\vec{t}_{i} \cdot \vec{t}_{j} = \delta_{ij}\)</span> and
+<span class="math notranslate nohighlight">\(\vec{t}_{i} = \epsilon_{ijk} \vec{t}_{j} \times \vec{t}_{k}\)</span>.
+The tangent vector is aligned with <span class="math notranslate nohighlight">\(\vec{t}_{3}\)</span>, thus <span class="math notranslate nohighlight">\(\vec{u} = \vec{t}_{3}\)</span>.
+Define the rotation vector <span class="math notranslate nohighlight">\(\vec{\omega}\)</span> such that <span class="math notranslate nohighlight">\(\frac{\partial \vec{t}_{i}}{\partial s} = \vec{\omega} \times \vec{t}_{i}\)</span>, or</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \vec{t}_{1}}{\partial s} =
+\omega_{3} \vec{t}_{2} -
+\omega_{2} \vec{t}_{3}, \hspace{0.2in}
+\frac{\partial \vec{t}_{2}}{\partial s} =
+\omega_{1} \vec{t}_{3} -
+\omega_{3} \vec{t}_{1}, \hspace{0.2in}
+\frac{\partial \vec{t}_{3}}{\partial s} =
+\omega_{2} \vec{t}_{1} -
+\omega_{1} \vec{t}_{2}\]</div>
+<p>This representation is related to the previous representation as
+<span class="math notranslate nohighlight">\(\kappa = \sqrt{\omega_{1}^{2}+\omega_{2}^{2}}\)</span> and
+<span class="math notranslate nohighlight">\(\vec{n} = \frac{\omega_{2}}{\sqrt{\omega_{1}^{2}+\omega_{2}^{2}}} \vec{t}_{1} - \frac{\omega_{1}}{\sqrt{\omega_{1}^{2}+\omega_{2}^{2}}} \vec{t}_{2}\)</span></p>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/space-curve2.pdf"><img alt="Definition of effective-chain representation including internal twist degree of freedom" src="_images/space-curve2.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Definition of effective-chain representation including internal twist degree of freedom</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="geometry-and-topology-of-space-curves">
+<h2>Geometry and topology of space curves<a class="headerlink" href="#geometry-and-topology-of-space-curves" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="geometric-quantities">
+<h3>Geometric quantities<a class="headerlink" href="#geometric-quantities" title="Permalink to this headline">¶</a></h3>
+<p>The geometry of a single curve is described by <span class="math notranslate nohighlight">\(\vec{r}(s)\)</span>.
+The local deformation of the chain from a straight conformation
+described by the curvatures <span class="math notranslate nohighlight">\(\omega_{i}\)</span>,
+where <span class="math notranslate nohighlight">\(\omega_{1}\)</span> and <span class="math notranslate nohighlight">\(\omega_{2}\)</span> are bend curvatures (related to <span class="math notranslate nohighlight">\(\kappa\)</span>)
+and <span class="math notranslate nohighlight">\(\omega_{3}\)</span> is the twist curvature.
+Another geometric quantity called the torsion <span class="math notranslate nohighlight">\(\tau\)</span> describes the <a href="#id1"><span class="problematic" id="id2">``</span></a>out-of-planeness”
+of the curve, where</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \vec{b}}{\partial s}
+= \vec{u} \times \frac{\partial \vec{n}}{\partial s} + \frac{\partial \vec{u}}{\partial s} \times \vec{n}
+= \vec{u} \times \frac{\partial \vec{n}}{\partial s}
+= - \tau \vec{n}.\]</div>
+<p>For example, consider a regular helix with space curve</p>
+<div class="math notranslate nohighlight">
+\[\vec{r}(s) =
+a \cos \! \left(  \frac{2 \pi s}{l_{t}} \right) \hat{x} +
+a \sin \! \left( \frac{2 \pi s}{l_{t}} \right) \hat{y} +
+h \frac{s}{l_{t}} \hat{z}\]</div>
+<p>where <span class="math notranslate nohighlight">\(a\)</span> is the helix radius, <span class="math notranslate nohighlight">\(l_{t}\)</span> is the length per helix turn, and <span class="math notranslate nohighlight">\(h\)</span> is the height per helix turn.
+To fix <span class="math notranslate nohighlight">\(\gamma=1\)</span> for all <span class="math notranslate nohighlight">\(s\)</span>, we fix <span class="math notranslate nohighlight">\(l_{t}=\sqrt{(2 \pi)^{2} a^{2} + h^{2}}\)</span>.
+This condition makes <span class="math notranslate nohighlight">\(s\)</span> an arclength parameter that constrains the
+chain length of the curve.</p>
+<p>This chain conformation results in</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; &amp; \vec{u} =
+- \frac{2 \pi a}{l_{t}} \sin \! \left(  \frac{2 \pi s}{l_{t}} \right) \hat{x}
++ \frac{2 \pi a}{l_{t}} \cos \! \left(  \frac{2 \pi s}{l_{t}} \right) \hat{y}
++ \frac{h}{l_{t}} \hat{z} \nonumber \\
+&amp;  &amp; \vec{n} =
+- \cos \! \left(  \frac{2 \pi s}{l_{t}} \right) \hat{x}
+- \sin \! \left(  \frac{2 \pi s}{l_{t}} \right) \hat{y} \nonumber \\
+&amp;  &amp; \vec{b} =
+\frac{h}{l_{t}} \sin \! \left(  \frac{2 \pi s}{l_{t}} \right) \hat{x}
+- \frac{h}{l_{t}} \cos \! \left(  \frac{2 \pi s}{l_{t}} \right) \hat{y}
++ \frac{2 \pi a}{l_{t}} \hat{z}.\end{split}\]</div>
+<p>This results in a constant curvature and torsion</p>
+<div class="math notranslate nohighlight">
+\[\kappa = \frac{(2 \pi)^{2} a}{(2 \pi)^{2} a^{2} + h^{2}}
+\hspace{0.2in}
+\mathrm{and}
+\hspace{0.2in}
+\tau = \frac{2 \pi h}{(2 \pi)^{2} a^{2} + h^{2}}\]</div>
+<p>As <span class="math notranslate nohighlight">\(h \rightarrow 0\)</span>, the curvature is <span class="math notranslate nohighlight">\(\kappa = 1/a\)</span>, where <span class="math notranslate nohighlight">\(a\)</span> is the radius
+of the flattened circle,
+and <span class="math notranslate nohighlight">\(\tau=0\)</span> due to the planar conformation.
+As <span class="math notranslate nohighlight">\(a \rightarrow 0\)</span>, the curvature <span class="math notranslate nohighlight">\(\kappa\)</span> is zero,
+and the torsion <span class="math notranslate nohighlight">\(\tau = 2 \pi/h\)</span>.
+The torsion is only mathematically defined in this limit
+due to the underlying definition of the helix.
+Such geometric quantities are sensitive to the local chain conformation
+and do not define global properties of the chain.
+Chain topology is defined through quantities that define the global
+state of the chain and are insensitive to local geometric changes</p>
+</div>
+<div class="section" id="topological-quantities">
+<h3>Topological quantities<a class="headerlink" href="#topological-quantities" title="Permalink to this headline">¶</a></h3>
+<p>Topological quantities are typically defined for closed curves,
+emph{i.e.} curves whose ends are joined together into a closed ring.
+Consider a smooth, closed curve whose ends are continuous, thus
+<span class="math notranslate nohighlight">\(\frac{\partial^{n} \vec{r}(s=0)}{\partial s^{n}}=
+\frac{\partial^{n} \vec{r}(s=L)}{\partial s^{n}}\)</span> for all <span class="math notranslate nohighlight">\(n\)</span>.
+First consider a 2-D curve and ask how many times this curve
+wraps around the origin, defined as the Winding Number <span class="math notranslate nohighlight">\(Wi\)</span>.
+Defining the space curve in polar coordinates
+<span class="math notranslate nohighlight">\(\vec{r}(s) =
+r(s) \cos \theta(s) \hat{x}+
+r(s) \sin \theta(s) \hat{y}\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[Wi = \frac{1}{2 \pi} \left[ \theta(s=L)-\theta(s=0) \right]=
+\frac{1}{2 \pi} \int_{0}^{L} \! \! ds \, \frac{\partial \theta(s)}{\partial s}.\]</div>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/winding-number.pdf"><img alt="Schematic of the Winding Number :math:`Wi` (in 2 dimensions) of various curves (see \emph{http://en.wikipedia.org/wiki/Winding\_\,number})" src="_images/winding-number.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic of the Winding Number <span class="math notranslate nohighlight">\(Wi\)</span> (in 2 dimensions) of various curves
+(see emph{<a class="reference external" href="http://en.wikipedia.org/wiki/Winding_,number">http://en.wikipedia.org/wiki/Winding_,number</a>})</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+<p>The Winding Number is related to <span class="math notranslate nohighlight">\(\vec{r}(s)\)</span> through</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+\frac{\partial \vec{r}}{\partial s} =
+\left(
+\frac{\partial r}{\partial s} \cos \theta -
+r \sin \theta \frac{\partial \theta}{\partial s}
+\right) \hat{x}+
+\left(
+\frac{\partial r}{\partial s} \sin \theta +
+r \cos \theta \frac{\partial \theta}{\partial s}
+\right) \hat{y} \nonumber \\
+&amp;  &amp;
+\frac{\partial \vec{r}}{\partial s} \times
+\hat{z} = %\times \frac{\partial \vec{r}}{\partial s} =
+\left(
+\frac{\partial r}{\partial s} \sin \theta +
+r \cos \theta \frac{\partial \theta}{\partial s}
+\right) \hat{x} -
+\left(
+\frac{\partial r}{\partial s} \cos \theta -
+r \sin \theta \frac{\partial \theta}{\partial s}
+\right) \hat{y} \nonumber \\
+&amp;  &amp;
+\frac{\partial \theta}{\partial s}=
+\frac{\vec{r}}{\left| \vec{r} \right|^{2}} \cdot \left( \frac{\partial \vec{r}}{\partial s}
+\times \hat{z}
+\right)
+\hspace{0.1in}
+\mathrm{thus}
+\hspace{0.1in}
+Wi = \frac{1}{2 \pi} \int_{0}^{L} \! \! ds \,
+\frac{\vec{r}}{\left| \vec{r} \right|^{2}} \cdot \left( \frac{\partial \vec{r}}{\partial s}
+\times \hat{z} \right).\end{split}\]</div>
+<p>Now consider two closed curves in 3-D, defined by the space curves
+<span class="math notranslate nohighlight">\(\vec{r}_{1}(s_{1})\)</span> and
+<span class="math notranslate nohighlight">\(\vec{r}_{2}(s_{2})\)</span>.
+Define the Linking Number <span class="math notranslate nohighlight">\(Lk\)</span> that gives the number of times the two curves wind
+around each other.  This quantity is invariant to changes, provided
+you do not pass the curves through each other.</p>
+<div class="figure align-center" id="id8">
+<a class="reference internal image-reference" href="_images/linking-number.pdf"><img alt="Schematic of the Linking Number :math:`Lk` of various curve pairs (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})" src="_images/linking-number.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic of the Linking Number <span class="math notranslate nohighlight">\(Lk\)</span> of various curve pairs
+(see emph{<a class="reference external" href="http://en.wikipedia.org/wiki/Linking_,number">http://en.wikipedia.org/wiki/Linking_,number</a>})</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+<p>Mathematically, the Linking Number is defined as</p>
+<div class="math notranslate nohighlight">
+\[Lk = \frac{1}{4 \pi}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\frac{\left( \vec{r}_{1}(s_{1})-\vec{r}_{2}(s_{2}) \right)}
+{\left| \vec{r}_{1}(s_{1})-\vec{r}_{2}(s_{2}) \right|^{3}}
+\cdot
+\left(
+\frac{\partial \vec{r}_{1}(s_{1})}{\partial s_{1}} \times
+\frac{\partial \vec{r}_{2}(s_{2})}{\partial s_{2}}
+\right),\]</div>
+<p>which is essentially the 3-D extension of the winding number
+of curve one around curve 2, summed over curve 2.
+Although the Linking Number is a topological invariant for two curves that
+are entangled, a non-zero Linking Number is not a unique designation of entanglement,
+emph{i.e.} <span class="math notranslate nohighlight">\(Lk=0\)</span> does not necessarily mean the curves are not entangled.</p>
+<div class="figure align-center" id="id9">
+<a class="reference internal image-reference" href="_images/zero-link.pdf"><img alt="Two examples where :math:`Lk=0`, but the curves are exhibit entanglement (see \emph{http://en.wikipedia.org/wiki/Linking\_\,number})" src="_images/zero-link.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Two examples where <span class="math notranslate nohighlight">\(Lk=0\)</span>, but the curves are exhibit entanglement
+(see emph{<a class="reference external" href="http://en.wikipedia.org/wiki/Linking_,number">http://en.wikipedia.org/wiki/Linking_,number</a>})</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+<p>Knot theory provides further classifications for self-knotting and entanglement between
+multiple rings.
+Other topological quantities are used for knot classification.</p>
+<div class="figure align-center" id="id10">
+<a class="reference internal image-reference" href="_images/knots.pdf"><img alt="Knot classification of 1, 2, and 3 rings" src="_images/knots.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Knot classification of 1, 2, and 3 rings</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+<p>Now consider the self-linking of a curve by defining the first curve
+<span class="math notranslate nohighlight">\(\vec{r}_{1}(s_{1})=\vec{r}(s_{1})\)</span> and the second curve
+<span class="math notranslate nohighlight">\(\vec{r}_{2}(s_{2})=\vec{r}(s_{2}) + \epsilon \vec{t}_{1}(s_{2})\)</span>,
+which winds around the first curve with the material normal <span class="math notranslate nohighlight">\(\vec{t}_{1}\)</span>.
+The Linking Number between these curves is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}Lk &amp; = &amp;
+\color{red}{
+\frac{1}{4 \pi}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\frac{\left( \vec{r}(s_{1})-\vec{r}(s_{2}) - \epsilon \vec{t}_{1}(s_{2}) \right)}
+{\left| \vec{r}(s_{1})-\vec{r}(s_{2}) - \epsilon \vec{t}_{1}(s_{2}) \right|^{3}}
+\cdot
+\left(
+\vec{t}_{3}(s_{1}) \times
+\vec{t}_{3}(s_{2})
+\right)} \nonumber \\
+&amp; &amp; +
+\color{blue}{
+\frac{1}{4 \pi}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\frac{\epsilon \left( \vec{r}(s_{1})-\vec{r}(s_{2}) - \epsilon \vec{t}_{1}(s_{2}) \right)}
+{\left| \vec{r}(s_{1})-\vec{r}(s_{2}) - \epsilon \vec{t}_{1}(s_{2}) \right|^{3}}
+\cdot
+\left(
+\vec{t}_{3}(s_{1}) \times
+\frac{\partial \vec{t}_{1}(s_{2})}{\partial s_{2}}
+\right)} \nonumber \\
+&amp; = &amp; \color{red}{Wr} \color{black}{+}
+\color{blue}{Tw},\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\color{red}{Wr}\)</span> is a topological quantity called the Writhe, and
+<span class="math notranslate nohighlight">\(\color{blue}{Tw}\)</span> is a topological quantity called the Twist.
+In the limit <span class="math notranslate nohighlight">\(\epsilon \rightarrow 0\)</span>, the Writhe <span class="math notranslate nohighlight">\(Wr\)</span> approaches</p>
+<div class="math notranslate nohighlight">
+\[Wr =
+\frac{1}{4 \pi}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\frac{\left( \vec{r}(s_{1})-\vec{r}(s_{2})  \right)}
+{\left| \vec{r}(s_{1})-\vec{r}(s_{2}) \right|^{3}}
+\cdot
+\left(
+\vec{t}_{3}(s_{1}) \times
+\vec{t}_{3}(s_{2})
+\right).\]</div>
+<p>As <span class="math notranslate nohighlight">\(\epsilon \rightarrow 0\)</span>, the Twist <span class="math notranslate nohighlight">\(Tw\)</span> appears to approach zero.
+However, the integrand diverges as <span class="math notranslate nohighlight">\(s_{2} \rightarrow s_{1}\)</span>, leading to a
+non-zero limiting value for the Twist <span class="math notranslate nohighlight">\(Tw\)</span>.
+Note that
+<span class="math notranslate nohighlight">\(\frac{\partial \vec{t}_{1}(s_{2})}{\partial s_{2}}=
+\omega_{3}(s_{2})\vec{t}_{2}(s_{2})-
+\omega_{2}(s_{2})\vec{t}_{3}(s_{2})\)</span> and <span class="math notranslate nohighlight">\(\vec{t}_{3} \times \vec{t}_{2} = - \vec{t}_{1}\)</span>.</p>
+<p>The only part of the Twist <span class="math notranslate nohighlight">\(Tw\)</span> that will contribute as <span class="math notranslate nohighlight">\(\epsilon \rightarrow 0\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[- \frac{\epsilon^{2}}{4 \pi}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\frac{\omega_{3}(s_{2}) \vec{t}_{1}(s_{2}) \cdot
+\left( \vec{t}_{3}(s_{1}) \times \vec{t}_{2}(s_{2}) \right)
+}{\left| \vec{r}(s_{1})-\vec{r}(s_{2}) - \epsilon \vec{t}_{1}(s_{2}) \right|^{3}}.\]</div>
+<p>For <span class="math notranslate nohighlight">\(s_{2}\)</span> near <span class="math notranslate nohighlight">\(s_{1}\)</span>, we write
+<span class="math notranslate nohighlight">\(\vec{r}(s_{2}) \approx \vec{r}(s_{1}) + (s_{2}-s_{1}) \vec{t}_{3}(s_{1})\)</span>,
+<span class="math notranslate nohighlight">\(\omega_{3}(s_{2}) \approx \omega_{3}(s_{1})\)</span>,
+<span class="math notranslate nohighlight">\(\vec{t}_{i}(s_{2}) \approx \vec{t}_{i}(s_{1})\)</span>. This gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+\frac{\epsilon^{2}}{4 \pi}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\frac{\omega_{3}(s_{1})}{\left| (s_{2}-s_{1}) \vec{t}_{3}(s_{1}) - \epsilon \vec{t}_{1}(s_{1}) \right|^{3}} \\
+&amp;  &amp;
+=
+\frac{\epsilon^{2}}{4 \pi}
+\int_{0}^{L} \! \! ds_{1}
+\int_{-s_{1}}^{L-s_{1}} \! \! du \frac{\omega_{3}(s_{1})}{\left(u^{2}+ \epsilon^{2}  \right)^{3/2}}
+\nonumber \\
+&amp;  &amp;
+=
+\frac{\epsilon^{2}}{4 \pi}
+\int_{0}^{L} \! \! ds_{1} \omega_{3}(s_{1})
+\left(
+\frac{L-s_{1}}{\epsilon^{2} \sqrt{(L-s_{1})^{2} + \epsilon^{2}}}+
+\frac{s_{1}}{\epsilon^{2} \sqrt{s_{1}^{2} + \epsilon^{2}}}
+\right). \nonumber\end{split}\]</div>
+<p>Taking the limit <span class="math notranslate nohighlight">\(\epsilon \rightarrow 0\)</span> gives the Twist</p>
+<div class="math notranslate nohighlight">
+\[Tw = \frac{1}{2 \pi}
+\int_{0}^{L} \! \! ds \omega_{3}(s),\]</div>
+<p>which is the number of turns of twist in the chain.
+The Linking Number <span class="math notranslate nohighlight">\(Lk\)</span> is the sum of the Twist <span class="math notranslate nohighlight">\(Tw\)</span> and
+Writhe <span class="math notranslate nohighlight">\(Wr\)</span> (<span class="math notranslate nohighlight">\(Lk=Tw+Wr\)</span>). The Linking Number does not change with chain
+deformation, but the Twist and Writhe are affected.</p>
+<div class="figure align-center" id="id11">
+<a class="reference internal image-reference" href="_images/twwr.png"><img alt="Schematic showing a closed path (extend the ends to infinity) with Linking Number :math:`Lk=-2`.  The top image has :math:`Tw=-2` and :math:`Wr=0`, and the bottom image has :math:`Tw=0` and :math:`Wr=-2`." src="_images/twwr.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic showing a closed path (extend the ends to infinity) with Linking
+Number <span class="math notranslate nohighlight">\(Lk=-2\)</span>.  The top image has <span class="math notranslate nohighlight">\(Tw=-2\)</span> and <span class="math notranslate nohighlight">\(Wr=0\)</span>, and the
+bottom image has <span class="math notranslate nohighlight">\(Tw=0\)</span> and <span class="math notranslate nohighlight">\(Wr=-2\)</span>.</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id12">
+<a class="reference internal image-reference" href="_images/DNAsupercoil.png"><img alt="Electron micrographs of DNA with increasing values of Linking Number (see \emph{www.imsb.au.dk/:math:`\sim`raybrown})" src="_images/DNAsupercoil.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Electron micrographs of DNA with increasing values of Linking Number
+(see emph{www.imsb.au.dk/:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>sim`raybrown})</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<div class="legend">
+</div>
+</div>
+</div>
+<div class="section" id="models-for-the-deformation-energy">
+<h3>Models for the deformation energy<a class="headerlink" href="#models-for-the-deformation-energy" title="Permalink to this headline">¶</a></h3>
+<p>The elastic deformation energy <span class="math notranslate nohighlight">\(E_{elas}\)</span>
+must be invariant to translation and rotation of the chain.
+If the energy function is only dependent on the local deformation of the chain,
+the elastic deformation energy can be written in terms of
+<span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\vec{\omega}\)</span>.
+To lowest order, the deformation energy can generally be written</p>
+<div class="math notranslate nohighlight">
+\[E_{elas} = \frac{1}{2}
+\int_{0}^{L} \! \! ds
+\left( \Omega_{i} - \Omega_{i}^{(0)} \right) A_{ij}
+\left( \Omega_{j} - \Omega_{j}^{(0)} \right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{\Omega}=(\vec{\omega},\gamma)\)</span> is the deformation 4-vector,
+and <span class="math notranslate nohighlight">\(\vec{\Omega}^{(0)}\)</span> defines the equilibrium (minimum energy) shape of the
+chain.
+The modulus tensor <span class="math notranslate nohighlight">\(A_{ij}\)</span> must have four positive eigenvalues for the
+minimum-energy shape to be stable to fluctuations.
+The Gaussian Chain model in 3-D~cite{doi} has a deformation energy</p>
+<div class="math notranslate nohighlight">
+\[E_{elas}
+=
+\frac{3 k_{B}T}{2 b}
+\int_{0}^{L} \! \! ds \gamma^{2}
+=
+\frac{3 k_{B}T}{2 b^{2}}
+\int_{0}^{N} \! \! dn \left( \frac{\partial \vec{r}}{\partial n} \right)^{\! 2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n=s/b\)</span> and <span class="math notranslate nohighlight">\(N=L/b\)</span>.</p>
+<p>The Wormlike Chain model in 3-D~cite{kratky-wlc} has a deformation energy</p>
+<div class="math notranslate nohighlight">
+\[\beta E_{elas}
+=
+\frac{l_{p}}{2}
+\int_{0}^{L} \! \! ds \left( \omega_{1}^{2}+\omega_{2}^{2} \right) =
+\frac{l_{p}}{2}
+\int_{0}^{L} \! \! ds \left( \frac{\partial \vec{u}}{\partial s} \right)^{\! 2}\]</div>
+<p>along with the inextensibility constraint
+<span class="math notranslate nohighlight">\(\gamma(s) = \left| \frac{\partial \vec{r}}{\partial s} \right| = 1\)</span>
+for all <span class="math notranslate nohighlight">\(s\)</span>, and <span class="math notranslate nohighlight">\(\beta=\frac{1}{k_{B}T}\)</span>.
+The persistence length <span class="math notranslate nohighlight">\(l_{p}\)</span> gives the bending modulus of the chain
+(to be discussed further in coming chapters).</p>
+<p>The Helical Wormlike Chain model~cite{yamakawa} has a deformation energy</p>
+<div class="math notranslate nohighlight">
+\[\beta E_{elas} =
+\int_{0}^{L} \! \! ds
+\left\{
+\frac{A}{2}
+\left[
+\left( \omega_{1} - \kappa \right)^{2}+
+\omega_{2}^{2}
+\right]+
+\frac{C}{2} \left( \omega_{3} - \tau \right)^{2}
+\right\}\]</div>
+<p>along with the inextensibility constraint
+<span class="math notranslate nohighlight">\(\gamma(s) = \left| \frac{\partial \vec{r}}{\partial s} \right| = 1\)</span>
+for all <span class="math notranslate nohighlight">\(s\)</span>,
+<span class="math notranslate nohighlight">\(A\)</span> is the bending modulus,
+and <span class="math notranslate nohighlight">\(C\)</span> is the twisting modulus.
+The minimum-energy shape is a helix with radius</p>
+<div class="math notranslate nohighlight">
+\[a = \frac{\kappa}{\kappa^{2} + \tau^{2}}\]</div>
+<p>and height per turn</p>
+<div class="math notranslate nohighlight">
+\[h = \frac{2 \pi \tau}{\kappa^{2} + \tau^{2}}.\]</div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wormlike Chains with Twist, Helices, and Ribbons</a><ul>
+<li><a class="reference internal" href="#polymer-chain-representations">Polymer chain representations</a></li>
+<li><a class="reference internal" href="#geometry-and-topology-of-space-curves">Geometry and topology of space curves</a><ul>
+<li><a class="reference internal" href="#geometric-quantities">Geometric quantities</a></li>
+<li><a class="reference internal" href="#topological-quantities">Topological quantities</a></li>
+<li><a class="reference internal" href="#models-for-the-deformation-energy">Models for the deformation energy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlcstruc_notes.html"
+                        title="previous chapter">Structure Factor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="poly_dyn.html"
+                        title="next chapter">Polymer Dynamics</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/twlc_notes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="poly_dyn.html" title="Polymer Dynamics"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chains with Twist, Helices, and Ribbons</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
