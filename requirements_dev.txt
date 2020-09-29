@@ -1,0 +1,3 @@
+nbsphinx
+matplotlib
+-r requirements.txt

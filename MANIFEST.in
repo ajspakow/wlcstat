@@ -1,0 +1,3 @@
+include versioneer.py
+include wlcstat/_verison.py
+include wlcstat/_version.py

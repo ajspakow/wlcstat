@@ -9,5 +9,6 @@ import wlcstat.wlcgreen
 import wlcstat.wlcstruc
 import wlcstat.poly_dyn
 
-def start():
-    "This starts this module running ..."
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
