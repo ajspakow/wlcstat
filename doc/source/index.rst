@@ -13,6 +13,8 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Structure Factor <wlcstruc_notes>
 
+    Wormlike Chains with Twist, Helices, and Ribbons <twlc_notes>
+
     Polymer Dynamics <poly_dyn>
 
     References <references>
