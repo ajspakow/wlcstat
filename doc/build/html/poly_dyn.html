@@ -59,11 +59,11 @@ chain segments relative to each other.  We define this relative motion
 as the mean-square change in displacment (MSCD).
 In this development, we present a detailed derivation for the linear chain,
 and we provide the results for the ring polymer.</p>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id7">
 <a class="reference internal image-reference" href="_images/rouse-mscd.pdf"><img alt="Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation." src="_images/rouse-mscd.pdf" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">Schematic representation of the linear and ring Rouse model with definition of segments for MSCD calculation.
 The total chain length is <span class="math notranslate nohighlight">\(N = 2 N_{s}\)</span>, and we consider two points on the chain located at
-<span class="math notranslate nohighlight">\(n_{1} = N_{s} - \Delta = N/2 - \Delta\)</span> and <span class="math notranslate nohighlight">\(n_{2} = N_{s} + \Delta = N/2 + \Delta\)</span>.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<span class="math notranslate nohighlight">\(n_{1} = N_{s} - \Delta = N/2 - \Delta\)</span> and <span class="math notranslate nohighlight">\(n_{2} = N_{s} + \Delta = N/2 + \Delta\)</span>.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 <p>We start by defining a discrete
 polymer chain with bead positions
@@ -275,6 +275,17 @@ and they use the same variable name for two different things.</p>
 <p>In one, N is the number of Kuhn lengths, and in the other, N is the number of
 beads, each of which can represent an arbitrary number of Kuhn lengths.</p>
 <dl class="py function">
+<dt id="wlcstat.poly_dyn.draw_cells">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">draw_cells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">min_y</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">max_y</span><span class="o">=</span><span class="default_value">0.95</span></em>, <em class="sig-param"><span class="n">locus_frac</span><span class="o">=</span><span class="default_value">0.7989601386481803</span></em>, <em class="sig-param"><span class="n">centromere_frac</span><span class="o">=</span><span class="default_value">0.7365684575389948</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#draw_cells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.draw_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the model of homologous chromosomes with linkages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>linkages</strong> (<em>float array</em>) – List of the link positions between the homologous chromosomes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.poly_dyn.end_to_end_corr">
 <code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">end_to_end_corr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#end_to_end_corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.end_to_end_corr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Doi and Edwards, Eq. 4.35</p>
@@ -292,6 +303,26 @@ given a Kuhn length of b</p>
 <code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">gaussian_Ploop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#gaussian_Ploop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.gaussian_Ploop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Looping probability for two loci on a Gaussian chain N kuhn lengths
 apart, when the Kuhn length is b, and the capture radius is a</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.generate_example_cell">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">generate_example_cell</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mu</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#generate_example_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.generate_example_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the number and location of linkage between homologous chromosomes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>float</em>) – Average number of linkages between chromosomes (Poisson distributed)</p></li>
+<li><p><strong>chr_size</strong> (<em>float</em>) – Size of the chromosome (microns)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>cell</strong> – List of linkage locations between the homologous chromosomes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float array (length selected from Poisson distribution)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -329,6 +360,55 @@ being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.model_mscd">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">model_mscd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">label_loc</span><span class="o">=</span><span class="default_value">3.5311602490318506</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em>, <em class="sig-param"><span class="n">nuc_radius</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">0.015</span></em>, <em class="sig-param"><span class="n">D</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#model_mscd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.model_mscd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the MSCD for the model of linked chromosomes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float array</em>) – Time in seconds</p></li>
+<li><p><strong>linkages</strong> (<em>float array</em>) – List of the link positions between the homologous chromosomes</p></li>
+<li><p><strong>label_loc</strong> (<em>float</em>) – Location of the fluorescent label along the chromosome (microns)</p></li>
+<li><p><strong>chr_size</strong> (<em>float</em>) – Length of the chromosome (microns)</p></li>
+<li><p><strong>nuc_radius</strong> (<em>float</em>) – Radius of the nucleus (microns)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Kuhn length (microns)</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusivity (microns ** 2 / second)</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – Number of normal modes used in the calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd_model</strong> – Calculated MSCD (microns ** 2) for the model with defined linkages</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float array (size len(t))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.model_plateau">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">model_plateau</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">label_loc</span><span class="o">=</span><span class="default_value">3.5311602490318506</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em>, <em class="sig-param"><span class="n">nuc_radius</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">0.015</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#model_plateau"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.model_plateau" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the plateau values in the MSCD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>linkages</strong> (<em>float array</em>) – List of the link positions between the homologous chromosomes</p></li>
+<li><p><strong>label_loc</strong> (<em>float</em>) – Location of the fluorescent label along the chromosome (microns)</p></li>
+<li><p><strong>chr_size</strong> (<em>float</em>) – Length of the chromosome (microns)</p></li>
+<li><p><strong>nuc_radius</strong> (<em>float</em>) – Radius of the nucleus (microns)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Kuhn length (microns)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd_plateau</strong> – Plateau value of the MSCD in the long-time asymptotic limit (microns ** 2)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -398,6 +478,28 @@ The long-time asymptotic behavior is found by noting</p>
 <img alt="_images/poly_dyn-1.png" src="_images/poly_dyn-1.png" />
 </div>
 </div>
+<div class="section" id="application-of-linear-mscd-and-ring-mscd-to-homologue-pairing-in-meiosis">
+<h2>Application of ‘linear_mscd’ and ‘ring_mscd’ to homologue pairing in meiosis<a class="headerlink" href="#application-of-linear-mscd-and-ring-mscd-to-homologue-pairing-in-meiosis" title="Permalink to this headline">¶</a></h2>
+<p>We apply ‘linear_mscd’ and ‘ring_mscd’ to the coordinated dynamics of loci on two homologous chromosomes
+(chromosome V in S. cerevisiae). The average number of linkages between the chromosomes is <span class="math notranslate nohighlight">\(\mu = 4\)</span>.
+The length of chromosome V is approximately 577 kb, and the position of the fluorescent locus is at 177 kb.
+The top plot below shows the locations of the random linkages for the five example <a href="#id5"><span class="problematic" id="id6">``</span></a>cells’’.
+The effective tethers holding the loci together are highlighted in white.
+The nearest linkage is highlighted by a thicker line. Notice that when two tethers exist,
+they effectively form a large chromatin loop on which the two loci live.
+The bottom plot shows analytical MSCDs for five different theoretical
+“cells”, where a Poisson-distributed number of linkages (<span class="math notranslate nohighlight">\(\mu = 4\)</span>)
+have been distributed uniformly along chr.~V, which we assume to be composed of
+approximately 116,000 Kuhn lengths of length.</p>
+<p>(<a class="reference external" href=".//poly_dyn-2.py">Source code</a>, <a class="reference external" href=".//poly_dyn-2_00_00.png">png</a>, <a class="reference external" href=".//poly_dyn-2_00_00.hires.png">hires.png</a>, <a class="reference external" href=".//poly_dyn-2_00_00.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/poly_dyn-2_00_00.png" src="_images/poly_dyn-2_00_00.png" />
+</div>
+<p>(<a class="reference external" href=".//poly_dyn-2_01_00.png">png</a>, <a class="reference external" href=".//poly_dyn-2_01_00.hires.png">hires.png</a>, <a class="reference external" href=".//poly_dyn-2_01_00.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/poly_dyn-2_01_00.png" src="_images/poly_dyn-2_01_00.png" />
+</div>
+</div>
 </div>
 
 
@@ -417,6 +519,7 @@ The long-time asymptotic behavior is found by noting</p>
 </li>
 <li><a class="reference internal" href="#module-wlcstat.poly_dyn">Functions contained with the ‘poly_dyn’ module</a></li>
 <li><a class="reference internal" href="#example-usage-of-linear-mscd-and-ring-mscd">Example usage of ‘linear_mscd’ and ‘ring_mscd’</a></li>
+<li><a class="reference internal" href="#application-of-linear-mscd-and-ring-mscd-to-homologue-pairing-in-meiosis">Application of ‘linear_mscd’ and ‘ring_mscd’ to homologue pairing in meiosis</a></li>
 </ul>
 </li>
 </ul>

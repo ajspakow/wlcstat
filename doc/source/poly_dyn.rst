@@ -358,3 +358,42 @@ These asymptotic solutions are also included in the plot.
     plt.ylabel(r'$MSCD$')
     plt.tight_layout()
     plt.show()
+
+
+Application of 'linear_mscd' and 'ring_mscd' to homologue pairing in meiosis
+----------------------------------------------------------------------------
+
+We apply 'linear_mscd' and 'ring_mscd' to the coordinated dynamics of loci on two homologous chromosomes
+(chromosome V in S. cerevisiae). The average number of linkages between the chromosomes is :math:`\mu = 4`.
+The length of chromosome V is approximately 577 kb, and the position of the fluorescent locus is at 177 kb.
+The top plot below shows the locations of the random linkages for the five example ``cells''.
+The effective tethers holding the loci together are highlighted in white.
+The nearest linkage is highlighted by a thicker line. Notice that when two tethers exist,
+they effectively form a large chromatin loop on which the two loci live.
+The bottom plot shows analytical MSCDs for five different theoretical
+"cells", where a Poisson-distributed number of linkages (:math:`\mu = 4`)
+have been distributed uniformly along chr.~V, which we assume to be composed of
+approximately 116,000 Kuhn lengths of length.
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.poly_dyn import *
+
+    mu = 4
+    cells = [generate_example_cell(mu) for i in range(5)]
+    ax, all_closest_links = draw_cells(cells)
+    plt.show()
+    t = np.logspace(1,4,50).astype(float)
+    plt.figure()
+    for i, linkages in enumerate(cells):
+        plt.loglog(t, model_mscd(t,linkages),label = 'Cell ' + str(i+1))
+    plt.legend()
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+    plt.xlabel(r'time (sec)')
+    plt.ylabel(r'$MSCD$ ($\mu m^{2}$)')
+    plt.show()
