@@ -420,6 +420,8 @@
         <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">linkages</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="n">mscd_model</span> <span class="o">=</span> <span class="n">mscd_func</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="o">=</span><span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="n">num_modes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mscd_model</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nuc_radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">mscd_model</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nuc_radius</span> <span class="o">**</span> <span class="mi">2</span>
 
     <span class="k">return</span> <span class="n">mscd_model</span></div>
 

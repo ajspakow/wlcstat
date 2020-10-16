@@ -378,6 +378,8 @@ def model_mscd(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_s
         N = 2*(linkages[i] - linkages[i - 1])
 
     mscd_model = mscd_func(t, D=D, Ndel=Ndel, N=N, b=b, num_modes=num_modes)
+    if mscd_model[i] > nuc_radius ** 2:
+        mscd_model[i] = nuc_radius ** 2
 
     return mscd_model
 
