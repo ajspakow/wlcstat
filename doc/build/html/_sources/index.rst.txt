@@ -17,6 +17,8 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Polymer Dynamics <poly_dyn>
 
+    Active-Brownian Dynamics <active_brown>
+
     References <references>
 
 Indices and tables

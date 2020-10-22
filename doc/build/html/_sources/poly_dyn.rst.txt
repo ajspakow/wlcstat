@@ -194,7 +194,7 @@ resulting in the expression
 
 .. math::
     \mathrm{MSD} =
-    \sum_{p=1}^{\infty} \sum_{p'=1}^{\infty}
+    \sum_{p=0}^{\infty} \sum_{p'=0}^{\infty}
     \langle
     \left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
     \left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right) \rangle
@@ -366,7 +366,7 @@ Application of 'linear_mscd' and 'ring_mscd' to homologue pairing in meiosis
 We apply 'linear_mscd' and 'ring_mscd' to the coordinated dynamics of loci on two homologous chromosomes
 (chromosome V in S. cerevisiae). The average number of linkages between the chromosomes is :math:`\mu = 4`.
 The length of chromosome V is approximately 577 kb, and the position of the fluorescent locus is at 177 kb.
-The top plot below shows the locations of the random linkages for the five example ``cells''.
+The top plot below shows the locations of the random linkages for the five example "cells".
 The effective tethers holding the loci together are highlighted in white.
 The nearest linkage is highlighted by a thicker line. Notice that when two tethers exist,
 they effectively form a large chromatin loop on which the two loci live.

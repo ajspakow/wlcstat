@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Active-Brownian Dynamics &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Polymer Dynamics" href="poly_dyn.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="poly_dyn.html" title="Polymer Dynamics"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Active-Brownian Dynamics</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="active-brown"></span><div class="section" id="active-brownian-dynamics">
+<h1>Active-Brownian Dynamics<a class="headerlink" href="#active-brownian-dynamics" title="Permalink to this headline">¶</a></h1>
+<p>Consider a particle undergoing
+random motion over a potential
+<span class="math notranslate nohighlight">\(V\)</span>. For our development, we
+focus on 1-dimensional transport,
+but the final results are extended
+to 3 dimensions.
+The particle is subjected to
+thermal (emph{i.e.} Brownian) force
+<span class="math notranslate nohighlight">\(f_{B}\)</span> and active forces <span class="math notranslate nohighlight">\(f_{A}\)</span> that
+represent transient perturbations from the
+surrounding enzyme activity.
+The temporal evolution of the
+position <span class="math notranslate nohighlight">\(x(t)\)</span> is governed by a
+modified Langevin equation</p>
+<div class="math notranslate nohighlight" id="equation-langevin">
+<span class="eqno">(1)<a class="headerlink" href="#equation-langevin" title="Permalink to this equation">¶</a></span>\[\xi \frac{d x}{d t}
+= f_{V} + f_{B} + f_{A},\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(f_{V} = - \frac{\partial V}{\partial x}\)</span>
+is the potential force on the particle at
+position <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>The Brownian force <span class="math notranslate nohighlight">\(f_{B}\)</span> is governed by the fluctuation dissipation theorem,
+which states that <span class="math notranslate nohighlight">\(f_{B}\)</span> is a
+Gaussian-distributed random force
+that satisfies</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle f_{B}(t) \rangle &amp; = &amp; 0, \\
+\langle f_{B}(t) f_{B}(t') \rangle
+&amp; = &amp; \kappa^{(B)} ( |t - t'|)
+=
+2 k_{B}T \xi \delta (t - t').\end{split}\]</div>
+<p>This assumes that the environment is
+purely Newtonian, leading to the
+instantaneous decorrelation of Brownian
+forces (i.e. Gaussian white noise).
+Diffusive transport in a viscoelastic
+fluid leads to temporal memory in the
+Brownian force, reflecting temporal
+correlation in the frictional stress.
+Our approach is amenable to address
+such physics, and we develop this in
+the appendix to this paper.</p>
+<p>In our work, we assume the active force <span class="math notranslate nohighlight">\(f_{A}\)</span> are also Gaussian-distributed
+with an arbitrary temporal correlation, such that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle f_{A}(t) \rangle &amp; = &amp; 0, \\
+\langle f_{A}(t) f_{A}(t') \rangle
+&amp; = &amp; \kappa^{(A)}(|t-t'|),\end{split}\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(\kappa^{(A)}(t)\)</span> represents
+the temporal correlation between active
+forces.</p>
+<p>This theoretical model results in
+a Smoluchowski equation (or
+Schr&quot;{o}dinger equation) that is given by</p>
+<div class="math notranslate nohighlight" id="equation-diff">
+<span class="eqno">(2)<a class="headerlink" href="#equation-diff" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\partial G(\vec{r}|\vec{r}_{0}; t)}
+{\partial t} &amp; = &amp;
+\frac{k_{B}T}{\xi} \nabla^{2}
+G(\vec{r}|\vec{r}_{0}; t)
+- \frac{1}{\xi} \vec{\nabla}
+\cdot
+\left[
+\vec{f}_{V} G(\vec{r}|\vec{r}_{0}; t)
+\right]
+\\
+&amp;  &amp; +
+\frac{1}{2 \xi^{2}}
+\int_{0}^{t} dt_{1} \int d \vec{r}_{1}
+K_{A}^{-1}(t-t_{1})
+\left[
+\vec{\nabla}_{r}
+G(\vec{r}|\vec{r}_{1}; t- t_{1})
+\right]
+\cdot
+\left[
+\vec{\nabla}_{r_{1}}
+G(\vec{r}_{1}|\vec{r}_{0}; t_{1})
+\right],\end{split}\]</div>
+<p>which is composed of the thermal and
+active contributions.</p>
+<p>The active-Brownian Smoluchowski equation
+(Eq. <a class="reference internal" href="#equation-diff">(2)</a>)
+defines the conditions for the steady-state
+probability distribution <span class="math notranslate nohighlight">\(p_{ss}(\vec{r})\)</span>.
+Upon Laplace transform of Eq. <a class="reference internal" href="#equation-diff">(2)</a>
+and applying Final Value Theorem,
+we arrive at the condition</p>
+<div class="math notranslate nohighlight" id="equation-pss">
+<span class="eqno">(3)<a class="headerlink" href="#equation-pss" title="Permalink to this equation">¶</a></span>\[0 =
+H_{0} p_{ss}(\vec{r}) +
+\frac{1}{2 \xi^{2}} \int d \vec{r}_{1}
+\left[
+\vec{\nabla}_{r}
+\tilde{G}_{A}(\vec{r}|\vec{r}_{1})
+\right]
+\cdot
+\left[
+\vec{\nabla}_{r_{1}} p_{ss} (\vec{r}_{1})
+\right],\]</div>
+<p>where <span class="math notranslate nohighlight">\(H_{0} p_{ss}(\vec{r})\)</span> is the
+standard Smoluchowski operator</p>
+<div class="math notranslate nohighlight">
+\[H_{0} p_{ss}(\vec{r}) =
+\frac{k_{B}T}{\xi} \nabla^{2}
+p_{ss}(\vec{r})
+- \frac{1}{\xi} \vec{\nabla}
+\cdot
+\left[
+\vec{f}_{V} p_{ss}(\vec{r})
+\right]\]</div>
+<p>and <span class="math notranslate nohighlight">\(\tilde{G}_{A}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\tilde{G}_{A}(\vec{r}|\vec{r}_{1}) =
+\int_{0}^{\infty} \! \! dt K_{A}^{-1}(t)
+G(\vec{r}|\vec{r}_{1};t).\]</div>
+<p>The steady-state condition <span class="math notranslate nohighlight">\(p_{ss}\)</span>
+requires evaluation of Eq. <a class="reference internal" href="#equation-diff">(2)</a>,
+which implies the non-equilibrium
+nature of the active-Brownian particle.</p>
+<p>Our current development is a generalized
+representation of an active-Brownian particle.
+However, the active-force correlation
+function <span class="math notranslate nohighlight">\(K_{A}^{-1}\)</span> defines a time-scale
+of communication of active forces</p>
+<div class="math notranslate nohighlight">
+\[t_{A} = \frac{\int_{0}^{\infty}
+d t K_{A}^{-1}(t) t }{\int_{0}^{\infty}
+d t K_{A}^{-1}(t)}\]</div>
+<p>As this time scale approaches zero,
+the active-force correlation can
+be written as
+<span class="math notranslate nohighlight">\(K_{A}^{-1}(t) = 2 \xi k_{B} T_{A}
+\delta (t)\)</span>,
+where we define an active temperature
+<span class="math notranslate nohighlight">\(T_{A}\)</span>.
+This limit implies the effect of active forces
+can be interpreted as an effective
+active-Brownian temperature
+<span class="math notranslate nohighlight">\(T_{AB} = T + T_{A}\)</span>.</p>
+<p>However, the time scale of relaxation of the
+particle in the absence of active forces
+defines whether the
+active forces perturb the behavior
+beyond this effective temperature.
+This is particularly true for a system
+with a spectrum of relaxation time
+scales, where some relaxation processes
+are faster than the active-force correlation
+time <span class="math notranslate nohighlight">\(t_{A}\)</span>.
+Such effects are prevalent for
+the dynamics of a polymer chain
+subjected to both active and Brownian
+fluctuations.</p>
+<div class="section" id="dynamic-behavior-of-an-active-brownian-polymer">
+<h2>Dynamic behavior of an Active-Brownian polymer<a class="headerlink" href="#dynamic-behavior-of-an-active-brownian-polymer" title="Permalink to this headline">¶</a></h2>
+<p>We apply our results of an
+active-Brownian particle in a harmonic
+potential to the problem of an
+active-Brownian polymer chain.
+Since the normal-mode expansion of the
+Rouse polymer adopts the form of
+a particle in a harmonic potential,
+we can frame our results in the previous
+section to find the behavior of the
+pth normal mode.</p>
+<p>The mapping from the harmonic particle to
+the pth normal mode involves replacing
+the following variables:
+<span class="math notranslate nohighlight">\(\xi \rightarrow N \xi\)</span>,
+<span class="math notranslate nohighlight">\(k \rightarrow k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}\)</span>,
+<span class="math notranslate nohighlight">\(f_{A}^{2} \rightarrow N f_{A}^{2}\)</span>.
+We then define the Rouse time
+<span class="math notranslate nohighlight">\(t_{R} = N^{2} b^{2} \xi /(3 \pi^{2} k_{B}T)\)</span>
+as the longest internal relaxation time of the
+polymer, emph{i.e.} <span class="math notranslate nohighlight">\(t_{R} = N\xi/k_{1}\)</span>
+for the <span class="math notranslate nohighlight">\(p=1\)</span> normal mode.</p>
+<p>We defined the normal-mode correlation
+function for the pth mode to be</p>
+<div class="math notranslate nohighlight">
+\[C_{p}(\tau) =
+\langle
+\vec{X}_{p}(\tau) \cdot
+\vec{X}_{p'} (0)
+\rangle
+=
+\frac{3 k_{B}T}{k_{p}} \left[
+1 + \frac{F_{A}^{2}}{2} \frac{K_{A}}{K_{A}+p^{2}}
+\right] \exp \left( - p^{2} \tau \right)
+\delta_{pp'}\]</div>
+<p>where <span class="math notranslate nohighlight">\(F_{A}^{2} =
+f_{A}^{2}/(k_{A} \xi k_{B}T)\)</span>
+and
+<span class="math notranslate nohighlight">\(K_{A} = t_{R} k_{A} =
+N^{2} b^{2} \xi k_{A} /(3 \pi^{2} k_{B}T)\)</span>.
+The dimensionless time <span class="math notranslate nohighlight">\(\tau = t/t_{R}\)</span>
+is scaled by the Rouse time of the
+polymer.</p>
+<p>We find the center-of-mass
+mean-square displacement to be</p>
+<div class="math notranslate nohighlight" id="equation-msd-com">
+<span class="eqno">(4)<a class="headerlink" href="#equation-msd-com" title="Permalink to this equation">¶</a></span>\[\mathrm{MSD}_{\mathrm{com}} =
+\langle
+\left(
+\vec{X}_{0}(t) - \vec{X}_{0}(0)
+\right)^{2}
+\rangle
+=
+\frac{k_{B} T}{k_{1}}
+\left\{
+6 \tau + 3 F_{A}^{2}
+\left[
+\tau - \frac{1}{K_{A}} +
+\frac{1}{K_{A}}
+\exp \left(
+- K_{A} \tau
+\right)
+\right]
+\right\}.\]</div>
+<p>We note that Eq. <a class="reference internal" href="#equation-msd-com">(4)</a>
+has the short-time asymptotic behavior
+<span class="math notranslate nohighlight">\(\mathrm{MSD}_{\mathrm{com}} \rightarrow
+6 [k_{B}T/(\xi N)] t
+\)</span>,
+which coincides with the mean-square
+displacement for a Brownian-only polymer.
+The long-time asymptotic behavior
+<span class="math notranslate nohighlight">\(\mathrm{MSD}_{\mathrm{com}} \rightarrow
+6 [k_{B}T/(\xi N)] (1 + F_{A}^{2}/2) t
+\)</span>
+reveals the long-time effective
+temperature due to Brownian and active
+fluctuations, given by
+<span class="math notranslate nohighlight">\(T_{AB} = T (1 + F_{A}^{2}/2)\)</span>.</p>
+<p>The mean-square displacement of a segment of the polymer chain is define as</p>
+<div class="math notranslate nohighlight" id="equation-msd-active">
+<span class="eqno">(5)<a class="headerlink" href="#equation-msd-active" title="Permalink to this equation">¶</a></span>\[\mathrm{MSD} = \langle \left( \vec{r}(n, t) - \vec{r}(n, 0) \right)^{2} \rangle\]</div>
+<p>for the <span class="math notranslate nohighlight">\(n\)</span>.
+In this work, we focus on the midpoint
+motion at <span class="math notranslate nohighlight">\(n=N/2\)</span>, but this is
+easily extended to other polymer positions.
+We insert our normal-mode representation into Eq. <a class="reference internal" href="#equation-msd-active">(5)</a>,
+resulting in the expression</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathrm{MSD} &amp; = &amp;
+\sum_{p=0}^{\infty} \sum_{p'=0}^{\infty}
+\langle
+\left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
+\left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right) \rangle
+\phi_{p}(n=N/2) \phi_{p'}(n=N/2)
+\nonumber
+\\
+&amp; = &amp;
+    \mathrm{MSD}_{\mathrm{com}} +
+\sum_{p = 1}^{\infty} 12 \frac{k_{B}T}{k_{2p}}
+\left[ 1 + \frac{F_{A}^{2}}{2} \frac{K_{A}}{K_{A}+(2p)^{2}} \right]
+\left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right].\end{split}\]</div>
+<p>In addition, we define the
+the mean-square change in distance (MSCD) for a polymer chain.
+This quantity is defined as</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSCD} = \langle \left( \Delta
+\vec{R}(t) - \Delta \vec{R}(0) \right)^{2}
+\rangle\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(\Delta \vec{R}(t) = \vec{r}(N/2 + \Delta, t) - \vec{r}(N/2 - \Delta,t)\)</span>.
+Thus, MSCD is a measure of the change
+in separation distance between two
+points on the polymer that are <span class="math notranslate nohighlight">\(2 \Delta\)</span>
+segments from each other.
+This results in the expression</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSCD}
+    =  \sum_{p = 0}^{\infty} 48 \frac{k_{B}T}{k_{2p+1}}
+\left[ 1 + \frac{F_{A}^{2}}{2} \frac{K_{A}}{K_{A}+(2p+1)^{2}} \right]
+\left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
+\sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]\]</div>
+</div>
+<div class="section" id="module-wlcstat.active_brown">
+<span id="functions-contained-with-the-active-brown-module"></span><h2>Functions contained with the ‘active_brown’ module<a class="headerlink" href="#module-wlcstat.active_brown" title="Permalink to this headline">¶</a></h2>
+<p>Active-Brownian dynamics</p>
+<p class="rubric">Notes</p>
+<p>Detailed derivations for MSD and MSCD are found in “Interplay of active and thermal fluctuations in polymer dynamics”</p>
+<dl class="py function">
+<dt id="wlcstat.active_brown.mscd_active">
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">mscd_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">fa</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#mscd_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.mscd_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mscd for two points on an active-Brownian polymer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSCD</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
+<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
+<li><p><strong>ka</strong> (<em>float</em>) – Dimensionless active-force rate constant</p></li>
+<li><p><strong>fa</strong> (<em>float</em>) – Dimensionless active-force magnitude</p></li>
+<li><p><strong>Ndel</strong> (<em>float</em>) – Distance from the last linkage site to the measured site. This ends up
+being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – The full length of the linear polymer (in Kuhn lengths).</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd</strong> – result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.active_brown.msd_active">
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">msd_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">fa</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#msd_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.msd_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute msd for two points on an active-Brownian polymer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSCD</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
+<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
+<li><p><strong>ka</strong> (<em>float</em>) – Dimensionless active-force rate constant</p></li>
+<li><p><strong>fa</strong> (<em>float</em>) – Dimensionless active-force magnitude</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – The full length of the linear polymer (in Kuhn lengths).</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>msd</strong> – result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="example-usage-of-msd-active">
+<h2>Example usage of ‘msd_active’<a class="headerlink" href="#example-usage-of-msd-active" title="Permalink to this headline">¶</a></h2>
+<p>We show the solution for
+the MSD for chain length <span class="math notranslate nohighlight">\(N=100\)</span> for
+an active-Brownian polymer.
+The top and middle plots show the behavior for <span class="math notranslate nohighlight">\(K_{A} = 10\)</span> with varying <span class="math notranslate nohighlight">\(F_{A}^{2}\)</span>,
+and the bottom plot shows the behavior for <span class="math notranslate nohighlight">\(F_{A}^{2} = 100\)</span> with varying <span class="math notranslate nohighlight">\(K_{A}\)</span>.
+The long-time asymptotic behavior for the active-Brownian polymer (dashed) is given by the
+long-time behavior of the center-of-mass MSD, which is given by
+<span class="math notranslate nohighlight">\(\mathrm{MSD}_{\mathrm{com}} \rightarrow
+6 [k_{B}T/(\xi N)] (1 + F_{A}^{2}/2) t\)</span>.</p>
+<p>(<a class="reference external" href=".//active_brown-1.py">Source code</a>, <a class="reference external" href=".//active_brown-1.png">png</a>, <a class="reference external" href=".//active_brown-1.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/active_brown-1.png" src="_images/active_brown-1.png" />
+</div>
+<p>(<a class="reference external" href=".//active_brown-2.py">Source code</a>, <a class="reference external" href=".//active_brown-2.png">png</a>, <a class="reference external" href=".//active_brown-2.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-2.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/active_brown-2.png" src="_images/active_brown-2.png" />
+</div>
+<p>(<a class="reference external" href=".//active_brown-3.py">Source code</a>, <a class="reference external" href=".//active_brown-3.png">png</a>, <a class="reference external" href=".//active_brown-3.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-3.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/active_brown-3.png" src="_images/active_brown-3.png" />
+</div>
+</div>
+<div class="section" id="example-usage-of-mscd-active">
+<h2>Example usage of ‘mscd_active’<a class="headerlink" href="#example-usage-of-mscd-active" title="Permalink to this headline">¶</a></h2>
+<p>We show the solution for
+the MSCD for chain length <span class="math notranslate nohighlight">\(N=100\)</span> and <span class="math notranslate nohighlight">\(\Delta = 25\)</span> for
+an active-Brownian polymer.
+The top plot shows the behavior for <span class="math notranslate nohighlight">\(K_{A} = 10\)</span> with varying <span class="math notranslate nohighlight">\(F_{A}^{2}\)</span>,
+and the bottom plot shows the behavior for <span class="math notranslate nohighlight">\(F_{A}^{2} = 100\)</span> with varying <span class="math notranslate nohighlight">\(K_{A}\)</span>.
+The long-time asymptotic behavior for the Brownian-only polymer is found by noting</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSCD} = \langle \left( \Delta \vec{R}(t) - \Delta \vec{R}(0) \right)^{2} \rangle =
+\langle \Delta \vec{R}(t)^{2} \rangle
+- 2 \langle \Delta \vec{R}(t) \cdot \Delta \vec{R}(0) \rangle
++ \langle \Delta \vec{R}(0) ^{2} \rangle \rightarrow
+2 \langle \Delta \vec{R}^{2} \rangle\]</div>
+<p>which leads to the asymptotic solutions</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{MSCD} \rightarrow 4 \Delta\]</div>
+<p>(<a class="reference external" href=".//active_brown-4.py">Source code</a>, <a class="reference external" href=".//active_brown-4.png">png</a>, <a class="reference external" href=".//active_brown-4.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-4.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/active_brown-4.png" src="_images/active_brown-4.png" />
+</div>
+<p>(<a class="reference external" href=".//active_brown-5.py">Source code</a>, <a class="reference external" href=".//active_brown-5.png">png</a>, <a class="reference external" href=".//active_brown-5.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-5.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/active_brown-5.png" src="_images/active_brown-5.png" />
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Active-Brownian Dynamics</a><ul>
+<li><a class="reference internal" href="#dynamic-behavior-of-an-active-brownian-polymer">Dynamic behavior of an Active-Brownian polymer</a></li>
+<li><a class="reference internal" href="#module-wlcstat.active_brown">Functions contained with the ‘active_brown’ module</a></li>
+<li><a class="reference internal" href="#example-usage-of-msd-active">Example usage of ‘msd_active’</a></li>
+<li><a class="reference internal" href="#example-usage-of-mscd-active">Example usage of ‘mscd_active’</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="poly_dyn.html"
+                        title="previous chapter">Polymer Dynamics</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">References</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/active_brown.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="poly_dyn.html" title="Polymer Dynamics"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Active-Brownian Dynamics</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

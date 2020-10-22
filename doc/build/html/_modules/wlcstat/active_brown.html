@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wlcstat.active_brown &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.active_brown</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for wlcstat.active_brown</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Active-Brownian dynamics</span>
+
+<span class="sd">Notes</span>
+<span class="sd">-----</span>
+<span class="sd">Detailed derivations for MSD and MSCD are found in &quot;Interplay of active and thermal fluctuations in polymer dynamics&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># import mpmath</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="mscd_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.mscd_active">[docs]</a><span class="k">def</span> <span class="nf">mscd_active</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">fa</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute mscd for two points on an active-Brownian polymer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : (M,) float, array_like</span>
+<span class="sd">        Times at which to evaluate the MSCD</span>
+<span class="sd">    D : float</span>
+<span class="sd">        Diffusion coefficient, (in desired output length units). Equal to</span>
+<span class="sd">        :math:`k_BT/\xi` for :math:`\xi` in units of &quot;per Kuhn length&quot;.</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        Dimensionless active-force rate constant</span>
+<span class="sd">    fa : float</span>
+<span class="sd">        Dimensionless active-force magnitude</span>
+<span class="sd">    Ndel : float</span>
+<span class="sd">        Distance from the last linkage site to the measured site. This ends up</span>
+<span class="sd">        being (1/2)*separation between the loci (in Kuhn lengths).</span>
+<span class="sd">    N : float</span>
+<span class="sd">        The full length of the linear polymer (in Kuhn lengths).</span>
+<span class="sd">    b : float</span>
+<span class="sd">        The Kuhn length (in desired length units).</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        how many Rouse modes to include in the sum</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mscd : (M,) np.array&lt;float&gt;</span>
+<span class="sd">        result</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mscd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">k1</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">sum_coeff</span> <span class="o">=</span> <span class="mi">48</span> <span class="o">/</span> <span class="n">k1</span>
+    <span class="n">exp_coeff</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">D</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">sin_coeff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Ndel</span> <span class="o">/</span> <span class="n">N</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">active_coeff</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">fa</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ka</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">+</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">mscd</span> <span class="o">+=</span> <span class="n">active_coeff</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">exp_coeff</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sin_coeff</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">sum_coeff</span> <span class="o">*</span> <span class="n">mscd</span></div>
+
+
+<div class="viewcode-block" id="msd_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.msd_active">[docs]</a><span class="k">def</span> <span class="nf">msd_active</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">fa</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute msd for two points on an active-Brownian polymer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : (M,) float, array_like</span>
+<span class="sd">        Times at which to evaluate the MSCD</span>
+<span class="sd">    D : float</span>
+<span class="sd">        Diffusion coefficient, (in desired output length units). Equal to</span>
+<span class="sd">        :math:`k_BT/\xi` for :math:`\xi` in units of &quot;per Kuhn length&quot;.</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        Dimensionless active-force rate constant</span>
+<span class="sd">    fa : float</span>
+<span class="sd">        Dimensionless active-force magnitude</span>
+<span class="sd">    N : float</span>
+<span class="sd">        The full length of the linear polymer (in Kuhn lengths).</span>
+<span class="sd">    b : float</span>
+<span class="sd">        The Kuhn length (in desired length units).</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        how many Rouse modes to include in the sum</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    msd : (M,) np.array&lt;float&gt;</span>
+<span class="sd">        result</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t_rouse</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">t_dim</span> <span class="o">=</span> <span class="n">t</span> <span class="o">/</span> <span class="n">t_rouse</span>
+    <span class="n">msd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">k1</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">sum_coeff</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">/</span> <span class="n">k1</span>
+    <span class="n">exp_coeff</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">D</span> <span class="o">/</span> <span class="n">N</span>
+
+    <span class="n">msd_com</span> <span class="o">=</span> <span class="n">D</span> <span class="o">*</span> <span class="n">t_rouse</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">t_dim</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">fa</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_dim</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">ka</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">ka</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">ka</span> <span class="o">*</span> <span class="n">t_dim</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">active_coeff</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">fa</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ka</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">+</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">msd</span> <span class="o">+=</span> <span class="n">active_coeff</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">exp_coeff</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">sum_coeff</span> <span class="o">*</span> <span class="n">msd</span> <span class="o">+</span> <span class="n">msd_com</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.active_brown</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
