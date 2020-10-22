@@ -10,6 +10,7 @@ beads, each of which can represent an arbitrary number of Kuhn lengths.
 """
 import numpy as np
 from numba import jit
+import matplotlib.pyplot as plt
 # import mpmath
 
 from functools import lru_cache
@@ -213,3 +214,243 @@ def end_to_end_corr(t, D, N, num_modes=10000):
     for p in range(1, num_modes+1, 2):
         mscd += 8/p/p/np.pi/np.pi * np.exp(-t*p**2 / tau1)
     return N*mscd
+
+
+
+# Parameter values for chromosome V of S. cerevisiae
+
+chrv_length = 577  # Mb
+ura_loc = 116
+centr_loc = 152
+ura_locus_frac = (chrv_length - ura_loc)/chrv_length
+chrv_centromere_frac = (chrv_length - centr_loc)/chrv_length
+col_width = 3.405
+golden_ratio = (1 + np.sqrt(5))/2
+chrv_size_bp = 576874
+location_ura_bp = np.mean([116167, 116970])
+
+chrv_size_kuhn = 1165
+kuhn_length = 0.015  # um
+chrv_size_effective_um = chrv_size_kuhn*kuhn_length
+location_ura_effective_um = location_ura_bp*(chrv_size_effective_um/chrv_size_bp)
+
+nuc_radius_um = 1.3  # Average of het5 msd convex hull distribution
+sim_nuc_radius_um = 1
+sim_D = 0.02  # um^2/s
+
+
+def draw_cells(linkages, min_y=0.05, max_y=0.95, locus_frac=ura_locus_frac, centromere_frac=chrv_centromere_frac,
+               chr_size = chrv_size_effective_um):
+    r"""
+    Render the model of homologous chromosomes with linkages.
+
+    Parameters
+    ----------
+    linkages : float array
+        List of the link positions between the homologous chromosomes
+
+
+    Returns
+    -------
+
+    """
+
+    all_closest_links = []
+    linkages = [np.sort((chr_size - linkages[i]) / chr_size) for i in range(len(linkages))]
+
+    n_cells = len(linkages)
+    fig = plt.figure(figsize=(col_width, col_width/golden_ratio))
+    ax = fig.add_axes([0, 0, 1, 1])
+    plt.axis('off')
+    n_fences = n_cells + 1
+    fence_posts = np.linspace(0, 1, n_fences)
+    width_per_cell = np.diff(fence_posts)[0]
+    cell_centers = (fence_posts[1:] + fence_posts[:-1]) / 2
+    width_to_chr_center = width_per_cell / 5
+    cell_width = 15
+    for i, x in enumerate(cell_centers):
+        for dx in [width_to_chr_center, -width_to_chr_center]:
+            plt.plot([x + dx, x + dx],
+                     [min_y, max_y], transform=ax.transAxes, linewidth=cell_width,
+                     solid_capstyle='round', color=[197/255, 151/255, 143/255])
+            plt.scatter([x + dx], [min_y + (max_y - min_y)*centromere_frac],
+                        zorder=10, transform=ax.transAxes, s=200, color='k')
+            plt.scatter([x + dx], [min_y + (max_y - min_y)*locus_frac],
+                        zorder=15, transform=ax.transAxes, s=500, color='g', marker='*', edgecolors='k')
+        for linkage in linkages[i]:
+            plt.plot([x - width_to_chr_center, x + width_to_chr_center],
+                     [min_y + (max_y - min_y)*linkage, min_y + (max_y - min_y)*linkage],
+                     color=(0, 0, 1), transform=ax.transAxes,
+                     linewidth=5, solid_capstyle='round')
+        num_linkages = len(linkages[i])
+        j = np.searchsorted(linkages[i], locus_frac)
+        closest_links = []
+        if j != 0:
+            closest_links.append(linkages[i][j - 1])
+        if j != num_linkages:
+            closest_links.append(linkages[i][j])
+        closest_links = np.array(closest_links)
+        if len(closest_links) > 0:
+            linewidths = 1.2*np.ones_like(closest_links)
+            closestest_link = np.argmin(np.abs(closest_links - locus_frac))
+            linewidths[closestest_link] = 3.5
+        for k, linkage in enumerate(closest_links):
+            plt.plot([x - width_to_chr_center, x - width_to_chr_center,
+                      x + width_to_chr_center, x + width_to_chr_center],
+                     [min_y + (max_y - min_y)*locus_frac, min_y + (max_y - min_y)*linkage,
+                      min_y + (max_y - min_y)*linkage, min_y + (max_y - min_y)*locus_frac],
+                     color=(1, 1, 1), transform=ax.transAxes,
+                     linewidth=linewidths[k], linestyle='--', solid_capstyle='butt', zorder=100)
+        all_closest_links.append(closest_links)
+
+    return ax, all_closest_links
+
+
+#chrv_size_bp = 576874
+#location_ura_bp = np.mean([116167, 116970])
+
+#chrv_size_kuhn = 1165
+#kuhn_length = 0.015  # um
+#chrv_size_effective_um = chrv_size_kuhn*kuhn_length
+#location_ura_effective_um = location_ura_bp*(chrv_size_effective_um/chrv_size_bp)
+
+#nuc_radius_um = 1.3  # Average of het5 msd convex hull distribution
+#sim_nuc_radius_um = 1
+#sim_D = 0.02  # um^2/s
+
+
+def model_mscd(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_size_effective_um,
+               nuc_radius=sim_nuc_radius_um, b=kuhn_length, D=sim_D, num_modes=10000):
+    r"""
+    Calculate the MSCD for the model of linked chromosomes
+
+    Parameters
+    ----------
+    t : float array
+        Time in seconds
+    linkages : float array
+        List of the link positions between the homologous chromosomes
+    label_loc : float
+        Location of the fluorescent label along the chromosome (microns)
+    chr_size : float
+        Length of the chromosome (microns)
+    nuc_radius : float
+        Radius of the nucleus (microns)
+    b : float
+        Kuhn length (microns)
+    D : float
+        Diffusivity (microns ** 2 / second)
+    num_modes : int
+        Number of normal modes used in the calculation
+
+    Returns
+    -------
+    mscd_model : float array (size len(t))
+        Calculated MSCD (microns ** 2) for the model with defined linkages
+
+    """
+
+    linkages = np.array(linkages) / b
+    chr_size = chr_size / b
+    label_loc = label_loc / b
+
+    # Evaluate the MSCD if there are no linkages
+    if len(linkages) == 0:
+        mscd_model = 2 * linear_mid_msd(t, b, chr_size, D, num_modes)
+        for i in range(len(t)):
+            if mscd_model[i] > nuc_radius ** 2:
+                mscd_model[i] = nuc_radius ** 2
+        return mscd_model
+
+    # Evaluate the MSCD if there are linkages between the chromosomes
+    i = np.searchsorted(linkages, label_loc)
+    if i == 0:
+        mscd_func = linear_mscd
+        Ndel = linkages[0] - label_loc
+        N = 2 * linkages[0]
+    elif i == len(linkages):
+        mscd_func = linear_mscd
+        Ndel = label_loc - linkages[-1]
+        N = 2 * (chr_size - linkages[-1])
+    else:
+        mscd_func = ring_mscd
+        Ndel = linkages[i] - label_loc
+        N = 2*(linkages[i] - linkages[i - 1])
+
+    mscd_model = mscd_func(t, D=D, Ndel=Ndel, N=N, b=b, num_modes=num_modes)
+    if mscd_model[i] > nuc_radius ** 2:
+        mscd_model[i] = nuc_radius ** 2
+
+    return mscd_model
+
+
+def generate_example_cell(mu, chr_size=chrv_size_effective_um):
+    r"""
+    Generate the number and location of linkage between homologous chromosomes
+
+    Parameters
+    ----------
+    mu : float
+        Average number of linkages between chromosomes (Poisson distributed)
+    chr_size : float
+        Size of the chromosome (microns)
+
+    Returns
+    -------
+    cell : float array (length selected from Poisson distribution)
+        List of linkage locations between the homologous chromosomes
+
+    """
+    cell = np.sort(chr_size * np.random.random_sample(size=np.random.poisson(lam=mu)))
+
+    return cell
+
+
+def model_plateau(linkages, label_loc=location_ura_effective_um, chr_size=chrv_size_effective_um,
+                  nuc_radius=sim_nuc_radius_um, b=kuhn_length):
+    r"""
+    Evaluate the plateau values in the MSCD
+
+    Parameters
+    ----------
+    linkages : float array
+        List of the link positions between the homologous chromosomes
+    label_loc : float
+        Location of the fluorescent label along the chromosome (microns)
+    chr_size : float
+        Length of the chromosome (microns)
+    nuc_radius : float
+        Radius of the nucleus (microns)
+    b : float
+        Kuhn length (microns)
+
+    Returns
+    -------
+    mscd_plateau : float
+        Plateau value of the MSCD in the long-time asymptotic limit (microns ** 2)
+
+    """
+
+    chr_size /= b
+    label_loc /= b
+    linkages = np.array(linkages) / b
+
+    # Evaluate the MSCD if there are no linkages
+    if len(linkages) == 0:
+        mscd_plateau = nuc_radius ** 2
+        return mscd_plateau
+
+    # Evaluate the MSCD if there are linkages between the chromosomes
+    i = np.searchsorted(linkages, label_loc)
+    if i == 0:
+        Ndel = linkages[0] - label_loc
+        mscd_plateau = 4 * b ** 2 * Ndel
+    elif i == len(linkages):
+        Ndel = label_loc - linkages[-1]
+        mscd_plateau = 4 * b ** 2 * Ndel
+    else:
+        Ndel = linkages[i] - label_loc
+        N = 2*(linkages[i] - linkages[i - 1])
+        mscd_plateau = 2 * b ** 2 / (1 / (2 * Ndel) + 1 / (N - 2 * Ndel))
+
+    return mscd_plateau

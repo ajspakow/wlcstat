@@ -52,6 +52,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="c1"># import mpmath</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
@@ -59,7 +60,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<div class="viewcode-block" id="rouse_mode"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.rouse_mode">[docs]</a><span class="nd">@jit</span>
+<div class="viewcode-block" id="rouse_mode"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.rouse_mode">[docs]</a><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">rouse_mode</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Eigenbasis for Rouse model.</span>
 
@@ -73,21 +74,21 @@
     <span class="k">return</span> <span class="n">phi</span></div>
 
 
-<div class="viewcode-block" id="rouse_mode_coef"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.rouse_mode_coef">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="rouse_mode_coef"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.rouse_mode_coef">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">rouse_mode_coef</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">kbT</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;k_p: Weber Phys Rev E 2010, after Eq. 18.&quot;&quot;&quot;</span>
     <span class="c1"># alternate: k*pi**2/N * p**2, i.e. k = 3kbT/b**2</span>
     <span class="k">return</span> <span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">kbT</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="kp_over_kbt"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.kp_over_kbt">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="kp_over_kbt"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.kp_over_kbt">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">kp_over_kbt</span><span class="p">(</span><span class="n">p</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">N</span> <span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;k_p/(k_B T) : &quot;non-dimensionalized&quot; k_p is all that&#39;s needed for most</span>
 <span class="sd">    formulas, e.g. MSD.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span><span class="o">*</span><span class="n">p</span></div>
 
 
-<div class="viewcode-block" id="linear_mid_msd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.linear_mid_msd">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="linear_mid_msd"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.linear_mid_msd">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">linear_mid_msd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    modified from Weber Phys Rev E 2010, Eq. 24.</span>
@@ -99,7 +100,7 @@
     <span class="k">return</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">msd</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">D</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">N</span></div>
 
 
-<div class="viewcode-block" id="gaussian_G"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.gaussian_G">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="gaussian_G"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.gaussian_G">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">gaussian_G</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Green&#39;s function of a Gaussian chain at N Kuhn lengths of separation,</span>
 <span class="sd">    given a Kuhn length of b&quot;&quot;&quot;</span>
@@ -107,7 +108,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">N</span><span class="p">),</span> <span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">r2</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="gaussian_Ploop"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.gaussian_Ploop">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="gaussian_Ploop"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.gaussian_Ploop">[docs]</a><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">gaussian_Ploop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Looping probability for two loci on a Gaussian chain N kuhn lengths</span>
 <span class="sd">    apart, when the Kuhn length is b, and the capture radius is a&quot;&quot;&quot;</span>
@@ -170,7 +171,7 @@
 <span class="n">confined_G</span><span class="o">.</span><span class="n">zl_n</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="linear_mscd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.linear_mscd">[docs]</a><span class="k">def</span> <span class="nf">linear_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+<div class="viewcode-block" id="linear_mscd"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.linear_mscd">[docs]</a><span class="k">def</span> <span class="nf">linear_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute mscd for two points on a linear polymer.</span>
 
@@ -210,7 +211,7 @@
     <span class="k">return</span> <span class="n">sum_coeff</span> <span class="o">*</span> <span class="n">mscd</span></div>
 
 
-<div class="viewcode-block" id="ring_mscd"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.ring_mscd">[docs]</a><span class="k">def</span> <span class="nf">ring_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+<div class="viewcode-block" id="ring_mscd"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.ring_mscd">[docs]</a><span class="k">def</span> <span class="nf">ring_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute mscd for two points on a ring.</span>
 
@@ -248,13 +249,253 @@
     <span class="k">return</span> <span class="n">sum_coeff</span> <span class="o">*</span> <span class="n">mscd</span></div>
 
 
-<div class="viewcode-block" id="end_to_end_corr"><a class="viewcode-back" href="../../poly_dyn.html#wlcstat.poly_dyn.end_to_end_corr">[docs]</a><span class="k">def</span> <span class="nf">end_to_end_corr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<div class="viewcode-block" id="end_to_end_corr"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.end_to_end_corr">[docs]</a><span class="k">def</span> <span class="nf">end_to_end_corr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Doi and Edwards, Eq. 4.35&quot;&quot;&quot;</span>
     <span class="n">mscd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="n">tau1</span> <span class="o">=</span> <span class="n">N</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">D</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
         <span class="n">mscd</span> <span class="o">+=</span> <span class="mi">8</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="o">*</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">tau1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">N</span><span class="o">*</span><span class="n">mscd</span></div>
+
+
+
+<span class="c1"># Parameter values for chromosome V of S. cerevisiae</span>
+
+<span class="n">chrv_length</span> <span class="o">=</span> <span class="mi">577</span>  <span class="c1"># Mb</span>
+<span class="n">ura_loc</span> <span class="o">=</span> <span class="mi">116</span>
+<span class="n">centr_loc</span> <span class="o">=</span> <span class="mi">152</span>
+<span class="n">ura_locus_frac</span> <span class="o">=</span> <span class="p">(</span><span class="n">chrv_length</span> <span class="o">-</span> <span class="n">ura_loc</span><span class="p">)</span><span class="o">/</span><span class="n">chrv_length</span>
+<span class="n">chrv_centromere_frac</span> <span class="o">=</span> <span class="p">(</span><span class="n">chrv_length</span> <span class="o">-</span> <span class="n">centr_loc</span><span class="p">)</span><span class="o">/</span><span class="n">chrv_length</span>
+<span class="n">col_width</span> <span class="o">=</span> <span class="mf">3.405</span>
+<span class="n">golden_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">chrv_size_bp</span> <span class="o">=</span> <span class="mi">576874</span>
+<span class="n">location_ura_bp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="mi">116167</span><span class="p">,</span> <span class="mi">116970</span><span class="p">])</span>
+
+<span class="n">chrv_size_kuhn</span> <span class="o">=</span> <span class="mi">1165</span>
+<span class="n">kuhn_length</span> <span class="o">=</span> <span class="mf">0.015</span>  <span class="c1"># um</span>
+<span class="n">chrv_size_effective_um</span> <span class="o">=</span> <span class="n">chrv_size_kuhn</span><span class="o">*</span><span class="n">kuhn_length</span>
+<span class="n">location_ura_effective_um</span> <span class="o">=</span> <span class="n">location_ura_bp</span><span class="o">*</span><span class="p">(</span><span class="n">chrv_size_effective_um</span><span class="o">/</span><span class="n">chrv_size_bp</span><span class="p">)</span>
+
+<span class="n">nuc_radius_um</span> <span class="o">=</span> <span class="mf">1.3</span>  <span class="c1"># Average of het5 msd convex hull distribution</span>
+<span class="n">sim_nuc_radius_um</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">sim_D</span> <span class="o">=</span> <span class="mf">0.02</span>  <span class="c1"># um^2/s</span>
+
+
+<div class="viewcode-block" id="draw_cells"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.draw_cells">[docs]</a><span class="k">def</span> <span class="nf">draw_cells</span><span class="p">(</span><span class="n">linkages</span><span class="p">,</span> <span class="n">min_y</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">max_y</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">locus_frac</span><span class="o">=</span><span class="n">ura_locus_frac</span><span class="p">,</span> <span class="n">centromere_frac</span><span class="o">=</span><span class="n">chrv_centromere_frac</span><span class="p">,</span>
+               <span class="n">chr_size</span> <span class="o">=</span> <span class="n">chrv_size_effective_um</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Render the model of homologous chromosomes with linkages.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    linkages : float array</span>
+<span class="sd">        List of the link positions between the homologous chromosomes</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">all_closest_links</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">linkages</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">((</span><span class="n">chr_size</span> <span class="o">-</span> <span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">chr_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">))]</span>
+
+    <span class="n">n_cells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">col_width</span><span class="p">,</span> <span class="n">col_width</span><span class="o">/</span><span class="n">golden_ratio</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">n_fences</span> <span class="o">=</span> <span class="n">n_cells</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">fence_posts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_fences</span><span class="p">)</span>
+    <span class="n">width_per_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">fence_posts</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cell_centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">fence_posts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">fence_posts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">width_to_chr_center</span> <span class="o">=</span> <span class="n">width_per_cell</span> <span class="o">/</span> <span class="mi">5</span>
+    <span class="n">cell_width</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cell_centers</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dx</span> <span class="ow">in</span> <span class="p">[</span><span class="n">width_to_chr_center</span><span class="p">,</span> <span class="o">-</span><span class="n">width_to_chr_center</span><span class="p">]:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">],</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">cell_width</span><span class="p">,</span>
+                     <span class="n">solid_capstyle</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">197</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="mi">151</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="mi">143</span><span class="o">/</span><span class="mi">255</span><span class="p">])</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">],</span> <span class="p">[</span><span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">centromere_frac</span><span class="p">],</span>
+                        <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">],</span> <span class="p">[</span><span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">locus_frac</span><span class="p">],</span>
+                        <span class="n">zorder</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">linkage</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span> <span class="o">-</span> <span class="n">width_to_chr_center</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">width_to_chr_center</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">linkage</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">linkage</span><span class="p">],</span>
+                     <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                     <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">solid_capstyle</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">)</span>
+        <span class="n">num_linkages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">locus_frac</span><span class="p">)</span>
+        <span class="n">closest_links</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">closest_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">num_linkages</span><span class="p">:</span>
+            <span class="n">closest_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">closest_links</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">closest_links</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_links</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">linewidths</span> <span class="o">=</span> <span class="mf">1.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">closest_links</span><span class="p">)</span>
+            <span class="n">closestest_link</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">closest_links</span> <span class="o">-</span> <span class="n">locus_frac</span><span class="p">))</span>
+            <span class="n">linewidths</span><span class="p">[</span><span class="n">closestest_link</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.5</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">linkage</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">closest_links</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span> <span class="o">-</span> <span class="n">width_to_chr_center</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">width_to_chr_center</span><span class="p">,</span>
+                      <span class="n">x</span> <span class="o">+</span> <span class="n">width_to_chr_center</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">width_to_chr_center</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">locus_frac</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">linkage</span><span class="p">,</span>
+                      <span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">linkage</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">*</span><span class="n">locus_frac</span><span class="p">],</span>
+                     <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                     <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidths</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">solid_capstyle</span><span class="o">=</span><span class="s1">&#39;butt&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">all_closest_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">closest_links</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span><span class="p">,</span> <span class="n">all_closest_links</span></div>
+
+
+<span class="c1">#chrv_size_bp = 576874</span>
+<span class="c1">#location_ura_bp = np.mean([116167, 116970])</span>
+
+<span class="c1">#chrv_size_kuhn = 1165</span>
+<span class="c1">#kuhn_length = 0.015  # um</span>
+<span class="c1">#chrv_size_effective_um = chrv_size_kuhn*kuhn_length</span>
+<span class="c1">#location_ura_effective_um = location_ura_bp*(chrv_size_effective_um/chrv_size_bp)</span>
+
+<span class="c1">#nuc_radius_um = 1.3  # Average of het5 msd convex hull distribution</span>
+<span class="c1">#sim_nuc_radius_um = 1</span>
+<span class="c1">#sim_D = 0.02  # um^2/s</span>
+
+
+<div class="viewcode-block" id="model_mscd"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.model_mscd">[docs]</a><span class="k">def</span> <span class="nf">model_mscd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">linkages</span><span class="p">,</span> <span class="n">label_loc</span><span class="o">=</span><span class="n">location_ura_effective_um</span><span class="p">,</span> <span class="n">chr_size</span><span class="o">=</span><span class="n">chrv_size_effective_um</span><span class="p">,</span>
+               <span class="n">nuc_radius</span><span class="o">=</span><span class="n">sim_nuc_radius_um</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">kuhn_length</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">sim_D</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the MSCD for the model of linked chromosomes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : float array</span>
+<span class="sd">        Time in seconds</span>
+<span class="sd">    linkages : float array</span>
+<span class="sd">        List of the link positions between the homologous chromosomes</span>
+<span class="sd">    label_loc : float</span>
+<span class="sd">        Location of the fluorescent label along the chromosome (microns)</span>
+<span class="sd">    chr_size : float</span>
+<span class="sd">        Length of the chromosome (microns)</span>
+<span class="sd">    nuc_radius : float</span>
+<span class="sd">        Radius of the nucleus (microns)</span>
+<span class="sd">    b : float</span>
+<span class="sd">        Kuhn length (microns)</span>
+<span class="sd">    D : float</span>
+<span class="sd">        Diffusivity (microns ** 2 / second)</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        Number of normal modes used in the calculation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mscd_model : float array (size len(t))</span>
+<span class="sd">        Calculated MSCD (microns ** 2) for the model with defined linkages</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">linkages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">linkages</span><span class="p">)</span> <span class="o">/</span> <span class="n">b</span>
+    <span class="n">chr_size</span> <span class="o">=</span> <span class="n">chr_size</span> <span class="o">/</span> <span class="n">b</span>
+    <span class="n">label_loc</span> <span class="o">=</span> <span class="n">label_loc</span> <span class="o">/</span> <span class="n">b</span>
+
+    <span class="c1"># Evaluate the MSCD if there are no linkages</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mscd_model</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">linear_mid_msd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">chr_size</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">num_modes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">mscd_model</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nuc_radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">mscd_model</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nuc_radius</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">mscd_model</span>
+
+    <span class="c1"># Evaluate the MSCD if there are linkages between the chromosomes</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">linkages</span><span class="p">,</span> <span class="n">label_loc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mscd_func</span> <span class="o">=</span> <span class="n">linear_mscd</span>
+        <span class="n">Ndel</span> <span class="o">=</span> <span class="n">linkages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">label_loc</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">linkages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">):</span>
+        <span class="n">mscd_func</span> <span class="o">=</span> <span class="n">linear_mscd</span>
+        <span class="n">Ndel</span> <span class="o">=</span> <span class="n">label_loc</span> <span class="o">-</span> <span class="n">linkages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">chr_size</span> <span class="o">-</span> <span class="n">linkages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mscd_func</span> <span class="o">=</span> <span class="n">ring_mscd</span>
+        <span class="n">Ndel</span> <span class="o">=</span> <span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">label_loc</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">linkages</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">mscd_model</span> <span class="o">=</span> <span class="n">mscd_func</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">D</span><span class="p">,</span> <span class="n">Ndel</span><span class="o">=</span><span class="n">Ndel</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="n">N</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="n">num_modes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mscd_model</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nuc_radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">mscd_model</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nuc_radius</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">mscd_model</span></div>
+
+
+<div class="viewcode-block" id="generate_example_cell"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.generate_example_cell">[docs]</a><span class="k">def</span> <span class="nf">generate_example_cell</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">chr_size</span><span class="o">=</span><span class="n">chrv_size_effective_um</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the number and location of linkage between homologous chromosomes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu : float</span>
+<span class="sd">        Average number of linkages between chromosomes (Poisson distributed)</span>
+<span class="sd">    chr_size : float</span>
+<span class="sd">        Size of the chromosome (microns)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cell : float array (length selected from Poisson distribution)</span>
+<span class="sd">        List of linkage locations between the homologous chromosomes</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">chr_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="n">mu</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">cell</span></div>
+
+
+<div class="viewcode-block" id="model_plateau"><a class="viewcode-back" href="../../active_brown.html#wlcstat.poly_dyn.model_plateau">[docs]</a><span class="k">def</span> <span class="nf">model_plateau</span><span class="p">(</span><span class="n">linkages</span><span class="p">,</span> <span class="n">label_loc</span><span class="o">=</span><span class="n">location_ura_effective_um</span><span class="p">,</span> <span class="n">chr_size</span><span class="o">=</span><span class="n">chrv_size_effective_um</span><span class="p">,</span>
+                  <span class="n">nuc_radius</span><span class="o">=</span><span class="n">sim_nuc_radius_um</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">kuhn_length</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate the plateau values in the MSCD</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    linkages : float array</span>
+<span class="sd">        List of the link positions between the homologous chromosomes</span>
+<span class="sd">    label_loc : float</span>
+<span class="sd">        Location of the fluorescent label along the chromosome (microns)</span>
+<span class="sd">    chr_size : float</span>
+<span class="sd">        Length of the chromosome (microns)</span>
+<span class="sd">    nuc_radius : float</span>
+<span class="sd">        Radius of the nucleus (microns)</span>
+<span class="sd">    b : float</span>
+<span class="sd">        Kuhn length (microns)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mscd_plateau : float</span>
+<span class="sd">        Plateau value of the MSCD in the long-time asymptotic limit (microns ** 2)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">chr_size</span> <span class="o">/=</span> <span class="n">b</span>
+    <span class="n">label_loc</span> <span class="o">/=</span> <span class="n">b</span>
+    <span class="n">linkages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">linkages</span><span class="p">)</span> <span class="o">/</span> <span class="n">b</span>
+
+    <span class="c1"># Evaluate the MSCD if there are no linkages</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mscd_plateau</span> <span class="o">=</span> <span class="n">nuc_radius</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">mscd_plateau</span>
+
+    <span class="c1"># Evaluate the MSCD if there are linkages between the chromosomes</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">linkages</span><span class="p">,</span> <span class="n">label_loc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">Ndel</span> <span class="o">=</span> <span class="n">linkages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">label_loc</span>
+        <span class="n">mscd_plateau</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Ndel</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">):</span>
+        <span class="n">Ndel</span> <span class="o">=</span> <span class="n">label_loc</span> <span class="o">-</span> <span class="n">linkages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">mscd_plateau</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Ndel</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Ndel</span> <span class="o">=</span> <span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">label_loc</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">linkages</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">mscd_plateau</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Ndel</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Ndel</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">mscd_plateau</span></div>
 </pre></div>
 
             <div class="clearer"></div>
