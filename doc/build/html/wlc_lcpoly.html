@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polymer Field Theory: Liquid Crystalline Solutions &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wormlike Chains with Twist, Helices, and Ribbons" href="twlc_notes.html" />
+    <link rel="prev" title="Structure Factor" href="wlcstruc_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="twlc_notes.html" title="Wormlike Chains with Twist, Helices, and Ribbons"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polymer Field Theory: Liquid Crystalline Solutions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="wlc-lcpoly"></span><div class="section" id="polymer-field-theory-liquid-crystalline-solutions">
+<h1>Polymer Field Theory: Liquid Crystalline Solutions<a class="headerlink" href="#polymer-field-theory-liquid-crystalline-solutions" title="Permalink to this headline">¶</a></h1>
+<p>We define a system Hamiltonian of a collection of polymer chains and solvent molecules</p>
+<div class="math notranslate nohighlight" id="equation-sysh">
+<span class="eqno">(1)<a class="headerlink" href="#equation-sysh" title="Permalink to this equation">¶</a></span>\[\beta \mathcal{H} =
+\sum_{i=1}^{n_{p}} \frac{\epsilon}{2} \int_{0}^{L}
+\left( \frac{\partial \vec{u}_{i}}{\partial s} \right)^{\! \! 2} d s +
+\chi \int d \vec{r} \, \hat{\phi}_{s}(\vec{r} \,) \hat{\phi}_{p}(\vec{r} \,) -
+\frac{a}{2} \int d \vec{r} \, \hat{\mathbf{S}}(\vec{r} \,):\hat{\mathbf{S}}(\vec{r} \,)\]</div>
+<p><span class="math notranslate nohighlight">\(\hat{\phi}_{s}\)</span> and <span class="math notranslate nohighlight">\(\hat{\phi}_{p}\)</span> are the local volume fractions of the solvent and polymer molecules, and <span class="math notranslate nohighlight">\(\hat{\mathbf{S}}\)</span>
+is the tensorial nematic order parameter</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{\phi}_{s}(\vec{r} \,) &amp; = &amp; v \sum_{j=1}^{n_{s}}
+\delta (\vec{r}-\vec{r}_{j})
+\\
+\hat{\phi}_{p}(\vec{r} \,) &amp; = &amp; A \sum_{i=1}^{n_{p}}
+\int_{0}^{L} d s \delta (\vec{r}-\vec{r}_{i}(s))
+\\
+\hat{\mathbf{S}} (\vec{r} \,) &amp; = &amp; A \sum_{i=1}^{n_{p}}
+\int_{0}^{L} d s \delta (\vec{r}-\vec{r}_{i}(s)) %\nonumber \\
+\left( \vec{u}_{i}(s) \vec{u}_{i}(s) -
+\frac{1}{3} \mathbf{I} \right)\end{split}\]</div>
+<p>The Flory-Huggins parameter <span class="math notranslate nohighlight">\(\chi\)</span> gives the strength of polymer-solvent
+interactions.
+The Maier-Saupe parameter <span class="math notranslate nohighlight">\(a\)</span> gives the strength of aligning interactions
+that lead to liquid crystal phase phenomena.</p>
+<p>The thermodynamic behavior is found by finding the grand canonical partition
+function</p>
+<div class="math notranslate nohighlight" id="equation-xidefine">
+<span class="eqno">(2)<a class="headerlink" href="#equation-xidefine" title="Permalink to this equation">¶</a></span>\[\begin{split}\Xi &amp; = &amp; \exp [-\beta G(T,V,\mu)] \nonumber \\
+&amp; = &amp;\sum_{n_{s},n_{p}=0}^{\infty} \frac{1}{n_{s}! n_{p}!}
+\frac{e^{\beta \mu L A n_{p}}}{v^{n_{s}} (L A)^{n_{p}}}
+\int \prod_{j=1}^{n_{s}} d \vec{r}_{j} \int \prod_{i=1}^{n_{p}}
+\mathcal{D}[\vec{r}_{i}] \nonumber \\
+&amp;   &amp; \hspace{0.1in} \times \prod_{\vec{r}}
+\delta (\hat{\phi}_{s}+\hat{\phi}_{p}-1)
+\prod_{s}\delta (\vec{u}_{i} - \partial_{s} \vec{r}_{i})
+e^{-\beta \mathcal{H}[\hat{\phi}_{s},\hat{\phi}_{p},\hat{\mathbf{S}}]}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\prod_{\vec{r}}
+\delta (\hat{\phi}_{s}+\hat{\phi}_{p}-1)\)</span> accounts for the incompressibility constraint
+<span class="math notranslate nohighlight">\(\hat{\phi}_{s}+\hat{\phi}_{p} = 1\)</span> at all locations,
+and <span class="math notranslate nohighlight">\(\prod_{s}\delta (\vec{u}_{i} - \partial_{s} \vec{r}_{i})\)</span> denotes the
+fixed chain length constraint
+<span class="math notranslate nohighlight">\(\vec{u}_{i}=\partial_{s} \vec{r}_{i}\)</span>.
+This cannot be solved exactly due to the many-body interactions that are implicit
+within the Hamiltonian.</p>
+<p>To make progress, we
+use field-theoretical techniques~cite{kn:fredreview,kn:matsen}
+to transform the many-chain problem into a single-chain problem in fluctuating
+effective potential fields.
+The field-theoretic representation emerges from a series of
+identity transformations that leave the theory unaffected.</p>
+<p>First, we introduce collective variables
+<span class="math notranslate nohighlight">\(\phi_{s}\)</span>,
+<span class="math notranslate nohighlight">\(\phi_{p}\)</span>, and
+<span class="math notranslate nohighlight">\(\mathbf{S}\)</span> into the grand canonical partition function, giving</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}\Xi &amp; = &amp;
+\int \! \! \mathcal{D} \phi_{s}
+\int \! \! \mathcal{D} \phi_{p}
+\int \! \! \mathcal{D} \mathbf{S} \! \! \!
+\sum_{n_{s},n_{p}=0}^{\infty} \frac{1}{n_{s}! n_{p}!}
+\frac{e^{\beta \mu L A n_{p}}}{v^{n_{s}} (L A)^{n_{p}}}
+\int \prod_{j=1}^{n_{s}} d \vec{r}_{j} \nonumber \\
+&amp;   &amp; \hspace{0.1in} \times
+\int \prod_{i=1}^{n_{p}}
+\mathcal{D}[\vec{r}_{i}]
+\prod_{\vec{r}}
+\delta (\phi_{s} - \hat{\phi}_{s})
+\prod_{\vec{r}}
+\delta (\phi_{p} - \hat{\phi}_{p})
+\prod_{\vec{r}}
+\delta (\mathbf{S} - \hat{\mathbf{S}})
+\nonumber \\
+&amp;   &amp; \hspace{0.1in} \times \prod_{\vec{r}}
+\delta (\phi_{s}+\phi_{p}-1)
+\prod_{s}\delta (\vec{u}_{i} - \partial_{s} \vec{r}_{i})
+e^{-\beta \mathcal{H}[\phi_{s},\phi_{p},\mathbf{S}]}\end{split}\\Second, rewrite the delta functions using Fourier representations\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\prod_{\vec{r}}
+\delta (\phi_{s} - \hat{\phi}_{s}) =
+\int \! \! \mathcal{D} W_{s}
+\exp \left[
+i \int \! \! d \vec{r} W_{s}(\vec{r})
+\left(
+\phi_{s}(\vec{r}) - \hat{\phi}_{s}(\vec{r})
+\right)
+\right] \\
+\prod_{\vec{r}}
+\delta (\phi_{p} - \hat{\phi}_{p}) =
+\int \! \! \mathcal{D} W_{p}
+\exp \left[
+i \int \! \! d \vec{r} W_{p}(\vec{r})
+\left(
+\phi_{p}(\vec{r}) - \hat{\phi}_{p}(\vec{r})
+\right)
+\right] \\
+\prod_{\vec{r}}
+\delta (\mathbf{S} - \hat{\mathbf{S}}) =
+\int \! \! \mathcal{D} \mathbf{\lambda}
+\exp \left[
+i \int \! \! d \vec{r} \mathbf{\lambda}(\vec{r}) :
+\left(
+\mathbf{S}(\vec{r}) - \hat{\mathbf{S}}(\vec{r})
+\right)
+\right]\end{split}\]</div>
+<p>The grand canonical partition function is now written as</p>
+<div class="math notranslate nohighlight" id="equation-grandcanon">
+<span class="eqno">(3)<a class="headerlink" href="#equation-grandcanon" title="Permalink to this equation">¶</a></span>\[\begin{split}\Xi &amp; = &amp; \int \mathcal{D} \phi_{p} \mathcal{D} W_{s}
+\mathcal{D} W_{p} \mathcal{D} \mathbf{S} \mathcal{D} \mathbf{\lambda}
+\exp \left\{ i \int d \vec{r} \,
+W_{s} (1-\phi_{p}) + \right. \nonumber \\
+&amp;   &amp;  i  \int d \vec{r} \, \left[ W_{p} \phi_{p} + \mathbf{\lambda}:\mathbf{S} \right] -
+\chi   \int d \vec{r} \,  \phi_{p} (1-\phi_{p}) + \nonumber \\
+&amp;   &amp; \left. \frac{a}{2} \int d \vec{r} \, \mathbf{S}:\mathbf{S}
++ \frac{1}{v} z_{s}(W_{s}) +
+\frac{e^{\beta \mu L A}}{L A} z_{p}(W_{p}, \mathbf{\lambda}) \right\}\end{split}\]</div>
+<p>Here, we have defined the
+single-solvent-molecule partition function and single-polymer-chain
+partition function, given by</p>
+<div class="math notranslate nohighlight" id="equation-zs">
+<span class="eqno">(4)<a class="headerlink" href="#equation-zs" title="Permalink to this equation">¶</a></span>\[z_{s}(W_{s}) = \int d \vec{r} \, e^{-i v W_{s}(\vec{r} \,)}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-zp">
+<span class="eqno">(5)<a class="headerlink" href="#equation-zp" title="Permalink to this equation">¶</a></span>\[\begin{split}&amp;   &amp; z_{p}(W_{p},\mathbf{\lambda}) = \int \mathcal{D}[\vec{r} \,(s)]
+\exp \left\{- \frac{\epsilon}{2} \int_{0}^{L}
+\left( \frac{\partial \vec{u}}{\partial s} \right)^{\! \! 2} d s -
+\right. \nonumber \\
+&amp;   &amp;  i A \int_{0}^{L} d s \left[ W_{p}(\vec{r} \,(s)) +
+\left. \mathbf{\lambda}(\vec{r} \,(s)) \! : \! \!
+\left(\vec{u} \vec{u} - \frac{1}{3} \mathbf{I}\right) \right] \right\}\end{split}\]</div>
+<p>This form still cannot be solved exactly, but we can find a
+saddle-point approximation that essentially gives the maximum
+term in the functional integrals.
+To do this, we write the free energy functional</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+- \beta G =
+i \int d \vec{r} \,
+W_{s} (1-\phi_{p}) +
+i  \int d \vec{r} \, \left[ W_{p} \phi_{p} + \mathbf{\lambda}:\mathbf{S} \right]  \\
+&amp;  &amp;
+-  \chi   \int d \vec{r} \,  \phi_{p} (1-\phi_{p}) +
+\frac{a}{2} \int d \vec{r} \, \mathbf{S}:\mathbf{S}
++ \frac{1}{v} z_{s}(W_{s}) +
+\frac{e^{\beta \mu L A}}{L A} z_{p}(W_{p}, \mathbf{\lambda}) \nonumber\end{split}\]</div>
+<p>which will be evaluated at values of
+<span class="math notranslate nohighlight">\(\phi_{s}\)</span>,
+<span class="math notranslate nohighlight">\(\phi_{p}\)</span>,
+<span class="math notranslate nohighlight">\(\mathbf{S}\)</span>,
+<span class="math notranslate nohighlight">\(W_{s}\)</span>,
+<span class="math notranslate nohighlight">\(W_{p}\)</span>, and
+<span class="math notranslate nohighlight">\(\mathbf{\lambda}\)</span>
+that maximize <span class="math notranslate nohighlight">\(-\beta G\)</span> (or free energy minimum).</p>
+<p>We find the first variation of the free energy to be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+- \delta \beta G =
+- i \int \! \! d \vec{r} W_{s} \delta \phi_{p}
++i \int \! \! d \vec{r} (1- \phi_{p}) \delta W_{s}
++ i \int \! \! d \vec{r} W_{p} \delta \phi_{p}
++ i \int \! \! d \vec{r} \phi_{p} \delta W_{p} \nonumber \\
+&amp;  &amp;
++ i \int \! \! d \vec{r} \mathbf{\lambda} : \delta \mathbf{S}
++ i \int \! \! d \vec{r} \mathbf{S} : \delta \mathbf{\lambda}
+- \chi
+\int \! \! d \vec{r} (1 - 2 \phi_{p}) \delta \phi_{p}
++ a \int \! \! d \vec{r} \mathbf{S} : \delta \mathbf{S} \nonumber \\
+&amp;  &amp;
++\frac{1}{v} \delta z_{s}(W_{s}) +
+\frac{e^{\beta \mu L A}}{L A} \delta z_{p}(W_{p}, \mathbf{\lambda})\end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+\delta z_{s}(W_{s}) = - i v
+\int \! \! d \vec{r} \exp
+\left[
+- i v W_{s}(\vec{r})
+\right] \delta W_{s} \\
+&amp;  &amp;
+\delta z_{p}(W_{p}, \mathbf{\lambda}) =
+\int \! \! d \vec{r}
+\int \mathcal{D}[\vec{r} \,(s)]
+\int_{0}^{L} \! \! ds
+\left[
+-iA \delta (\vec{r} - \vec{r}(s)) \delta W_{p}(\vec{r})
+- i A \delta (\vec{r} - \vec{r}(s))
+\left(\vec{u} \vec{u} - \frac{1}{3} \mathbf{I}\right) :
+\delta \mathbf{\lambda}
+\right] \nonumber \\
+&amp;  &amp;
+\exp \left\{- \frac{\epsilon}{2} \int_{0}^{L}
+\left( \frac{\partial \vec{u}}{\partial s} \right)^{\! \! 2} d s -
+i A \int_{0}^{L} d s \left[ W_{p}(\vec{r} \,(s)) +
+\mathbf{\lambda}(\vec{r} \,(s)) \! : \! \!
+\left(\vec{u} \vec{u} - \frac{1}{3} \mathbf{I}\right) \right] \right\}\end{split}\]</div>
+<p>Setting <span class="math notranslate nohighlight">\(\delta \beta G\)</span> to zero gives the self-consistent field equations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}1-\phi_{p} &amp; = &amp; e^{-v w_{s}},
+\\
+\phi_{p} &amp; = &amp; - \frac{e^{\beta \mu L A}}{L A}
+\frac{\delta z_{p}}{\delta w_{p}},
+\\
+w_{p} - w_{s} &amp; = &amp; \chi (1 - 2 \phi_{p}),
+\\
+\mathbf{h} &amp; = &amp; - a \mathbf{S}, \label{saddles} \\
+\mathbf{S} &amp; = &amp; - \frac{ e^{\beta \mu L A}}{L A}
+\frac{\delta z_{p}}{\delta \mathbf{h}},\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_{s} = i W_{s}\)</span>, <span class="math notranslate nohighlight">\(w_{p} = i W_{p}\)</span>,
+and <span class="math notranslate nohighlight">\(\mathbf{h}=i \mathbf{\lambda}\)</span>.</p>
+<p>Now consider the special case of having a homogeneous solution
+<span class="math notranslate nohighlight">\(\phi_{s}(\vec{r}) = \phi_{s}\)</span>,
+<span class="math notranslate nohighlight">\(\phi_{p}(\vec{r}) = \phi_{p}\)</span>, and nematic order parameter
+<span class="math notranslate nohighlight">\(\mathbf{S}(\vec{r}) = S_{0} \left( \hat{z}\hat{z} - \frac{1}{3} \mathbf{I} \right)\)</span>.
+Define a
+normalized scalar order parameter <span class="math notranslate nohighlight">\(m\)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-mdefine">
+<span class="eqno">(6)<a class="headerlink" href="#equation-mdefine" title="Permalink to this equation">¶</a></span>\[m = \frac{S_{0}}{\phi_{p}} = \frac{1}{L} \int_{0}^{L} d s
+\left&lt; \left( \frac{3}{2} u_{z}^{2}(s) - \frac{1}{2} \right) \right&gt;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\left&lt; \ldots \right&gt;\)</span>
+indicates an average with respect to the single-chain, self-consistent-field
+Hamiltonian,</p>
+<div class="math notranslate nohighlight" id="equation-hsaddle">
+<span class="eqno">(7)<a class="headerlink" href="#equation-hsaddle" title="Permalink to this equation">¶</a></span>\[\beta \mathcal{H}_{0} = \frac{\epsilon}{2} \int_{0}^{L}
+\left( \frac{\partial \vec{u}}{\partial s} \right)^{2} d s -
+a \phi_{p} m A \int_{0}^{L} d s
+\left( u_{z}^{2}(s) - \frac{1}{3} \right).\]</div>
+<p>The grand potential density
+<span class="math notranslate nohighlight">\(g = G/V\)</span> is equivalently expressed as the osmotic pressure defined through <span class="math notranslate nohighlight">\(p=-[g(\phi_p)-g(0)]\)</span> and given by</p>
+<div class="math notranslate nohighlight" id="equation-gsaddle">
+<span class="eqno">(8)<a class="headerlink" href="#equation-gsaddle" title="Permalink to this equation">¶</a></span>\[\begin{split}\beta p &amp; = &amp; -\frac{1}{v} \log (1-\phi_{p}) - \chi \phi_{p}^{2}
+-\frac{1}{3} a \phi_{p}^{2} m^{2}  \nonumber \\
+&amp;   &amp; \hspace{0.5in} - \frac{\phi_{p}}{v}
++ \frac{\phi_{p}}{L A}\end{split}\]</div>
+<p>The chemical potential <span class="math notranslate nohighlight">\(\mu\)</span> is given by</p>
+<div class="math notranslate nohighlight" id="equation-musaddle">
+<span class="eqno">(9)<a class="headerlink" href="#equation-musaddle" title="Permalink to this equation">¶</a></span>\[\begin{split}\beta \mu &amp; = &amp; \frac{1}{L A} \log \phi_{p} - \frac{1}{v} \log (1-\phi_{p})+ \nonumber \\
+&amp;   &amp; \hspace{0.5in} \chi (1-2 \phi_{p}) - \frac{1}{L A} \log q\end{split}\]</div>
+<p>where the single-polymer molecule orientation partition function <span class="math notranslate nohighlight">\(q\)</span>
+is calculated from the self-consistent field Hamiltonian, Eq. <a class="reference internal" href="#equation-hsaddle">(7)</a>.
+The Helmholtz free energy density (up to an additive constant) for a single, homogeneous phase is</p>
+<div class="math notranslate nohighlight" id="equation-fsaddle">
+<span class="eqno">(10)<a class="headerlink" href="#equation-fsaddle" title="Permalink to this equation">¶</a></span>\[\begin{split}\beta f &amp; = &amp;
+-\beta p + \beta \mu \phi_{p} \nonumber \\
+&amp; = &amp; \frac{\phi_{p}}{L A} \log \phi_{p} +
+\frac{(1-\phi_{p})}{v} \log (1-\phi_{p})
++\chi \phi_{p} (1-\phi_{p}) \nonumber \\
+&amp;   &amp; + \frac{a}{3} \phi_{p}^{2} m^{2} +\frac{\phi_{p}}{v}
+- \frac{\phi_{p}}{L A} - \frac{\phi_{p}}{L A} \log q\end{split}\]</div>
+<p>This agrees with the Flory-Huggins theory when <span class="math notranslate nohighlight">\(a=0\)</span> and <span class="math notranslate nohighlight">\(q\)</span> is
+a constant (with unimportant factors that are linear in <span class="math notranslate nohighlight">\(\phi_{p}\)</span>).</p>
+<div class="section" id="module-wlcstat.wlc_lcpoly">
+<span id="functions-contained-with-the-wlc-lcpoly-module"></span><h2>Functions contained with the ‘wlc_lcpoly’ module<a class="headerlink" href="#module-wlcstat.wlc_lcpoly" title="Permalink to this headline">¶</a></h2>
+<p>wlc_lcpoly</p>
+<p>Module containing functions for evaluating the
+self-consistent field theory for polymer solutions, including nematic
+liquid crystallinity</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Polymer Field Theory: Liquid Crystalline Solutions</a><ul>
+<li><a class="reference internal" href="#module-wlcstat.wlc_lcpoly">Functions contained with the ‘wlc_lcpoly’ module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlcstruc_notes.html"
+                        title="previous chapter">Structure Factor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="twlc_notes.html"
+                        title="next chapter">Wormlike Chains with Twist, Helices, and Ribbons</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wlc_lcpoly.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="twlc_notes.html" title="Wormlike Chains with Twist, Helices, and Ribbons"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polymer Field Theory: Liquid Crystalline Solutions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

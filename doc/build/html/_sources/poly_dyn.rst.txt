@@ -228,7 +228,7 @@ expression for the MSD of the midpoint of a linear chain
     & = &
     6 \frac{k_{B}T}{\xi N} t +
     \sum_{p = 1}^{\infty} 12 \frac{k_{B}T}{k_{2p}}
-    \left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right] \\
+    \left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right]
 
 Mean-squared change in distance (MSCD) for linear and ring polymers
 *******************************************************************
