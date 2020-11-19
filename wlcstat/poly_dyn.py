@@ -231,8 +231,8 @@ location_ura_bp = np.mean([116167, 116970])
 
 chrv_size_kuhn = 1165
 kuhn_length = 0.015  # um
-chrv_size_effective_um = chrv_size_kuhn*kuhn_length
-location_ura_effective_um = location_ura_bp*(chrv_size_effective_um/chrv_size_bp)
+chrv_size_effective_um = chrv_size_kuhn * kuhn_length
+location_ura_effective_um = location_ura_bp * (chrv_size_effective_um / chrv_size_bp)
 
 nuc_radius_um = 1.3  # Average of het5 msd convex hull distribution
 sim_nuc_radius_um = 1
@@ -378,8 +378,7 @@ def model_mscd(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_s
         N = 2*(linkages[i] - linkages[i - 1])
 
     mscd_model = mscd_func(t, D=D, Ndel=Ndel, N=N, b=b, num_modes=num_modes)
-    if mscd_model[i] > nuc_radius ** 2:
-        mscd_model[i] = nuc_radius ** 2
+    mscd_model = np.minimum(mscd_model, (nuc_radius ** 2) * np.ones(len(mscd_model)))
 
     return mscd_model
 
@@ -452,5 +451,8 @@ def model_plateau(linkages, label_loc=location_ura_effective_um, chr_size=chrv_s
         Ndel = linkages[i] - label_loc
         N = 2*(linkages[i] - linkages[i - 1])
         mscd_plateau = 2 * b ** 2 / (1 / (2 * Ndel) + 1 / (N - 2 * Ndel))
+
+    if mscd_plateau > (nuc_radius ** 2):
+        mscd_plateau = nuc_radius ** 2
 
     return mscd_plateau
