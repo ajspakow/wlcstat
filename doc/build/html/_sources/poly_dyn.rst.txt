@@ -388,7 +388,7 @@ approximately 116,000 Kuhn lengths of length.
     t = np.logspace(1,4,50).astype(float)
     plt.figure()
     for i, linkages in enumerate(cells):
-        plt.loglog(t, model_mscd(t,linkages),label = 'Cell ' + str(i+1))
+        plt.loglog(t, model_mscd(t,linkages), label = 'Cell ' + str(i+1))
     plt.legend()
     font = {'family' : 'serif',
         'weight':'normal',

@@ -400,11 +400,9 @@ deformation, but the Twist and Writhe are affected.
 .. figure:: figures/DNAsupercoil.png
     :width: 600
     :align: center
-    :alt: Electron micrographs of DNA with increasing values of Linking Number (see www.imsb.au.dk/:math:`\sim`raybrown)
+    :alt: Electron micrographs of DNA with increasing values of Linking Number (see www.imsb.au.dk/~raybrown)
 
-
-    Electron micrographs of DNA with increasing values of Linking Number
-    (see www.imsb.au.dk/:math:`\sim`raybrown)
+    Electron micrographs of DNA with increasing values of Linking Number (see www.imsb.au.dk/~raybrown)
 
 
 Models for the deformation energy
@@ -485,4 +483,108 @@ and height per turn
 
 .. math::
     h = \frac{2 \pi \tau}{\kappa^{2} + \tau^{2}}.
+
+
+Wormlike Ribbons: Chain Statistics and Averages
+-----------------------------------------------
+
+We now consider a model for a wormlike ribbon, which has a straight equilibrium
+conformation but has distinct rigidities.
+The deformation energy is then given by
+
+.. math::
+    \beta E_{elas} =
+    \int_{0}^{L} \! \! ds
+    \left[
+    \frac{A_{1}}{2} \omega_{1}^{2} +
+    \frac{A_{2}}{2} \omega_{2}^{2} +
+    \frac{A_{3}}{2} \omega_{3}^{2}
+    \right]
+
+Following [Yamakawa1997]_, we define the Lagrangian density for this action as
+:math:`\mathcal{L} = \frac{A_{1}}{2} \omega_{1}^{2}+\frac{A_{2}}{2} \omega_{2}^{2}+\frac{A_{3}}{2} \omega_{3}^{2}`.
+We then determine the momenta :math:`p_{i}` in the body-fixed frame :math:`\vec{t}_{i}`,
+such that
+
+.. math::
+    p_{i} = \frac{\partial \mathcal{L}}{\partial \omega_{i}} = A_{i} \omega_{i}
+
+We then find the Hamiltonian as the Legendre transform from the Lagrangian to be
+
+.. math::
+    \mathcal{H} & = & \sum_{i=1}^{3} p_{i} \omega_{i} - \mathcal{L} \nonumber \\
+    & = &
+    \sum_{i=1}^{3} \frac{1}{2 A_{i}} p_{i}^{2} \nonumber \\
+    & = &
+    \frac{1}{2 A_{2}} \vec{p}^{2}
+    - \frac{\Delta_{12}}{2 A_{2}} p_{1}^{2}
+    - \frac{\Delta_{23}}{2 A_{2}} p_{3}^{2}
+
+where
+:math:`\Delta_{12} = 1 - A_{2}/A_{1}` and
+:math:`\Delta_{23} = 1 - A_{2}/A_{3}`.
+We then convert the momenta into momentum operators based on the analogy between our problem and the
+quantum mechanical rigid rotor.
+From this, we find the Schrödinger equation to be
+
+.. math::
+    \frac{\partial G(\Omega|\Omega_{0}; N)}{\partial N} =
+    \left[
+    \vec{p}^{2}
+    - \Delta_{12} p_{1}^{2}
+    - \Delta_{23} p_{3}^{2}
+    \right] G(\Omega|\Omega_{0}; N)
+
+where we non-dimensionalize the chain length as :math:`N = L / (2 A_{2})`.
+The angular momentum operators are given by
+
+.. math::
+    p_{1} & = & \sin \psi \frac{\partial}{\partial \theta}
+    - \frac{\cos \psi}{\sin \theta} \frac{\partial}{\partial \phi}
+    + \cot \theta \cos \psi \frac{\partial}{\partial \psi}
+    \\
+    p_{2} & = & \cos \psi \frac{\partial}{\partial \theta}
+    + \frac{\sin \psi}{\sin \theta} \frac{\partial}{\partial \phi}
+    - \cot \theta \sin \psi \frac{\partial}{\partial \psi}
+    \\
+    p_{3} & = & \frac{\partial}{\partial \psi}
+
+The Green's function :math:`G(\Omega|\Omega_{0}; N)` can generally be expanded in
+terms of Wigner functions :math:`\mathcal{D}_{l}^{mj}`.
+This expansion generally takes the form
+
+.. math::
+    G(\Omega|\Omega_{0}; N) = \sum_{lmj} \sum_{l_{0}m_{0}j_{0}}
+    \mathcal{D}_{l}^{mj} (\Omega)
+    \mathcal{D}_{l_{0}}^{m_{0}j_{0}^{*}} (\Omega_{0})
+    g_{l_{0}m_{0}j_{0}}^{lmj}(N)
+
+We note that the angular momentum operators act on the Wigner functions as
+
+.. math::
+    p_{1} \mathcal{D}_{l}^{mj} & = &
+    \frac{i}{2} c_{l}^{j} \mathcal{D}_{l}^{m(j+1)}
+    +\frac{i}{2} c_{l}^{-j} \mathcal{D}_{l}^{m(j-1)} \\
+    p_{2} \mathcal{D}_{l}^{mj} & = &
+    -\frac{1}{2} c_{l}^{j} \mathcal{D}_{l}^{m(j+1)}
+    +\frac{1}{2} c_{l}^{-j} \mathcal{D}_{l}^{m(j-1)} \\
+    p_{3} \mathcal{D}_{l}^{mj} & = &
+    i j \mathcal{D}_{l}^{mj}
+
+where :math:`c_{l}^{j} = \left[ (l-j)(l+j+1) \right]^{1/2}`.
+This leads to three contributions from the Hamiltonian operator acting on
+:math:`\mathcal{D}_{l}^{mj}`, given by
+
+.. math::
+    \vec{p}^{2} \mathcal{D}_{l}^{mj} & = & - l(l+1) \mathcal{D}_{l}^{mj} \\
+    p_{1}^{2} \mathcal{D}_{l}^{mj} & = &
+    - \frac{1}{4} c_{l}^{j} c_{l}^{j+1} \mathcal{D}_{l}^{m(j+2)}
+    - \frac{1}{4} \left(
+    c_{l}^{j} c_{l}^{-(j+1)} +
+    c_{l}^{-j} c_{l}^{j-1}
+    \right) \mathcal{D}_{l}^{mj}
+    - \frac{1}{4} c_{l}^{-j} c_{l}^{-(j-1)} \mathcal{D}_{l}^{m(j-2)}
+    \\
+    p_{3}^{2} \mathcal{D}_{l}^{mj} & = & - j^{2} \mathcal{D}_{l}^{mj}
+
 
