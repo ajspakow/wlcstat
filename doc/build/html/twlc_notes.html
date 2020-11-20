@@ -522,6 +522,35 @@ c_{l}^{-j} c_{l}^{j-1}
 - \frac{1}{4} c_{l}^{-j} c_{l}^{-(j-1)} \mathcal{D}_{l}^{m(j-2)}
 \\
 p_{3}^{2} \mathcal{D}_{l}^{mj} &amp; = &amp; - j^{2} \mathcal{D}_{l}^{mj}\end{split}\]</div>
+<p>Both the <span class="math notranslate nohighlight">\(l\)</span> and <span class="math notranslate nohighlight">\(m\)</span> indices are unperturbed by the Hamiltonian operator,
+so we have <span class="math notranslate nohighlight">\(g_{l_{0}m_{0}j_{0}}^{lmj}\)</span>
+satisfies the selection rule <span class="math notranslate nohighlight">\(g_{l_{0}m_{0}j_{0}}^{lmj} \sim \delta_{mm_{0}} \delta_{ll_{0}}\)</span>.</p>
+<p>We now evaluate the tangent-tangent correlation function as the basis for
+deriving the mean-square end-to-end distance.
+We first note that</p>
+<div class="math notranslate nohighlight">
+\[\hat{\delta}_{z} \cdot \vec{t}_{3} = \sqrt{8 \pi^{2}/3} \mathcal{D}_{1}^{00}\]</div>
+<p>leading to the expression</p>
+<div class="math notranslate nohighlight">
+\[\langle
+\vec{t}_{3}(N) \cdot \vec{t}_{3}(0)
+\rangle =
+\langle
+\mathcal{D}_{1}^{00} (\Omega(N))
+\mathcal{D}_{1}^{00} (\Omega(0))
+\rangle = g_{100}^{100}\]</div>
+<p>If we perform a Laplace transform from <span class="math notranslate nohighlight">\(N\)</span> to <span class="math notranslate nohighlight">\(p\)</span>, the Schrödinger equation
+is used to evaluate this term as</p>
+<div class="math notranslate nohighlight">
+\[p \hat{g}_{100}^{100} - 1 =
+\left(
+-2 + \Delta_{12}
+\right) g_{100}^{100}\]</div>
+<p>which is inverse Laplace transformed from <span class="math notranslate nohighlight">\(p\)</span> to <span class="math notranslate nohighlight">\(N\)</span> to give</p>
+<div class="math notranslate nohighlight">
+\[\langle
+\vec{t}_{3}(N) \cdot \vec{t}_{3}(0)
+\rangle = \exp \left[- (2 - \Delta_{12}) N \right]\]</div>
 </div>
 </div>
 

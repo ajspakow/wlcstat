@@ -587,4 +587,40 @@ This leads to three contributions from the Hamiltonian operator acting on
     \\
     p_{3}^{2} \mathcal{D}_{l}^{mj} & = & - j^{2} \mathcal{D}_{l}^{mj}
 
+Both the :math:`l` and :math:`m` indices are unperturbed by the Hamiltonian operator,
+so we have :math:`g_{l_{0}m_{0}j_{0}}^{lmj}`
+satisfies the selection rule :math:`g_{l_{0}m_{0}j_{0}}^{lmj} \sim \delta_{mm_{0}} \delta_{ll_{0}}`.
 
+We now evaluate the tangent-tangent correlation function as the basis for
+deriving the mean-square end-to-end distance.
+We first note that
+
+.. math::
+    \hat{\delta}_{z} \cdot \vec{t}_{3} = \sqrt{8 \pi^{2}/3} \mathcal{D}_{1}^{00}
+
+leading to the expression
+
+.. math::
+    \langle
+    \vec{t}_{3}(N) \cdot \vec{t}_{3}(0)
+    \rangle =
+    \langle
+    \mathcal{D}_{1}^{00} (\Omega(N))
+    \mathcal{D}_{1}^{00} (\Omega(0))
+    \rangle = g_{100}^{100}
+
+If we perform a Laplace transform from :math:`N` to :math:`p`, the Schrödinger equation
+is used to evaluate this term as
+
+.. math::
+    p \hat{g}_{100}^{100} - 1 =
+    \left(
+    -2 + \Delta_{12}
+    \right) g_{100}^{100}
+
+which is inverse Laplace transformed from :math:`p` to :math:`N` to give
+
+.. math::
+    \langle
+    \vec{t}_{3}(N) \cdot \vec{t}_{3}(0)
+    \rangle = \exp \left[- (2 - \Delta_{12}) N \right]
