@@ -48,7 +48,7 @@
             
   <span class="target" id="wlc-lcpoly"></span><div class="section" id="polymer-field-theory-liquid-crystalline-solutions">
 <h1>Polymer Field Theory: Liquid Crystalline Solutions<a class="headerlink" href="#polymer-field-theory-liquid-crystalline-solutions" title="Permalink to this headline">¶</a></h1>
-<p>We define a system Hamiltonian of a collection of polymer chains and solvent molecules</p>
+<p>We define a system Hamiltonian <a class="reference internal" href="references.html#spakowitz2003" id="id1"><span>[Spakowitz2003]</span></a> of a collection of polymer chains and solvent molecules</p>
 <div class="math notranslate nohighlight" id="equation-sysh">
 <span class="eqno">(1)<a class="headerlink" href="#equation-sysh" title="Permalink to this equation">¶</a></span>\[\beta \mathcal{H} =
 \sum_{i=1}^{n_{p}} \frac{\epsilon}{2} \int_{0}^{L}
@@ -303,6 +303,82 @@ a constant (with unimportant factors that are linear in <span class="math notran
 <p>Module containing functions for evaluating the
 self-consistent field theory for polymer solutions, including nematic
 liquid crystallinity</p>
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.eval_poles_lcpoly">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">eval_poles_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#eval_poles_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.eval_poles_lcpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the poles for a wormlike nematic liquid crystalline polymer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the quadrupole field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 50)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>poles</strong> – Evaluated poles for the given <span class="math notranslate nohighlight">\(\lambda\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.m_lcpoly">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">m_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#m_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.m_lcpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the single-polymer partition function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the quadrupole field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 50)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>m_val</strong> – Evaluated order parameter</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.q_lcpoly">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">q_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#q_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.q_lcpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the single-polymer partition function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the quadrupole field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 50)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>q_val</strong> – Evaluated single-polymer partition function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="example-usage-of-q-lcpoly">
+<h2>Example usage of ‘q_lcpoly’<a class="headerlink" href="#example-usage-of-q-lcpoly" title="Permalink to this headline">¶</a></h2>
+<p>We reproduce Fig. 6 from <a class="reference internal" href="references.html#spakowitz2003" id="id2"><span>[Spakowitz2003]</span></a> to demonstrate the use of ‘q_lcpoly’.
+We show free energy relative to the isotropic state 􏰀:math:<cite>Delta f</cite>
+versus the order parameter <span class="math notranslate nohighlight">\(m\)</span> for a thermotropic liquid-crystalline polymer system with
+<span class="math notranslate nohighlight">\(N = L/(2lp)=3.3333\)</span> and
+<span class="math notranslate nohighlight">\(2 l_{p} \kappa = 20.7582\)</span> (blue),
+<span class="math notranslate nohighlight">\(2 l_{p} \kappa = 21.0606\)</span> (orange), and
+<span class="math notranslate nohighlight">\(2 l_{p} \kappa = 23.6844\)</span> (green).</p>
+<p>(<a class="reference external" href=".//wlc_lcpoly-1.py">Source code</a>, <a class="reference external" href=".//wlc_lcpoly-1.png">png</a>, <a class="reference external" href=".//wlc_lcpoly-1.hires.png">hires.png</a>, <a class="reference external" href=".//wlc_lcpoly-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlc_lcpoly-1.png" src="_images/wlc_lcpoly-1.png" />
+</div>
 </div>
 </div>
 
@@ -317,6 +393,7 @@ liquid crystallinity</p>
   <ul>
 <li><a class="reference internal" href="#">Polymer Field Theory: Liquid Crystalline Solutions</a><ul>
 <li><a class="reference internal" href="#module-wlcstat.wlc_lcpoly">Functions contained with the ‘wlc_lcpoly’ module</a></li>
+<li><a class="reference internal" href="#example-usage-of-q-lcpoly">Example usage of ‘q_lcpoly’</a></li>
 </ul>
 </li>
 </ul>

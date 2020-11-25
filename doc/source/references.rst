@@ -18,6 +18,9 @@ References
 .. [Mehraeen2008]
     Mehraeen, Shafigh, et al. "End-to-end distribution for a wormlike chain in arbitrary dimensions." Physical Review E 77.6 (2008): 061803.
 
+.. [Spakowitz2003]
+    A. J. Spakowitz and Z.-G. Wang. "Semiflexible polymer solutions. I. phase behavior and single-chain statistics." J. Chem. Phys. 119, 24 (2003): 13113.
+
 .. Wormlike Chain references
 
 .. [Kratky1949]

@@ -110,6 +110,8 @@ def eval_poles_large_k_val(k_val, mu, dimensions=3, alpha_max=25):
     eval_poles_large_k_val - Evaluate the poles for given :math:`K` and :math:`\mu`
     using the expansion method (perturbation theory) for large :math:`K`
 
+    Parameters
+    ----------
     k_val : float
         The value of the Fourier vector magnitude :math:`K`
     mu : int

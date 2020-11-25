@@ -4,7 +4,7 @@
 Polymer Field Theory: Liquid Crystalline Solutions
 ==================================================
 
-We define a system Hamiltonian of a collection of polymer chains and solvent molecules
+We define a system Hamiltonian [Spakowitz2003]_ of a collection of polymer chains and solvent molecules
 
 .. math::
     \beta \mathcal{H} =
@@ -311,3 +311,49 @@ Functions contained with the 'wlc_lcpoly' module
 
 .. automodule:: wlcstat.wlc_lcpoly
     :members:
+
+Example usage of 'q_lcpoly'
+---------------------------
+
+We reproduce Fig. 6 from [Spakowitz2003]_ to demonstrate the use of 'q_lcpoly'.
+We show free energy relative to the isotropic state 􏰀:math:`\Delta f`
+versus the order parameter :math:`m` for a thermotropic liquid-crystalline polymer system with
+:math:`N = L/(2lp)=3.3333` and
+:math:`2 l_{p} \kappa = 20.7582` (blue),
+:math:`2 l_{p} \kappa = 21.0606` (orange), and
+:math:`2 l_{p} \kappa = 23.6844` (green).
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from wlcstat.wlc_lcpoly import *
+
+    lam_0 = 0
+    lam_f = 25
+    n_lam = 500
+    lam_vec = np.linspace(lam_0, lam_f, n_lam)
+    length_kuhn = 3.333
+    plt.figure(figsize=(10,8))
+    font = {'family' : 'serif',
+        'weight':'normal',
+        'size': 18}
+    plt.rc('font', **font)
+    kappa_vec = np.array([20.7582, 21.0606, 23.6844])
+    for i_kap in range(len(kappa_vec)):
+        kappa = kappa_vec[i_kap]
+        m_val = np.zeros(n_lam)
+        q_val = np.zeros(n_lam)
+        f_val = np.zeros(n_lam)
+        for i_lam in range(n_lam):
+            lam = lam_vec[i_lam]
+            q_val[i_lam] = q_lcpoly(length_kuhn,lam)
+            m_val[i_lam] = lam / kappa
+            f_val[i_lam] = kappa * length_kuhn * m_val[i_lam] ** 2 / 3 - np.log(q_val[i_lam])
+        plt.plot(m_val, f_val,'-')
+    plt.ylabel(r'$\beta \Delta f$')
+    plt.xlabel(r'$m$')
+    plt.ylim((-0.6, 0.6))
+    plt.xlim((0, 0.8))
+    plt.tight_layout()
+    plt.show()

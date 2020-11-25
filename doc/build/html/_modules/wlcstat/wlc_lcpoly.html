@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wlcstat.wlc_lcpoly &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.wlc_lcpoly</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for wlcstat.wlc_lcpoly</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">wlc_lcpoly</span>
+
+<span class="sd">Module containing functions for evaluating the</span>
+<span class="sd">self-consistent field theory for polymer solutions, including nematic</span>
+<span class="sd">liquid crystallinity</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<div class="viewcode-block" id="m_lcpoly"><a class="viewcode-back" href="../../wlc_lcpoly.html#wlcstat.wlc_lcpoly.m_lcpoly">[docs]</a><span class="k">def</span> <span class="nf">m_lcpoly</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">alpha_max</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the single-polymer partition function</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    length_kuhn : float</span>
+<span class="sd">        The length of the chain in Kuhn lengths</span>
+<span class="sd">    lam : float</span>
+<span class="sd">        The value of the quadrupole field :math:`\lambda`</span>
+<span class="sd">    alpha_max : int</span>
+<span class="sd">        Maximum number of poles evaluated (default 50)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    m_val : float</span>
+<span class="sd">        Evaluated order parameter</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">lam</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+        <span class="n">d_lam</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+        <span class="n">q_val_p</span> <span class="o">=</span> <span class="n">q_lcpoly</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">lam</span> <span class="o">+</span> <span class="n">d_lam</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">)</span>
+        <span class="n">q_val_m</span> <span class="o">=</span> <span class="n">q_lcpoly</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">lam</span> <span class="o">-</span> <span class="n">d_lam</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">)</span>
+        <span class="n">m_val</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">q_val_p</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">q_val_m</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d_lam</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">m_val</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">16</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">8</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="o">-</span> <span class="mi">207</span> <span class="o">/</span> <span class="mi">256</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="p">(</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">123</span> <span class="o">/</span> <span class="mi">64</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">10215</span> <span class="o">/</span> <span class="mi">2048</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="p">(</span><span class="mi">7</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">m_val</span></div>
+
+
+<div class="viewcode-block" id="q_lcpoly"><a class="viewcode-back" href="../../wlc_lcpoly.html#wlcstat.wlc_lcpoly.q_lcpoly">[docs]</a><span class="k">def</span> <span class="nf">q_lcpoly</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">alpha_max</span> <span class="o">=</span> <span class="mi">50</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the single-polymer partition function</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    length_kuhn : float</span>
+<span class="sd">        The length of the chain in Kuhn lengths</span>
+<span class="sd">    lam : float</span>
+<span class="sd">        The value of the quadrupole field :math:`\lambda`</span>
+<span class="sd">    alpha_max : int</span>
+<span class="sd">        Maximum number of poles evaluated (default 50)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    q_val : float</span>
+<span class="sd">        Evaluated single-polymer partition function</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Evaluate the partition function by determining the poles of the h_matrix</span>
+    <span class="k">if</span> <span class="n">lam</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">q_val</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">lam</span> <span class="o">&lt;</span> <span class="mi">50</span> <span class="ow">and</span> <span class="n">lam</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">poles</span> <span class="o">=</span> <span class="n">eval_poles_lcpoly</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">)</span>
+        <span class="n">q_val</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i_pole</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">poles</span><span class="p">)):</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha_max</span>
+            <span class="n">a_l</span> <span class="o">=</span> <span class="n">l</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">l</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">a_lp1</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">beta_l</span> <span class="o">=</span> <span class="n">a_lp1</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">a_l</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>
+            <span class="n">dj</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="n">poles</span><span class="p">[</span><span class="n">i_pole</span><span class="p">]</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">beta_l</span> <span class="o">*</span> <span class="n">lam</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha_max</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">a_l</span> <span class="o">=</span> <span class="n">l</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">l</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">a_l</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">a_lp1</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">a_lp2</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">alpha_lp2</span> <span class="o">=</span> <span class="n">a_lp2</span> <span class="o">*</span> <span class="n">a_lp1</span>
+                <span class="n">beta_l</span> <span class="o">=</span> <span class="n">a_lp1</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">a_l</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>
+                <span class="n">dj</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">alpha_lp2</span> <span class="o">*</span> <span class="n">lam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dj</span> <span class="o">/</span> <span class="n">j</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="n">poles</span><span class="p">[</span><span class="n">i_pole</span><span class="p">]</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">beta_l</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">-</span> <span class="p">(</span><span class="n">alpha_lp2</span> <span class="o">*</span> <span class="n">lam</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">j</span>
+
+            <span class="n">q_val</span> <span class="o">=</span> <span class="n">q_val</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">poles</span><span class="p">[</span><span class="n">i_pole</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">)</span> <span class="o">/</span> <span class="n">dj</span>
+
+    <span class="c1"># Evaluate the partition function using the large-lam expansion</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">q_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">length_kuhn</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+                                      <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">+</span> <span class="mi">23</span> <span class="o">/</span> <span class="mi">64</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                                      <span class="o">+</span> <span class="mi">41</span> <span class="o">/</span> <span class="mi">64</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">681</span> <span class="o">/</span> <span class="mi">512</span> <span class="o">/</span> <span class="n">lam</span> <span class="o">**</span> <span class="p">(</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">q_val</span></div>
+
+
+<div class="viewcode-block" id="eval_poles_lcpoly"><a class="viewcode-back" href="../../wlc_lcpoly.html#wlcstat.wlc_lcpoly.eval_poles_lcpoly">[docs]</a><span class="k">def</span> <span class="nf">eval_poles_lcpoly</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">alpha_max</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate the poles for a wormlike nematic liquid crystalline polymer</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lam : float</span>
+<span class="sd">        The value of the quadrupole field :math:`\lambda`</span>
+<span class="sd">    alpha_max : int</span>
+<span class="sd">        Maximum number of poles evaluated (default 50)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    poles : float</span>
+<span class="sd">        Evaluated poles for the given :math:`\lambda`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">l_vec</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">alpha_max</span><span class="p">)</span>
+
+    <span class="n">a_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">l_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">alpha_max</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">l_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">alpha_max</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">a_lp1</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_vec</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">l_vec</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">a_lp2</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_vec</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">l_vec</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">alpha_lp2</span> <span class="o">=</span> <span class="n">a_lp2</span> <span class="o">*</span> <span class="n">a_lp1</span>
+    <span class="n">beta_l</span> <span class="o">=</span> <span class="n">a_lp1</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">a_l</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="n">h_matrix</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">l_vec</span> <span class="o">*</span> <span class="p">(</span><span class="n">l_vec</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">beta_l</span> <span class="o">*</span> <span class="n">lam</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="o">-</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">alpha_lp2</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">alpha_max</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="o">-</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">alpha_lp2</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">alpha_max</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Find the poles as the eigenvalues of the h-matrix</span>
+    <span class="n">poles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">h_matrix</span><span class="p">)</span>
+    <span class="n">poles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">poles</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">poles</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.wlc_lcpoly</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
