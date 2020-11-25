@@ -228,7 +228,7 @@ expression for the MSD of the midpoint of a linear chain
     & = &
     6 \frac{k_{B}T}{\xi N} t +
     \sum_{p = 1}^{\infty} 12 \frac{k_{B}T}{k_{2p}}
-    \left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right] \\
+    \left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right]
 
 Mean-squared change in distance (MSCD) for linear and ring polymers
 *******************************************************************
@@ -388,7 +388,7 @@ approximately 116,000 Kuhn lengths of length.
     t = np.logspace(1,4,50).astype(float)
     plt.figure()
     for i, linkages in enumerate(cells):
-        plt.loglog(t, model_mscd(t,linkages),label = 'Cell ' + str(i+1))
+        plt.loglog(t, model_mscd(t,linkages), label = 'Cell ' + str(i+1))
     plt.legend()
     font = {'family' : 'serif',
         'weight':'normal',
