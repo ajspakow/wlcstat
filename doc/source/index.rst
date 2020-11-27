@@ -5,6 +5,8 @@ Wormlike Chain Model Statistics (wlcstat)
    :maxdepth: 2
    :caption: Contents:
 
+    Gaussian Chain Theory <gausstheory>
+
     Wormlike Chain Theory <wlctheory>
 
     Average Quantities <wlcave_notes>
