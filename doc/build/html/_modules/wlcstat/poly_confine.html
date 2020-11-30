@@ -54,7 +54,7 @@
 
 <div class="viewcode-block" id="eval_r2_free"><a class="viewcode-back" href="../../poly_confine.html#wlcstat.poly_confine.eval_r2_free">[docs]</a><span class="k">def</span> <span class="nf">eval_r2_free</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Evaluate the average $\langle R^{2} \rangle$ for a polymer confined within</span>
+<span class="sd">    Evaluate the average :math:`\langle R^{2} \rangle` for a polymer confined within</span>
 <span class="sd">    a sphere with free ends</span>
 
 <span class="sd">    Parameters</span>
@@ -68,12 +68,12 @@
 <span class="sd">    a : float</span>
 <span class="sd">        The radius of the confining sphere</span>
 <span class="sd">    n_max : int</span>
-<span class="sd">        The total number of $n$ modes in the Bessel function expansion</span>
+<span class="sd">        The total number of :math:`n` modes in the Bessel function expansion</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    r2 : float</span>
-<span class="sd">        The average $\langle R^{2} \rangle$ for a polymer</span>
+<span class="sd">        The average :math:`\langle R^{2} \rangle` for a polymer</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
@@ -98,7 +98,7 @@
 
 <div class="viewcode-block" id="eval_r2_surf"><a class="viewcode-back" href="../../poly_confine.html#wlcstat.poly_confine.eval_r2_surf">[docs]</a><span class="k">def</span> <span class="nf">eval_r2_surf</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Evaluate the average $\langle R^{2} \rangle$ for a polymer confined within</span>
+<span class="sd">    Evaluate the average :math:`\langle R^{2} \rangle` for a polymer confined within</span>
 <span class="sd">    a sphere with surface-attached ends</span>
 
 <span class="sd">    Parameters</span>
@@ -112,12 +112,12 @@
 <span class="sd">    a : float</span>
 <span class="sd">        The radius of the confining sphere</span>
 <span class="sd">    n_max : int</span>
-<span class="sd">        The total number of $n$ modes in the Bessel function expansion</span>
+<span class="sd">        The total number of :math:`n` modes in the Bessel function expansion</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    r2 : float</span>
-<span class="sd">        The average $\langle R^{2} \rangle$ for a polymer</span>
+<span class="sd">        The average :math:`\langle R^{2} \rangle` for a polymer</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>

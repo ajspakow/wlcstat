@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 def eval_r2_free(delta, length_kuhn, b, a=1, n_max=1000):
     r"""
-    Evaluate the average $\langle R^{2} \rangle$ for a polymer confined within
+    Evaluate the average :math:`\langle R^{2} \rangle` for a polymer confined within
     a sphere with free ends
 
     Parameters
@@ -26,12 +26,12 @@ def eval_r2_free(delta, length_kuhn, b, a=1, n_max=1000):
     a : float
         The radius of the confining sphere
     n_max : int
-        The total number of $n$ modes in the Bessel function expansion
+        The total number of :math:`n` modes in the Bessel function expansion
 
     Returns
     -------
     r2 : float
-        The average $\langle R^{2} \rangle$ for a polymer
+        The average :math:`\langle R^{2} \rangle` for a polymer
 
     """
     r2 = np.zeros_like(delta)
@@ -56,7 +56,7 @@ def eval_r2_free(delta, length_kuhn, b, a=1, n_max=1000):
 
 def eval_r2_surf(delta, length_kuhn, b, a=1, n_max=1000):
     r"""
-    Evaluate the average $\langle R^{2} \rangle$ for a polymer confined within
+    Evaluate the average :math:`\langle R^{2} \rangle` for a polymer confined within
     a sphere with surface-attached ends
 
     Parameters
@@ -70,12 +70,12 @@ def eval_r2_surf(delta, length_kuhn, b, a=1, n_max=1000):
     a : float
         The radius of the confining sphere
     n_max : int
-        The total number of $n$ modes in the Bessel function expansion
+        The total number of :math:`n` modes in the Bessel function expansion
 
     Returns
     -------
     r2 : float
-        The average $\langle R^{2} \rangle$ for a polymer
+        The average :math:`\langle R^{2} \rangle` for a polymer
 
     """
     r2 = np.zeros_like(delta)
