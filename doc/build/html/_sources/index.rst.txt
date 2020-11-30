@@ -5,6 +5,8 @@ Wormlike Chain Model Statistics (wlcstat)
    :maxdepth: 2
    :caption: Contents:
 
+    Gaussian Chain Theory <gausstheory>
+
     Wormlike Chain Theory <wlctheory>
 
     Average Quantities <wlcave_notes>
@@ -12,6 +14,8 @@ Wormlike Chain Model Statistics (wlcstat)
     Wormlike Chain Green's Function <wlcgreen_notes>
 
     Structure Factor <wlcstruc_notes>
+
+    Polymer Confinement <poly_confine>
 
     Polymer Field Theory: Liquid Crystalline Solutions <wlc_lcpoly>
 

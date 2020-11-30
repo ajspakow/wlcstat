@@ -316,8 +316,8 @@ Example usage of 'q_lcpoly'
 ---------------------------
 
 We reproduce Fig. 6 from [Spakowitz2003]_ to demonstrate the use of 'q_lcpoly'.
-We show free energy relative to the isotropic state 􏰀:math:`\Delta f`
-versus the order parameter :math:`m` for a thermotropic liquid-crystalline polymer system with
+We show free energy relative to the isotropic state :math:`\Delta f` versus
+the order parameter :math:`m` for a thermotropic liquid-crystalline polymer system with
 :math:`N = L/(2lp)=3.3333` and
 :math:`2 l_{p} \kappa = 20.7582` (blue),
 :math:`2 l_{p} \kappa = 21.0606` (orange), and
