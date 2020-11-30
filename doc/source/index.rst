@@ -15,6 +15,8 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Structure Factor <wlcstruc_notes>
 
+    Polymer Confinement <poly_confine>
+
     Polymer Field Theory: Liquid Crystalline Solutions <wlc_lcpoly>
 
     Wormlike Chains with Twist, Helices, and Ribbons <twlc_notes>
