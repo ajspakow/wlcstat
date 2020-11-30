@@ -375,7 +375,7 @@ def model_mscd(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_s
     else:
         mscd_func = ring_mscd
         Ndel = linkages[i] - label_loc
-        N = 2*(linkages[i] - linkages[i - 1])
+        N = 2 * (linkages[i] - linkages[i - 1])
 
     mscd_model = mscd_func(t, D=D, Ndel=Ndel, N=N, b=b, num_modes=num_modes)
     mscd_model = np.minimum(mscd_model, (nuc_radius ** 2) * np.ones(len(mscd_model)))
