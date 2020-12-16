@@ -206,9 +206,9 @@ Example usage of 'rg2_ave'
 This example gives the mean-square radius of gyration :math:`\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}`
 (i.e. length non-dimensionalized by :math:`2 l_{p}`) versus
 chain length :math:`N = L/(2 l_{p})` for 3 dimensions.  The short-length asymptotic behavior
-:math:`\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow N^{2}/12`
+:math:`\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2} \rightarrow N^{2}/12`
 and long-length asymptotic behavior
-:math:`\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow N/[3 (d-1)]` are included to show the
+:math:`\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2} \rightarrow N/[3 (d-1)]` are included to show the
 limiting behaviors.
 
 .. plot::
@@ -244,9 +244,9 @@ Example usage of 'rz4_ave'
 This example gives the 4th moment of the end-to-end distribution :math:`\langle R_{z}^{4} \rangle / (2 l_{p})^{4}`
 (i.e. length non-dimensionalized by :math:`2 l_{p}`) versus
 chain length :math:`N = L/(2 l_{p})` for 3 dimensions.  The short-length asymptotic behavior
-:math:`\langle R_{z}^{2} \rangle / (2 l_{p})^{2} \rightarrow N^{4} 3 / [d (d + 2)]`
+:math:`\langle R_{z}^{4} \rangle / (2 l_{p})^{2} \rightarrow N^{4} 3 / [d (d + 2)]`
 and long-length asymptotic behavior
-:math:`\langle R_{z}^{2} \rangle / (2 l_{p})^{2} \rightarrow 12 N^2/[d^2 (d-1)^2]` are included to show the
+:math:`\langle R_{z}^{4} \rangle / (2 l_{p})^{2} \rightarrow 12 N^2/[d^2 (d-1)^2]` are included to show the
 limiting behaviors.
 
 .. plot::
