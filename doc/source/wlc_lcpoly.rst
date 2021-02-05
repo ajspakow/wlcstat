@@ -93,7 +93,7 @@ First, we introduce collective variables
     \prod_{s}\delta (\vec{u}_{i} - \partial_{s} \vec{r}_{i})
     e^{-\beta \mathcal{H}[\phi_{s},\phi_{p},\mathbf{S}]}
 
-    Second, rewrite the delta functions using Fourier representations
+Second, rewrite the delta functions using Fourier representations
 
 .. math::
     \prod_{\vec{r}}

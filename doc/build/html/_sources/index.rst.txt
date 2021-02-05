@@ -1,5 +1,5 @@
 Wormlike Chain Model Statistics (wlcstat)
-===========================================
+=========================================
 
 .. toctree::
    :maxdepth: 2
