@@ -207,13 +207,93 @@ def ring_mscd(t, D, Ndel, N, b=1, num_modes=20000):
     return sum_coeff * mscd
 
 
+def linear_msd_confine(t, D, Nmono, N, b=1, k_conf=1, num_modes=20000):
+    r"""
+    Compute msd for a Rouse polymer confined within a harmonic confining potential
+
+    Parameters
+    ----------
+    t : (M,) float, array_like
+        Times at which to evaluate the MSD
+    D : float
+        Diffusion coefficient, (in desired output length units). Equal to
+        :math:`k_BT/\xi` for :math:`\xi` in units of "per Kuhn length".
+    Nmono : float
+        Monomer position of the tagged locus (in Kuhn length).
+    N : float
+        The full lengh of the linear polymer (in Kuhn lengths).
+    b : float
+        The Kuhn length (in desired length units).
+    k_conf : float
+        Confinement strength
+    num_modes : int
+        how many Rouse modes to include in the sum
+
+    Returns
+    -------
+    msd : (M,) np.array<float>
+        result
+    """
+    msd = np.zeros_like(t)
+
+    cos_coeff = np.pi * Nmono / N
+    tau_p = N / D / (N * k_conf)
+    msd += 6 / (N * k_conf) * (1 - np.exp(-t / tau_p))
+
+    for p in range(1, num_modes+1):
+        kp = 3 * np.pi ** 2 * p ** 2 / (N * (b ** 2))
+        tau_p = N / D / (kp + N * k_conf)
+        msd += 12 / (kp + N * k_conf) * (1 - np.exp(-t / tau_p)) * np.cos(cos_coeff * p) ** 2
+
+    return msd
+
+
+def linear_msd_confine_plateau(Nmono, N, b=1, k_conf=1, num_modes=20000):
+    r"""
+    Compute msd for a Rouse polymer confined within a harmonic confining potential
+
+    Parameters
+    ----------
+    t : (M,) float, array_like
+        Times at which to evaluate the MSD
+    D : float
+        Diffusion coefficient, (in desired output length units). Equal to
+        :math:`k_BT/\xi` for :math:`\xi` in units of "per Kuhn length".
+    Nmono : float
+        Monomer position of the tagged locus (in Kuhn length).
+    N : float
+        The full lengh of the linear polymer (in Kuhn lengths).
+    b : float
+        The Kuhn length (in desired length units).
+    k_conf : float
+        Confinement strength
+    num_modes : int
+        how many Rouse modes to include in the sum
+
+    Returns
+    -------
+    msd : (M,) np.array<float>
+        result
+    """
+    msd_plateau = np.zeros_like(k_conf)
+
+    cos_coeff = np.pi * Nmono / N
+    msd_plateau += 6 / (N * k_conf)
+
+    for p in range(1, num_modes+1):
+        kp = 3 * np.pi ** 2 * p ** 2 / (N * (b ** 2))
+        msd_plateau += 12 / (kp + N * k_conf) * np.cos(cos_coeff * p) ** 2
+
+    return msd_plateau
+
+
 def end_to_end_corr(t, D, N, num_modes=10000):
     """Doi and Edwards, Eq. 4.35"""
     mscd = np.zeros_like(t)
-    tau1 = N**2/(3*np.pi*np.pi*D)
+    tau1 = N ** 2 / (3 * np.pi * np.pi * D)
     for p in range(1, num_modes+1, 2):
-        mscd += 8/p/p/np.pi/np.pi * np.exp(-t*p**2 / tau1)
-    return N*mscd
+        mscd += 8 / p / p / np.pi / np.pi * np.exp(- t * p ** 2 / tau1)
+    return N * mscd
 
 
 
@@ -379,6 +459,74 @@ def model_mscd(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_s
 
     mscd_model = mscd_func(t, D=D, Ndel=Ndel, N=N, b=b, num_modes=num_modes)
     mscd_model = np.minimum(mscd_model, (nuc_radius ** 2) * np.ones(len(mscd_model)))
+
+    return mscd_model
+
+
+def model_mscd_confine(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_size_effective_um,
+               nuc_radius=sim_nuc_radius_um, k_conf = 1, b=kuhn_length, D=sim_D, num_modes=10000):
+    r"""
+    Calculate the MSCD for the model of linked chromosomes
+
+    Parameters
+    ----------
+    t : float array
+        Time in seconds
+    linkages : float array
+        List of the link positions between the homologous chromosomes
+    label_loc : float
+        Location of the fluorescent label along the chromosome (microns)
+    chr_size : float
+        Length of the chromosome (microns)
+    nuc_radius : float
+        Radius of the nucleus (microns)
+    k_conf : float
+        Strength of confining potential
+    b : float
+        Kuhn length (microns)
+    D : float
+        Diffusivity (microns ** 2 / second)
+    num_modes : int
+        Number of normal modes used in the calculation
+
+    Returns
+    -------
+    mscd_model : float array (size len(t))
+        Calculated MSCD (microns ** 2) for the model with defined linkages
+
+    """
+
+    linkages = np.array(linkages) / b
+    chr_size = chr_size / b
+    label_loc = label_loc / b
+
+    # Evaluate the MSCD if there are no linkages
+    if len(linkages) == 0:
+        mscd_model = 2 * linear_msd_confine(t, D, label_loc, chr_size, b, k_conf, num_modes)
+        return mscd_model
+
+    # Evaluate the MSCD if there are linkages between the chromosomes
+    i = np.searchsorted(linkages, label_loc)
+    if i == 0:
+        mscd_func = linear_mscd
+        Ndel = linkages[0] - label_loc
+        N = 2 * linkages[0]
+        mscd_plateau = 4 * b ** 2 * Ndel
+    elif i == len(linkages):
+        mscd_func = linear_mscd
+        Ndel = label_loc - linkages[-1]
+        N = 2 * (chr_size - linkages[-1])
+        mscd_plateau = 4 * b ** 2 * Ndel
+    else:
+        mscd_func = ring_mscd
+        Ndel = linkages[i] - label_loc
+        N = 2 * (linkages[i] - linkages[i - 1])
+        mscd_plateau = 2 * b ** 2 / (1 / (2 * Ndel) + 1 / (N - 2 * Ndel))
+
+    if mscd_plateau < (nuc_radius ** 2):
+        mscd_model = mscd_func(t, D, Ndel, N, b, num_modes)
+    else:
+        mscd_model = 2 * linear_msd_confine(t, D, label_loc, chr_size, b, k_conf, num_modes)
 
     return mscd_model
 
