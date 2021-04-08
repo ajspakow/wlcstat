@@ -37,7 +37,7 @@ that satisfies
 .. math::
     \langle f_{B}(t) \rangle & = & 0, \\
     \langle f_{B}(t) f_{B}(t') \rangle
-    & = & \kappa^{(B)} ( |t - t'|)
+    & = & \kappa_B ( |t - t'|)
     =
     2 k_{B}T \xi \delta (t - t').
 
@@ -56,10 +56,10 @@ with an arbitrary temporal correlation, such that
 .. math::
     \langle f_{A}(t) \rangle & = & 0, \\
     \langle f_{A}(t) f_{A}(t') \rangle
-    & = & \kappa^{(A)}(|t-t'|),
+    & = & \kappa_{A}(|t-t'|),
 
 where
-:math:`\kappa^{(A)}(t)` represents
+:math:`\kappa_{A}(t)` represents
 the temporal correlation between active
 forces.
 
@@ -70,23 +70,43 @@ located at position :math:`x` at time :math:`t`.
 Carrying out the integral over the active forces is performed by noting a Gaussian form of active forces
 
 .. math::
-    \mathcal{P}[f_A(t)]\propto \exp{\Big(-\frac{1}{2}\int_0^t dt_{1}\int_0^t dt_2
-    f_A(t_1)\kappa_A^{-1}(|t_1-t_2|)f_A(t_2)\Big)}
+    \mathcal{P}[f_A(t)]\propto \exp \left\{
+    -\frac{1}{2}\int_0^t dt_{1}\int_0^t dt_2
+    f_A(t_1)\kappa_A^{-1}(|t_1-t_2|)f_A(t_2)
+    \right\}
 
 This is used in the path integral formulation, and after functional integration over Brownian and Active forces, we
 arrive at the expression
 
 .. math::
     &  &
-    \mathcal{P}[x(t)|x_0;t;f_A^{(0)}] =  \\
-    &  &
-    \int_{x_0}^{x(t)} \mathcal{D}[x(t)]\int \mathcal{D}[w(t)] \int d\eta \exp{\Big(-k_BT\xi\int_0^t [w(t^\prime)]^2dt^\prime+i\xi\int_0^t \dot{w}(t^\prime)x(t^\prime)dt^\prime\Big)}
+    \mathcal{P}[x|x_0;t,f_A^{(0)}, t_{0}]
+    \nonumber
     \\
     &  &
-    \times\exp{\Big(-i\xi w(t)x(t)+i\xi w(0)x(0)+i\int_0^t w(t^\prime)f_V[x(t^\prime)]dt^\prime-i\eta f_A^{(0)}\Big)}
+    =\int_{x_0}^{x} \mathcal{D}[x(t)]\int \mathcal{D}[w(t)] \int d\eta \exp
+    \left\{
+    -k_{B}T\xi\int_0^t [w(t_{1})]^2dt_{1}+i\xi\int_0^t \dot{w}(t_{1})x(t_{1})dt_{1}
+    \right.
+    \nonumber
     \\
     &  &
-    \times\exp{\Big(-\frac{1}{2}\int_0^t dt_1\int_0^t dt_2 w(t_1)\kappa_A(|t_1-t_2|)w(t_2)-\eta\int_0^t dt_1 \kappa_A(|t_1-t_0|)w(t_1)-\frac{1}{2}\eta^2\kappa_A(0)\Big)}
+    \left.
+    -i\xi w(t)x(t)+i\xi w(0)x(0)+i\int_0^t w(t_{1})f_V[x(t_{1})]dt_{1}
+    -\frac{1}{2}
+    \int_0^t
+    \! \! dt_1 \int_{0}^{t}
+    \! \!
+    dt_2 w(t_1)\kappa_A(|t_1-t_2|)
+    w(t_2)
+    \right.
+    \nonumber
+    \\
+    &  &
+    \left.
+    -i\eta f_A^{(0)}
+    -\eta\int_0^t dt_1 \kappa_A(|t_1-t_0|)w(t_1)-\frac{1}{2}\eta^2\kappa_A(0)
+    \right\}
 
 The theoretical development so far is general to any form of the spatially varying potential
 :math:`V(x)` and does not assume any special form for the conservative forces between particles.
@@ -109,12 +129,13 @@ We defined the normal-mode correlation
 function for the pth mode to be
 
 .. math::
-    C_{p}(\tau) =
+    C_{p}(\tau) & = &
     \langle
     \vec{X}_{p}(\tau) \cdot
     \vec{X}_{p'} (0)
     \rangle
-    =
+    \\
+    & = &
     \frac{3 k_{B}T}{k_{p}}
     \left\{
     \exp \left(-\frac{3 \pi^{2} p^{2} \tau}{N^2} \right)
