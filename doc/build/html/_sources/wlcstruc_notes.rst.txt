@@ -23,6 +23,9 @@ Our goal in this section is to apply our exact results to predict the
 structure factor for the wormlike chain model that is valid over the
 entire range of scattering vectors and chain lengths.
 
+Two-point Structure Factor
+--------------------------
+
 We define the structure factor to be
 
 .. math::
@@ -87,7 +90,7 @@ provide a convenient methodology for calculating the structure factor
 as a comparison with scattering experiments.
 Specifically, the infinite summation in Eq. :eq:`skwlc` is truncated at a finite cutoff,
 and the partial summation is evaluated using methods to evaluate
-:math:`\mathcal{E}_{l}` found in Sec.~\ref{sec:greal}.
+:math:`\mathcal{E}_{l}` found in Sec. <wlcgreen_notes>.
 For most calculations, only a couple of terms are necessary to achieve
 accurate realizations of the structure factor.
 For example, the structure factor in 3 dimensions for a chain
@@ -102,6 +105,64 @@ is within :math:`1.05 \times 10^{-4}` percent difference from the calculation
 with 30 terms in the summation.
 Therefore, most practical applications of Eq. :eq:`skwlc` require the inclusion of
 only a couple of terms in the summation.
+
+Three-point and Four-point Density Correlation Functions
+--------------------------------------------------------
+
+We now extend the definition of the structure factor to include 3-point and 4-point
+correlation functions, as these serve as necessary input for
+a density expansion of the free energy
+under the random phase approximation (RPA) to a field-theoretic treatment of polymer solutions.
+The structure factors form the basis of the cubic and quartic vertex functions in the free energy
+expansion due to the connection between the structure factor and correlated density fluctuations
+in the solution.
+We discuss the evaluation of these functions below.
+
+Three-point structure factor
+****************************
+
+We define the 3-point structure factor :math:`S^{(3)}(\vec{k}_{1}, \vec{k}_{2})` as
+
+.. math::
+    S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; L) =
+    \frac{1}{L^{3}}
+    \int_{0}^{L} ds_{1}
+    \int_{0}^{L} ds_{2}
+    \int_{0}^{L} ds_{3}
+    \left< \exp \left[
+    i \vec{k}_{1} \cdot \left( \vec{r}(s_{1})-\vec{r}(s_{2}) \right)
+    + i \left( \vec{k}_{2} + \vec{k}_{1} \right) \cdot \left( \vec{r}(s_{2})-\vec{r}(s_{3}) \right)
+    \right] \right>.
+
+We note that the 3-point density corelations depend on 3 k-vectors, which satisfy
+:math:`\vec{k}_{1}+\vec{k}_{2}+\vec{k}_{3}=0` or :math:`\vec{k}_{3} = -\vec{k}_{1}-\vec{k}_{2}`.
+For the wormlike chain model,
+we leverage the Green's function to evaluate this average.
+For this treatment, we specialize the discussion to 3 dimensions,
+since the evaluation of the average in arbitrary dimensions requires
+rotation operations that are concretely defined in 3 dimensions.
+The Laplace transformed 3-point structure factor (from :math:`N` to :math:`p`) is
+given by
+
+.. math::
+    S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; p) =
+    \frac{3!}{N^{3}} \mathcal{L}^{-1} \left[
+    \int d \vec{u}_{3}
+    \int d \vec{u}_{2}
+    \int d \vec{u}_{1}
+    \frac{
+    G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2};p)
+    G(\vec{K}_{1}, \vec{u}_{2} | \vec{u}_{1};p)
+    }{p^{2}} \right],
+
+
+where :math:`\vec{K}_{i} = 2 l_{p} \vec{k}_{i}`.
+
+In this calculation, we need to evaluate the rotated spherical harmonics (see Appendix).
+
+
+
+
 
 Functions contained with the 'wlcstruc' module
 ----------------------------------------------

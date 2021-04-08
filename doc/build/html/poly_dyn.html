@@ -268,12 +268,8 @@ we arrive at the expression for the ring polymer</p>
 </div>
 <div class="section" id="module-wlcstat.poly_dyn">
 <span id="functions-contained-with-the-poly-dyn-module"></span><h2>Functions contained with the ‘poly_dyn’ module<a class="headerlink" href="#module-wlcstat.poly_dyn" title="Permalink to this headline">¶</a></h2>
-<p>Rouse polymer, analytical results.</p>
+<p>Polymer dynamics module - Rouse polymer, analytical results.</p>
 <p class="rubric">Notes</p>
-<p>There are two parameterizations of the “Rouse” polymer that are commonly used,
-and they use the same variable name for two different things.</p>
-<p>In one, N is the number of Kuhn lengths, and in the other, N is the number of
-beads, each of which can represent an arbitrary number of Kuhn lengths.</p>
 <dl class="py function">
 <dt id="wlcstat.poly_dyn.draw_cells">
 <code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">draw_cells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">min_y</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">max_y</span><span class="o">=</span><span class="default_value">0.95</span></em>, <em class="sig-param"><span class="n">locus_frac</span><span class="o">=</span><span class="default_value">0.7989601386481803</span></em>, <em class="sig-param"><span class="n">centromere_frac</span><span class="o">=</span><span class="default_value">0.7365684575389948</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#draw_cells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.draw_cells" title="Permalink to this definition">¶</a></dt>
@@ -289,20 +285,6 @@ beads, each of which can represent an arbitrary number of Kuhn lengths.</p>
 <dt id="wlcstat.poly_dyn.end_to_end_corr">
 <code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">end_to_end_corr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#end_to_end_corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.end_to_end_corr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Doi and Edwards, Eq. 4.35</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="wlcstat.poly_dyn.gaussian_G">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">gaussian_G</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#gaussian_G"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.gaussian_G" title="Permalink to this definition">¶</a></dt>
-<dd><p>Green’s function of a Gaussian chain at N Kuhn lengths of separation,
-given a Kuhn length of b</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="wlcstat.poly_dyn.gaussian_Ploop">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">gaussian_Ploop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#gaussian_Ploop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.gaussian_Ploop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Looping probability for two loci on a Gaussian chain N kuhn lengths
-apart, when the Kuhn length is b, and the capture radius is a</p>
 </dd></dl>
 
 <dl class="py function">
@@ -326,16 +308,50 @@ apart, when the Kuhn length is b, and the capture radius is a</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wlcstat.poly_dyn.kp_over_kbt">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">kp_over_kbt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">b</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">N</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#kp_over_kbt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.kp_over_kbt" title="Permalink to this definition">¶</a></dt>
-<dd><p>k_p/(k_B T) : “non-dimensionalized” k_p is all that’s needed for most
-formulas, e.g. MSD.</p>
+<dt id="wlcstat.poly_dyn.linear_mid_msd">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_mid_msd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_mid_msd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_mid_msd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the MSD for the midpoint on a Rouse polymer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float array</em>) – Time in seconds</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Kuhn length (microns)</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – Chain length (in Kuhn lengths)</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusivity (microns ** 2 / second)</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – Number of normal modes used in the calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>msd</strong> – Calculated MSD for a Rouse polymer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float array (size len(t))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wlcstat.poly_dyn.linear_mid_msd">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_mid_msd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_mid_msd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_mid_msd" title="Permalink to this definition">¶</a></dt>
-<dd><p>modified from Weber Phys Rev E 2010, Eq. 24.</p>
+<dt id="wlcstat.poly_dyn.linear_mid_msd_subpoly">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_mid_msd_subpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_mid_msd_subpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_mid_msd_subpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the MSD for the midpoint on a subdiffusive Rouse polymer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float array</em>) – Time in seconds</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Kuhn length (microns)</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – Chain length (in Kuhn lengths)</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusivity (microns ** 2 / second)</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – MSD scaling exponent</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – Number of normal modes used in the calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>msd</strong> – Calculated MSD for a Rouse polymer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float array (size len(t))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -365,8 +381,166 @@ being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt id="wlcstat.poly_dyn.linear_mscd_subpoly">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_mscd_subpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_mscd_subpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_mscd_subpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mscd for two points on a linear polymer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSCD</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
+<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
+<li><p><strong>Ndel</strong> (<em>float</em>) – Distance from the last linkage site to the measured site. This ends up
+being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – The full lengh of the linear polymer (in Kuhn lengths).</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Subdiffusive powerlaw scaling exponent for diffusion</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd</strong> – result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.linear_msd_confine">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_msd_confine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">Nmono</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">k_conf</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_msd_confine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_msd_confine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute msd for a Rouse polymer confined within a harmonic confining potential</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSD</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
+<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
+<li><p><strong>Nmono</strong> (<em>float</em>) – Monomer position of the tagged locus (in Kuhn length).</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – The full lengh of the linear polymer (in Kuhn lengths).</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
+<li><p><strong>k_conf</strong> (<em>float</em>) – Confinement strength</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>msd</strong> – result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.linear_msd_confine_plateau">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">linear_msd_confine_plateau</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Nmono</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">k_conf</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#linear_msd_confine_plateau"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.linear_msd_confine_plateau" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute msd for a Rouse polymer confined within a harmonic confining potential</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSD</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
+<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
+<li><p><strong>Nmono</strong> (<em>float</em>) – Monomer position of the tagged locus (in Kuhn length).</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – The full lengh of the linear polymer (in Kuhn lengths).</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
+<li><p><strong>k_conf</strong> (<em>float</em>) – Confinement strength</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>msd</strong> – result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.poly_dyn.model_mscd">
 <code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">model_mscd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">label_loc</span><span class="o">=</span><span class="default_value">3.5311602490318506</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em>, <em class="sig-param"><span class="n">nuc_radius</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">0.015</span></em>, <em class="sig-param"><span class="n">D</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#model_mscd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.model_mscd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the MSCD for the model of linked chromosomes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float array</em>) – Time in seconds</p></li>
+<li><p><strong>linkages</strong> (<em>float array</em>) – List of the link positions between the homologous chromosomes</p></li>
+<li><p><strong>label_loc</strong> (<em>float</em>) – Location of the fluorescent label along the chromosome (microns)</p></li>
+<li><p><strong>chr_size</strong> (<em>float</em>) – Length of the chromosome (microns)</p></li>
+<li><p><strong>nuc_radius</strong> (<em>float</em>) – Radius of the nucleus (microns)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Kuhn length (microns)</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusivity (microns ** 2 / second)</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – Number of normal modes used in the calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd_model</strong> – Calculated MSCD (microns ** 2) for the model with defined linkages</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float array (size len(t))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.model_mscd_confine">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">model_mscd_confine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">label_loc</span><span class="o">=</span><span class="default_value">3.5311602490318506</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em>, <em class="sig-param"><span class="n">nuc_radius</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">k_conf</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">0.015</span></em>, <em class="sig-param"><span class="n">D</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#model_mscd_confine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.model_mscd_confine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the MSCD for the model of linked chromosomes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float array</em>) – Time in seconds</p></li>
+<li><p><strong>linkages</strong> (<em>float array</em>) – List of the link positions between the homologous chromosomes</p></li>
+<li><p><strong>label_loc</strong> (<em>float</em>) – Location of the fluorescent label along the chromosome (microns)</p></li>
+<li><p><strong>chr_size</strong> (<em>float</em>) – Length of the chromosome (microns)</p></li>
+<li><p><strong>nuc_radius</strong> (<em>float</em>) – Radius of the nucleus (microns)</p></li>
+<li><p><strong>k_conf</strong> (<em>float</em>) – Strength of confining potential</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Kuhn length (microns)</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusivity (microns ** 2 / second)</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – Number of normal modes used in the calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd_model</strong> – Calculated MSCD (microns ** 2) for the model with defined linkages</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float array (size len(t))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.model_mscd_subpoly">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">model_mscd_subpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">label_loc</span><span class="o">=</span><span class="default_value">3.5311602490318506</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em>, <em class="sig-param"><span class="n">nuc_radius</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">0.015</span></em>, <em class="sig-param"><span class="n">D</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#model_mscd_subpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.model_mscd_subpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the MSCD for the model of linked chromosomes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float array</em>) – Time in seconds</p></li>
+<li><p><strong>linkages</strong> (<em>float array</em>) – List of the link positions between the homologous chromosomes</p></li>
+<li><p><strong>label_loc</strong> (<em>float</em>) – Location of the fluorescent label along the chromosome (microns)</p></li>
+<li><p><strong>chr_size</strong> (<em>float</em>) – Length of the chromosome (microns)</p></li>
+<li><p><strong>nuc_radius</strong> (<em>float</em>) – Radius of the nucleus (microns)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Kuhn length (microns)</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusivity (microns ** 2 / second)</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – Number of normal modes used in the calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd_model</strong> – Calculated MSCD (microns ** 2) for the model with defined linkages</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float array (size len(t))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_dyn.model_mscd_subpoly_simple">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">model_mscd_subpoly_simple</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">linkages</span></em>, <em class="sig-param"><span class="n">label_loc</span><span class="o">=</span><span class="default_value">3.5311602490318506</span></em>, <em class="sig-param"><span class="n">chr_size</span><span class="o">=</span><span class="default_value">17.474999999999998</span></em>, <em class="sig-param"><span class="n">nuc_radius</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">0.015</span></em>, <em class="sig-param"><span class="n">D</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#model_mscd_subpoly_simple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.model_mscd_subpoly_simple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the MSCD for the model of linked chromosomes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -439,18 +613,29 @@ being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wlcstat.poly_dyn.rouse_mode">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">rouse_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">N</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#rouse_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.rouse_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Eigenbasis for Rouse model.</p>
-<p>Indexed by p, depends only on position n/N along the polymer of length N.
-N=1 by default.</p>
-<p>Weber, Phys Rev E, 2010 (Eq 14)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="wlcstat.poly_dyn.rouse_mode_coef">
-<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">rouse_mode_coef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">kbT</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#rouse_mode_coef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.rouse_mode_coef" title="Permalink to this definition">¶</a></dt>
-<dd><p>k_p: Weber Phys Rev E 2010, after Eq. 18.</p>
+<dt id="wlcstat.poly_dyn.ring_mscd_subpoly">
+<code class="sig-prename descclassname">wlcstat.poly_dyn.</code><code class="sig-name descname">ring_mscd_subpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_dyn.html#ring_mscd_subpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_dyn.ring_mscd_subpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mscd for two points on a ring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSCD.</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
+<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
+<li><p><strong>Ndel</strong> (<em>float</em>) – (1/2)*separation between the loci on loop (in Kuhn lengths)</p></li>
+<li><p><strong>N</strong> (<em>float</em>) – full length of the loop (in Kuhn lengths)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The Kuhn length, in desired output length units.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Subdiffusive powerlaw scaling exponent for diffusion</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – How many Rouse modes to include in the sum.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd</strong> – result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

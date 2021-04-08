@@ -37,7 +37,7 @@ that satisfies
 .. math::
     \langle f_{B}(t) \rangle & = & 0, \\
     \langle f_{B}(t) f_{B}(t') \rangle
-    & = & \kappa^{(B)} ( |t - t'|)
+    & = & \kappa_B ( |t - t'|)
     =
     2 k_{B}T \xi \delta (t - t').
 
@@ -49,9 +49,6 @@ Diffusive transport in a viscoelastic
 fluid leads to temporal memory in the
 Brownian force, reflecting temporal
 correlation in the frictional stress.
-Our approach is amenable to address
-such physics, and we develop this in
-the appendix to this paper.
 
 In our work, we assume the active force :math:`f_{A}` are also Gaussian-distributed
 with an arbitrary temporal correlation, such that
@@ -59,130 +56,60 @@ with an arbitrary temporal correlation, such that
 .. math::
     \langle f_{A}(t) \rangle & = & 0, \\
     \langle f_{A}(t) f_{A}(t') \rangle
-    & = & \kappa^{(A)}(|t-t'|),
+    & = & \kappa_{A}(|t-t'|),
 
 where
-:math:`\kappa^{(A)}(t)` represents
+:math:`\kappa_{A}(t)` represents
 the temporal correlation between active
 forces.
 
-This theoretical model results in
-a Smoluchowski equation (or
-Schr\"{o}dinger equation) that is given by
+We develop a path integral formulation of the Active-Brownian particle that results in an expression for the
+joint probability :math:`\mathcal{P}[x(t)|x_0;t;f_A^{(0)}]`.  This function governs the probability that if a particle begins
+at :math:`x_{0}` experiencing an active force :math:`f_{A}^{(0)}` at time :math:`t = 0`, the particle will be
+located at position :math:`x` at time :math:`t`.
+Carrying out the integral over the active forces is performed by noting a Gaussian form of active forces
 
 .. math::
-    \frac{\partial G(\vec{r}|\vec{r}_{0}; t)}
-    {\partial t} & = &
-    \frac{k_{B}T}{\xi} \nabla^{2}
-    G(\vec{r}|\vec{r}_{0}; t)
-    - \frac{1}{\xi} \vec{\nabla}
-    \cdot
-    \left[
-    \vec{f}_{V} G(\vec{r}|\vec{r}_{0}; t)
-    \right]
+    \mathcal{P}[f_A(t)]\propto \exp \left\{
+    -\frac{1}{2}\int_0^t dt_{1}\int_0^t dt_2
+    f_A(t_1)\kappa_A^{-1}(|t_1-t_2|)f_A(t_2)
+    \right\}
+
+This is used in the path integral formulation, and after functional integration over Brownian and Active forces, we
+arrive at the expression
+
+.. math::
+    &  &
+    \mathcal{P}[x|x_0;t,f_A^{(0)}, t_{0}]
+    \nonumber
     \\
-    &  & +
-    \frac{1}{2 \xi^{2}}
-    \int_{0}^{t} dt_{1} \int d \vec{r}_{1}
-    K_{A}^{-1}(t-t_{1})
-    \left[
-    \vec{\nabla}_{r}
-    G(\vec{r}|\vec{r}_{1}; t- t_{1})
-    \right]
-    \cdot
-    \left[
-    \vec{\nabla}_{r_{1}}
-    G(\vec{r}_{1}|\vec{r}_{0}; t_{1})
-    \right],
-    :label: diff
+    &  &
+    =\int_{x_0}^{x} \mathcal{D}[x(t)]\int \mathcal{D}[w(t)] \int d\eta \exp
+    \left\{
+    -k_{B}T\xi\int_0^t [w(t_{1})]^2dt_{1}+i\xi\int_0^t \dot{w}(t_{1})x(t_{1})dt_{1}
+    \right.
+    \nonumber
+    \\
+    &  &
+    \left.
+    -i\xi w(t)x(t)+i\xi w(0)x(0)+i\int_0^t w(t_{1})f_V[x(t_{1})]dt_{1}
+    -\frac{1}{2}
+    \int_0^t
+    \! \! dt_1 \int_{0}^{t}
+    \! \!
+    dt_2 w(t_1)\kappa_A(|t_1-t_2|)
+    w(t_2)
+    \right.
+    \nonumber
+    \\
+    &  &
+    \left.
+    -i\eta f_A^{(0)}
+    -\eta\int_0^t dt_1 \kappa_A(|t_1-t_0|)w(t_1)-\frac{1}{2}\eta^2\kappa_A(0)
+    \right\}
 
-which is composed of the thermal and
-active contributions.
-
-The active-Brownian Smoluchowski equation
-(Eq. :eq:`diff`)
-defines the conditions for the steady-state
-probability distribution :math:`p_{ss}(\vec{r})`.
-Upon Laplace transform of Eq. :eq:`diff`
-and applying Final Value Theorem,
-we arrive at the condition
-
-.. math::
-    0 =
-    H_{0} p_{ss}(\vec{r}) +
-    \frac{1}{2 \xi^{2}} \int d \vec{r}_{1}
-    \left[
-    \vec{\nabla}_{r}
-    \tilde{G}_{A}(\vec{r}|\vec{r}_{1})
-    \right]
-    \cdot
-    \left[
-    \vec{\nabla}_{r_{1}} p_{ss} (\vec{r}_{1})
-    \right],
-    :label: pss
-
-where :math:`H_{0} p_{ss}(\vec{r})` is the
-standard Smoluchowski operator
-
-.. math::
-    H_{0} p_{ss}(\vec{r}) =
-    \frac{k_{B}T}{\xi} \nabla^{2}
-    p_{ss}(\vec{r})
-    - \frac{1}{\xi} \vec{\nabla}
-    \cdot
-    \left[
-    \vec{f}_{V} p_{ss}(\vec{r})
-    \right]
-
-and :math:`\tilde{G}_{A}` is defined as
-
-.. math::
-    \tilde{G}_{A}(\vec{r}|\vec{r}_{1}) =
-    \int_{0}^{\infty} \! \! dt K_{A}^{-1}(t)
-    G(\vec{r}|\vec{r}_{1};t).
-
-The steady-state condition :math:`p_{ss}`
-requires evaluation of Eq. :eq:`diff`,
-which implies the non-equilibrium
-nature of the active-Brownian particle.
-
-Our current development is a generalized
-representation of an active-Brownian particle.
-However, the active-force correlation
-function :math:`K_{A}^{-1}` defines a time-scale
-of communication of active forces
-
-.. math::
-    t_{A} = \frac{\int_{0}^{\infty}
-    d t K_{A}^{-1}(t) t }{\int_{0}^{\infty}
-    d t K_{A}^{-1}(t)}
-
-As this time scale approaches zero,
-the active-force correlation can
-be written as
-:math:`K_{A}^{-1}(t) = 2 \xi k_{B} T_{A}
-\delta (t)`,
-where we define an active temperature
-:math:`T_{A}`.
-This limit implies the effect of active forces
-can be interpreted as an effective
-active-Brownian temperature
-:math:`T_{AB} = T + T_{A}`.
-
-However, the time scale of relaxation of the
-particle in the absence of active forces
-defines whether the
-active forces perturb the behavior
-beyond this effective temperature.
-This is particularly true for a system
-with a spectrum of relaxation time
-scales, where some relaxation processes
-are faster than the active-force correlation
-time :math:`t_{A}`.
-Such effects are prevalent for
-the dynamics of a polymer chain
-subjected to both active and Brownian
-fluctuations.
+The theoretical development so far is general to any form of the spatially varying potential
+:math:`V(x)` and does not assume any special form for the conservative forces between particles.
 
 Dynamic behavior of an Active-Brownian polymer
 ----------------------------------------------
@@ -198,41 +125,32 @@ we can frame our results in the previous
 section to find the behavior of the
 pth normal mode.
 
-The mapping from the harmonic particle to
-the pth normal mode involves replacing
-the following variables:
-:math:`\xi \rightarrow N \xi`,
-:math:`k \rightarrow k_{p} = \frac{3 \pi^{2} k_{B}T}{b^{2} N} p^{2}`,
-:math:`f_{A}^{2} \rightarrow N f_{A}^{2}`.
-We then define the Rouse time
-:math:`t_{R} = N^{2} b^{2} \xi /(3 \pi^{2} k_{B}T)`
-as the longest internal relaxation time of the
-polymer, \emph{i.e.} :math:`t_{R} = N\xi/k_{1}`
-for the :math:`p=1` normal mode.
-
 We defined the normal-mode correlation
 function for the pth mode to be
 
 .. math::
-    C_{p}(\tau) =
+    C_{p}(\tau) & = &
     \langle
     \vec{X}_{p}(\tau) \cdot
     \vec{X}_{p'} (0)
     \rangle
-    =
-    \frac{3 k_{B}T}{k_{p}} \left[
-    1 + \frac{F_{A}^{2}}{2} \frac{K_{A}}{K_{A}+p^{2}}
-    \right] \exp \left( - p^{2} \tau \right)
-    \delta_{pp'}
+    \\
+    & = &
+    \frac{3 k_{B}T}{k_{p}}
+    \left\{
+    \exp \left(-\frac{3 \pi^{2} p^{2} \tau}{N^2} \right)
+    + \frac{\Gamma K_{A}^{2} }{K_A^2-(3 \pi^{2})^{2} p^4/N^{4}}
+    \left[
+    \exp \left(-\frac{3 \pi^{2} p^{2} \tau}{N^2} \right) -
+    \frac{3 \pi^{2} p^{2}}{N^{2} K_{A}} \exp \left( - K_{A} \tau \right)
+    \right]
+    \right\} \delta_{pp'}
 
-where :math:`F_{A}^{2} =
-f_{A}^{2}/(k_{A} \xi k_{B}T)`
-and
-:math:`K_{A} = t_{R} k_{A} =
-N^{2} b^{2} \xi k_{A} /(3 \pi^{2} k_{B}T)`.
-The dimensionless time :math:`\tau = t/t_{R}`
-is scaled by the Rouse time of the
-polymer.
+The dimensionless time :math:`\tau = t/t_{b}`
+is scaled by the diffusive time :math:`t_{b} = b^{2} \xi/(k_{B}T)`,
+and we define the dimensionless Active force :math:`F_{A}^{2} = \Gamma K_{A} = f_{A}^{2} b^{2}/(k_{B}T)^{2}`
+and dimensionless active rate constant
+:math:`K_{A} = t_{b} k_{A}`.
 
 We find the center-of-mass
 mean-square displacement to be
