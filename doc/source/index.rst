@@ -25,6 +25,8 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Active-Brownian Dynamics <active_brown>
 
+    Appendix <appendix>
+
     References <references>
 
 Indices and tables

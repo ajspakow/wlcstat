@@ -18,7 +18,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Polymer Field Theory: Liquid Crystalline Solutions" href="wlc_lcpoly.html" />
+    <link rel="next" title="Polymer Confinement" href="poly_confine.html" />
     <link rel="prev" title="Wormlike Chain Green’s Function" href="wlcgreen_notes.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,7 +31,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="wlc_lcpoly.html" title="Polymer Field Theory: Liquid Crystalline Solutions"
+          <a href="poly_confine.html" title="Polymer Confinement"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="wlcgreen_notes.html" title="Wormlike Chain Green’s Function"
@@ -65,6 +65,8 @@ governing chain statistics.
 Our goal in this section is to apply our exact results to predict the
 structure factor for the wormlike chain model that is valid over the
 entire range of scattering vectors and chain lengths.</p>
+<div class="section" id="two-point-structure-factor">
+<h2>Two-point Structure Factor<a class="headerlink" href="#two-point-structure-factor" title="Permalink to this headline">¶</a></h2>
 <p>We define the structure factor to be</p>
 <div class="math notranslate nohighlight">
 \[S(\vec{k}) = \frac{1}{L^{2}}
@@ -114,7 +116,7 @@ provide a convenient methodology for calculating the structure factor
 as a comparison with scattering experiments.
 Specifically, the infinite summation in Eq. <a class="reference internal" href="#equation-skwlc">(1)</a> is truncated at a finite cutoff,
 and the partial summation is evaluated using methods to evaluate
-<span class="math notranslate nohighlight">\(\mathcal{E}_{l}\)</span> found in Sec.~ref{sec:greal}.
+<span class="math notranslate nohighlight">\(\mathcal{E}_{l}\)</span> found in Sec. &lt;wlcgreen_notes&gt;.
 For most calculations, only a couple of terms are necessary to achieve
 accurate realizations of the structure factor.
 For example, the structure factor in 3 dimensions for a chain
@@ -129,6 +131,53 @@ is within <span class="math notranslate nohighlight">\(1.05 \times 10^{-4}\)</sp
 with 30 terms in the summation.
 Therefore, most practical applications of Eq. <a class="reference internal" href="#equation-skwlc">(1)</a> require the inclusion of
 only a couple of terms in the summation.</p>
+</div>
+<div class="section" id="three-point-and-four-point-density-correlation-functions">
+<h2>Three-point and Four-point Density Correlation Functions<a class="headerlink" href="#three-point-and-four-point-density-correlation-functions" title="Permalink to this headline">¶</a></h2>
+<p>We now extend the definition of the structure factor to include 3-point and 4-point
+correlation functions, as these serve as necessary input for
+a density expansion of the free energy
+under the random phase approximation (RPA) to a field-theoretic treatment of polymer solutions.
+The structure factors form the basis of the cubic and quartic vertex functions in the free energy
+expansion due to the connection between the structure factor and correlated density fluctuations
+in the solution.
+We discuss the evaluation of these functions below.</p>
+<div class="section" id="three-point-structure-factor">
+<h3>Three-point structure factor<a class="headerlink" href="#three-point-structure-factor" title="Permalink to this headline">¶</a></h3>
+<p>We define the 3-point structure factor <span class="math notranslate nohighlight">\(S^{(3)}(\vec{k}_{1}, \vec{k}_{2})\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; L) =
+\frac{1}{L^{3}}
+\int_{0}^{L} ds_{1}
+\int_{0}^{L} ds_{2}
+\int_{0}^{L} ds_{3}
+\left&lt; \exp \left[
+i \vec{k}_{1} \cdot \left( \vec{r}(s_{1})-\vec{r}(s_{2}) \right)
++ i \left( \vec{k}_{2} + \vec{k}_{1} \right) \cdot \left( \vec{r}(s_{2})-\vec{r}(s_{3}) \right)
+\right] \right&gt;.\]</div>
+<p>We note that the 3-point density corelations depend on 3 k-vectors, which satisfy
+<span class="math notranslate nohighlight">\(\vec{k}_{1}+\vec{k}_{2}+\vec{k}_{3}=0\)</span> or <span class="math notranslate nohighlight">\(\vec{k}_{3} = -\vec{k}_{1}-\vec{k}_{2}\)</span>.
+For the wormlike chain model,
+we leverage the Green’s function to evaluate this average.
+For this treatment, we specialize the discussion to 3 dimensions,
+since the evaluation of the average in arbitrary dimensions requires
+rotation operations that are concretely defined in 3 dimensions.
+The Laplace transformed 3-point structure factor (from <span class="math notranslate nohighlight">\(N\)</span> to <span class="math notranslate nohighlight">\(p\)</span>) is
+given by</p>
+<div class="math notranslate nohighlight">
+\[S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; p) =
+\frac{3!}{N^{3}} \mathcal{L}^{-1} \left[
+\int d \vec{u}_{3}
+\int d \vec{u}_{2}
+\int d \vec{u}_{1}
+\frac{
+G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2};p)
+G(\vec{K}_{1}, \vec{u}_{2} | \vec{u}_{1};p)
+}{p^{2}} \right],\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{K}_{i} = 2 l_{p} \vec{k}_{i}\)</span>.</p>
+<p>In this calculation, we need to evaluate the rotated spherical harmonics (see Appendix).</p>
+</div>
+</div>
 <div class="section" id="module-wlcstat.wlcstruc">
 <span id="functions-contained-with-the-wlcstruc-module"></span><h2>Functions contained with the ‘wlcstruc’ module<a class="headerlink" href="#module-wlcstat.wlcstruc" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
@@ -178,6 +227,11 @@ This plot is a reproduction of Fig. 2 in Ref. <a class="reference internal" href
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Structure Factor</a><ul>
+<li><a class="reference internal" href="#two-point-structure-factor">Two-point Structure Factor</a></li>
+<li><a class="reference internal" href="#three-point-and-four-point-density-correlation-functions">Three-point and Four-point Density Correlation Functions</a><ul>
+<li><a class="reference internal" href="#three-point-structure-factor">Three-point structure factor</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-wlcstat.wlcstruc">Functions contained with the ‘wlcstruc’ module</a></li>
 <li><a class="reference internal" href="#example-usage-of-eval-structure-factor">Example usage of ‘eval_structure_factor’</a></li>
 </ul>
@@ -188,8 +242,8 @@ This plot is a reproduction of Fig. 2 in Ref. <a class="reference internal" href
   <p class="topless"><a href="wlcgreen_notes.html"
                         title="previous chapter">Wormlike Chain Green’s Function</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="wlc_lcpoly.html"
-                        title="next chapter">Polymer Field Theory: Liquid Crystalline Solutions</a></p>
+  <p class="topless"><a href="poly_confine.html"
+                        title="next chapter">Polymer Confinement</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -221,7 +275,7 @@ This plot is a reproduction of Fig. 2 in Ref. <a class="reference internal" href
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="wlc_lcpoly.html" title="Polymer Field Theory: Liquid Crystalline Solutions"
+          <a href="poly_confine.html" title="Polymer Confinement"
              >next</a> |</li>
         <li class="right" >
           <a href="wlcgreen_notes.html" title="Wormlike Chain Green’s Function"

@@ -90,7 +90,6 @@ This representation is related to the previous representation as
     Definition of effective-chain representation including internal twist degree of freedom
 
 
-
 Geometry and topology of space curves
 -------------------------------------
 
