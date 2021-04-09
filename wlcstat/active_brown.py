@@ -106,7 +106,7 @@ def msd_active(t, D, ka, fa, N, b=1, num_modes=20000):
     return sum_coeff * msd + msd_com
 
 
-def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, fa=0, b=1, num_modes=10000):
+def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, num_modes=10000):
     r"""
     Generate a discrete chain based on the active-Brownian Rouse model
 
@@ -133,13 +133,12 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, fa=0, b=1, num_modes=100
     """
 
     r_poly = np.zeros((num_beads, 3))
-    gamma = fa ** 2 * ka
     k1 = 3 * np.pi ** 2 / (length_kuhn * (b ** 2))
     ind = np.arange(num_beads)
 
     for p in range(1, num_modes + 1):
         kp = k1 * p ** 2
-        xp_mag = np.sqrt(1 / kp * (1 + gamma * ka / (ka + k1 * (b ** 2) / length_kuhn)))
+        xp_mag = np.sqrt(1 / kp * (1 + gamma / (1 + p ** 2 / (ka * length_kuhn ** 2))))
         xp = np.random.randn(3) * xp_mag
         phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
         r_poly += np.outer(phi, xp)
@@ -148,7 +147,18 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, fa=0, b=1, num_modes=100
 
 
 def gen_pymol_file(r_poly, filename='r_poly.pdb', ring=False):
+    r"""
 
+    Parameters
+    ----------
+    r_poly
+    filename
+    ring
+
+    Returns
+    -------
+
+    """
 
     # Open the file
     f = open(filename, 'w')
