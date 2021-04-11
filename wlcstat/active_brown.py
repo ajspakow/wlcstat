@@ -118,7 +118,7 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, num_modes=
         Number of beads in the discrete chain
     ka : float
         Active force rate constant
-    fa : float
+    gamma : float
         Magnitude of the active forces
     b : float
         Kuhn length
@@ -146,14 +146,21 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, num_modes=
     return r_poly
 
 
+def gen_conf_wlc(length_kuhn, num_beads, ka=1, gamma=0, b=1):
+    return
+
+
 def gen_pymol_file(r_poly, filename='r_poly.pdb', ring=False):
     r"""
 
     Parameters
     ----------
-    r_poly
-    filename
-    ring
+    r_poly : (num_beads, 3) float
+        Conformation of the chain subjected to active-Brownian forces
+    filename : str
+        File name to write the pdb file
+    ring : bool
+        Boolean to close the polymer into a ring
 
     Returns
     -------
@@ -164,13 +171,6 @@ def gen_pymol_file(r_poly, filename='r_poly.pdb', ring=False):
     f = open(filename, 'w')
 
     atomname1 = "A1"    # Chain atom type
-    atomname2 = "A2"    # Ribbon atom type
-    atomname3 = "A3"    # Extra atom type
-    atomname4 = "A4"    # Extra atom type
-    atomname5 = "A5"    # Extra atom type
-    atomname6 = "A6"    # Extra atom type
-    atomname7 = "A7"    # Extra atom type
-    atomname8 = "A8"    # Extra atom type
     resname = "SSN"     # Type of residue (UNKnown/Single Stranded Nucleotide)
     chain = "A"         # Chain identifier
     resnum = 1
