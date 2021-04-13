@@ -164,11 +164,11 @@ function for the pth mode to be</p>
 &amp; = &amp;
 \frac{3 k_{B}T}{k_{p}}
 \left\{
-\exp \left(-\frac{3 \pi^{2} p^{2} \tau}{N^2} \right)
-+ \frac{\Gamma K_{A}^{2} }{K_A^2-(3 \pi^{2})^{2} p^4/N^{4}}
+\exp \left(-\frac{ p^{2} \tau}{N^2} \right)
++ \frac{\Gamma}{K_A^2- p^4/(K_{A}^{2} N^{4})}
 \left[
-\exp \left(-\frac{3 \pi^{2} p^{2} \tau}{N^2} \right) -
-\frac{3 \pi^{2} p^{2}}{N^{2} K_{A}} \exp \left( - K_{A} \tau \right)
+\exp \left(-\frac{p^{2} \tau}{N^2} \right) -
+\frac{ p^{2}}{K_{A} N^{2}} \exp \left( - K_{A} \tau \right)
 \right]
 \right\} \delta_{pp'}\end{split}\]</div>
 <p>The dimensionless time <span class="math notranslate nohighlight">\(\tau = t/t_{b}\)</span>
@@ -185,18 +185,7 @@ mean-square displacement to be</p>
 \vec{X}_{0}(t) - \vec{X}_{0}(0)
 \right)^{2}
 \rangle
-=
-\frac{k_{B} T}{k_{1}}
-\left\{
-6 \tau + 3 F_{A}^{2}
-\left[
-\tau - \frac{1}{K_{A}} +
-\frac{1}{K_{A}}
-\exp \left(
-- K_{A} \tau
-\right)
-\right]
-\right\}.\]</div>
+= ???\]</div>
 <p>We note that Eq. <a class="reference internal" href="#equation-msd-com">(2)</a>
 has the short-time asymptotic behavior
 <span class="math notranslate nohighlight">\(\mathrm{MSD}_{\mathrm{com}} \rightarrow
@@ -222,19 +211,7 @@ easily extended to other polymer positions.
 We insert our normal-mode representation into Eq. <a class="reference internal" href="#equation-msd-active">(3)</a>,
 resulting in the expression</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\mathrm{MSD} &amp; = &amp;
-\sum_{p=0}^{\infty} \sum_{p'=0}^{\infty}
-\langle
-\left( \vec{X}_{p}(t) - \vec{X}_{p}(0) \right) \cdot
-\left( \vec{X}_{p'}(t) - \vec{X}_{p'}(0) \right) \rangle
-\phi_{p}(n=N/2) \phi_{p'}(n=N/2)
-\nonumber
-\\
-&amp; = &amp;
-    \mathrm{MSD}_{\mathrm{com}} +
-\sum_{p = 1}^{\infty} 12 \frac{k_{B}T}{k_{2p}}
-\left[ 1 + \frac{F_{A}^{2}}{2} \frac{K_{A}}{K_{A}+(2p)^{2}} \right]
-\left[ 1 - \exp \! \left( - \frac{k_{2p}}{N \xi} t \right) \right].\end{split}\]</div>
+\[\mathrm{MSD} = ???\]</div>
 <p>In addition, we define the
 the mean-square change in distance (MSCD) for a polymer chain.
 This quantity is defined as</p>
@@ -251,10 +228,7 @@ segments from each other.
 This results in the expression</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{MSCD}
-    =  \sum_{p = 0}^{\infty} 48 \frac{k_{B}T}{k_{2p+1}}
-\left[ 1 + \frac{F_{A}^{2}}{2} \frac{K_{A}}{K_{A}+(2p+1)^{2}} \right]
-\left[ 1 - \exp \! \left( - \frac{k_{2p+1}}{N \xi} t \right) \right]
-\sin^{2} \left[ \frac{\pi (2p+1) \Delta}{N} \right]\]</div>
+    = ???\]</div>
 </div>
 <div class="section" id="module-wlcstat.active_brown">
 <span id="functions-contained-with-the-active-brown-module"></span><h2>Functions contained with the ‘active_brown’ module<a class="headerlink" href="#module-wlcstat.active_brown" title="Permalink to this headline">¶</a></h2>
@@ -263,7 +237,7 @@ This results in the expression</p>
 <p>Detailed derivations for MSD and MSCD are found in “Interplay of active and thermal fluctuations in polymer dynamics”</p>
 <dl class="py function">
 <dt id="wlcstat.active_brown.gen_conf_rouse_active">
-<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">gen_conf_rouse_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">num_beads</span></em>, <em class="sig-param"><span class="n">ka</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">fa</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#gen_conf_rouse_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.gen_conf_rouse_active" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">gen_conf_rouse_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">num_beads</span></em>, <em class="sig-param"><span class="n">ka</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#gen_conf_rouse_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.gen_conf_rouse_active" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a discrete chain based on the active-Brownian Rouse model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -271,7 +245,7 @@ This results in the expression</p>
 <li><p><strong>length_kuhn</strong> (<em>float</em>) – Length of the chain (in Kuhn segments)</p></li>
 <li><p><strong>num_beads</strong> (<em>int</em>) – Number of beads in the discrete chain</p></li>
 <li><p><strong>ka</strong> (<em>float</em>) – Active force rate constant</p></li>
-<li><p><strong>fa</strong> (<em>float</em>) – Magnitude of the active forces</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Magnitude of the active forces</p></li>
 <li><p><strong>b</strong> (<em>float</em>) – Kuhn length</p></li>
 <li><p><strong>num_modes</strong> (<em>int</em>) – Number of Rouse modes in calculation</p></li>
 </ul>
@@ -286,20 +260,31 @@ This results in the expression</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="wlcstat.active_brown.gen_pymol_file">
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">gen_pymol_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r_poly</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'r_poly.pdb'</span></em>, <em class="sig-param"><span class="n">ring</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#gen_pymol_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.gen_pymol_file" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_poly</strong> (<em>(</em><em>num_beads</em><em>, </em><em>3</em><em>) </em><em>float</em>) – Conformation of the chain subjected to active-Brownian forces</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – File name to write the pdb file</p></li>
+<li><p><strong>ring</strong> (<em>bool</em>) – Boolean to close the polymer into a ring</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.active_brown.mscd_active">
-<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">mscd_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">fa</span></em>, <em class="sig-param"><span class="n">Ndel</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#mscd_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.mscd_active" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">mscd_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">delta</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">gamma</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#mscd_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.mscd_active" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute mscd for two points on an active-Brownian polymer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSCD</p></li>
-<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
-<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
-<li><p><strong>ka</strong> (<em>float</em>) – Dimensionless active-force rate constant</p></li>
-<li><p><strong>fa</strong> (<em>float</em>) – Dimensionless active-force magnitude</p></li>
-<li><p><strong>Ndel</strong> (<em>float</em>) – Distance from the last linkage site to the measured site. This ends up
-being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
-<li><p><strong>N</strong> (<em>float</em>) – The full length of the linear polymer (in Kuhn lengths).</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – Length of the chain (in Kuhn segments)</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) – Length of the chain between loci (in Kuhn segments)</p></li>
+<li><p><strong>ka</strong> (<em>float</em>) – Active force rate constant</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Magnitude of the active forces</p></li>
 <li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
 <li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
 </ul>
@@ -314,18 +299,40 @@ being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt id="wlcstat.active_brown.mscd_plateau_active">
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">mscd_plateau_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">delta</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">gamma</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#mscd_plateau_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.mscd_plateau_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mscd plateau for two points on an active-Brownian polymer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – Length of the chain (in Kuhn segments)</p></li>
+<li><p><strong>delta</strong> (<em>float</em><em>, </em><em>array_like</em>) – Length of the chain between loci (in Kuhn segments)</p></li>
+<li><p><strong>ka</strong> (<em>float</em>) – Active force rate constant</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Magnitude of the active forces</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
+<li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mscd_plateau</strong> – result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.active_brown.msd_active">
-<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">msd_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">D</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">fa</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#msd_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.msd_active" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute msd for two points on an active-Brownian polymer.</p>
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">msd_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">gamma</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#msd_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.msd_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute msd for the midpoint points on an active-Brownian polymer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t</strong> (<em>(</em><em>M</em><em>,</em><em>) </em><em>float</em><em>, </em><em>array_like</em>) – Times at which to evaluate the MSCD</p></li>
-<li><p><strong>D</strong> (<em>float</em>) – Diffusion coefficient, (in desired output length units). Equal to
-<span class="math notranslate nohighlight">\(k_BT/\xi\)</span> for <span class="math notranslate nohighlight">\(\xi\)</span> in units of “per Kuhn length”.</p></li>
-<li><p><strong>ka</strong> (<em>float</em>) – Dimensionless active-force rate constant</p></li>
-<li><p><strong>fa</strong> (<em>float</em>) – Dimensionless active-force magnitude</p></li>
-<li><p><strong>N</strong> (<em>float</em>) – The full length of the linear polymer (in Kuhn lengths).</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – Length of the chain (in Kuhn segments)</p></li>
+<li><p><strong>ka</strong> (<em>float</em>) – Active force rate constant</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Magnitude of the active forces</p></li>
 <li><p><strong>b</strong> (<em>float</em>) – The Kuhn length (in desired length units).</p></li>
 <li><p><strong>num_modes</strong> (<em>int</em>) – how many Rouse modes to include in the sum</p></li>
 </ul>
@@ -339,56 +346,6 @@ being (1/2)*separation between the loci (in Kuhn lengths).</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="example-usage-of-msd-active">
-<h2>Example usage of ‘msd_active’<a class="headerlink" href="#example-usage-of-msd-active" title="Permalink to this headline">¶</a></h2>
-<p>We show the solution for
-the MSD for chain length <span class="math notranslate nohighlight">\(N=100\)</span> for
-an active-Brownian polymer.
-The top and middle plots show the behavior for <span class="math notranslate nohighlight">\(K_{A} = 10\)</span> with varying <span class="math notranslate nohighlight">\(F_{A}^{2}\)</span>,
-and the bottom plot shows the behavior for <span class="math notranslate nohighlight">\(F_{A}^{2} = 100\)</span> with varying <span class="math notranslate nohighlight">\(K_{A}\)</span>.
-The long-time asymptotic behavior for the active-Brownian polymer (dashed) is given by the
-long-time behavior of the center-of-mass MSD, which is given by
-<span class="math notranslate nohighlight">\(\mathrm{MSD}_{\mathrm{com}} \rightarrow
-6 [k_{B}T/(\xi N)] (1 + F_{A}^{2}/2) t\)</span>.</p>
-<p>(<a class="reference external" href=".//active_brown-1.py">Source code</a>, <a class="reference external" href=".//active_brown-1.png">png</a>, <a class="reference external" href=".//active_brown-1.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-1.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/active_brown-1.png" src="_images/active_brown-1.png" />
-</div>
-<p>(<a class="reference external" href=".//active_brown-2.py">Source code</a>, <a class="reference external" href=".//active_brown-2.png">png</a>, <a class="reference external" href=".//active_brown-2.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-2.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/active_brown-2.png" src="_images/active_brown-2.png" />
-</div>
-<p>(<a class="reference external" href=".//active_brown-3.py">Source code</a>, <a class="reference external" href=".//active_brown-3.png">png</a>, <a class="reference external" href=".//active_brown-3.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-3.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/active_brown-3.png" src="_images/active_brown-3.png" />
-</div>
-</div>
-<div class="section" id="example-usage-of-mscd-active">
-<h2>Example usage of ‘mscd_active’<a class="headerlink" href="#example-usage-of-mscd-active" title="Permalink to this headline">¶</a></h2>
-<p>We show the solution for
-the MSCD for chain length <span class="math notranslate nohighlight">\(N=100\)</span> and <span class="math notranslate nohighlight">\(\Delta = 25\)</span> for
-an active-Brownian polymer.
-The top plot shows the behavior for <span class="math notranslate nohighlight">\(K_{A} = 10\)</span> with varying <span class="math notranslate nohighlight">\(F_{A}^{2}\)</span>,
-and the bottom plot shows the behavior for <span class="math notranslate nohighlight">\(F_{A}^{2} = 100\)</span> with varying <span class="math notranslate nohighlight">\(K_{A}\)</span>.
-The long-time asymptotic behavior for the Brownian-only polymer is found by noting</p>
-<div class="math notranslate nohighlight">
-\[\mathrm{MSCD} = \langle \left( \Delta \vec{R}(t) - \Delta \vec{R}(0) \right)^{2} \rangle =
-\langle \Delta \vec{R}(t)^{2} \rangle
-- 2 \langle \Delta \vec{R}(t) \cdot \Delta \vec{R}(0) \rangle
-+ \langle \Delta \vec{R}(0) ^{2} \rangle \rightarrow
-2 \langle \Delta \vec{R}^{2} \rangle\]</div>
-<p>which leads to the asymptotic solutions</p>
-<div class="math notranslate nohighlight">
-\[\mathrm{MSCD} \rightarrow 4 \Delta\]</div>
-<p>(<a class="reference external" href=".//active_brown-4.py">Source code</a>, <a class="reference external" href=".//active_brown-4.png">png</a>, <a class="reference external" href=".//active_brown-4.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-4.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/active_brown-4.png" src="_images/active_brown-4.png" />
-</div>
-<p>(<a class="reference external" href=".//active_brown-5.py">Source code</a>, <a class="reference external" href=".//active_brown-5.png">png</a>, <a class="reference external" href=".//active_brown-5.hires.png">hires.png</a>, <a class="reference external" href=".//active_brown-5.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/active_brown-5.png" src="_images/active_brown-5.png" />
-</div>
 </div>
 </div>
 
@@ -404,8 +361,6 @@ The long-time asymptotic behavior for the Brownian-only polymer is found by noti
 <li><a class="reference internal" href="#">Active-Brownian Dynamics</a><ul>
 <li><a class="reference internal" href="#dynamic-behavior-of-an-active-brownian-polymer">Dynamic behavior of an Active-Brownian polymer</a></li>
 <li><a class="reference internal" href="#module-wlcstat.active_brown">Functions contained with the ‘active_brown’ module</a></li>
-<li><a class="reference internal" href="#example-usage-of-msd-active">Example usage of ‘msd_active’</a></li>
-<li><a class="reference internal" href="#example-usage-of-mscd-active">Example usage of ‘mscd_active’</a></li>
 </ul>
 </li>
 </ul>
