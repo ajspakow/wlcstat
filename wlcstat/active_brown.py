@@ -16,7 +16,7 @@ from pathlib import Path
 import os
 
 
-def mscd_active(t, D, ka, fa, Ndel, N, b=1, num_modes=20000):
+def mscd_active(t, length_kuhn, delta, ka, gamma, b=1, num_modes=20000):
     r"""
     Compute mscd for two points on an active-Brownian polymer.
 
@@ -24,18 +24,14 @@ def mscd_active(t, D, ka, fa, Ndel, N, b=1, num_modes=20000):
     ----------
     t : (M,) float, array_like
         Times at which to evaluate the MSCD
-    D : float
-        Diffusion coefficient, (in desired output length units). Equal to
-        :math:`k_BT/\xi` for :math:`\xi` in units of "per Kuhn length".
+    length_kuhn : float
+        Length of the chain (in Kuhn segments)
+    delta : float
+        Length of the chain between loci (in Kuhn segments)
     ka : float
-        Dimensionless active-force rate constant
-    fa : float
-        Dimensionless active-force magnitude
-    Ndel : float
-        Distance from the last linkage site to the measured site. This ends up
-        being (1/2)*separation between the loci (in Kuhn lengths).
-    N : float
-        The full length of the linear polymer (in Kuhn lengths).
+        Active force rate constant
+    gamma : float
+        Magnitude of the active forces
     b : float
         The Kuhn length (in desired length units).
     num_modes : int
@@ -45,39 +41,71 @@ def mscd_active(t, D, ka, fa, Ndel, N, b=1, num_modes=20000):
     -------
     mscd : (M,) np.array<float>
         result
-    """
 
+    """
     mscd = np.zeros_like(t)
 
-    k1 = 3 * np.pi ** 2 / (N * (b ** 2))
-    sum_coeff = 48 / k1
-    exp_coeff = k1 * D / N
-    sin_coeff = np.pi * Ndel / N
-
+    msd_coeff = 6 * length_kuhn * b ** 2 / (3 * np.pi ** 2)
     for p in range(1, num_modes+1, 2):
-        active_coeff = 1 + 0.5 * fa ** 2 * ka / (ka + p ** 2)
-        mscd += active_coeff * (1 / p ** 2) * (1 - np.exp(-exp_coeff * (p ** 2) * t)) * np.sin(sin_coeff * p) ** 2
+        msd_p = msd_coeff / (p ** 2) * (1 - np.exp(-p ** 2 * t / length_kuhn ** 2)
+                                        + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
+                                        1 - np.exp(-p ** 2 * t / length_kuhn ** 2)
+                                        - p ** 2 / (ka * length_kuhn ** 2) * (1 - np.exp(-ka * t))))
+        mscd += 8 * msd_p * np.sin(np.pi * p * delta / length_kuhn) ** 2
 
-    return sum_coeff * mscd
+    return mscd
 
 
-def msd_active(t, D, ka, fa, N, b=1, num_modes=20000):
+def mscd_plateau_active(length_kuhn, delta, ka, gamma, b=1, num_modes=20000):
     r"""
-    Compute msd for two points on an active-Brownian polymer.
+    Compute mscd plateau for two points on an active-Brownian polymer.
+
+    Parameters
+    ----------
+    length_kuhn : float
+        Length of the chain (in Kuhn segments)
+    delta : float, array_like
+        Length of the chain between loci (in Kuhn segments)
+    ka : float
+        Active force rate constant
+    gamma : float
+        Magnitude of the active forces
+    b : float
+        The Kuhn length (in desired length units).
+    num_modes : int
+        how many Rouse modes to include in the sum
+
+    Returns
+    -------
+    mscd_plateau : (M,) np.array<float>
+        result
+
+    """
+    mscd_plateau = np.zeros_like(delta)
+
+    msd_coeff = 6 * length_kuhn * b ** 2 / (3 * np.pi ** 2)
+    for p in range(1, num_modes+1, 2):
+        msd_p = msd_coeff / (p ** 2) * (1 + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
+                                        1 - p ** 2 / (ka * length_kuhn ** 2)))
+        mscd_plateau += 8 * msd_p * np.sin(np.pi * p * delta / length_kuhn) ** 2
+
+    return mscd_plateau
+
+
+def msd_active(t, length_kuhn, ka, gamma, b=1, num_modes=20000):
+    r"""
+    Compute msd for the midpoint points on an active-Brownian polymer.
 
     Parameters
     ----------
     t : (M,) float, array_like
         Times at which to evaluate the MSCD
-    D : float
-        Diffusion coefficient, (in desired output length units). Equal to
-        :math:`k_BT/\xi` for :math:`\xi` in units of "per Kuhn length".
+    length_kuhn : float
+        Length of the chain (in Kuhn segments)
     ka : float
-        Dimensionless active-force rate constant
-    fa : float
-        Dimensionless active-force magnitude
-    N : float
-        The full length of the linear polymer (in Kuhn lengths).
+        Active force rate constant
+    gamma : float
+        Magnitude of the active forces
     b : float
         The Kuhn length (in desired length units).
     num_modes : int
@@ -89,21 +117,19 @@ def msd_active(t, D, ka, fa, N, b=1, num_modes=20000):
         result
 
     """
-    t_rouse = (N * b) ** 2 / (D * 3 * np.pi ** 2)
-    t_dim = t / t_rouse
-    msd = np.zeros_like(t)
+    msd_coeff = 6 * b ** 2 / (3 * np.pi ** 2 * length_kuhn)
+    msd_com = msd_coeff * ((1 + gamma) * t + gamma / ka * (np.exp(-ka * t) - 1))
+    msd = msd_com
 
-    k1 = 3 * np.pi ** 2 / (N * (b ** 2))
-    sum_coeff = 12 / k1
-    exp_coeff = k1 * D / N
-
-    msd_com = D * t_rouse / N * (6 * t_dim + 3 * fa ** 2 * (t_dim - 1 / ka + 1 / ka * np.exp(- ka * t_dim)))
-
+    msd_coeff = 6 * length_kuhn * b ** 2 / (3 * np.pi ** 2)
     for p in range(2, num_modes+1, 2):
-        active_coeff = 1 + 0.5 * fa ** 2 * ka / (ka + p ** 2)
-        msd += active_coeff * (1 / p ** 2) * (1 - np.exp(-exp_coeff * (p ** 2) * t))
+        msd_p = msd_coeff / (p ** 2) * (1 - np.exp(-p ** 2 * t / length_kuhn ** 2)
+                                        + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
+                                        1 - np.exp(-p ** 2 * t / length_kuhn ** 2)
+                                        - p ** 2 / (ka * length_kuhn ** 2) * (1 - np.exp(-ka * t))))
+        msd += 2 * msd_p
 
-    return sum_coeff * msd + msd_com
+    return msd
 
 
 def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, num_modes=10000):
