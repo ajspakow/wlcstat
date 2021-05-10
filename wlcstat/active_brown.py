@@ -16,6 +16,25 @@ from pathlib import Path
 import os
 
 
+def calc_p(u, u0, t, t0, ka = 1):
+    r"""
+
+    Parameters
+    ----------
+    u
+    u0
+    t
+    t0
+    ka
+
+    Returns
+    -------
+
+    """
+
+    return
+
+
 def mscd_active(t, length_kuhn, delta, ka, gamma, b=1, num_modes=20000):
     r"""
     Compute mscd for two points on an active-Brownian polymer.
@@ -90,6 +109,116 @@ def mscd_plateau_active(length_kuhn, delta, ka, gamma, b=1, num_modes=20000):
         mscd_plateau += 8 * msd_p * np.sin(np.pi * p * delta / length_kuhn) ** 2
 
     return mscd_plateau
+
+
+def structure_factor_active(k, t, length_kuhn, ka, gamma, b=1, num_nint = 1000, num_modes=20000):
+    r"""
+
+    Parameters
+    ----------
+    k
+    t
+    length_kuhn
+    ka
+    gamma
+    b
+    num_nint
+    num_modes
+
+    Returns
+    -------
+
+    """
+
+    n_vec = np.linspace(0, 1, num_nint)
+    dn = n_vec[1] - n_vec[0]
+    structure_factor = np.zeros((np.size(k), np.size(t)))
+
+    for i_t in range(np.size(t)):
+        print(i_t)
+        if np.size(t) == 1:
+            t_i = t
+        else:
+            t_i = t[i_t]
+        delta_r2 = np.zeros((num_nint, num_nint))
+        cp_coef = length_kuhn * b ** 2 / (3 * np.pi ** 2)
+        for p in range(1, num_modes+1):
+            cp = cp_coef / p ** 2 * (np.exp(-p ** 2 * t_i / length_kuhn ** 2)
+                                     + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
+                                             np.exp(-p ** 2 * t_i / length_kuhn ** 2)
+                                             - p ** 2 / (ka * length_kuhn ** 2) * np.exp(-ka * t_i)))
+            cp0 = cp_coef / p ** 2 * (1 + gamma / (1 + p ** 2 / (ka * length_kuhn ** 2)))
+            phip1_2 = np.ones((num_nint, num_nint)) * np.cos(p * np.pi * n_vec) ** 2
+            phip1_phip2 = np.outer(np.cos(p * np.pi * n_vec), np.cos(p * np.pi * n_vec))
+            delta_r2 += cp0 * (phip1_2 + np.transpose(phip1_2)) - 2 * cp * phip1_phip2
+
+        for i_k in range(np.size(k)):
+            integrand_n1_n2 = np.exp(- k[i_k] ** 2 * delta_r2)
+            integrand_n1 = dn * (np.sum(integrand_n1_n2, axis = 0)
+                                 - 0.5 * integrand_n1_n2[:, 0] - 0.5 * integrand_n1_n2[:, -1])
+            structure_factor[i_k, i_t] = dn * (np.sum(integrand_n1)
+                                               - 0.5 * integrand_n1[0] - 0.5 * integrand_n1[-1])
+
+    return structure_factor
+
+
+def flow_spec_active(k, t, length_kuhn, ka, gamma, b=1, num_nint = 1000, num_modes=20000):
+    r"""
+
+    Parameters
+    ----------
+    k
+    t
+    length_kuhn
+    ka
+    gamma
+    b
+    num_nint
+    num_modes
+
+    Returns
+    -------
+
+    """
+
+    n_vec = np.linspace(0, 1, num_nint)
+    dn = n_vec[1] - n_vec[0]
+    structure_factor = np.zeros((np.size(k), np.size(t)))
+
+    for i_t in range(np.size(t)):
+        print(i_t)
+        if np.size(t) == 1:
+            t_i = t
+        else:
+            t_i = t[i_t]
+        delta_r2 = np.zeros((num_nint, num_nint))
+        vel_int2 = np.zeros((num_nint, num_nint))
+        cp_coef = length_kuhn * b ** 2 / (3 * np.pi ** 2)
+        vel_int1 = np.ones((num_nint, num_nint)) * (2 * b ** 2 / (np.pi ** 2 * length_kuhn)) * (
+            (1 + gamma) * t_i + gamma / ka * (np.exp(-ka * t_i) - 1))
+
+        for p in range(1, num_modes+1):
+            cp = cp_coef / p ** 2 * (np.exp(-p ** 2 * t_i / length_kuhn ** 2)
+                                     + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
+                                             np.exp(-p ** 2 * t_i / length_kuhn ** 2)
+                                             - p ** 2 / (ka * length_kuhn ** 2) * np.exp(-ka * t_i)))
+            cp0 = cp_coef / p ** 2 * (1 + gamma / (1 + p ** 2 / (ka * length_kuhn ** 2)))
+            phip1_2 = np.ones((num_nint, num_nint)) * np.cos(p * np.pi * n_vec) ** 2
+            phip1_phip2 = np.outer(np.cos(p * np.pi * n_vec), np.cos(p * np.pi * n_vec))
+            delta_r2 += cp0 * (phip1_2 - np.transpose(phip1_2)) ** 2
+            vel_int1 += 4 * (cp0 - cp) * phip1_phip2
+            vel_int2 += 2 * (cp0 - cp) * (phip1_2 - phip1_phip2)
+
+        vel_int2 = vel_int2 * np.transpose(vel_int2)
+
+        for i_k in range(np.size(k)):
+            integrand_n1_n2 = (vel_int1 + vel_int2 * k[i_k] ** 2) * np.exp(- k[i_k] ** 2 * delta_r2)
+            integrand_n1 = dn * (np.sum(integrand_n1_n2, axis = 0)
+                                 - 0.5 * integrand_n1_n2[:, 0] - 0.5 * integrand_n1_n2[:, -1])
+            structure_factor[i_k, i_t] = length_kuhn / (t_i ** 2) * dn * (np.sum(integrand_n1)
+                                               - 0.5 * integrand_n1[0] - 0.5 * integrand_n1[-1])
+
+    return structure_factor
 
 
 def msd_active(t, length_kuhn, ka, gamma, b=1, num_modes=20000):
