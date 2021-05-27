@@ -236,6 +236,41 @@ This results in the expression</p>
 <p class="rubric">Notes</p>
 <p>Detailed derivations for MSD and MSCD are found in “Interplay of active and thermal fluctuations in polymer dynamics”</p>
 <dl class="py function">
+<dt id="wlcstat.active_brown.calc_p">
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">calc_p</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">u0</span></em>, <em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">t0</span></em>, <em class="sig-param"><span class="n">ka</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#calc_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.calc_p" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> – </p></li>
+<li><p><strong>u0</strong> – </p></li>
+<li><p><strong>t</strong> – </p></li>
+<li><p><strong>t0</strong> – </p></li>
+<li><p><strong>ka</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.active_brown.flow_spec_active">
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">flow_spec_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">gamma</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_nint</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#flow_spec_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.flow_spec_active" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – </p></li>
+<li><p><strong>t</strong> – </p></li>
+<li><p><strong>length_kuhn</strong> – </p></li>
+<li><p><strong>ka</strong> – </p></li>
+<li><p><strong>gamma</strong> – </p></li>
+<li><p><strong>b</strong> – </p></li>
+<li><p><strong>num_nint</strong> – </p></li>
+<li><p><strong>num_modes</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.active_brown.gen_conf_rouse_active">
 <code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">gen_conf_rouse_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">num_beads</span></em>, <em class="sig-param"><span class="n">ka</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#gen_conf_rouse_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.gen_conf_rouse_active" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a discrete chain based on the active-Brownian Rouse model</p>
@@ -342,6 +377,25 @@ This results in the expression</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>(M,) np.array&lt;float&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.active_brown.structure_factor_active">
+<code class="sig-prename descclassname">wlcstat.active_brown.</code><code class="sig-name descname">structure_factor_active</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">ka</span></em>, <em class="sig-param"><span class="n">gamma</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">num_nint</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">num_modes</span><span class="o">=</span><span class="default_value">20000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/active_brown.html#structure_factor_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.active_brown.structure_factor_active" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – </p></li>
+<li><p><strong>t</strong> – </p></li>
+<li><p><strong>length_kuhn</strong> – </p></li>
+<li><p><strong>ka</strong> – </p></li>
+<li><p><strong>gamma</strong> – </p></li>
+<li><p><strong>b</strong> – </p></li>
+<li><p><strong>num_nint</strong> – </p></li>
+<li><p><strong>num_modes</strong> – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

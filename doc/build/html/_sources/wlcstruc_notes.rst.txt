@@ -170,7 +170,7 @@ Functions contained with the 'wlcstruc' module
 .. automodule:: wlcstat.wlcstruc
     :members:
 
-Example usage of 'eval_structure_factor'
+Example usage of 's2_wlc'
 ------------------------------------------
 
 This plot shows the structure factor for the wormlike chain in 3 dimensions over a range of :math:`K`
@@ -199,7 +199,7 @@ This plot is a reproduction of Fig. 2 in Ref. [Spakowitz2004]_.
     for ind_length in range(0, len(length_kuhn_vec)):
         length_kuhn = float(length_kuhn_vec[ind_length])
         k_val = np.linspace(k_val_0, k_val_f / length_kuhn, num_k)
-        structure_factor = eval_structure_factor(k_val, length_kuhn, dimensions)
+        structure_factor = s2_wlc(k_val, length_kuhn, dimensions)
         plt.plot(k_val * length_kuhn, np.real(structure_factor * k_val * length_kuhn),'-')
 
     plt.xlabel(r'$Lk$')
