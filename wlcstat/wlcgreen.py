@@ -4,7 +4,7 @@ import numpy as np
 import scipy.special as sp
 
 
-def eval_poles_and_residues(k_val, mu, mu_zero_only=True, lam_zero_only=True, dimensions=3):
+def eval_poles_and_residues(k_val, mu, lam_zero_only=True, dimensions=3):
     r"""
     eval_poles_and_residues - Evaluate the poles and the residues for a given value of the
     Fourier vector magnitude :math:`K`
@@ -15,8 +15,6 @@ def eval_poles_and_residues(k_val, mu, mu_zero_only=True, lam_zero_only=True, di
         The value of the Fourier vector magnitude :math:`K`
     mu : int
         Value of the mu parameter (:math:`z`-component of the angular momentum)
-    mu_zero_only : boolean
-        Determines whether poles and residues are determined for non-zero :math:`\mu` (default True)
     lam_zero_only : boolean
         Determines whether residues are determined for non_zero :math:`\lambda` (default True)
     dimensions : int
