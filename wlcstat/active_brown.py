@@ -140,21 +140,45 @@ def structure_factor_active(k, t, length_kuhn, ka, gamma, b=1, num_nint = 1000, 
             t_i = t
         else:
             t_i = t[i_t]
+
+
         delta_r2 = np.zeros((num_nint, num_nint))
-        cp_coef = length_kuhn * b ** 2 / (3 * np.pi ** 2)
-        for p in range(1, num_modes+1):
-            cp = cp_coef / p ** 2 * (np.exp(-p ** 2 * t_i / length_kuhn ** 2)
-                                     + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
-                                             np.exp(-p ** 2 * t_i / length_kuhn ** 2)
-                                             - p ** 2 / (ka * length_kuhn ** 2) * np.exp(-ka * t_i)))
-            cp0 = cp_coef / p ** 2 * (1 + gamma / (1 + p ** 2 / (ka * length_kuhn ** 2)))
-            phip1_2 = np.ones((num_nint, num_nint)) * np.cos(p * np.pi * n_vec) ** 2
-            phip1_phip2 = np.outer(np.cos(p * np.pi * n_vec), np.cos(p * np.pi * n_vec))
-            delta_r2 += cp0 * (phip1_2 + np.transpose(phip1_2)) - 2 * cp * phip1_phip2
+
+        # Case 1: time == 0 (not confirmed)
+        if t_i == 0:
+            delta_n1_n2 = np.abs(n_vec * np.ones((num_nint, 1))
+                                 - np.transpose(n_vec * np.ones((num_nint, 1))))
+#            active_arg = np.pi * length_kuhn * np.sqrt(ka) * delta_n1_n2 / 2 + 1e-10
+#            delta_r2 = 2 * length_kuhn * delta_n1_n2 * (
+#                1 + gamma * (1 - active_arg ** -1 * np.tanh(active_arg)))
+
+            exp_diff_mat = (np.exp(-np.pi * np.sqrt(ka) * n_vec) * np.ones((num_nint, 1))
+                            - np.transpose(np.exp(-np.pi * np.sqrt(ka) * n_vec) * np.ones((num_nint, 1))))
+            sum_n1_n2 = np.abs(n_vec * np.ones((num_nint, 1))
+                               + np.transpose(n_vec * np.ones((num_nint, 1))))
+
+            delta_r2 += (1 + gamma) * np.pi ** 2 * delta_n1_n2 / (2 * length_kuhn)
+            delta_r2 += - gamma * np.pi / (4 * length_kuhn * np.sqrt(ka)) * (
+                                 2 * np.sinh(np.pi * np.sqrt(ka) * delta_n1_n2)
+                                 - exp_diff_mat ** 2 * (np.exp(np.pi * np.sqrt(ka) * sum_n1_n2) - 1))
+            delta_r2 *= length_kuhn * b ** 2 / (3 * np.pi ** 2)
+
+        # Case 2: time != 0
+        else:
+            cp_coef = length_kuhn * b ** 2 / (3 * np.pi ** 2)
+            for p in range(1, num_modes+1):
+                cp = cp_coef / p ** 2 * (np.exp(-p ** 2 * t_i / length_kuhn ** 2)
+                                         + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
+                                                 np.exp(-p ** 2 * t_i / length_kuhn ** 2)
+                                                - p ** 2 / (ka * length_kuhn ** 2) * np.exp(-ka * t_i)))
+                cp0 = cp_coef / p ** 2 * (1 + gamma / (1 + p ** 2 / (ka * length_kuhn ** 2)))
+                phip1_2 = np.ones((num_nint, num_nint)) * np.cos(p * np.pi * n_vec) ** 2
+                phip1_phip2 = np.outer(np.cos(p * np.pi * n_vec), np.cos(p * np.pi * n_vec))
+                delta_r2 += cp0 * (phip1_2 + np.transpose(phip1_2)) - 2 * cp * phip1_phip2
 
         for i_k in range(np.size(k)):
             integrand_n1_n2 = np.exp(- k[i_k] ** 2 * delta_r2)
-            integrand_n1 = dn * (np.sum(integrand_n1_n2, axis = 0)
+            integrand_n1 = dn * (np.sum(integrand_n1_n2, axis=0)
                                  - 0.5 * integrand_n1_n2[:, 0] - 0.5 * integrand_n1_n2[:, -1])
             structure_factor[i_k, i_t] = dn * (np.sum(integrand_n1)
                                                - 0.5 * integrand_n1[0] - 0.5 * integrand_n1[-1])
@@ -254,14 +278,14 @@ def msd_active(t, length_kuhn, ka, gamma, b=1, num_modes=20000):
     for p in range(2, num_modes+1, 2):
         msd_p = msd_coeff / (p ** 2) * (1 - np.exp(-p ** 2 * t / length_kuhn ** 2)
                                         + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
-                                        1 - np.exp(-p ** 2 * t / length_kuhn ** 2)
-                                        - p ** 2 / (ka * length_kuhn ** 2) * (1 - np.exp(-ka * t))))
+                                                1 - np.exp(-p ** 2 * t / length_kuhn ** 2)
+                                                - p ** 2 / (ka * length_kuhn ** 2) * (1 - np.exp(-ka * t))))
         msd += 2 * msd_p
 
     return msd
 
 
-def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, num_modes=10000):
+def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, force_calc=False, num_modes=10000):
     r"""
     Generate a discrete chain based on the active-Brownian Rouse model
 
@@ -287,22 +311,38 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, num_modes=
 
     """
 
-    r_poly = np.zeros((num_beads, 3))
-    k1 = 3 * np.pi ** 2 / (length_kuhn * (b ** 2))
-    ind = np.arange(num_beads)
+    if not force_calc:
+        # Calculate the conformation without determining the active and Brownian force
+        r_poly = np.zeros((num_beads, 3))
 
-    for p in range(1, num_modes + 1):
-        kp = k1 * p ** 2
-        xp_mag = np.sqrt(1 / kp * (1 + gamma / (1 + p ** 2 / (ka * length_kuhn ** 2))))
-        xp = np.random.randn(3) * xp_mag
-        phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
-        r_poly += np.outer(phi, xp)
+        ind = np.arange(num_beads)
+        for p in range(1, num_modes + 1):
+            sig_fp_tilde = np.sqrt(length_kuhn ** 2 * gamma * ka / p ** 2)
+            ka_tilde = ka * length_kuhn ** 2 / p ** 2
+            sig_xp = np.sqrt(1 + sig_fp_tilde ** 2 / (1 + ka_tilde))
+            xp_tilde = np.random.randn(3) * sig_xp
+            phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
+            r_poly += np.outer(phi, xp_tilde) * np.sqrt(length_kuhn) / p
 
-    return r_poly
+        return r_poly
+    else:
+        # Calculate the conformation, Brownian force, and active force
+        r_poly = np.zeros((num_beads, 3))
+        f_active = np.zeros((num_beads, 3))
 
+        ind = np.arange(num_beads)
+        for p in range(1, num_modes + 1):
+            sig_fp_tilde = np.sqrt(length_kuhn ** 2 * gamma * ka / p ** 2)
+            ka_tilde = ka * length_kuhn ** 2 / p ** 2
+            fp_tilde = np.random.randn(3) * sig_fp_tilde
+            mu_xp = fp_tilde / (1 + ka_tilde)
+            sig_xp = np.sqrt(1 + sig_fp_tilde ** 2 * ka_tilde / (1 + ka_tilde) ** 2)
+            xp_tilde = np.random.randn(3) * sig_xp + mu_xp
+            phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
+            r_poly += np.outer(phi, xp_tilde) * np.sqrt(length_kuhn) / p
+            f_active += np.outer(phi, fp_tilde) * p / np.sqrt(length_kuhn)
 
-def gen_conf_wlc(length_kuhn, num_beads, ka=1, gamma=0, b=1):
-    return
+        return r_poly, f_active
 
 
 def gen_pymol_file(r_poly, filename='r_poly.pdb', ring=False):
@@ -326,6 +366,7 @@ def gen_pymol_file(r_poly, filename='r_poly.pdb', ring=False):
     f = open(filename, 'w')
 
     atomname1 = "A1"    # Chain atom type
+    atomname2 = "A2"    # Chain atom type
     resname = "SSN"     # Type of residue (UNKnown/Single Stranded Nucleotide)
     chain = "A"         # Chain identifier
     resnum = 1
@@ -343,7 +384,7 @@ def gen_pymol_file(r_poly, filename='r_poly.pdb', ring=False):
 
     for ind in range(numresidues):
         f.write('ATOM%7d %4s %3s %1s        %8.3f%8.3f%8.3f%6.2f%6.2f           C\n' %
-                (ind + 1, atomname1, resname, chain, r_poly[ind, 0], r_poly[ind, 1], r_poly[ind, 2], 1.00, 1.00))
+                    (ind + 1, atomname1, resname, chain, r_poly[ind, 0], r_poly[ind, 1], r_poly[ind, 2], 1.00, 1.00))
 
     # Define the connectivity in the chain
 

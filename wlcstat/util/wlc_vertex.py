@@ -6,7 +6,7 @@ Functions for evaluation of vertex functions
 """
 
 
-def eval_residue_zero(k_val, mu, lam_zero_only=True, lam_max=25, dimensions=3, lam_cont_frac_max=500):
+def eval_residue_zero(k_val, mu = 0, lam_zero_only=True, lam_max=25, dimensions=3, lam_cont_frac_max=500):
     r"""
     eval_residues_zeros -
     Evaluate the residue at p = 0 using the intermediate-k algorithm provided in Ref. [Mehraeen2008]_
@@ -32,19 +32,19 @@ def eval_residue_zero(k_val, mu, lam_zero_only=True, lam_max=25, dimensions=3, l
     """
 
     # Build the continued fractions
-    j_plus = np.zeros((lam_cont_frac_max + 1), dtype=type(1+1j))
-    djdp_plus = np.zeros((lam_cont_frac_max + 1), dtype=type(1+1j))
-    a_lam_mu = np.zeros((lam_cont_frac_max + 1), dtype=type(1+1j))
+    j_plus = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
+    djdp_plus = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
+    a_lam_mu = np.zeros((lam_cont_frac_max - abs(mu) + 1), dtype=type(1+1j))
 
     lam = lam_cont_frac_max
-    ind_lam = lam
+    ind_lam = lam - abs(mu)
     j_plus[ind_lam] = lam * (lam + dimensions - 2)
     djdp_plus[ind_lam] = 1
-    a_lam_mu[ind_lam] = eval_a_lam_mu(lam, 0, dimensions)
-    for lam in reversed(range(0, lam_cont_frac_max)):
-        ind_lam = lam
-        if lam != 0:
-            a_lam_mu[ind_lam] = eval_a_lam_mu(lam, 0, dimensions)
+    a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
+    for lam in reversed(range(abs(mu), lam_cont_frac_max)):
+        ind_lam = lam - abs(mu)
+        if lam != abs(mu):
+            a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
         j_plus[ind_lam] = (lam * (lam + dimensions - 2) + (a_lam_mu[ind_lam + 1] * k_val) ** 2 / j_plus[ind_lam + 1])
         djdp_plus[ind_lam] = 1 - (a_lam_mu[ind_lam + 1] * k_val / j_plus[ind_lam + 1]) ** 2 * djdp_plus[ind_lam + 1]
 
@@ -269,8 +269,9 @@ def eval_residues_other_pole(k_val, mu, poles, lam_zero_only=True, lam_max=25, a
         j_minus[0] = poles[ind_alpha] + lam * (lam + dimensions - 2)
         for lam in range(abs(mu) + 1, max(lam_max, alpha_max) + 1):
             ind_lam = lam - abs(mu)
-            j_minus[ind_lam] = (poles[ind_alpha] + lam * (lam + dimensions - 2)
-                                + (a_lam_mu[ind_lam] * k_val) ** 2 / j_minus[ind_lam - 1])
+            if j_minus[ind_lam - 1] != 0:
+                j_minus[ind_lam] = (poles[ind_alpha] + lam * (lam + dimensions - 2)
+                                    + (a_lam_mu[ind_lam] * k_val) ** 2 / j_minus[ind_lam - 1])
 
         if lam_zero_only:
             if ind_alpha == 0:
