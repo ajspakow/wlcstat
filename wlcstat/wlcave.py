@@ -100,3 +100,12 @@ def rz4_ave(length_kuhn, dimensions=3):
     rz4 = 24 * (diagram1 + diagram2)
 
     return rz4
+
+
+def gen_conf_wlc(length_kuhn, num_beads, b=1, tangent_calc=False):
+
+
+    delta = length / (num_beads - 1)
+
+
+    return

@@ -182,12 +182,13 @@ G(\vec{K}_{1}, \vec{u}_{2} | \vec{u}_{1};p)
 <span id="functions-contained-with-the-wlcstruc-module"></span><h2>Functions contained with the ‘wlcstruc’ module<a class="headerlink" href="#module-wlcstat.wlcstruc" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="wlcstat.wlcstruc.eval_legendre">
-<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">eval_legendre</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rho</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#eval_legendre"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.eval_legendre" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">eval_legendre</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rho</span></em>, <em class="sig-param"><span class="n">mu</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#eval_legendre"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.eval_legendre" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the vector of Legendre polynomial values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rho</strong> (<em>float</em>) – Cos theta of the angle</p></li>
+<li><p><strong>mu</strong> (<em>int</em>) – Value of the z-momentum quantum number</p></li>
 <li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of polynomials evaluated (default 25)</p></li>
 </ul>
 </dd>
@@ -250,12 +251,39 @@ in k1_val_vector and k2_val_vector</p>
 <p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id3"><span>[Mehraeen2008]</span></a>)</p>
 </dd></dl>
 
+<dl class="py function">
+<dt id="wlcstat.wlcstruc.s4_wlc">
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s4_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1_val_vector</span></em>, <em class="sig-param"><span class="n">k2_val_vector</span></em>, <em class="sig-param"><span class="n">k3_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s4_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s4_wlc" title="Permalink to this definition">¶</a></dt>
+<dd><p>s4_wlc - Evaluate the 4-point structure factor for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k1_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{1}\)</span></p></li>
+<li><p><strong>k2_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></li>
+<li><p><strong>k3_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>s4_wlc</strong> – 4-point Structure factor for the wormlike chain model for every k1_val, k2_val, k3_val
+in k1_val_vector, k2_val_vector, k3_val_vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (vector)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id4"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
 </div>
 <div class="section" id="example-usage-of-s2-wlc">
 <h2>Example usage of ‘s2_wlc’<a class="headerlink" href="#example-usage-of-s2-wlc" title="Permalink to this headline">¶</a></h2>
 <p>This plot shows the structure factor for the wormlike chain in 3 dimensions over a range of <span class="math notranslate nohighlight">\(K\)</span>
 for <span class="math notranslate nohighlight">\(N = 0.1\)</span>, <span class="math notranslate nohighlight">\(0.5\)</span>, and <span class="math notranslate nohighlight">\(1.0\)</span>.
-This plot is a reproduction of Fig. 2 in Ref. <a class="reference internal" href="references.html#spakowitz2004" id="id4"><span>[Spakowitz2004]</span></a>.</p>
+This plot is a reproduction of Fig. 2 in Ref. <a class="reference internal" href="references.html#spakowitz2004" id="id5"><span>[Spakowitz2004]</span></a>.</p>
 <p>(<a class="reference external" href=".//wlcstruc_notes-1.py">Source code</a>, <a class="reference external" href=".//wlcstruc_notes-1.png">png</a>, <a class="reference external" href=".//wlcstruc_notes-1.hires.png">hires.png</a>, <a class="reference external" href=".//wlcstruc_notes-1.pdf">pdf</a>)</p>
 <div class="figure align-default">
 <img alt="_images/wlcstruc_notes-1.png" src="_images/wlcstruc_notes-1.png" />
