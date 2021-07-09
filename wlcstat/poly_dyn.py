@@ -173,8 +173,7 @@ def linear_mscd(t, D, Ndel, N, b=1, num_modes=20000):
     sin_coeff = np.pi * Ndel / N
 
     for p in range(1, num_modes+1, 2):
-        mscd += (1/p**2) * (1 - np.exp(-exp_coeff * (p ** 2) * t)) \
-                * np.sin(sin_coeff*p)**2
+        mscd += (1/p**2) * (1 - np.exp(-exp_coeff * (p ** 2) * t)) * np.sin(sin_coeff * p) ** 2
 
     return sum_coeff * mscd
 
@@ -752,7 +751,7 @@ def model_plateau(linkages, label_loc=location_ura_effective_um, chr_size=chrv_s
 def model_mscd_subpoly_simple(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_size_effective_um,
                nuc_radius=sim_nuc_radius_um, b=kuhn_length, D=sim_D, alpha=1, num_modes=10000):
     r"""
-    Calculate the MSCD for the model of linked chromosomes
+    Calculate the MSCD for the model of linked chromosomes using a simple power-law and plateau model
 
     Parameters
     ----------
@@ -784,5 +783,49 @@ def model_mscd_subpoly_simple(t, linkages, label_loc=location_ura_effective_um, 
     mscd_model = 0.809 * 4 * b * (D * t ** alpha) ** 0.5
 
     mscd_model = np.minimum(mscd_model, mscd_plateau * np.ones(len(mscd_model)))
+
+    return mscd_model
+
+
+def model_mscd_subpoly_1d(t, linkages, label_loc=location_ura_effective_um, chr_size=chrv_size_effective_um,
+               nuc_radius=sim_nuc_radius_um, b=kuhn_length, D=sim_D, alpha=1, num_modes=10000):
+    r"""
+    Calculate the MSCD for the model of linked chromosomes based on an effective 1-dimensional model
+
+    Parameters
+    ----------
+    t : float array
+        Time in seconds
+    linkages : float array
+        List of the link positions between the homologous chromosomes
+    label_loc : float
+        Location of the fluorescent label along the chromosome (microns)
+    chr_size : float
+        Length of the chromosome (microns)
+    nuc_radius : float
+        Radius of the nucleus (microns)
+    b : float
+        Kuhn length (microns)
+    D : float
+        Diffusivity (microns ** 2 / second)
+    num_modes : int
+        Number of normal modes used in the calculation
+
+    Returns
+    -------
+    mscd_model : float array (size len(t))
+        Calculated MSCD (microns ** 2) for the model with defined linkages
+
+    """
+    lam = 0.5 * alpha
+
+    mscd_plateau = model_plateau(linkages, label_loc, chr_size, nuc_radius, b)
+    a = np.sqrt(6 * mscd_plateau)
+#    mscd_model = 0.809 * 4 * b * (D * t ** alpha) ** 0.5
+
+    exp_coeff = 0.809 * 4 * b * (D ** 0.5) * sp.gamma(1 + lam) / (2 * a ** 2)
+    mscd_model = np.zeros_like(t) + (a ** 2) / 6
+    for p in range(1, num_modes + 1, 2):
+        mscd_model -= 16 * a ** 2 * ml(-exp_coeff * (p * np.pi) ** 2 * t ** lam, lam) / (p * np.pi) ** 4
 
     return mscd_model
