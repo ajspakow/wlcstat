@@ -141,16 +141,12 @@ def structure_factor_active(k, t, length_kuhn, ka, gamma, b=1, num_nint = 1000, 
         else:
             t_i = t[i_t]
 
-
         delta_r2 = np.zeros((num_nint, num_nint))
 
         # Case 1: time == 0 (not confirmed)
         if t_i == 0:
             delta_n1_n2 = np.abs(n_vec * np.ones((num_nint, 1))
                                  - np.transpose(n_vec * np.ones((num_nint, 1))))
-#            active_arg = np.pi * length_kuhn * np.sqrt(ka) * delta_n1_n2 / 2 + 1e-10
-#            delta_r2 = 2 * length_kuhn * delta_n1_n2 * (
-#                1 + gamma * (1 - active_arg ** -1 * np.tanh(active_arg)))
 
             exp_diff_mat = (np.exp(-np.pi * np.sqrt(ka) * n_vec) * np.ones((num_nint, 1))
                             - np.transpose(np.exp(-np.pi * np.sqrt(ka) * n_vec) * np.ones((num_nint, 1))))
