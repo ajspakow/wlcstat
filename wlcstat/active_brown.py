@@ -141,16 +141,12 @@ def structure_factor_active(k, t, length_kuhn, ka, gamma, b=1, num_nint = 1000, 
         else:
             t_i = t[i_t]
 
-
         delta_r2 = np.zeros((num_nint, num_nint))
 
         # Case 1: time == 0 (not confirmed)
         if t_i == 0:
             delta_n1_n2 = np.abs(n_vec * np.ones((num_nint, 1))
                                  - np.transpose(n_vec * np.ones((num_nint, 1))))
-#            active_arg = np.pi * length_kuhn * np.sqrt(ka) * delta_n1_n2 / 2 + 1e-10
-#            delta_r2 = 2 * length_kuhn * delta_n1_n2 * (
-#                1 + gamma * (1 - active_arg ** -1 * np.tanh(active_arg)))
 
             exp_diff_mat = (np.exp(-np.pi * np.sqrt(ka) * n_vec) * np.ones((num_nint, 1))
                             - np.transpose(np.exp(-np.pi * np.sqrt(ka) * n_vec) * np.ones((num_nint, 1))))
@@ -322,7 +318,7 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, force_calc
             sig_xp = np.sqrt(1 + sig_fp_tilde ** 2 / (1 + ka_tilde))
             xp_tilde = np.random.randn(3) * sig_xp
             phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
-            r_poly += np.outer(phi, xp_tilde) * np.sqrt(length_kuhn) / p
+            r_poly += np.outer(phi, xp_tilde) * (np.sqrt(length_kuhn) / p) * b / np.sqrt(3 * np.pi ** 2)
 
         return r_poly
     else:
@@ -339,8 +335,8 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, force_calc
             sig_xp = np.sqrt(1 + sig_fp_tilde ** 2 * ka_tilde / (1 + ka_tilde) ** 2)
             xp_tilde = np.random.randn(3) * sig_xp + mu_xp
             phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
-            r_poly += np.outer(phi, xp_tilde) * np.sqrt(length_kuhn) / p
-            f_active += np.outer(phi, fp_tilde) * p / np.sqrt(length_kuhn)
+            r_poly += np.outer(phi, xp_tilde) * (np.sqrt(length_kuhn) / p) * b / np.sqrt(3 * np.pi ** 2)
+            f_active += np.outer(phi, fp_tilde) * (p / np.sqrt(length_kuhn)) * np.sqrt(3 * np.pi ** 2) / b
 
         return r_poly, f_active
 
