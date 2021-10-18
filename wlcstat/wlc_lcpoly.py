@@ -7,45 +7,12 @@ liquid crystallinity
 
 """
 import numpy as np
+import scipy as sp
 from numba import jit
 import matplotlib.pyplot as plt
 
 
-def m_lcpoly(length_kuhn, lam, alpha_max=50):
-    r"""
-    Calculate the single-polymer partition function
-
-    Parameters
-    ----------
-    length_kuhn : float
-        The length of the chain in Kuhn lengths
-    lam : float
-        The value of the quadrupole field :math:`\lambda`
-    alpha_max : int
-        Maximum number of poles evaluated (default 50)
-
-    Returns
-    -------
-    m_val : float
-        Evaluated order parameter
-
-    """
-
-    if lam < 50:
-        d_lam = 1e-8
-
-        q_val_p = q_lcpoly(length_kuhn, lam + d_lam, alpha_max)
-        q_val_m = q_lcpoly(length_kuhn, lam - d_lam, alpha_max)
-        m_val = 1.5 * (np.log(q_val_p) - np.log(q_val_m)) / (2 * d_lam * length_kuhn)
-
-    else:
-        m_val = (1 - 3 / 2 / np.sqrt(lam) - 3 / 16 / lam ** (3 / 2) - 3 / 8 / lam ** 2
-                - 207 / 256 / lam ** (5 / 2) - 123 / 64 / lam ** 3 - 10215 / 2048 / lam ** (7 / 2))
-
-    return m_val
-
-
-def q_lcpoly(length_kuhn, lam, alpha_max = 50):
+def q_lcpoly(length_kuhn, lam, alpha_max=25):
     r"""
     Calculate the single-polymer partition function
 
@@ -67,70 +34,15 @@ def q_lcpoly(length_kuhn, lam, alpha_max = 50):
 
     # Evaluate the partition function by determining the poles of the h_matrix
     if lam == 0:
-        q_val = 1
+        q_val = np.zeros_like(length_kuhn, dtype=type(1+1j))
+        q_val += 1
     elif lam < 50 and lam != 0:
-        poles = eval_poles_lcpoly(lam, alpha_max)
-        q_val = 0
-
-        for i_pole in range(len(poles)):
-            l = 2 * alpha_max
-            a_l = l / np.sqrt(4 * l ** 2 - 1)
-            a_lp1 = (l + 1) / np.sqrt(4 * (l + 1) ** 2 - 1)
-            beta_l = a_lp1 ** 2 + a_l ** 2 - 1 / 3
-            dj = 1
-            j = poles[i_pole] + l * (l + 1) - beta_l * lam
-            for l in range(2 * (alpha_max - 1), -1, -2):
-                if l > 0:
-                    a_l = l / np.sqrt(4 * l ** 2 - 1)
-                else:
-                    a_l = 0
-                a_lp1 = (l + 1) / np.sqrt(4 * (l + 1) ** 2 - 1)
-                a_lp2 = (l + 2) / np.sqrt(4 * (l + 2) ** 2 - 1)
-                alpha_lp2 = a_lp2 * a_lp1
-                beta_l = a_lp1 ** 2 + a_l ** 2 - 1 / 3
-                dj = 1 + (alpha_lp2 * lam) ** 2 * dj / j ** 2
-                j = poles[i_pole] + l * (l + 1) - beta_l * lam - (alpha_lp2 * lam) ** 2 / j
-
-            q_val = q_val + np.exp(poles[i_pole] * length_kuhn) / dj
-
-    # Evaluate the partition function using the large-lam expansion
-    else:
-        q_val = np.exp(length_kuhn * (2 / 3 * lam - 2 * np.sqrt(lam) + 1 + 1 / 4 / np.sqrt(lam)
-                                      + 1 / 4 / lam + 23 / 64 / lam ** (3 / 2)
-                                      + 41 / 64 / lam ** 2 + 681 / 512 / lam ** (5 / 2)))
-    return q_val
-
-
-def q_lcpoly_new(length_kuhn, lam, alpha_max=25):
-    r"""
-    Calculate the single-polymer partition function
-
-    Parameters
-    ----------
-    length_kuhn : float
-        The length of the chain in Kuhn lengths
-    lam : float
-        The value of the quadrupole field :math:`\lambda`
-    alpha_max : int
-        Maximum number of poles evaluated (default 50)
-
-    Returns
-    -------
-    q_val : float
-        Evaluated single-polymer partition function
-
-    """
-
-    # Evaluate the partition function by determining the poles of the h_matrix
-    if lam == 0:
-        q_val = 1
-    elif lam < 50 and lam != 0:
-        poles = eval_poles_lcpoly_new(lam, 0, alpha_max)
+        poles = eval_poles_lcpoly(lam, 0, alpha_max)
         residues = eval_residues_lcpoly(lam, 0, poles, l_zero_only=True, l_max=alpha_max,
                                         alpha_max=alpha_max, l_cont_frac_max=50)
         q_val = 0
         for ind_alpha in range(0, alpha_max + 1):
-            q_val = q_val + np.exp(poles[ind_alpha] * length_kuhn) * residues[ind_alpha]
+            q_val += np.exp(poles[ind_alpha] * length_kuhn) * residues[ind_alpha]
 
     # Evaluate the partition function using the large-lam expansion
     else:
@@ -140,7 +52,7 @@ def q_lcpoly_new(length_kuhn, lam, alpha_max=25):
     return q_val
 
 
-def m_lcpoly_new(length_kuhn, lam, alpha_max=25, l_cont_frac_max=50):
+def m_lcpoly(length_kuhn, lam, alpha_max=25, l_cont_frac_max=50):
     r"""
     Calculate the single-polymer partition function
 
@@ -163,7 +75,7 @@ def m_lcpoly_new(length_kuhn, lam, alpha_max=25, l_cont_frac_max=50):
     if lam < 1000:
 
         # Find the poles and residues for the calculation of q and m
-        poles = eval_poles_lcpoly_new(lam, 0, alpha_max)
+        poles = eval_poles_lcpoly(lam, 0, alpha_max)
         residues = eval_residues_lcpoly(lam, 0, poles, l_zero_only=False, l_max=alpha_max,
                                         alpha_max=alpha_max, l_cont_frac_max=l_cont_frac_max)
 
@@ -178,8 +90,8 @@ def m_lcpoly_new(length_kuhn, lam, alpha_max=25, l_cont_frac_max=50):
         p20_select_mat = np.diag(l_eq_l0) + np.diag(l_eq_l0p2, 2) + np.diag(l_eq_l0p2, -2)
 
         # Calculate the partition function and m value
-        q_val = 0
-        m_val = 0
+        q_val = np.zeros_like(length_kuhn, dtype=type(1+1j))
+        m_val = np.zeros_like(length_kuhn, dtype=type(1+1j))
         for ind_alpha in range(0, alpha_max + 1):
             q_val += np.exp(poles[ind_alpha] * length_kuhn) * residues[0, 0, ind_alpha]
             for ind_alpha_p in range(0, alpha_max + 1):
@@ -201,9 +113,9 @@ def m_lcpoly_new(length_kuhn, lam, alpha_max=25, l_cont_frac_max=50):
     return m_val
 
 
-def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
+def r_2_lcpoly(length_kuhn, lam, alpha_max=25):
     r"""
-    Calculate the single-polymer partition function
+    Calculate the mean-square end-to-end distance for a liquid crystal polymer
 
     Parameters
     ----------
@@ -216,170 +128,86 @@ def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
 
     Returns
     -------
-    m_val : float
-        Evaluated order parameter
+    r_2_par : float
+        mean-square distance in the parallel direction
+    r_2_perp : float
+        mean-square distance in the perpendicular direction
 
     """
 
-    if lam < 1000:
+    poles_m0 = eval_poles_lcpoly(lam, m=0, alpha_max=alpha_max)
+    resi_m0 = eval_residues_lcpoly(lam, m=0, poles=poles_m0, l_zero_only=False, l_max=alpha_max,
+                                   alpha_max=alpha_max, l_cont_frac_max=50)
+    poles_m1 = eval_poles_lcpoly(lam, m=1, alpha_max=alpha_max)
+    resi_m1 = eval_residues_lcpoly(lam, m=1, poles=poles_m1, l_zero_only=False, l_max=alpha_max,
+                                   alpha_max=alpha_max, l_cont_frac_max=50)
 
-        poles_m0 = eval_poles_lcpoly_new(lam, 0, alpha_max)
-        resi_m0 = eval_residues_lcpoly(lam, 0, poles_m0, l_zero_only=False, l_max=alpha_max,
-                                       alpha_max=alpha_max, l_cont_frac_max=50)
-        poles_m1 = eval_poles_lcpoly_new(lam, 1, alpha_max)
-        resi_m1 = eval_residues_lcpoly(lam, 1, poles_m1, l_zero_only=False, l_max=alpha_max,
-                                       alpha_max=alpha_max, l_cont_frac_max=50)
-        poles_m2 = eval_poles_lcpoly_new(lam, 2, alpha_max)
-        resi_m2 = eval_residues_lcpoly(lam, 2, poles_m2, l_zero_only=False, l_max=alpha_max,
-                                       alpha_max=alpha_max, l_cont_frac_max=50)
+    # Reset poles by subtracting zeroth pole
+    max_pole = poles_m0[0]
+    poles_m0 -= max_pole
+    poles_m1 -= max_pole
 
-        # Reset poles by subtracting zeroth pole
-        poles_m0 -= poles_m0[0]
-        poles_m1 -= poles_m0[0]
-        poles_m2 -= poles_m0[0]
+    # Setup the l_selection matrices
+    a_l_m0 = np.zeros(alpha_max + 2)
+    a_l_m0[1::] = eval_a_l_m(np.arange(1, alpha_max + 2), 0)
+    b_l_m0 = np.zeros(alpha_max + 2)
+    b_l_m0[1::] = eval_b_l_m(np.arange(1, alpha_max + 2), 0)
+    b_l_m1 = np.zeros(alpha_max + 2)
+    b_l_m1[1::] = eval_b_l_m(np.arange(1, alpha_max + 2), 1)
 
-        # Setup the l_selection matrices
-        a_l_m0 = eval_a_l_m(np.arange(0, alpha_max + 2), 0)
-        a_l_m1 = eval_a_l_m(np.arange(0, alpha_max + 2), 1)
-        b_l_m0 = eval_b_l_m(np.arange(0, alpha_max + 2), 0)
-        b_l_m1 = eval_b_l_m(np.arange(0, alpha_max + 2), 1)
-        b_l_mm1 = eval_b_l_m(np.arange(0, alpha_max + 2), -1)
-        b_l_m2 = eval_b_l_m(np.arange(0, alpha_max + 2), 2)
+    l_eq_l0p1 = a_l_m0[1:(alpha_max + 1)]
+    uz_select_mat = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0p1, -1)
 
-        l_eq_l0 = a_l_m0[0:(alpha_max + 1)] ** 2 + a_l_m0[1:(alpha_max + 2)] ** 2
-        l_eq_l0p2 = a_l_m0[1:alpha_max] * a_l_m0[2:(alpha_max + 1)]
-        y20_select_mat = np.diag(l_eq_l0) + np.diag(l_eq_l0p2, 2) + np.diag(l_eq_l0p2, -2)
+    l_eq_l0p1 = -1 / np.sqrt(2) * b_l_m0[1:(alpha_max + 1)]
+    l_eq_l0m1 = 1 / np.sqrt(2) * b_l_m1[1:(alpha_max + 1)]
+    ux_select_mat = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0m1, -1)
 
-        l_eq_l0 = (b_l_m1[1:(alpha_max + 2)] * a_l_m1[1:(alpha_max + 2)]
-                   - b_l_m0[0:(alpha_max + 1)] * a_l_m1[0:(alpha_max + 1)])
-        l_eq_l0p2 = b_l_m1[1:alpha_max] * a_l_m1[2:(alpha_max + 1)]
-        l_eq_l0m2 = - b_l_m0[2:(alpha_max + 1)] * a_l_m1[1:alpha_max]
-        y2l_select_mat = np.diag(l_eq_l0) + np.diag(l_eq_l0p2, 2) + np.diag(l_eq_l0m2, -2)
+    # Calculate the partition function and m value
+    q_val = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    r_2_par = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    r_2_perp = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
 
-        l_eq_l0p1 = a_l_m1[1:(alpha_max + 1)]
-        uz_select_mat = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0p1, -1)
+    for ind_alpha in range(0, alpha_max + 1):
+        # Contributions to q_val
+        q_val += np.exp(poles_m0[ind_alpha] * length_kuhn) * resi_m0[0, 0, ind_alpha]
+        for ind_alpha_p in range(0, alpha_max + 1):
+            for ind_alpha_pp in range(0, alpha_max + 1):
+                # Contributions to the r_2_par average
+                if ind_alpha_p <= alpha_max:
+                    select_mag = np.real(
+                        np.dot(resi_m0[:, :, ind_alpha_pp], np.dot(uz_select_mat,
+                        np.dot(resi_m0[:, :, ind_alpha_p], np.dot(uz_select_mat,
+                        resi_m0[:, :, ind_alpha]))))[0, 0])
+                    poles_vec = np.array([poles_m0[ind_alpha], poles_m0[ind_alpha_p], poles_m0[ind_alpha_pp]])
+                    int_mag = calc_int_mag(length_kuhn, poles_vec)
+                    r_2_par += 2 * select_mag * int_mag
 
-        l_eq_l0p1 = 0.5 * b_l_m2[1:(alpha_max + 1)]
-        l_eq_l0m1 = -0.5 * b_l_mm1[1:(alpha_max + 1)]
-        ux_select_mat_m2 = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0m1, -1)
-        uy_select_mat_m2 = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0m1, -1)
+                # Contributions to the r_2_perp average
+                if ind_alpha_p <= (alpha_max - 1):
+                    select_mag = np.real(
+                        np.dot(resi_m0[:, :, ind_alpha_pp],  np.dot(np.transpose(ux_select_mat),
+                        np.dot(resi_m1[:, :, ind_alpha_p], np.dot(ux_select_mat,
+                        resi_m0[:, :, ind_alpha]))))[0, 0])
+                    poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p], poles_m0[ind_alpha_pp]])
+                    int_mag = calc_int_mag(length_kuhn, poles_vec)
+                    r_2_perp += 2 * select_mag * int_mag
 
-        l_eq_l0p1 = -1 / np.sqrt(2) * b_l_m0[1:(alpha_max + 1)]
-        l_eq_l0m1 = 1 / np.sqrt(2) * b_l_m1[1:(alpha_max + 1)]
-        ux_select_mat_m0 = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0m1, -1)
+    # Finalize the averages
+    q_val = np.real(q_val)
+    r_2_par = np.real(r_2_par / q_val)
+    r_2_perp = np.real(r_2_perp / q_val)
 
-        # Calculate the partition function and m value
-        q_val = 0
-        m_val = 0
-        y21_y21 = 0
-        y21_uz_uz_y21 = 0
-        y21_ux_ux_y21 = 0
-        y21_uy_uy_y21 = 0
-        for ind_alpha in range(0, alpha_max + 1):
-            # Contributions to q_val
-            q_val += np.exp(poles_m0[ind_alpha] * length_kuhn) * resi_m0[0, 0, ind_alpha]
-            for ind_alpha_p in range(0, alpha_max + 1):
-                # Contributions to m_val
-                select_mag = np.real(np.dot(resi_m0[:, :, ind_alpha_p],
-                                            np.dot(y20_select_mat, resi_m0[:, :, ind_alpha]))[0, 0])
-                poles_vec = np.array([poles_m0[ind_alpha], poles_m0[ind_alpha_p]])
-                int_mag = calc_int_mag(length_kuhn, poles_vec)
-                m_val += select_mag * int_mag / length_kuhn
-
-                for ind_alpha_pp in range(0, alpha_max + 1):
-                    # Contributions to the y21_y21 average
-                    if ind_alpha_p <= (alpha_max - 1):
-                        select_mag = np.real(
-                            np.dot(resi_m0[:, :, ind_alpha_pp], np.dot(y2l_select_mat,
-                            np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
-                            resi_m0[:, :, ind_alpha]))))[0, 0])
-                        poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p], poles_m0[ind_alpha_pp]])
-                        int_mag = calc_int_mag(length_kuhn, poles_vec)
-                        y21_y21 += 2 * select_mag * int_mag / length_kuhn ** 2
-
-                    for ind_alpha_ppp in range(0, alpha_max + 1):
-                        for ind_alpha_pppp in range(0, alpha_max + 1):
-
-                            # Contributions to the y21_uz_uz_y21 average
-                            if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_pp <= (alpha_max - 1)
-                                    and ind_alpha_ppp <= (alpha_max - 1)):
-                                select_mag = np.real(
-                                    np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(y2l_select_mat,
-                                    np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(uz_select_mat,
-                                    np.dot(resi_m1[:, :, ind_alpha_pp], np.dot(uz_select_mat,
-                                    np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
-                                    resi_m0[:, :, ind_alpha]))))))))[0, 0])
-                                poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
-                                                      poles_m1[ind_alpha_pp], poles_m1[ind_alpha_ppp],
-                                                      poles_m0[ind_alpha_pppp]])
-                                int_mag = calc_int_mag(length_kuhn, poles_vec)
-                                y21_uz_uz_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
-
-                            # Contributions to the y21_uy_uy_y21 average
-                            if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_pp <= (alpha_max - 2)
-                                    and ind_alpha_ppp <= (alpha_max - 1)):
-                                select_mag = np.real(
-                                    np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(y2l_select_mat,
-                                    np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(uy_select_mat_m2,
-                                    np.dot(resi_m2[:, :, ind_alpha_pp], np.dot(uy_select_mat_m2,
-                                    np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
-                                    resi_m0[:, :, ind_alpha]))))))))[0, 0])
-                                poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
-                                                      poles_m2[ind_alpha_pp], poles_m1[ind_alpha_ppp],
-                                                      poles_m0[ind_alpha_pppp]])
-                                int_mag = calc_int_mag(length_kuhn, poles_vec)
-                                y21_uy_uy_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
-
-                            # Contributions to the y21_ux_ux_y21 average
-                            if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_pp <= (alpha_max - 2)
-                                    and ind_alpha_ppp <= (alpha_max - 1)):
-                                select_mag = np.real(
-                                    np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(y2l_select_mat,
-                                    np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(ux_select_mat_m2,
-                                    np.dot(resi_m2[:, :, ind_alpha_pp], np.dot(ux_select_mat_m2,
-                                    np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
-                                    resi_m0[:, :, ind_alpha]))))))))[0, 0])
-                                poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
-                                                      poles_m2[ind_alpha_pp], poles_m1[ind_alpha_ppp],
-                                                      poles_m0[ind_alpha_pppp]])
-                                int_mag = calc_int_mag(length_kuhn, poles_vec)
-                                y21_ux_ux_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
-
-                            if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_ppp <= (alpha_max - 1)):
-                                select_mag = np.real(
-                                    np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(y2l_select_mat,
-                                    np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(ux_select_mat_m0,
-                                    np.dot(resi_m0[:, :, ind_alpha_pp], np.dot(ux_select_mat_m0,
-                                    np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
-                                    resi_m0[:, :, ind_alpha]))))))))[0, 0])
-                                poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
-                                                      poles_m0[ind_alpha_pp], poles_m1[ind_alpha_ppp],
-                                                      poles_m0[ind_alpha_pppp]])
-                                int_mag = calc_int_mag(length_kuhn, poles_vec)
-                                y21_ux_ux_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
-
-        # Finalize the averages
-        q_val = np.real(q_val)
-        m_val = np.real(1.5 * m_val / q_val) - 1 / 2
-        y21_y21 = np.real(1.5 * y21_y21 / q_val)
-        y21_ux_ux_y21 = np.real(1.5 * y21_ux_ux_y21 / q_val)
-        y21_uy_uy_y21 = np.real(1.5 * y21_uy_uy_y21 / q_val)
-        y21_uz_uz_y21 = np.real(1.5 * y21_uz_uz_y21 / q_val)
+    return r_2_par, r_2_perp
 
 
-    else:
-        m_val = (1 - 3 / 2 / np.sqrt(lam) - 3 / 16 / lam ** (3 / 2) - 3 / 8 / lam ** 2
-                 - 207 / 256 / lam ** (5 / 2) - 123 / 64 / lam ** 3 - 10215 / 2048 / lam ** (7 / 2))
-
-    return q_val, m_val, y21_y21, y21_ux_ux_y21, y21_uy_uy_y21, y21_uz_uz_y21
-
-
-def eval_poles_lcpoly(lam, alpha_max=25):
+def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
     r"""
-    Evaluate the poles for a wormlike nematic liquid crystalline polymer
+    Calculate the Frank elastic constants for a polymer liquid crystal solution
 
     Parameters
     ----------
+    length_kuhn : float
+        The length of the chain in Kuhn lengths
     lam : float
         The value of the quadrupole field :math:`\lambda`
     alpha_max : int
@@ -387,30 +215,226 @@ def eval_poles_lcpoly(lam, alpha_max=25):
 
     Returns
     -------
-    poles : float
-        Evaluated poles for the given :math:`\lambda`
+    q_val : float
+        Single-chain partition function
+    m_val : float
+        Nematic order parameter
+    y21_y21 : float
+        y21-y21 correlation function
+    y21_ux_ux_y21 : float
+        y21-y21 correlation function with x-x end-to-end distance squared
+    y21_uy_uy_y21 : float
+        y21-y21 correlation function with y-y end-to-end distance squared
+    y21_uz_uz_y21 : float
+        y21-y21 correlation function with z-z end-to-end distance squared
 
     """
 
-    l_vec = 2 * np.arange(alpha_max)
+    poles_m0 = eval_poles_lcpoly(lam, m=0, alpha_max=alpha_max)
+    resi_m0 = eval_residues_lcpoly(lam, m=0, poles=poles_m0, l_zero_only=False, l_max=alpha_max,
+                                   alpha_max=alpha_max, l_cont_frac_max=50)
+    poles_m1 = eval_poles_lcpoly(lam, m=1, alpha_max=alpha_max)
+    resi_m1 = eval_residues_lcpoly(lam, m=1, poles=poles_m1, l_zero_only=False, l_max=alpha_max,
+                                   alpha_max=alpha_max, l_cont_frac_max=50)
+    poles_m2 = eval_poles_lcpoly(lam, m=2, alpha_max=alpha_max)
+    resi_m2 = eval_residues_lcpoly(lam, m=2, poles=poles_m2, l_zero_only=False, l_max=alpha_max,
+                                   alpha_max=alpha_max, l_cont_frac_max=50)
 
-    a_l = np.append(0, l_vec[1:alpha_max] / np.sqrt(4 * l_vec[1:alpha_max] ** 2 - 1))
-    a_lp1 = (l_vec + 1) / np.sqrt(4 * (l_vec + 1) ** 2 - 1)
-    a_lp2 = (l_vec + 2) / np.sqrt(4 * (l_vec + 2) ** 2 - 1)
-    alpha_lp2 = a_lp2 * a_lp1
-    beta_l = a_lp1 ** 2 + a_l ** 2 - 1 / 3
-    h_matrix = (np.diag(l_vec * (l_vec + 1) - beta_l * lam, 0)
-                - lam * np.diag(alpha_lp2[0:(alpha_max-1)], 1)
-                - lam * np.diag(alpha_lp2[0:(alpha_max-1)], -1))
+    # Reset poles by subtracting zeroth pole
+    max_pole = poles_m0[0]
+    poles_m0 -= max_pole
+    poles_m1 -= max_pole
+    poles_m2 -= max_pole
 
-    # Find the poles as the eigenvalues of the h-matrix
-    poles = -1 * np.linalg.eigvals(h_matrix)
-    poles = np.sort(poles)[::-1]
+    # Setup the l_selection matrices
+    a_l_m0 = np.zeros(alpha_max + 2)
+    a_l_m0[1::] = eval_a_l_m(np.arange(1, alpha_max + 2), 0)
+    a_l_m1 = np.zeros(alpha_max + 2)
+    a_l_m1[1::] = eval_a_l_m(np.arange(1, alpha_max + 2), 1)
+    b_l_m0 = np.zeros(alpha_max + 2)
+    b_l_m0[1::] = eval_b_l_m(np.arange(1, alpha_max + 2), 0)
+    b_l_m1 = np.zeros(alpha_max + 2)
+    b_l_m1[1::] = eval_b_l_m(np.arange(1, alpha_max + 2), 1)
+    b_l_mm1 = np.zeros(alpha_max + 2)
+    b_l_mm1[1::] = eval_b_l_m(np.arange(1, alpha_max + 2), -1)
+    b_l_m2 = np.zeros(alpha_max + 2)
+    b_l_m2[1::] = eval_b_l_m(np.arange(1, alpha_max + 2), 2)
 
-    return poles
+    l_eq_l0 = a_l_m0[0:(alpha_max + 1)] ** 2 + a_l_m0[1:(alpha_max + 2)] ** 2
+    l_eq_l0p2 = a_l_m0[1:alpha_max] * a_l_m0[2:(alpha_max + 1)]
+    y20_select_mat = np.diag(l_eq_l0) + np.diag(l_eq_l0p2, 2) + np.diag(l_eq_l0p2, -2)
+
+    l_eq_l0 = (b_l_m1[1:(alpha_max + 2)] * a_l_m1[1:(alpha_max + 2)]
+               - b_l_m0[0:(alpha_max + 1)] * a_l_m1[0:(alpha_max + 1)])
+    l_eq_l0m2 = b_l_m1[1:alpha_max] * a_l_m1[2:(alpha_max + 1)]
+    l_eq_l0p2 = - b_l_m0[2:(alpha_max + 1)] * a_l_m1[1:alpha_max]
+    y2l_select_mat = np.diag(l_eq_l0) + np.diag(l_eq_l0p2, 2) + np.diag(l_eq_l0m2, -2)
+
+    l_eq_l0p1 = a_l_m1[1:(alpha_max + 1)]
+    uz_select_mat = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0p1, -1)
+
+    l_eq_l0m1 = 0.5 * b_l_m2[1:(alpha_max + 1)]
+    l_eq_l0p1 = -0.5 * b_l_mm1[1:(alpha_max + 1)]
+    ux_select_mat_m2 = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0m1, -1)
+    uy_select_mat_m2 = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0m1, -1)
+
+    l_eq_l0m1 = -1 / np.sqrt(2) * b_l_m0[1:(alpha_max + 1)]
+    l_eq_l0p1 = 1 / np.sqrt(2) * b_l_m1[1:(alpha_max + 1)]
+    ux_select_mat_m0 = np.diag(l_eq_l0p1, 1) + np.diag(l_eq_l0m1, -1)
+
+    # Calculate the partition function and m value
+    q_val = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    m_val = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    y21_y21 = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    y21_uz_uz_y21 = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    y21_ux_ux_y21 = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    y21_uy_uy_y21 = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
+    for ind_alpha in range(0, alpha_max + 1):
+        # Contributions to q_val
+        q_val += np.exp(poles_m0[ind_alpha] * length_kuhn) * resi_m0[0, 0, ind_alpha]
+        for ind_alpha_p in range(0, alpha_max + 1):
+            # Contributions to m_val
+            select_mag = np.real(np.dot(resi_m0[:, :, ind_alpha_p],
+                                        np.dot(y20_select_mat, resi_m0[:, :, ind_alpha]))[0, 0])
+            poles_vec = np.array([poles_m0[ind_alpha], poles_m0[ind_alpha_p]])
+            int_mag = calc_int_mag(length_kuhn, poles_vec)
+            m_val += select_mag * int_mag / length_kuhn
+
+            for ind_alpha_pp in range(0, alpha_max + 1):
+                # Contributions to the y21_y21 average
+                if ind_alpha_p <= (alpha_max - 1):
+                    select_mag = np.real(
+                        np.dot(resi_m0[:, :, ind_alpha_pp], np.dot(np.transpose(y2l_select_mat),
+                        np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
+                        resi_m0[:, :, ind_alpha]))))[0, 0])
+                    poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p], poles_m0[ind_alpha_pp]])
+                    int_mag = calc_int_mag(length_kuhn, poles_vec)
+                    y21_y21 += 2 * select_mag * int_mag / length_kuhn ** 2
+
+                for ind_alpha_ppp in range(0, alpha_max + 1):
+                    for ind_alpha_pppp in range(0, alpha_max + 1):
+
+                        # Contributions to the y21_uz_uz_y21 average
+                        if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_pp <= (alpha_max - 1)
+                                and ind_alpha_ppp <= (alpha_max - 1)):
+                            select_mag = np.real(
+                                np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(np.transpose(y2l_select_mat),
+                                np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(np.transpose(uz_select_mat),
+                                np.dot(resi_m1[:, :, ind_alpha_pp], np.dot(uz_select_mat,
+                                np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
+                                resi_m0[:, :, ind_alpha]))))))))[0, 0])
+                            poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
+                                                  poles_m1[ind_alpha_pp], poles_m1[ind_alpha_ppp],
+                                                  poles_m0[ind_alpha_pppp]])
+                            int_mag = calc_int_mag(length_kuhn, poles_vec)
+                            y21_uz_uz_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
+
+                        # Contributions to the y21_uy_uy_y21 average
+                        if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_pp <= (alpha_max - 2)
+                                and ind_alpha_ppp <= (alpha_max - 1)):
+                            select_mag = np.real(
+                                np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(np.transpose(y2l_select_mat),
+                                np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(np.transpose(uy_select_mat_m2),
+                                np.dot(resi_m2[:, :, ind_alpha_pp], np.dot(uy_select_mat_m2,
+                                np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
+                                resi_m0[:, :, ind_alpha]))))))))[0, 0])
+                            poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
+                                                  poles_m2[ind_alpha_pp], poles_m1[ind_alpha_ppp],
+                                                  poles_m0[ind_alpha_pppp]])
+                            int_mag = calc_int_mag(length_kuhn, poles_vec)
+                            y21_uy_uy_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
+
+                        # Contributions to the y21_ux_ux_y21 average
+                        if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_pp <= (alpha_max - 2)
+                                and ind_alpha_ppp <= (alpha_max - 1)):
+                            select_mag = np.real(
+                                np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(np.transpose(y2l_select_mat),
+                                np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(np.transpose(ux_select_mat_m2),
+                                np.dot(resi_m2[:, :, ind_alpha_pp], np.dot(ux_select_mat_m2,
+                                np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
+                                resi_m0[:, :, ind_alpha]))))))))[0, 0])
+                            poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
+                                                  poles_m2[ind_alpha_pp], poles_m1[ind_alpha_ppp],
+                                                  poles_m0[ind_alpha_pppp]])
+                            int_mag = calc_int_mag(length_kuhn, poles_vec)
+                            y21_ux_ux_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
+
+                        if (ind_alpha_p <= (alpha_max - 1) and ind_alpha_ppp <= (alpha_max - 1)):
+                            select_mag = np.real(
+                                np.dot(resi_m0[:, :, ind_alpha_pppp], np.dot(np.transpose(y2l_select_mat),
+                                np.dot(resi_m1[:, :, ind_alpha_ppp], np.dot(np.transpose(ux_select_mat_m0),
+                                np.dot(resi_m0[:, :, ind_alpha_pp], np.dot(ux_select_mat_m0,
+                                np.dot(resi_m1[:, :, ind_alpha_p], np.dot(y2l_select_mat,
+                                resi_m0[:, :, ind_alpha]))))))))[0, 0])
+                            poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p],
+                                                  poles_m0[ind_alpha_pp], poles_m1[ind_alpha_ppp],
+                                                  poles_m0[ind_alpha_pppp]])
+                            int_mag = calc_int_mag(length_kuhn, poles_vec)
+                            y21_ux_ux_y21 += 4 * select_mag * int_mag / length_kuhn ** 2
+
+    # Finalize the averages
+    q_val = np.real(q_val)
+    m_val = np.real(1.5 * m_val / q_val) - 1 / 2
+    y21_y21 = np.real(1.5 * y21_y21 / q_val)
+    y21_ux_ux_y21 = np.real(1.5 * y21_ux_ux_y21 / q_val)
+    y21_uy_uy_y21 = np.real(1.5 * y21_uy_uy_y21 / q_val)
+    y21_uz_uz_y21 = np.real(1.5 * y21_uz_uz_y21 / q_val)
+
+    return q_val, m_val, y21_y21, y21_ux_ux_y21, y21_uy_uy_y21, y21_uz_uz_y21
 
 
-def eval_poles_lcpoly_new(lam, m=0, alpha_max=25):
+def elastic_rr(length_kuhn, lam):
+    r"""
+    Calculate the Frank elastic constants for a polymer liquid crystal solution
+
+    Parameters
+    ----------
+    length_kuhn : float
+        The length of the chain in Kuhn lengths
+    lam : float
+        The value of the quadrupole field :math:`\lambda`
+
+    Returns
+    -------
+    q_val : float
+        Single-chain partition function
+    m_val : float
+        Nematic order parameter
+    y21_y21 : float
+        y21-y21 correlation function
+    y21_ux_ux_y21 : float
+        y21-y21 correlation function with x-x end-to-end distance squared
+    y21_uy_uy_y21 : float
+        y21-y21 correlation function with y-y end-to-end distance squared
+    y21_uz_uz_y21 : float
+        y21-y21 correlation function with z-z end-to-end distance squared
+
+    """
+
+    a_val = np.outer(lam, length_kuhn)
+
+    # Calculate the single-chain partition function
+    q_val = np.sqrt(np.pi) * sp.special.erfi(np.sqrt(a_val)) / np.sqrt(a_val)
+
+    # Calculate rho averages
+    rho2_ave = (np.exp(a_val) / a_val / q_val - 1 / (2 * a_val))
+    rho4_ave = (np.exp(a_val) * (2 * a_val - 3) / (2 * a_val ** 2) / q_val + 3 / (4 * a_val ** 2))
+    rho6_ave = (np.exp(a_val) * (4 * a_val ** 2 - 10 * a_val + 15) / (4 * a_val ** 3) / q_val
+                - 15 / (8 * a_val ** 3))
+
+    # Determine the order parameter and the correlation functions
+    n2_mat = np.outer(np.ones(len(lam)), length_kuhn ** 2) / 6
+
+    m_val = 3 * rho2_ave / 2 - 1 / 2
+    y21_y21 = 15 / np.pi * (rho2_ave - rho4_ave) / 2
+    y21_ux_ux_y21 = n2_mat * 15 / np.pi * (rho2_ave - 2 * rho4_ave + rho6_ave) * 3 / 8
+    y21_uy_uy_y21 = y21_ux_ux_y21 / 3
+    y21_uz_uz_y21 = n2_mat * 15 / np.pi * (rho4_ave - rho6_ave) / 2
+
+    return q_val, m_val, y21_y21, y21_ux_ux_y21, y21_uy_uy_y21, y21_uz_uz_y21
+
+
+def eval_poles_lcpoly(lam, m=0, alpha_max=25):
     r"""
     eval_poles_lcpoly - Evaluate the poles for given :math:`\lambda` and :math:`\mu`
     using the matrix method for intermediate :math:`K`
@@ -679,7 +703,7 @@ def calc_int_mag(length_kuhn, poles_vec):
     poles_vec_unique, poles_order = np.unique(poles_vec, return_counts=True)
 
     # Cycle through the poles and evaluate contribution for each order
-    int_mag = 0
+    int_mag = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
 
     for i_pole in range(len(poles_vec_unique)):
 
