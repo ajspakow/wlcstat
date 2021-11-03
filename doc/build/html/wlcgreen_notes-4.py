@@ -17,7 +17,7 @@ poles = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
 residues = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
 
 for i_k_val in range(num_k):
-    poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,True,False,dimensions)
+    poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,False,dimensions)
     for i_pole in range(num_poles):
         poles[i_k_val, i_pole] = poles_k_val[i_pole]
         residues[i_k_val, i_pole] = resi_k_val[lam, lam_0, i_pole]

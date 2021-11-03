@@ -132,6 +132,10 @@ def r_2_lcpoly(length_kuhn, lam, alpha_max=25):
         mean-square distance in the parallel direction
     r_2_perp : float
         mean-square distance in the perpendicular direction
+    xi_par : float
+        parallel correlation length
+    xi_perp : float
+        perpendicular correlation length
 
     """
 
@@ -196,8 +200,10 @@ def r_2_lcpoly(length_kuhn, lam, alpha_max=25):
     q_val = np.real(q_val)
     r_2_par = np.real(r_2_par / q_val)
     r_2_perp = np.real(r_2_perp / q_val)
+    xi_par = - 1 / poles_m0[1]
+    xi_perp = - 1 / poles_m1[1]
 
-    return r_2_par, r_2_perp
+    return r_2_par, r_2_perp, xi_par, xi_perp
 
 
 def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
@@ -512,7 +518,7 @@ def eval_residues_lcpoly(lam, m, poles, l_zero_only=True, l_max=25, alpha_max=25
 
     Notes
     -----
-    See [Mehraeen2009]_ for intermediate-k algorithms
+    See [Mehraeen2008]_ for intermediate-k algorithms
 
     """
 

@@ -186,7 +186,7 @@ def s3_wlc(k1_val_vector, k2_val_vector, length_kuhn, dimensions=3, alpha_max=25
 
     # Calculate the radius of gyration to determine a cutoff value of k
     rg2 = rg2_ave(length_kuhn, dimensions=3)
-    k_cutoff_factor = 0.3 * 0
+    k_cutoff_factor = 0.3
     k_cutoff = k_cutoff_factor * np.sqrt(1 / rg2)
 
     # Loop through the k values
@@ -200,11 +200,11 @@ def s3_wlc(k1_val_vector, k2_val_vector, length_kuhn, dimensions=3, alpha_max=25
         k12_mag = np.linalg.norm(k12_val)       # k12 magnitude
 
         # Reset the k vectors if any are equal (need to correct double pole case)
-        if k1_mag == k2_mag or k1_mag == k12_mag or k2_mag == k12_mag:
-            k2_val = 1.01 * k2_val               # k2 vector
-            k12_val = k1_val + k2_val               # k1 + k2 vector
-            k2_mag = np.linalg.norm(k2_val)         # k2 magnitude
-            k12_mag = np.linalg.norm(k12_val)       # k12 magnitude
+#        if k1_mag == k2_mag or k1_mag == k12_mag or k2_mag == k12_mag:
+#            k2_val = 1.01 * k2_val               # k2 vector
+#            k12_val = k1_val + k2_val               # k1 + k2 vector
+#            k2_mag = np.linalg.norm(k2_val)         # k2 magnitude
+#            k12_mag = np.linalg.norm(k12_val)       # k12 magnitude
 
         rho_12 = -np.dot(k1_val, k2_val) / (k1_mag * k2_mag)        # Cos angle between k1 and k2
         rho_112 = np.dot(k1_val, k12_val) / (k1_mag * k12_mag)      # Cos angle between k1 and k2
@@ -261,12 +261,12 @@ def s3_wlc(k1_val_vector, k2_val_vector, length_kuhn, dimensions=3, alpha_max=25
         # Case 1: s1 < s2 < s3
         if k1_mag == k12_mag:
             residues_double_k1 = eval_residues_double_pole(k1_mag, 0, poles_k1,
-                                                        lam_zero_only, lam_max, alpha_max, dimensions)
+                                                           lam_zero_only, lam_max, alpha_max, dimensions)
         else:
             residues_other_pole_k112 = eval_residues_other_pole(k1_mag, 0, poles_k12,
-                                                              lam_zero_only, lam_max, alpha_max, dimensions)
+                                                                lam_zero_only, lam_max, alpha_max, dimensions)
             residues_other_pole_k121 = eval_residues_other_pole(k12_mag, 0, poles_k1,
-                                                               lam_zero_only, lam_max, alpha_max, dimensions)
+                                                                lam_zero_only, lam_max, alpha_max, dimensions)
 
         # Case 2: s1 < s3 < s2
         if k1_mag == k2_mag:
@@ -289,7 +289,8 @@ def s3_wlc(k1_val_vector, k2_val_vector, length_kuhn, dimensions=3, alpha_max=25
                                                                lam_zero_only, lam_max, alpha_max, dimensions)
 
         # Sum over the poles for the wlc green functions
-        for alpha in range(0): # range(0, alpha_max + 1):
+        for alpha in range(0, 0): #alpha_max + 1):
+
             # Case 1: s1 < s2 < s3
             if k1_mag == k12_mag:
                 for ind_length in range(0, len(length_kuhn)):

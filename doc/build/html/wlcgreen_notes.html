@@ -167,13 +167,13 @@ we have</p>
 \[G(\vec{K},\vec{u}|\vec{u}_{0};p) =
 \frac{1}{\Omega_{D}}
 \sum_{\lambda}  \sum_{\lambda_{0}} \sum_{\mathbf{\mu}}
-Y^{(D)*}_{\lambda;\mathbf{\mu}} (\vec{u}')
-Y^{(D)}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
-\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p).\]</div>
+Y^{(D)}_{\lambda;\mathbf{\mu}} (\vec{u}')
+Y^{(D)*}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
+\mathcal{G}_{\lambda,\lambda_{0}}^{\mu}(K;p).\]</div>
 <p>This spherical harmonic expansion requires evaluation of the Laplace inverse
-of <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda_{0},\lambda}^{\mu_{1}}(K;p)\)</span>
+of <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda,\lambda_{0}}^{\mu_{1}}(K;p)\)</span>
 (i.e. spherical-harmonic transform of the Green’s function).
-The evaluation of poles and residues of <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p)\)</span>
+The evaluation of poles and residues of <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda,\lambda_{0}}^{\mu}(K;p)\)</span>
 utilizes similar approaches as outlined above and discussed in detail in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id10"><span>[Mehraeen2008]</span></a>.
 The primary difference is whether the residues and poles require evaluation for non-zero
 values of <span class="math notranslate nohighlight">\(\mu\)</span> and the residue evaluation must account for different
@@ -186,7 +186,7 @@ that restricts the otherwise infinite summations within the inversion.
 Evaluation of the residues for all possible values of <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\lambda_{0}\)</span>
 (with a cutoff <span class="math notranslate nohighlight">\(\lambda_{\mathrm{max}}\)</span>)
 results in a residue matrix defined by
-<span class="math notranslate nohighlight">\([\partial_{p} j_{\lambda_{0},\lambda}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}\)</span>,
+<span class="math notranslate nohighlight">\([\partial_{p} j_{\lambda,\lambda_{0}}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}\)</span>,
 which is a <span class="math notranslate nohighlight">\((\lambda_{\mathrm{max}} - \mu + 1) \times (\lambda_{\mathrm{max}} - \mu + 1)\)</span>
 tensor for a given <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}^{\mu}\)</span>.</p>
 <p>The following table shows the cases of whether non-zero values of

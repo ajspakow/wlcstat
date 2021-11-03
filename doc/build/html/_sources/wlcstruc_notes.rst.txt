@@ -58,7 +58,7 @@ inversion from :math:`p` to :math:`N=L/(2l_{p})`, and :math:`G(K;p)` is the worm
 Green function.
 The structure factor is expressible in terms of the magnitude of the scattering vector
 due to the rotational invariance of the governing statistics.
-Using results given in Sec.~\ref{sec:greal}, we write the structure factor as
+Using results given in Sec. <wlcgreen_notes>, we write the structure factor as
 
 .. math::
     S(\vec{k}) =
@@ -90,7 +90,7 @@ provide a convenient methodology for calculating the structure factor
 as a comparison with scattering experiments.
 Specifically, the infinite summation in Eq. :eq:`skwlc` is truncated at a finite cutoff,
 and the partial summation is evaluated using methods to evaluate
-:math:`\mathcal{E}_{l}` found in Sec. <wlcgreen_notes>.
+:math:`\mathcal{E}_{l}` found in Sec. :ref:`wlcgreen_notes`.
 For most calculations, only a couple of terms are necessary to achieve
 accurate realizations of the structure factor.
 For example, the structure factor in 3 dimensions for a chain
@@ -130,8 +130,9 @@ We define the 3-point structure factor :math:`S^{(3)}(\vec{k}_{1}, \vec{k}_{2})`
     \int_{0}^{L} ds_{2}
     \int_{0}^{L} ds_{3}
     \left< \exp \left[
-    i \vec{k}_{1} \cdot \left( \vec{r}(s_{1})-\vec{r}(s_{2}) \right)
-    + i \left( \vec{k}_{2} + \vec{k}_{1} \right) \cdot \left( \vec{r}(s_{2})-\vec{r}(s_{3}) \right)
+    i \vec{k}_{1} \cdot \vec{r}(s_{1}) +
+    i \vec{k}_{2} \cdot \vec{r}(s_{2}) -
+    i \left( \vec{k}_{1} + \vec{k}_{2} \right) \cdot \vec{r}(s_{3})
     \right] \right>.
 
 We note that the 3-point density corelations depend on 3 k-vectors, which satisfy
@@ -145,16 +146,33 @@ The Laplace transformed 3-point structure factor (from :math:`N` to :math:`p`) i
 given by
 
 .. math::
-    S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; p) =
-    \frac{3!}{N^{3}} \mathcal{L}^{-1} \left[
+    S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; p) & = &
+    \frac{2}{N^{3}}
     \int d \vec{u}_{3}
     \int d \vec{u}_{2}
     \int d \vec{u}_{1}
     \frac{
     G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2};p)
     G(\vec{K}_{1}, \vec{u}_{2} | \vec{u}_{1};p)
-    }{p^{2}} \right],
-
+    }{p^{2}} \\
+    &  &
+    + \frac{2}{N^{3}}
+    \int d \vec{u}_{3}
+    \int d \vec{u}_{2}
+    \int d \vec{u}_{1}
+    \frac{
+    G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2};p)
+    G(\vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1};p)
+    }{p^{2}} \\
+    &  &
+    + \frac{2}{N^{3}}
+    \int d \vec{u}_{3}
+    \int d \vec{u}_{2}
+    \int d \vec{u}_{1}
+    \frac{
+    G(\vec{K}_{1}, \vec{u}_{3} | \vec{u}_{2};p)
+    G(- \vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1};p)
+    }{p^{2}}
 
 where :math:`\vec{K}_{i} = 2 l_{p} \vec{k}_{i}`.
 

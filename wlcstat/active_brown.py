@@ -317,7 +317,7 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, force_calc
             ka_tilde = ka * length_kuhn ** 2 / p ** 2
             sig_xp = np.sqrt(1 + sig_fp_tilde ** 2 / (1 + ka_tilde))
             xp_tilde = np.random.randn(3) * sig_xp
-            phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
+            phi = np.sqrt(2) * np.cos(p * np.pi * ind / (num_beads - 1))
             r_poly += np.outer(phi, xp_tilde) * (np.sqrt(length_kuhn) / p) * b / np.sqrt(3 * np.pi ** 2)
 
         return r_poly
@@ -334,7 +334,7 @@ def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, force_calc
             mu_xp = fp_tilde / (1 + ka_tilde)
             sig_xp = np.sqrt(1 + sig_fp_tilde ** 2 * ka_tilde / (1 + ka_tilde) ** 2)
             xp_tilde = np.random.randn(3) * sig_xp + mu_xp
-            phi = np.sqrt(2 / length_kuhn) * np.cos(p * np.pi * ind / (num_beads - 1))
+            phi = np.sqrt(2) * np.cos(p * np.pi * ind / (num_beads - 1))
             r_poly += np.outer(phi, xp_tilde) * (np.sqrt(length_kuhn) / p) * b / np.sqrt(3 * np.pi ** 2)
             f_active += np.outer(phi, fp_tilde) * (p / np.sqrt(length_kuhn)) * np.sqrt(3 * np.pi ** 2) / b
 

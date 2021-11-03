@@ -305,18 +305,19 @@ a constant (with unimportant factors that are linear in <span class="math notran
 self-consistent field theory for polymer solutions, including nematic
 liquid crystallinity</p>
 <dl class="py function">
-<dt id="wlcstat.wlc_lcpoly.eval_poles_lcpoly">
-<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">eval_poles_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#eval_poles_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.eval_poles_lcpoly" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate the poles for a wormlike nematic liquid crystalline polymer</p>
+<dt id="wlcstat.wlc_lcpoly.calc_int_mag">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">calc_int_mag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">poles_vec</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#calc_int_mag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.calc_int_mag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the magnitude of the integral for a list of poles (including repeats). This algorithm includes
+cases for single, double, and triple poles (as needed in evaluation of correlation functions)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>lam</strong> (<em>float</em>) – The value of the quadrupole field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
-<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 50)</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>poles_vec</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – Array of poles</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>poles</strong> – Evaluated poles for the given <span class="math notranslate nohighlight">\(\lambda\)</span></p>
+<dd class="field-even"><p><strong>int_mag</strong> – Value of the integral over chain length for the five poles</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
@@ -325,8 +326,146 @@ liquid crystallinity</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.elastic_lcpoly">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">elastic_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#elastic_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.elastic_lcpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Frank elastic constants for a polymer liquid crystal solution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the quadrupole field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 50)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>q_val</strong> (<em>float</em>) – Single-chain partition function</p></li>
+<li><p><strong>m_val</strong> (<em>float</em>) – Nematic order parameter</p></li>
+<li><p><strong>y21_y21</strong> (<em>float</em>) – y21-y21 correlation function</p></li>
+<li><p><strong>y21_ux_ux_y21</strong> (<em>float</em>) – y21-y21 correlation function with x-x end-to-end distance squared</p></li>
+<li><p><strong>y21_uy_uy_y21</strong> (<em>float</em>) – y21-y21 correlation function with y-y end-to-end distance squared</p></li>
+<li><p><strong>y21_uz_uz_y21</strong> (<em>float</em>) – y21-y21 correlation function with z-z end-to-end distance squared</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.elastic_rr">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">elastic_rr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#elastic_rr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.elastic_rr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Frank elastic constants for a polymer liquid crystal solution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the quadrupole field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>q_val</strong> (<em>float</em>) – Single-chain partition function</p></li>
+<li><p><strong>m_val</strong> (<em>float</em>) – Nematic order parameter</p></li>
+<li><p><strong>y21_y21</strong> (<em>float</em>) – y21-y21 correlation function</p></li>
+<li><p><strong>y21_ux_ux_y21</strong> (<em>float</em>) – y21-y21 correlation function with x-x end-to-end distance squared</p></li>
+<li><p><strong>y21_uy_uy_y21</strong> (<em>float</em>) – y21-y21 correlation function with y-y end-to-end distance squared</p></li>
+<li><p><strong>y21_uz_uz_y21</strong> (<em>float</em>) – y21-y21 correlation function with z-z end-to-end distance squared</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.eval_a_l_m">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">eval_a_l_m</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">m</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#eval_a_l_m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.eval_a_l_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>eval_a_l_m - Evaluate the coefficient from a ladder operation <span class="math notranslate nohighlight">\(cos \theta Y_{\lambda;\mu}\)</span>
+on the spherical harmonic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em><em> (</em><em>array</em><em>)</em>) – The angular kinetic energy quantum index of the spherical harmonic <span class="math notranslate nohighlight">\(Y_{\lambda;\mu}\)</span></p></li>
+<li><p><strong>m</strong> (<em>int</em>) – The angular kinetic energy quantum index of the spherical harmonic <span class="math notranslate nohighlight">\(Y_{\lambda;\mu}\)</span></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id2"><span>[Mehraeen2008]</span></a>)
+and Arfken (1999) (Ref <a class="reference internal" href="references.html#arfken1999" id="id3"><span>[Arfken1999]</span></a>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.eval_b_l_m">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">eval_b_l_m</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">m</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#eval_b_l_m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.eval_b_l_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>eval_a_l_m - Evaluate the coefficient from a ladder operation <span class="math notranslate nohighlight">\(e^{i \phi} sin \theta Y_{\lambda;\mu}\)</span>
+on the spherical harmonic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em><em> (</em><em>array</em><em>)</em>) – The angular kinetic energy quantum index of the spherical harmonic <span class="math notranslate nohighlight">\(Y_{\lambda;\mu}\)</span></p></li>
+<li><p><strong>m</strong> (<em>int</em>) – The angular kinetic energy quantum index of the spherical harmonic <span class="math notranslate nohighlight">\(Y_{\lambda;\mu}\)</span></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id4"><span>[Mehraeen2008]</span></a>)
+and Arfken (1999) (Ref <a class="reference internal" href="references.html#arfken1999" id="id5"><span>[Arfken1999]</span></a>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.eval_poles_lcpoly">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">eval_poles_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">m</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#eval_poles_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.eval_poles_lcpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>eval_poles_lcpoly - Evaluate the poles for given <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span>
+using the matrix method for intermediate <span class="math notranslate nohighlight">\(K\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the nematic field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Value of the mu parameter</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>poles</strong> – Evaluated poles for the given <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.eval_residues_lcpoly">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">eval_residues_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">poles</span></em>, <em class="sig-param"><span class="n">l_zero_only</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">l_max</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">l_cont_frac_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#eval_residues_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.eval_residues_lcpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>eval_residues_lcpoly -
+Evaluate the residues for the Green’s function of a nematic polymer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the nematic field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Value of the mu parameter</p></li>
+<li><p><strong>poles</strong> (<em>complex float</em>) – Evaluated poles for the given <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p><strong>l_zero_only</strong> (<em>boolean</em>) – Indicates whether the residues will be evaluated over the range of <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(lambda_{0}\)</span></p></li>
+<li><p><strong>l_max</strong> (<em>int</em>) – Maximum lambda value evaluated</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+<li><p><strong>l_cont_frac_max</strong> (<em>int</em>) – Maximum <span class="math notranslate nohighlight">\(\lambda\)</span> value in the continued fraction evaluation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>residues</strong> – Evaluated residues for the given <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a> for intermediate-k algorithms</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wlcstat.wlc_lcpoly.m_lcpoly">
-<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">m_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#m_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.m_lcpoly" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">m_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">l_cont_frac_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#m_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.m_lcpoly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the single-polymer partition function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -347,7 +486,7 @@ liquid crystallinity</p>
 
 <dl class="py function">
 <dt id="wlcstat.wlc_lcpoly.q_lcpoly">
-<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">q_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#q_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.q_lcpoly" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">q_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#q_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.q_lcpoly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the single-polymer partition function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -366,10 +505,32 @@ liquid crystallinity</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="wlcstat.wlc_lcpoly.r_2_lcpoly">
+<code class="sig-prename descclassname">wlcstat.wlc_lcpoly.</code><code class="sig-name descname">r_2_lcpoly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">lam</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlc_lcpoly.html#r_2_lcpoly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlc_lcpoly.r_2_lcpoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the mean-square end-to-end distance for a liquid crystal polymer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – The value of the quadrupole field <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 50)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>r_2_par</strong> (<em>float</em>) – mean-square distance in the parallel direction</p></li>
+<li><p><strong>r_2_perp</strong> (<em>float</em>) – mean-square distance in the perpendicular direction</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="example-usage-of-q-lcpoly">
 <h2>Example usage of ‘q_lcpoly’<a class="headerlink" href="#example-usage-of-q-lcpoly" title="Permalink to this headline">¶</a></h2>
-<p>We reproduce Fig. 6 from <a class="reference internal" href="references.html#spakowitz2003" id="id2"><span>[Spakowitz2003]</span></a> to demonstrate the use of ‘q_lcpoly’.
+<p>We reproduce Fig. 6 from <a class="reference internal" href="references.html#spakowitz2003" id="id7"><span>[Spakowitz2003]</span></a> to demonstrate the use of ‘q_lcpoly’.
 We show free energy relative to the isotropic state <span class="math notranslate nohighlight">\(\Delta f\)</span> versus
 the order parameter <span class="math notranslate nohighlight">\(m\)</span> for a thermotropic liquid-crystalline polymer system with
 <span class="math notranslate nohighlight">\(N = L/(2lp)=3.3333\)</span> and
