@@ -46,7 +46,7 @@ where we note that :math:`\lambda` only depends
 on the indices :math:`n` and :math:`l`.
 This adopts the form of the spherical Bessel differential equation,
 leading to solutions of the form
-:math:`R_{nl} = A j_{l}(\lambda_{nl} r) + B n_{l}(\lambda_{nl} r)`,
+:math:`R_{nl} = A j_{l}(\lambda_{nl} r) + B y_{l}(\lambda_{nl} r)`,
 where :math:`j_{l}` and :math:`y_{l}` are the spherical Bessel functions
 of the first and second kind, respectively.
 Since :math:`r = 0` is part of the domain of interest, we exclude :math:`y_{l}`

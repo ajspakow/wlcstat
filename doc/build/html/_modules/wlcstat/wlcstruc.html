@@ -47,6 +47,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
 
+
 <span class="c1"># Quadratic order density functions</span>
 
 <div class="viewcode-block" id="s2_wlc"><a class="viewcode-back" href="../../wlcstruc_notes.html#wlcstat.wlcstruc.s2_wlc">[docs]</a><span class="k">def</span> <span class="nf">s2_wlc</span><span class="p">(</span><span class="n">k_val_vector</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha_max</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
@@ -66,7 +67,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    s2_wlc : float (vector)</span>
+<span class="sd">    s2 : float (vector)</span>
 <span class="sd">        Structure factor for the wormlike chain model for every k_val in k_val_vector</span>
 
 <span class="sd">    Notes</span>
@@ -107,6 +108,89 @@
     <span class="k">return</span> <span class="n">s2</span></div>
 
 
+<div class="viewcode-block" id="s2_wlc_randcopoly"><a class="viewcode-back" href="../../wlcstruc_notes.html#wlcstat.wlcstruc.s2_wlc_randcopoly">[docs]</a><span class="k">def</span> <span class="nf">s2_wlc_randcopoly</span><span class="p">(</span><span class="n">k_val_vector</span><span class="p">,</span> <span class="n">length_mono_kuhn</span><span class="p">,</span> <span class="n">num_mono</span><span class="p">,</span> <span class="n">fa</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha_max</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    s2_wlc_randcopoly - Evaluate the 2-point structure factor for the wormlike chain model</span>
+<span class="sd">    for a random copolymer</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k_val_vector : float (array)</span>
+<span class="sd">        The value of the Fourier vector magnitude :math:`K`</span>
+<span class="sd">    length_mono_kuhn : float (array)</span>
+<span class="sd">        The length of a monomer unit in Kuhn lengths</span>
+<span class="sd">    num_mono : float</span>
+<span class="sd">        The number of monomer units in the chain</span>
+<span class="sd">    fa : float</span>
+<span class="sd">        Fraction of A monomers in the random copolymer</span>
+<span class="sd">    lam : float</span>
+<span class="sd">        Statistical correlation parameter for random copolymer</span>
+<span class="sd">    dimensions : int</span>
+<span class="sd">        The number of dimensions (default to 3 dimensions)</span>
+<span class="sd">    alpha_max : int</span>
+<span class="sd">        Maximum number of poles evaluated (default 25)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    s2 : float (vector)</span>
+<span class="sd">        Structure factor for the wormlike chain model for every k_val in k_val_vector</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref [Mehraeen2008]_)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">length_mono_kuhn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">length_mono_kuhn</span><span class="p">])</span>
+
+    <span class="n">s2_aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">k_val_vector</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>
+    <span class="n">s2_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">k_val_vector</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>
+    <span class="n">s2_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">k_val_vector</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>
+
+    <span class="c1"># Calculate the radius of gyration to determine a cutoff value of k</span>
+    <span class="n">rg2</span> <span class="o">=</span> <span class="n">rg2_ave</span><span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">k_cutoff_factor</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">k_cutoff</span> <span class="o">=</span> <span class="n">k_cutoff_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">rg2</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ind_k_val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_val_vector</span><span class="p">)):</span>
+        <span class="n">k_val</span> <span class="o">=</span> <span class="n">k_val_vector</span><span class="p">[</span><span class="n">ind_k_val</span><span class="p">]</span>
+        <span class="n">lam_max</span> <span class="o">=</span> <span class="n">alpha_max</span>
+
+        <span class="n">poles</span> <span class="o">=</span> <span class="n">eval_poles</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">)</span>
+        <span class="n">residues</span> <span class="o">=</span> <span class="n">eval_residues</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">k_val_cutoff</span><span class="o">=</span><span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ind_length</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">):</span>
+                <span class="n">z0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_mono_kuhn</span><span class="p">[</span><span class="n">ind_length</span><span class="p">])</span>
+                <span class="n">z1</span> <span class="o">=</span> <span class="n">z0</span> <span class="o">*</span> <span class="n">lam</span>
+                <span class="n">valeq</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_mono</span> <span class="o">*</span> <span class="p">(</span><span class="n">z0</span> <span class="o">/</span> <span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span>
+                                         <span class="n">length_mono_kuhn</span><span class="p">[</span><span class="n">ind_length</span><span class="p">]</span> <span class="o">/</span> <span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]))</span>
+                <span class="n">valne1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z0</span> <span class="o">*</span>
+                          <span class="p">(</span><span class="n">z0</span> <span class="o">**</span> <span class="n">num_mono</span> <span class="o">-</span> <span class="n">num_mono</span> <span class="o">*</span> <span class="n">z0</span> <span class="o">+</span> <span class="n">num_mono</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span>
+                          <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">z0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_mono_kuhn</span><span class="p">[</span><span class="n">ind_length</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">valne2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z1</span> <span class="o">*</span>
+                          <span class="p">(</span><span class="n">z1</span> <span class="o">**</span> <span class="n">num_mono</span> <span class="o">-</span> <span class="n">num_mono</span> <span class="o">*</span> <span class="n">z1</span> <span class="o">+</span> <span class="n">num_mono</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span>
+                          <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">z1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_mono_kuhn</span><span class="p">[</span><span class="n">ind_length</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+                <span class="n">s2_aa</span><span class="p">[</span><span class="n">ind_k_val</span><span class="p">,</span> <span class="n">ind_length</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">residues</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">fa</span> <span class="o">*</span> <span class="n">valeq</span> <span class="o">+</span>
+                                                                    <span class="n">fa</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">valne1</span> <span class="o">+</span> <span class="n">fa</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fa</span><span class="p">)</span> <span class="o">*</span> <span class="n">valne2</span><span class="p">))</span>
+                <span class="n">s2_ab</span><span class="p">[</span><span class="n">ind_k_val</span><span class="p">,</span> <span class="n">ind_length</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">residues</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">fa</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fa</span><span class="p">)</span> <span class="o">*</span> <span class="n">valne1</span> <span class="o">-</span>
+                                                                    <span class="n">fa</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fa</span><span class="p">)</span> <span class="o">*</span> <span class="n">valne2</span><span class="p">))</span>
+                <span class="n">s2_bb</span><span class="p">[</span><span class="n">ind_k_val</span><span class="p">,</span> <span class="n">ind_length</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">residues</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fa</span><span class="p">)</span> <span class="o">*</span> <span class="n">valeq</span> <span class="o">+</span>
+                                                                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fa</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">valne1</span> <span class="o">+</span> <span class="n">fa</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fa</span><span class="p">)</span> <span class="o">*</span> <span class="n">valne2</span><span class="p">))</span>
+
+            <span class="n">s2_aa</span><span class="p">[</span><span class="n">ind_k_val</span><span class="p">,</span> <span class="n">ind_length</span><span class="p">]</span> <span class="o">/=</span> <span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">[</span><span class="n">ind_length</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_mono</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">s2_ab</span><span class="p">[</span><span class="n">ind_k_val</span><span class="p">,</span> <span class="n">ind_length</span><span class="p">]</span> <span class="o">/=</span> <span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">[</span><span class="n">ind_length</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_mono</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">s2_bb</span><span class="p">[</span><span class="n">ind_k_val</span><span class="p">,</span> <span class="n">ind_length</span><span class="p">]</span> <span class="o">/=</span> <span class="p">(</span><span class="n">length_mono_kuhn</span><span class="p">[</span><span class="n">ind_length</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_mono</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+            <span class="c1"># Reset the s2 value if below the cutoff</span>
+<span class="c1">#            if k_val &lt; k_cutoff[ind_length]:</span>
+<span class="c1">#                s2_aa[ind_k_val, ind_length] = fa ** 2</span>
+<span class="c1">#                s2_ab[ind_k_val, ind_length] = fa * (1 - fa)</span>
+<span class="c1">#                s2_bb[ind_k_val, ind_length] = (1 - fa) ** 2</span>
+
+    <span class="k">return</span> <span class="n">s2_aa</span><span class="p">,</span> <span class="n">s2_ab</span><span class="p">,</span> <span class="n">s2_bb</span></div>
+
+
 <span class="c1"># Cubic order density functions</span>
 
 <div class="viewcode-block" id="s3_wlc"><a class="viewcode-back" href="../../wlcstruc_notes.html#wlcstat.wlcstruc.s3_wlc">[docs]</a><span class="k">def</span> <span class="nf">s3_wlc</span><span class="p">(</span><span class="n">k1_val_vector</span><span class="p">,</span> <span class="n">k2_val_vector</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha_max</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
@@ -144,7 +228,7 @@
 
     <span class="c1"># Calculate the radius of gyration to determine a cutoff value of k</span>
     <span class="n">rg2</span> <span class="o">=</span> <span class="n">rg2_ave</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="n">k_cutoff_factor</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="mi">0</span>
+    <span class="n">k_cutoff_factor</span> <span class="o">=</span> <span class="mf">0.3</span>
     <span class="n">k_cutoff</span> <span class="o">=</span> <span class="n">k_cutoff_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">rg2</span><span class="p">)</span>
 
     <span class="c1"># Loop through the k values</span>
@@ -158,11 +242,11 @@
         <span class="n">k12_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k12_val</span><span class="p">)</span>       <span class="c1"># k12 magnitude</span>
 
         <span class="c1"># Reset the k vectors if any are equal (need to correct double pole case)</span>
-        <span class="k">if</span> <span class="n">k1_mag</span> <span class="o">==</span> <span class="n">k2_mag</span> <span class="ow">or</span> <span class="n">k1_mag</span> <span class="o">==</span> <span class="n">k12_mag</span> <span class="ow">or</span> <span class="n">k2_mag</span> <span class="o">==</span> <span class="n">k12_mag</span><span class="p">:</span>
-            <span class="n">k2_val</span> <span class="o">=</span> <span class="mf">1.01</span> <span class="o">*</span> <span class="n">k2_val</span>               <span class="c1"># k2 vector</span>
-            <span class="n">k12_val</span> <span class="o">=</span> <span class="n">k1_val</span> <span class="o">+</span> <span class="n">k2_val</span>               <span class="c1"># k1 + k2 vector</span>
-            <span class="n">k2_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k2_val</span><span class="p">)</span>         <span class="c1"># k2 magnitude</span>
-            <span class="n">k12_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k12_val</span><span class="p">)</span>       <span class="c1"># k12 magnitude</span>
+<span class="c1">#        if k1_mag == k2_mag or k1_mag == k12_mag or k2_mag == k12_mag:</span>
+<span class="c1">#            k2_val = 1.01 * k2_val               # k2 vector</span>
+<span class="c1">#            k12_val = k1_val + k2_val               # k1 + k2 vector</span>
+<span class="c1">#            k2_mag = np.linalg.norm(k2_val)         # k2 magnitude</span>
+<span class="c1">#            k12_mag = np.linalg.norm(k12_val)       # k12 magnitude</span>
 
         <span class="n">rho_12</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">k1_val</span><span class="p">,</span> <span class="n">k2_val</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">k1_mag</span> <span class="o">*</span> <span class="n">k2_mag</span><span class="p">)</span>        <span class="c1"># Cos angle between k1 and k2</span>
         <span class="n">rho_112</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">k1_val</span><span class="p">,</span> <span class="n">k12_val</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">k1_mag</span> <span class="o">*</span> <span class="n">k12_mag</span><span class="p">)</span>      <span class="c1"># Cos angle between k1 and k2</span>
@@ -219,12 +303,12 @@
         <span class="c1"># Case 1: s1 &lt; s2 &lt; s3</span>
         <span class="k">if</span> <span class="n">k1_mag</span> <span class="o">==</span> <span class="n">k12_mag</span><span class="p">:</span>
             <span class="n">residues_double_k1</span> <span class="o">=</span> <span class="n">eval_residues_double_pole</span><span class="p">(</span><span class="n">k1_mag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poles_k1</span><span class="p">,</span>
-                                                        <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+                                                           <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">residues_other_pole_k112</span> <span class="o">=</span> <span class="n">eval_residues_other_pole</span><span class="p">(</span><span class="n">k1_mag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poles_k12</span><span class="p">,</span>
-                                                              <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+                                                                <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
             <span class="n">residues_other_pole_k121</span> <span class="o">=</span> <span class="n">eval_residues_other_pole</span><span class="p">(</span><span class="n">k12_mag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poles_k1</span><span class="p">,</span>
-                                                               <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+                                                                <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
 
         <span class="c1"># Case 2: s1 &lt; s3 &lt; s2</span>
         <span class="k">if</span> <span class="n">k1_mag</span> <span class="o">==</span> <span class="n">k2_mag</span><span class="p">:</span>
@@ -247,7 +331,8 @@
                                                                <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">lam_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
 
         <span class="c1"># Sum over the poles for the wlc green functions</span>
-        <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="c1"># range(0, alpha_max + 1):</span>
+        <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="c1">#alpha_max + 1):</span>
+
             <span class="c1"># Case 1: s1 &lt; s2 &lt; s3</span>
             <span class="k">if</span> <span class="n">k1_mag</span> <span class="o">==</span> <span class="n">k12_mag</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">ind_length</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)):</span>

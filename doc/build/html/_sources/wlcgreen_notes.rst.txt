@@ -157,14 +157,14 @@ we have
     G(\vec{K},\vec{u}|\vec{u}_{0};p) =
     \frac{1}{\Omega_{D}}
     \sum_{\lambda}  \sum_{\lambda_{0}} \sum_{\mathbf{\mu}}
-    Y^{(D)*}_{\lambda;\mathbf{\mu}} (\vec{u}')
-    Y^{(D)}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
-    \mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p).
+    Y^{(D)}_{\lambda;\mathbf{\mu}} (\vec{u}')
+    Y^{(D)*}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
+    \mathcal{G}_{\lambda,\lambda_{0}}^{\mu}(K;p).
 
 This spherical harmonic expansion requires evaluation of the Laplace inverse
-of :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu_{1}}(K;p)`
+of :math:`\mathcal{G}_{\lambda,\lambda_{0}}^{\mu_{1}}(K;p)`
 (i.e. spherical-harmonic transform of the Green's function).
-The evaluation of poles and residues of :math:`\mathcal{G}_{\lambda_{0},\lambda}^{\mu}(K;p)`
+The evaluation of poles and residues of :math:`\mathcal{G}_{\lambda,\lambda_{0}}^{\mu}(K;p)`
 utilizes similar approaches as outlined above and discussed in detail in Ref. [Mehraeen2008]_.
 The primary difference is whether the residues and poles require evaluation for non-zero
 values of :math:`\mu` and the residue evaluation must account for different
@@ -177,7 +177,7 @@ that restricts the otherwise infinite summations within the inversion.
 Evaluation of the residues for all possible values of :math:`\lambda` and :math:`\lambda_{0}`
 (with a cutoff :math:`\lambda_{\mathrm{max}}`)
 results in a residue matrix defined by
-:math:`[\partial_{p} j_{\lambda_{0},\lambda}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}`,
+:math:`[\partial_{p} j_{\lambda,\lambda_{0}}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}`,
 which is a :math:`(\lambda_{\mathrm{max}} - \mu + 1) \times (\lambda_{\mathrm{max}} - \mu + 1)`
 tensor for a given :math:`\mu` and :math:`\mathcal{E}_{\alpha}^{\mu}`.
 
@@ -404,7 +404,7 @@ with a cross-over frequency of :math:`K_{\mathrm{cutoff}} = 0.01`.
     residues = np.zeros((num_k, num_poles), dtype=type(1 + 1j))
 
     for i_k_val in range(num_k):
-        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,True,False,dimensions)
+        poles_k_val, resi_k_val = eval_poles_and_residues(k_val[i_k_val],mu,False,dimensions)
         for i_pole in range(num_poles):
             poles[i_k_val, i_pole] = poles_k_val[i_pole]
             residues[i_k_val, i_pole] = resi_k_val[lam, lam_0, i_pole]
