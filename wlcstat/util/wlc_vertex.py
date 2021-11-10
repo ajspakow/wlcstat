@@ -283,12 +283,15 @@ def eval_residues_other_pole(k_val, mu, poles, lam_zero_only=True, lam_max=25, a
                 w_prod_left = np.prod(1j * k_val * a_lam_mu[1:(ind_alpha + 1)] / j_minus[0:ind_alpha])
                 residues_other_pole[ind_alpha] = w_prod_left ** 2 * w_alpha
         else:
-            w_alpha = 1 / j_plus[0]
+            if ind_alpha == 0:
+                w_alpha = 1 / j_plus[0]
+            else:
+                w_alpha = 1 / (j_plus[ind_alpha] + (a_lam_mu[ind_alpha] * k_val) ** 2 / j_minus[ind_alpha - 1])
 
-            w_prod_right = np.cumprod(1j * k_val * a_lam_mu[1:(lam_max - abs(mu) + 1)] /
-                                      j_plus[1:(lam_max - abs(mu) + 1)])
-            w_prod = np.concatenate((np.ones(1), w_prod_right))
-
+            w_prod_left = np.flip(np.cumprod(np.flip(1j * k_val * a_lam_mu[1:(ind_alpha + 1)] / j_minus[0:ind_alpha])))
+            w_prod_right = np.cumprod(1j * k_val * a_lam_mu[(ind_alpha + 1):(lam_max - abs(mu) + 1)] /
+            j_plus[(ind_alpha + 1):(lam_max - abs(mu) + 1)])
+            w_prod = np.concatenate((w_prod_left, np.ones(1), w_prod_right))
             residues_other_pole[:, :, ind_alpha] = np.outer(w_prod, w_prod) * w_alpha
 
     return residues_other_pole
