@@ -31,6 +31,7 @@ import wlcstat
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.autosectionlabel',
     'nbsphinx',
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
