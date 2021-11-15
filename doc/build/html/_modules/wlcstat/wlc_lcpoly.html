@@ -174,6 +174,10 @@
 <span class="sd">        mean-square distance in the parallel direction</span>
 <span class="sd">    r_2_perp : float</span>
 <span class="sd">        mean-square distance in the perpendicular direction</span>
+<span class="sd">    xi_par : float</span>
+<span class="sd">        parallel correlation length</span>
+<span class="sd">    xi_perp : float</span>
+<span class="sd">        perpendicular correlation length</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -238,8 +242,10 @@
     <span class="n">q_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">q_val</span><span class="p">)</span>
     <span class="n">r_2_par</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">r_2_par</span> <span class="o">/</span> <span class="n">q_val</span><span class="p">)</span>
     <span class="n">r_2_perp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">r_2_perp</span> <span class="o">/</span> <span class="n">q_val</span><span class="p">)</span>
+    <span class="n">xi_par</span> <span class="o">=</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">poles_m0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">xi_perp</span> <span class="o">=</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">poles_m1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">r_2_par</span><span class="p">,</span> <span class="n">r_2_perp</span></div>
+    <span class="k">return</span> <span class="n">r_2_par</span><span class="p">,</span> <span class="n">r_2_perp</span><span class="p">,</span> <span class="n">xi_par</span><span class="p">,</span> <span class="n">xi_perp</span></div>
 
 
 <div class="viewcode-block" id="elastic_lcpoly"><a class="viewcode-back" href="../../wlc_lcpoly.html#wlcstat.wlc_lcpoly.elastic_lcpoly">[docs]</a><span class="k">def</span> <span class="nf">elastic_lcpoly</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">alpha_max</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>

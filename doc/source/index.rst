@@ -19,6 +19,8 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Polymer Field Theory: Liquid Crystalline Solutions <wlc_lcpoly>
 
+    Copolymers <wlc_copoly>
+
     Wormlike Chains with Twist, Helices, and Ribbons <twlc_notes>
 
     Polymer Dynamics <poly_dyn>

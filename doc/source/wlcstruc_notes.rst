@@ -58,7 +58,8 @@ inversion from :math:`p` to :math:`N=L/(2l_{p})`, and :math:`G(K;p)` is the worm
 Green function.
 The structure factor is expressible in terms of the magnitude of the scattering vector
 due to the rotational invariance of the governing statistics.
-Using results given in Sec. <wlcgreen_notes>, we write the structure factor as
+Using results given in :ref:`Wormlike Chain Green's Function`,
+we write the structure factor as
 
 .. math::
     S(\vec{k}) =
@@ -73,8 +74,10 @@ Using results given in Sec. <wlcgreen_notes>, we write the structure factor as
 .. \label{eq:skwlc}
 
 where :math:`j_{0}^{(+)}(K;p)` and :math:`\partial_{p} j_{0}^{(+)}(K;p)` are
-continued-fraction functions that are defined in Sec.~\ref{sec:greal}.
-Equation :eq:`skwlc` is evaluated using methods outlined in Sec.~\ref{sec:greal}
+continued-fraction functions that are defined in
+:ref:`Wormlike Chain Green's Function`.
+Equation :eq:`skwlc` is evaluated using methods outlined in
+:ref:`Wormlike Chain Green's Function`.
 to find the eigenvalues :math:`\mathcal{E}_{l}` and to calculate
 :math:`j_{0}^{(+)}` and :math:`\partial_{p} j_{0}^{(+)}`.
 The structure factor given by Eq. :eq:`skwlc` is expressed in arbitrary number of
@@ -85,12 +88,13 @@ structure factor for the wormlike chain model in 3 dimensions,
 demonstrating that our exact results
 for wormlike chain statistics in 3 dimensions capture the structure factor
 over all chain lengths and scattering vectors.
-Equation :eq:`skwlc`, along with the techniques provided in Sec.~\ref{sec:greal},
+Equation :eq:`skwlc`, along with the techniques provided in
+:ref:`Wormlike Chain Green's Function`,
 provide a convenient methodology for calculating the structure factor
 as a comparison with scattering experiments.
 Specifically, the infinite summation in Eq. :eq:`skwlc` is truncated at a finite cutoff,
 and the partial summation is evaluated using methods to evaluate
-:math:`\mathcal{E}_{l}` found in Sec. :ref:`wlcgreen_notes`.
+:math:`\mathcal{E}_{l}` found in :ref:`Wormlike Chain Green's Function`.
 For most calculations, only a couple of terms are necessary to achieve
 accurate realizations of the structure factor.
 For example, the structure factor in 3 dimensions for a chain
@@ -126,9 +130,9 @@ We define the 3-point structure factor :math:`S^{(3)}(\vec{k}_{1}, \vec{k}_{2})`
 .. math::
     S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; L) =
     \frac{1}{L^{3}}
-    \int_{0}^{L} ds_{1}
-    \int_{0}^{L} ds_{2}
-    \int_{0}^{L} ds_{3}
+    \int_{0}^{L} \! \! ds_{1}
+    \int_{0}^{L} \! \! ds_{2}
+    \int_{0}^{L} \! \! ds_{3}
     \left< \exp \left[
     i \vec{k}_{1} \cdot \vec{r}(s_{1}) +
     i \vec{k}_{2} \cdot \vec{r}(s_{2}) -
@@ -142,45 +146,53 @@ we leverage the Green's function to evaluate this average.
 For this treatment, we specialize the discussion to 3 dimensions,
 since the evaluation of the average in arbitrary dimensions requires
 rotation operations that are concretely defined in 3 dimensions.
-The Laplace transformed 3-point structure factor (from :math:`N` to :math:`p`) is
-given by
+The 3-point structure factor is
+written in terms of the Green's function to be
 
 .. math::
-    S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; p) & = &
+    S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; L) & = &
     \frac{2}{N^{3}}
-    \int d \vec{u}_{3}
-    \int d \vec{u}_{2}
-    \int d \vec{u}_{1}
-    \frac{
-    G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2};p)
-    G(\vec{K}_{1}, \vec{u}_{2} | \vec{u}_{1};p)
-    }{p^{2}} \\
+    \int_{0}^{N} \! \! ds_{3}
+    \int_{0}^{s_{3}} \! \! ds_{2}
+    \int_{0}^{s_{2}} \! \! ds_{1}
+    \int \! \! d \vec{u}_{3}
+    \int \! \! d \vec{u}_{2}
+    \int \! \! d \vec{u}_{1}
+    G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2}; s_{3} - s_{2})
+    G(\vec{K}_{1}, \vec{u}_{2} | \vec{u}_{1}; s_{2} - s_{1})
+    \\
     &  &
     + \frac{2}{N^{3}}
-    \int d \vec{u}_{3}
-    \int d \vec{u}_{2}
-    \int d \vec{u}_{1}
-    \frac{
-    G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2};p)
-    G(\vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1};p)
-    }{p^{2}} \\
+    \int_{0}^{N} \! \! ds_{3}
+    \int_{0}^{s_{3}} \! \! ds_{2}
+    \int_{0}^{s_{2}} \! \! ds_{1}
+    \int \! \! d \vec{u}_{3}
+    \int \! \! d \vec{u}_{2}
+    \int \! \! d \vec{u}_{1}
+    G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2}; s_{3} - s_{2})
+    G(\vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1}; s_{2} - s_{1})
+    \\
     &  &
     + \frac{2}{N^{3}}
-    \int d \vec{u}_{3}
-    \int d \vec{u}_{2}
-    \int d \vec{u}_{1}
-    \frac{
-    G(\vec{K}_{1}, \vec{u}_{3} | \vec{u}_{2};p)
-    G(- \vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1};p)
-    }{p^{2}}
+    \int_{0}^{N} \! \! ds_{3}
+    \int_{0}^{s_{3}} \! \! ds_{2}
+    \int_{0}^{s_{2}} \! \! ds_{1}
+    \int \! \! d \vec{u}_{3}
+    \int \! \! d \vec{u}_{2}
+    \int \! \! d \vec{u}_{1}
+    G(\vec{K}_{1}, \vec{u}_{3} | \vec{u}_{2}; s_{3} - s_{2})
+    G(-\vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1}; s_{2} - s_{1})
 
 where :math:`\vec{K}_{i} = 2 l_{p} \vec{k}_{i}`.
+In this calculation, we need to evaluate the rotated spherical harmonics (see :ref:`Rotation of spherical harmonics`).
 
-In this calculation, we need to evaluate the rotated spherical harmonics (see Appendix).
+We develop two methods to evaluate these integrals, which are implemented at small-:math:`k` values and
+large-:math:`k` values (where :math:`k = |\vec{k}|`.  We describe these methods below.
 
+Small-K Method
+^^^^^^^^^^^^^^
 
-
-
+In the limit of small-:math:`k`, the 
 
 Functions contained with the 'wlcstruc' module
 ----------------------------------------------
@@ -201,7 +213,6 @@ This plot is a reproduction of Fig. 2 in Ref. [Spakowitz2004]_.
     import numpy as np
     from wlcstat.wlcstruc import *
 
-
     num_k = 100
     k_val_0 = 1e-2
     k_val_f = 20
@@ -218,7 +229,7 @@ This plot is a reproduction of Fig. 2 in Ref. [Spakowitz2004]_.
         length_kuhn = float(length_kuhn_vec[ind_length])
         k_val = np.linspace(k_val_0, k_val_f / length_kuhn, num_k)
         structure_factor = s2_wlc(k_val, length_kuhn, dimensions)
-        plt.plot(k_val * length_kuhn, np.real(structure_factor * k_val * length_kuhn),'-')
+        plt.plot(k_val * length_kuhn, np.real(k_val * structure_factor[:, 0] * length_kuhn), '-')
 
     plt.xlabel(r'$Lk$')
     plt.ylabel(r'Structure Factor, $k L S(K;N)$')
