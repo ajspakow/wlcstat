@@ -5,7 +5,7 @@
 Structure Factor
 ================
 
-The physical behavior of a polymer chain is frequently characterized by the
+The multi-scale statistical behavior of a polymer chain is frequently characterized by the
 single-chain structure factor.
 The structure factor is directly measured in a
 scattering experiment, and correlating scattering experiments with theoretical

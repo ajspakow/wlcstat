@@ -381,10 +381,10 @@ def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
     # Finalize the averages
     q_val = np.real(q_val)
     m_val = np.real(1.5 * m_val / q_val) - 1 / 2
-    y21_y21 = np.real(1.5 * y21_y21 / q_val)
-    y21_ux_ux_y21 = np.real(1.5 * y21_ux_ux_y21 / q_val)
-    y21_uy_uy_y21 = np.real(1.5 * y21_uy_uy_y21 / q_val)
-    y21_uz_uz_y21 = np.real(1.5 * y21_uz_uz_y21 / q_val)
+    y21_y21 = np.real(y21_y21 / q_val) * 15 / (8 * np.pi)
+    y21_ux_ux_y21 = np.real(y21_ux_ux_y21 / q_val) * 15 / (8 * np.pi)
+    y21_uy_uy_y21 = np.real(y21_uy_uy_y21 / q_val) * 15 / (8 * np.pi)
+    y21_uz_uz_y21 = np.real(y21_uz_uz_y21 / q_val) * 15 / (8 * np.pi)
 
     return q_val, m_val, y21_y21, y21_ux_ux_y21, y21_uy_uy_y21, y21_uz_uz_y21
 

@@ -17,9 +17,9 @@ Wormlike Chain Model Statistics (wlcstat)
 
     Polymer Confinement <poly_confine>
 
-    Polymer Field Theory: Liquid Crystalline Solutions <wlc_lcpoly>
+    Polymer Liquid Crystalline Solutions <wlc_lcpoly>
 
-    Copolymers <wlc_copoly>
+    Semiflexible Copolymers <wlc_copoly>
 
     Wormlike Chains with Twist, Helices, and Ribbons <twlc_notes>
 
