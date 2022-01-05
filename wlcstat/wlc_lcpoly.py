@@ -206,7 +206,7 @@ def r_2_lcpoly(length_kuhn, lam, alpha_max=25):
     return r_2_par, r_2_perp, xi_par, xi_perp
 
 
-def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
+def elastic_lcpoly(length_kuhn, lam, alpha_max=25, l_cont_frac_max=200):
     r"""
     Calculate the Frank elastic constants for a polymer liquid crystal solution
 
@@ -218,6 +218,8 @@ def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
         The value of the quadrupole field :math:`\lambda`
     alpha_max : int
         Maximum number of poles evaluated (default 50)
+    l_cont_frac_max : int
+        Number of levels included in the evaluation of residues from continued fraction
 
     Returns
     -------
@@ -238,13 +240,13 @@ def elastic_lcpoly(length_kuhn, lam, alpha_max=25):
 
     poles_m0 = eval_poles_lcpoly(lam, m=0, alpha_max=alpha_max)
     resi_m0 = eval_residues_lcpoly(lam, m=0, poles=poles_m0, l_zero_only=False, l_max=alpha_max,
-                                   alpha_max=alpha_max, l_cont_frac_max=50)
+                                   alpha_max=alpha_max, l_cont_frac_max=l_cont_frac_max)
     poles_m1 = eval_poles_lcpoly(lam, m=1, alpha_max=alpha_max)
     resi_m1 = eval_residues_lcpoly(lam, m=1, poles=poles_m1, l_zero_only=False, l_max=alpha_max,
-                                   alpha_max=alpha_max, l_cont_frac_max=50)
+                                   alpha_max=alpha_max, l_cont_frac_max=l_cont_frac_max)
     poles_m2 = eval_poles_lcpoly(lam, m=2, alpha_max=alpha_max)
     resi_m2 = eval_residues_lcpoly(lam, m=2, poles=poles_m2, l_zero_only=False, l_max=alpha_max,
-                                   alpha_max=alpha_max, l_cont_frac_max=50)
+                                   alpha_max=alpha_max, l_cont_frac_max=l_cont_frac_max)
 
     # Reset poles by subtracting zeroth pole
     max_pole = poles_m0[0]
@@ -420,12 +422,14 @@ def elastic_rr(length_kuhn, lam):
     a_val = np.outer(lam, length_kuhn)
 
     # Calculate the single-chain partition function
-    q_val = np.sqrt(np.pi) * sp.special.erfi(np.sqrt(a_val)) / np.sqrt(a_val)
+    z_val = np.sqrt(a_val)
+    q_val = np.sqrt(np.pi) * sp.special.erfi(z_val) * np.exp(-a_val) / z_val
+    q_val[np.isnan(q_val)] = 1 / a_val[np.isnan(q_val)]     # Reset to the asymptotic form for instances of NaN
 
     # Calculate rho averages
-    rho2_ave = (np.exp(a_val) / a_val / q_val - 1 / (2 * a_val))
-    rho4_ave = (np.exp(a_val) * (2 * a_val - 3) / (2 * a_val ** 2) / q_val + 3 / (4 * a_val ** 2))
-    rho6_ave = (np.exp(a_val) * (4 * a_val ** 2 - 10 * a_val + 15) / (4 * a_val ** 3) / q_val
+    rho2_ave = (1 / a_val / q_val - 1 / (2 * a_val))
+    rho4_ave = ((2 * a_val - 3) / (2 * a_val ** 2) / q_val + 3 / (4 * a_val ** 2))
+    rho6_ave = ((4 * a_val ** 2 - 10 * a_val + 15) / (4 * a_val ** 3) / q_val
                 - 15 / (8 * a_val ** 3))
 
     # Determine the order parameter and the correlation functions
@@ -485,6 +489,18 @@ def eval_poles_lcpoly(lam, m=0, alpha_max=25):
     poles_total = np.sort(poles_total)[::-1]
 
     poles = poles_total[0:(alpha_max - abs(m) + 1)]
+
+    # Reset poles using asymptotic behavior for Spheroidal harmonic eigenvalues (see Meixner and Schafke, page 319)
+
+    for ind in range(0, (alpha_max - abs(m)), 2):
+        l_val = ind + abs(m)
+        if abs(poles[ind] - poles[ind + 1]) < 1e-10:
+            q = l_val + 1
+            p = int(0.5 * (q - m - 1))
+            delta_poles = np.exp(- 2 * np.sqrt(lam)) * (
+                    2 * (4 * np.sqrt(lam)) ** (q + 1) / (sp.math.factorial(p) * sp.math.factorial(m + p))) * (
+                    1 + (m ** 2 - (q + 1) * (3 * q + 1)) / (8 * np.sqrt(lam)))
+            poles[ind + 1] = poles[ind] - delta_poles
 
     return poles
 
