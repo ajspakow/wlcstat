@@ -16,25 +16,6 @@ from pathlib import Path
 import os
 
 
-def calc_p(u, u0, t, t0, ka = 1):
-    r"""
-
-    Parameters
-    ----------
-    u
-    u0
-    t
-    t0
-    ka
-
-    Returns
-    -------
-
-    """
-
-    return
-
-
 def mscd_active(t, length_kuhn, delta, ka, gamma, b=1, num_modes=20000):
     r"""
     Compute mscd for two points on an active-Brownian polymer.
@@ -241,6 +222,40 @@ def flow_spec_active(k, t, length_kuhn, ka, gamma, b=1, num_nint = 1000, num_mod
     return structure_factor
 
 
+def phi_active(t, length_kuhn, ka, gamma, b=1, num_modes=20000):
+    r"""
+
+    Parameters
+    ----------
+    t
+    length_kuhn
+    ka
+    gamma
+    b
+    num_modes
+
+    Returns
+    -------
+    phia
+
+    """
+    phia = np.zeros_like(t)
+
+    phia_coeff = 8 / (np.pi ** 2) / (
+                1 + gamma * (1 - 2.0 / (np.pi * length_kuhn * np.sqrt(ka)) * np.tanh(np.pi * length_kuhn * np.sqrt(ka) / 2)))
+
+    for p in range(1, num_modes + 1, 2):
+        phi_p = 1 / (p ** 2) * (np.exp(-p ** 2 * t / length_kuhn ** 2)
+                                + gamma / (1 - p ** 4 / (ka ** 2 * length_kuhn ** 4)) * (
+                                        np.exp(-p ** 2 * t / length_kuhn ** 2)
+                                        - p ** 2 / (ka * length_kuhn ** 2) * np.exp(-ka * t)))
+        phia += phi_p
+
+    phia = phia_coeff * phia
+
+    return phia
+
+
 def msd_active(t, length_kuhn, ka, gamma, b=1, num_modes=20000):
     r"""
     Compute msd for the midpoint points on an active-Brownian polymer.
@@ -279,6 +294,9 @@ def msd_active(t, length_kuhn, ka, gamma, b=1, num_modes=20000):
         msd += 2 * msd_p
 
     return msd
+
+
+
 
 
 def gen_conf_rouse_active(length_kuhn, num_beads, ka=1, gamma=0, b=1, force_calc=False, num_modes=10000):
