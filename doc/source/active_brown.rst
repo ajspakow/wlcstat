@@ -160,16 +160,15 @@ mean-square displacement to be
     \langle
     \left(
     \vec{X}_{0}(t) - \vec{X}_{0}(0)
-    \right)^{2}
-    \rangle
-    = ???
+    \right)^{2} =\frac{6Nk_BT}{k_b}\Big[
+    \Big(\frac{1+\Gamma}{N^2}\Big)\tau+\frac{\Gamma}{N^2K_A}\Big(e^{-K_A \tau}-1\Big)
+    \Big]
     :label: msd-com
 
 We note that Eq. :eq:`msd-com`
 has the short-time asymptotic behavior
 :math:`\mathrm{MSD}_{\mathrm{com}} \rightarrow
-6 [k_{B}T/(\xi N)] t
-` as :math:`t \rightarrow 0`,
+6 [k_{B}T/(\xi N)] t` as :math:`t \rightarrow 0`,
 which coincides with the mean-square
 displacement for a Brownian-only polymer.
 The long-time asymptotic behavior
@@ -184,21 +183,20 @@ fluctuations, given by
 The mean-square displacement of a segment of the polymer chain is define as
 
 .. math::
-    \mathrm{MSD} = \langle \left( \vec{r}(n, t) - \vec{r}(n, 0) \right)^{2} \rangle
+    \text{MSD}(\tau) = \langle ( \vec{r}(n,t) - \vec{r}(n,0))^{2} \rangle
     :label: msd-active
 
-for the :math:`n`th segment of the chain with total length :math:`N`.
-In this work, we focus on the midpoint
-motion at :math:`n=N/2`, but this is
-easily extended to other polymer positions.
-We insert our normal-mode representation into Eq. :eq:`msd-active`,
+for the n. In this work, we focus on the midpoint motion at :math:`n=N/2`, but this is easily extended
+to other polymer positions. We insert our normal-mode representation into Eq. :eq:`msd-active`,
 resulting in the expression
 
 .. math::
-    \mathrm{MSD} = ???
+    \text{MSD}(\tau)
+     = \text{MSD}_{\text{com}}(\tau) + 4 \sum_{p=1}^{\infty} \triangle C_{2p}(\tau)
 
-In addition, we define the
-the mean-square change in distance (MSCD) for a polymer chain.
+
+where :math:`\triangle C_{p}(\tau) = C_{p}(0) - C_{p}(\tau)`.
+In addition, we define the mean-square change in distance (MSCD) for a polymer chain.
 This quantity is defined as
 
 .. math::
@@ -215,8 +213,15 @@ segments from each other.
 This results in the expression
 
 .. math::
-    \mathrm{MSCD}
-        = ???
+    \text{MSCD}(\tau) =
+    16 \sum_{p=0}^{\infty}
+    \triangle C_{2p+1}(\tau)
+    \sin^{2} \!
+    \left[
+    \frac{\pi(2p+1)\Delta}{2N}
+    \right],
+
+where :math:`\triangle C_{p}(\tau) = C_{p}(0) - C_{p}(\tau)`
 
 
 Functions contained with the 'active_brown' module
