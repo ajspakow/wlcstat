@@ -189,11 +189,6 @@ In this calculation, we need to evaluate the rotated spherical harmonics (see :r
 We develop two methods to evaluate these integrals, which are implemented at small-:math:`k` values and
 large-:math:`k` values (where :math:`k = |\vec{k}|`.  We describe these methods below.
 
-Small-K Method
-^^^^^^^^^^^^^^
-
-In the limit of small-:math:`k`, the 
-
 Functions contained with the 'wlcstruc' module
 ----------------------------------------------
 

@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Average Quantities &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wormlike Chain Green’s Function" href="wlcgreen_notes.html" />
+    <link rel="prev" title="Wormlike Chain Theory" href="wlctheory.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlcgreen_notes.html" title="Wormlike Chain Green’s Function"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlctheory.html" title="Wormlike Chain Theory"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Average Quantities</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="wlcave-notes"></span><div class="section" id="average-quantities">
+<h1>Average Quantities<a class="headerlink" href="#average-quantities" title="Permalink to this headline">¶</a></h1>
+<p>The orientation Green function can be used to evaluate any average quantity that can be
+expressed in terms of the tangent orientations.
+The Green function operates as a conditional probability, such that <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L)\)</span> gives the
+probability that a chain of length <span class="math notranslate nohighlight">\(L\)</span> with an initial tangent orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> will have a final
+tangent orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span>.
+We consider an arbitrary orientation-only average quantity <span class="math notranslate nohighlight">\(A^{n} =
+\langle A_{n}(s_{n}) A_{n-1}(s_{n-1}) \ldots A_{1}(s_{1}) \rangle\)</span>,
+where <span class="math notranslate nohighlight">\(A_{m}(s_{m})\)</span> is a function that is expressible only in terms of the tangent orientation at arclength
+position <span class="math notranslate nohighlight">\(s_{m}\)</span>.
+The arclength positions are ordered such that <span class="math notranslate nohighlight">\(s_{1} &lt; s_{2} &lt; \ldots &lt; s_{n-1} &lt; s_{n}\)</span>.
+The average quantity <span class="math notranslate nohighlight">\(A^{n}\)</span> is evaluated using the following procedure:</p>
+<ul class="simple">
+<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}_{1}|\vec{u}_{0};s_{1})\)</span> is inserted into <span class="math notranslate nohighlight">\(A^{n}\)</span> to propagate from the initial orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> at <span class="math notranslate nohighlight">\(s=0\)</span> to the first orientation <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span> at <span class="math notranslate nohighlight">\(s_{1}\)</span></p></li>
+<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}_{m+1}|\vec{u}_{m};s_{m+1}-s_{m})\)</span> is inserted into <span class="math notranslate nohighlight">\(A^{n}\)</span> between <span class="math notranslate nohighlight">\(A_{m+1}\)</span> and <span class="math notranslate nohighlight">\(A_{m}\)</span>, resulting in a product of <span class="math notranslate nohighlight">\(n-1\)</span> Green functions that propagate between the internal orientations in the average</p></li>
+<li><p>An orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{n};L-s_{n})\)</span> is inserted into <span class="math notranslate nohighlight">\(A^{n}\)</span> to propagate from the <span class="math notranslate nohighlight">\(n\)</span> th orientation <span class="math notranslate nohighlight">\(\vec{u}_{n}\)</span> at <span class="math notranslate nohighlight">\(s_{n}\)</span> to the final orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span> at <span class="math notranslate nohighlight">\(L\)</span></p></li>
+<li><p>The average <span class="math notranslate nohighlight">\(A^{n}\)</span> is normalized by a factor that represents the orientational integral over the full-chain Green function, i.e. the same quantity as the average without the product of <span class="math notranslate nohighlight">\(A_{m}\)</span></p></li>
+<li><p>The average is then evaluated by integrating over the orientations <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span>, <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span>, ldots, <span class="math notranslate nohighlight">\(\vec{u}_{n}\)</span>, and <span class="math notranslate nohighlight">\(\vec{u}\)</span></p></li>
+</ul>
+<p>This procedure is amenable to the evaluation of arbitrary average quantities that are expressible in terms of the
+tangent orientations <span class="math notranslate nohighlight">\(\vec{u}_{m}\)</span> along the chain at positions <span class="math notranslate nohighlight">\(s_{m}\)</span>.</p>
+<p>For example, the average <span class="math notranslate nohighlight">\(\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle\)</span> (where <span class="math notranslate nohighlight">\(s_{1} &lt; s_{2}\)</span>) is given by</p>
+<div class="math notranslate nohighlight" id="equation-u1u2">
+<span class="eqno">(1)<a class="headerlink" href="#equation-u1u2" title="Permalink to this equation">¶</a></span>\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
+\frac{1}{\mathcal{N}}
+\int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+G(\vec{u}|\vec{u}_{2};L-s_{2})
+G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
+G(\vec{u}_{1}|\vec{u}_{0};s_{1})
+\vec{u}_{2} \cdot \vec{u}_{1}
+\nonumber \\
+&amp; = &amp;
+\frac{3}{\mathcal{N}}
+\int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+G(\vec{u}|\vec{u}_{2};L-s_{2})
+G(\vec{u}_{2}|\vec{u}_{1};s_{2}-s_{1})
+G(\vec{u}_{1}|\vec{u}_{0};s_{1})
+u_{2}^{(z)} u_{1}^{(z)},\end{split}\]</div>
+<p>where rotational symmetry implies
+<span class="math notranslate nohighlight">\(\langle u^{(x)}(s_{2}) u^{(x)}(s_{1}) \rangle =\langle u^{(y)}(s_{2}) u^{(y)}(s_{1}) \rangle = \langle u^{(z)}(s_{2}) u^{(z)}(s_{1}) \rangle\)</span> and, consequently, <span class="math notranslate nohighlight">\(\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle = 3 \langle u^{(z)}(s_{2}) u^{(z)}(s_{1}) \rangle\)</span>.
+The normalization factor <span class="math notranslate nohighlight">\(\mathcal{N}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{N} = \int d \vec{u} d \vec{u}_{0} G(\vec{u}|\vec{u}_{0};L) = 4 \pi.\]</div>
+<p>Inserting <a class="reference internal" href="wlctheory.html#equation-guwlc">(2)</a> into <a class="reference internal" href="#equation-u1u2">(1)</a> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
+\frac{3}{4 \pi} \int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d
+\vec{u}_{0} \sum_{l_{2}=0}^{\infty} \sum_{m_{2}=-l_{2}}^{l_{2}}
+\sum_{l_{1}=0}^{\infty} \sum_{m_{1}=-l_{1}}^{l_{1}}
+\sum_{l_{0}=0}^{\infty} \sum_{m_{0}=-l_{0}}^{l_{0}} \times
+\nonumber \\ &amp;  &amp; Y_{l_{2}}^{m_{2}} (\vec{u})
+Y_{l_{2}}^{m_{2}*}(\vec{u}_{2})  Y_{l_{1}}^{m_{1}} (\vec{u}_{2})
+Y_{l_{1}}^{m_{1}*}(\vec{u}_{1})  Y_{l_{0}}^{m_{0}} (\vec{u}_{1})
+Y_{l_{0}}^{m_{0}*}(\vec{u}_{0})  \cos \theta_{2} \cos \theta_{1}
+\times \nonumber \\ &amp;  &amp; \exp \! \left[
+-l_{2}(l_{2}+1)\frac{L-s_{2}}{2l_{p}}
+-l_{1}(l_{1}+1)\frac{s_{2}-s_{1}}{2l_{p}}
+-l_{0}(l_{0}+1)\frac{s_{1}}{2l_{p}}  \right],\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(u_{2}^{(z)}=\cos \theta_{2}\)</span>.
+Using the properties of the spherical harmonics <a class="reference internal" href="references.html#arfken1999" id="id1"><span>[Arfken1999]</span></a>,
+we note that <span class="math notranslate nohighlight">\(\cos \theta = 2 \sqrt{\pi/3} Y_{1}^{0}(\vec{u})\)</span>,
+and the average is written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle &amp; = &amp;
+\int d \vec{u} d \vec{u}_{2} d \vec{u}_{1} d \vec{u}_{0}
+ \sum_{l_{2}=0}^{\infty} \sum_{m_{2}=-l_{2}}^{l_{2}}
+ \sum_{l_{1}=0}^{\infty} \sum_{m_{1}=-l_{1}}^{l_{1}}
+ \sum_{l_{0}=0}^{\infty} \sum_{m_{0}=-l_{0}}^{l_{0}} \times
+ \nonumber \\
+ &amp;  &amp;
+ Y_{l_{2}}^{m_{2}} (\vec{u})
+ Y_{l_{2}}^{m_{2}*}(\vec{u}_{2})
+ Y_{l_{1}}^{m_{1}} (\vec{u}_{2})
+ Y_{l_{1}}^{m_{1}*}(\vec{u}_{1})
+ Y_{l_{0}}^{m_{0}} (\vec{u}_{1})
+ Y_{l_{0}}^{m_{0}*}(\vec{u}_{0})
+ Y_{1}^{0*}(\vec{u}_{2})
+ Y_{1}^{0}(\vec{u}_{1})
+ \times
+ \nonumber \\
+ &amp;  &amp;
+ \exp \! \left[
+ -l_{2}(l_{2}+1)\frac{L-s_{2}}{2l_{p}}
+ -l_{1}(l_{1}+1)\frac{s_{2}-s_{1}}{2l_{p}}
+ -l_{0}(l_{0}+1)\frac{s_{1}}{2l_{p}}
+ \right]\end{split}\]</div>
+<p>Integration over <span class="math notranslate nohighlight">\(\vec{u}\)</span> and <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> force <span class="math notranslate nohighlight">\(l_{2}=m_{2}=l_{0}=m_{0}=0\)</span>,
+and the subsequent integration over <span class="math notranslate nohighlight">\(\vec{u}_{1}\)</span> and <span class="math notranslate nohighlight">\(\vec{u}_{2}\)</span> result in
+<span class="math notranslate nohighlight">\(l_{1}=1\)</span> and <span class="math notranslate nohighlight">\(m_{1}=0\)</span>.
+The final expression is given by</p>
+<div class="math notranslate nohighlight">
+\[\langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle = \exp \! \left(
+- \frac{s_{2} - s_{1}}{l_{p}}
+\right),\]</div>
+<p>which demonstrates the role of the persistence length <span class="math notranslate nohighlight">\(l_{p}\)</span> as a correlation length for
+the tangent orientation.</p>
+<p>This average shows that the orientation statistics can be used to directly evaluate averages that are expressed in
+terms of the tangent vector <span class="math notranslate nohighlight">\(\vec{u}\)</span>.
+However, other average quantities can be evaluated using the orientation Green function if the quantity can be expressed in terms of the
+tangent orientation.
+For example, the mean-square end-to-end vector is written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle
+\vec{R}^{2}
+\rangle &amp; = &amp;
+\int_{0}^{L} \int_{0}^{L} ds_{2} ds_{1} \langle \vec{u}(s_{2}) \cdot \vec{u}(s_{1}) \rangle
+= 2 \int_{0}^{L} \int_{0}^{s_{2}} ds_{2} ds_{1} \exp \! \left(
+- \frac{s_{2} - s_{1}}{l_{p}}
+\right)  \\
+&amp; = &amp;
+2l_{p}^{2} \left[
+2N - 1 + \exp \left( -2N \right)
+\right],\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N=L/(2 l_{p})\)</span>.</p>
+<p>An alternative approach to calculating averages is to use the Fourier-transformed Green’s
+function as a generator of averages
+(see Refs. <a class="reference internal" href="references.html#spakowitz2004" id="id2"><span>[Spakowitz2004]</span></a>, <a class="reference internal" href="references.html#spakowitz2005" id="id3"><span>[Spakowitz2005]</span></a>, <a class="reference internal" href="references.html#spakowitz2006" id="id4"><span>[Spakowitz2006]</span></a>, and <a class="reference internal" href="references.html#mehraeen2008" id="id5"><span>[Mehraeen2008]</span></a>.
+Development of this approach is provided in our
+discussion of the Green’s function.</p>
+<p>The ‘wlcave.py’ module provides scripts to calculate a number of
+average quantities for the wormlike chain model. These include the
+following:</p>
+<ul class="simple">
+<li><p>The mean-square end-to-end distance <span class="math notranslate nohighlight">\(\langle R^{2} \rangle\)</span></p></li>
+<li><p>The mean-square radius of gyration <span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle\)</span></p></li>
+<li><p>The 4th moment of the end-to-end distribution <span class="math notranslate nohighlight">\(\langle R_{z}^{4} \rangle / (2 l_{p})^{4}\)</span></p></li>
+</ul>
+<div class="section" id="module-wlcstat.wlcave">
+<span id="functions-contained-with-the-wlcave-module"></span><h2>Functions contained with the ‘wlcave’ module<a class="headerlink" href="#module-wlcstat.wlcave" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="wlcstat.wlcave.r2_ave">
+<code class="sig-prename descclassname">wlcstat.wlcave.</code><code class="sig-name descname">r2_ave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcave.html#r2_ave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcave.r2_ave" title="Permalink to this definition">¶</a></dt>
+<dd><p>r2_ave - Calculate the average end-to-end distance squared <span class="math notranslate nohighlight">\(\langle R^{2} \rangle / (2 l_{p})^{2}\)</span>
+for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>r2</strong> – The mean-square end-to-end distance for the wormlike chain model (non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p})\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (array)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcave.rg2_ave">
+<code class="sig-prename descclassname">wlcstat.wlcave.</code><code class="sig-name descname">rg2_ave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcave.html#rg2_ave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcave.rg2_ave" title="Permalink to this definition">¶</a></dt>
+<dd><p>rg2_ave - Calculate the radius of gyration
+<span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}\)</span> for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>rg2</strong> – The mean-square radius of gyration for the wormlike chain model (non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p})\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (array)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id7"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcave.rz4_ave">
+<code class="sig-prename descclassname">wlcstat.wlcave.</code><code class="sig-name descname">rz4_ave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcave.html#rz4_ave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcave.rz4_ave" title="Permalink to this definition">¶</a></dt>
+<dd><p>rz4_ave - Calculate the 4th moment of the end-to-end distribution
+<span class="math notranslate nohighlight">\(\langle R_{z}^{4} \rangle / (2 l_{p})^{4}\)</span> for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>rz4</strong> – The mean-square end-to-end distance for the wormlike chain model (non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p})\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (array)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id8"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="example-usage-of-r2-ave">
+<h2>Example usage of ‘r2_ave’<a class="headerlink" href="#example-usage-of-r2-ave" title="Permalink to this headline">¶</a></h2>
+<p>This example gives the mean-square end-to-end distance <span class="math notranslate nohighlight">\(\langle R^{2} \rangle / (2 l_{p})^{2}\)</span>
+(i.e. length non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p}\)</span>) versus
+chain length <span class="math notranslate nohighlight">\(N = L/(2 l_{p})\)</span> for 3 dimensions.  The short-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow N^{2}\)</span>
+and long-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle R^{2} \rangle / (2 l_{p})^{2} \rightarrow 2 N/(d-1)\)</span> are included to show the
+limiting behaviors.</p>
+<p>(<a class="reference external" href=".//wlcave_notes-1.py">Source code</a>, <a class="reference external" href=".//wlcave_notes-1.png">png</a>, <a class="reference external" href=".//wlcave_notes-1.hires.png">hires.png</a>, <a class="reference external" href=".//wlcave_notes-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcave_notes-1.png" src="_images/wlcave_notes-1.png" />
+</div>
+</div>
+<div class="section" id="example-usage-of-rg2-ave">
+<h2>Example usage of ‘rg2_ave’<a class="headerlink" href="#example-usage-of-rg2-ave" title="Permalink to this headline">¶</a></h2>
+<p>This example gives the mean-square radius of gyration <span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2}\)</span>
+(i.e. length non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p}\)</span>) versus
+chain length <span class="math notranslate nohighlight">\(N = L/(2 l_{p})\)</span> for 3 dimensions.  The short-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2} \rightarrow N^{2}/12\)</span>
+and long-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle \vec{R}_{G}^{2} \rangle / (2 l_{p})^{2} \rightarrow N/[3 (d-1)]\)</span> are included to show the
+limiting behaviors.</p>
+<p>(<a class="reference external" href=".//wlcave_notes-2.py">Source code</a>, <a class="reference external" href=".//wlcave_notes-2.png">png</a>, <a class="reference external" href=".//wlcave_notes-2.hires.png">hires.png</a>, <a class="reference external" href=".//wlcave_notes-2.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcave_notes-2.png" src="_images/wlcave_notes-2.png" />
+</div>
+</div>
+<div class="section" id="example-usage-of-rz4-ave">
+<h2>Example usage of ‘rz4_ave’<a class="headerlink" href="#example-usage-of-rz4-ave" title="Permalink to this headline">¶</a></h2>
+<p>This example gives the 4th moment of the end-to-end distribution <span class="math notranslate nohighlight">\(\langle R_{z}^{4} \rangle / (2 l_{p})^{4}\)</span>
+(i.e. length non-dimensionalized by <span class="math notranslate nohighlight">\(2 l_{p}\)</span>) versus
+chain length <span class="math notranslate nohighlight">\(N = L/(2 l_{p})\)</span> for 3 dimensions.  The short-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle R_{z}^{4} \rangle / (2 l_{p})^{2} \rightarrow N^{4} 3 / [d (d + 2)]\)</span>
+and long-length asymptotic behavior
+<span class="math notranslate nohighlight">\(\langle R_{z}^{4} \rangle / (2 l_{p})^{2} \rightarrow 12 N^2/[d^2 (d-1)^2]\)</span> are included to show the
+limiting behaviors.</p>
+<p>(<a class="reference external" href=".//wlcave_notes-3.py">Source code</a>, <a class="reference external" href=".//wlcave_notes-3.png">png</a>, <a class="reference external" href=".//wlcave_notes-3.hires.png">hires.png</a>, <a class="reference external" href=".//wlcave_notes-3.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcave_notes-3.png" src="_images/wlcave_notes-3.png" />
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Average Quantities</a><ul>
+<li><a class="reference internal" href="#module-wlcstat.wlcave">Functions contained with the ‘wlcave’ module</a></li>
+<li><a class="reference internal" href="#example-usage-of-r2-ave">Example usage of ‘r2_ave’</a></li>
+<li><a class="reference internal" href="#example-usage-of-rg2-ave">Example usage of ‘rg2_ave’</a></li>
+<li><a class="reference internal" href="#example-usage-of-rz4-ave">Example usage of ‘rz4_ave’</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlctheory.html"
+                        title="previous chapter">Wormlike Chain Theory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wlcgreen_notes.html"
+                        title="next chapter">Wormlike Chain Green’s Function</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wlcave_notes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlcgreen_notes.html" title="Wormlike Chain Green’s Function"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlctheory.html" title="Wormlike Chain Theory"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Average Quantities</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

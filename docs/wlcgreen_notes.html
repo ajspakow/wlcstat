@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wormlike Chain Green’s Function &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Structure Factor" href="wlcstruc_notes.html" />
+    <link rel="prev" title="Average Quantities" href="wlcave_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlcave_notes.html" title="Average Quantities"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chain Green’s Function</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="wlcgreen-notes"></span><div class="section" id="wormlike-chain-green-s-function">
+<h1>Wormlike Chain Green’s Function<a class="headerlink" href="#wormlike-chain-green-s-function" title="Permalink to this headline">¶</a></h1>
+<p>We consider the end-to-end distribution function <span class="math notranslate nohighlight">\(G(\vec{R},\vec{u}|\vec{u}_{0};L)\)</span> (or Green’s function),
+which gives the probability that a chain that begins at the origin with initial
+orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> will have end position <span class="math notranslate nohighlight">\(\vec{R}\)</span> and final orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span>.
+The Green’s function
+<span class="math notranslate nohighlight">\(G(\vec{R},\vec{u}|\vec{u}_{0};L)\)</span> is written as</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{R},\vec{u}|\vec{u}_{0};L) = \int_{\vec{u}(s=0)=\vec{u}_{0}}^{\vec{u}(s=L)=\vec{u}}
+\hspace{-0.3in} \mathcal{D}[\vec{u}(s)]
+\exp \left\{ -\beta \mathcal{H}_{0} [\vec{u}(s)] \right\}
+\delta \left( \vec{R}-\int_{0}^{L}ds \vec{u} \right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta\)</span> is a Dirac delta function that restricts the path integration
+to those paths that satisfy the fixed end separation <span class="math notranslate nohighlight">\(\vec{R}\)</span>.
+The path integral formulation of the Green function is used to find the
+governing “Schrödinger” equation <a class="reference internal" href="references.html#yamakawa1997" id="id1"><span>[Yamakawa1997]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\left(
+\frac{\partial}{\partial L} - \frac{1}{2l_{p}} \tilde{\nabla}^{2}_{D} + \vec{u} \cdot \vec{\nabla}_{R}
+\right)
+G(\vec{R},\vec{u}|\vec{u}_{0};L)=
+\delta \left( L \right) \delta ( \vec{R} ) \delta \left( \vec{u} - \vec{u}_{0} \right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{\nabla}^{2}_{D}\)</span> is the <span class="math notranslate nohighlight">\(D\)</span>-dimensional angular Laplacian,
+and <span class="math notranslate nohighlight">\(\vec{\nabla}_{R}\)</span> is the <span class="math notranslate nohighlight">\(D\)</span>-dimensional gradient operator.</p>
+<p>Upon <span class="math notranslate nohighlight">\(D\)</span>-dimensional Fourier transforming
+from the variable <span class="math notranslate nohighlight">\(\vec{R}\)</span> to the wavevector <span class="math notranslate nohighlight">\(\vec{k}\)</span>,
+our problem becomes that of a single wormlike chain
+with Hamiltonian</p>
+<div class="math notranslate nohighlight">
+\[\beta \mathcal{H} = \beta \mathcal{H}_{0} + \beta \mathcal{H}_{ext} =
+\frac{l_{p}}{2} \int_{0}^{L} ds
+\left( \frac{\partial \vec{u}}{\partial s} \right)^{\! \! 2}
+-i\vec{k} \cdot \int_{0}^{L}ds \vec{u}.\]</div>
+<p>The external Hamiltonian <span class="math notranslate nohighlight">\(\beta \mathcal{H}_{ext}\)</span>
+naturally emerges
+in the Fourier transform of the end-to-end distribution function <span class="math notranslate nohighlight">\(G(\vec{R},\vec{u}|\vec{u}_{0};L)\)</span>
+due to the end-position constraint.
+The corresponding “Schrödinger” equation in Fourier space is</p>
+<div class="math notranslate nohighlight">
+\[\left(
+\frac{\partial}{\partial L} - \frac{1}{2l_{p}} \tilde{\nabla}^{2}_{D} - i \vec{k}\cdot \vec{u}
+\right)
+G(\vec{k},\vec{u}|\vec{u}_{0};L)=
+\delta \left( L \right) \delta \left( \vec{u} - \vec{u}_{0} \right),\]</div>
+<p>which demonstrates the direct correspondence between our problem and that of a rigid rotor
+in a dipole field.</p>
+<p>Exact results for the Green’s function are provided in Refs.
+<a class="reference internal" href="references.html#spakowitz2004" id="id2"><span>[Spakowitz2004]</span></a>, <a class="reference internal" href="references.html#spakowitz2005" id="id3"><span>[Spakowitz2005]</span></a>, <a class="reference internal" href="references.html#spakowitz2006" id="id4"><span>[Spakowitz2006]</span></a>,  and <a class="reference internal" href="references.html#mehraeen2008" id="id5"><span>[Mehraeen2008]</span></a>,
+which give solutions with and without end constraints and in arbitrary dimensions <span class="math notranslate nohighlight">\(D\)</span>.
+For example, the solution to the orientation-independent Green function in Fourier-Laplace space
+(i.e. Fourier transformed from <span class="math notranslate nohighlight">\(\vec{R}\)</span> to <span class="math notranslate nohighlight">\(\vec{k}\)</span> and Laplace transformed
+from <span class="math notranslate nohighlight">\(N\)</span> to <span class="math notranslate nohighlight">\(p\)</span>)</p>
+<div class="math notranslate nohighlight" id="equation-gwlc">
+<span class="eqno">(1)<a class="headerlink" href="#equation-gwlc" title="Permalink to this equation">¶</a></span>\[G(\vec{K};p) = \frac{1}{P_{0}+\frac{\left(a_{1} K\right)^2}{P_{1}+
+\frac{\left(a_{2} K\right)^2}{P_{2}+\frac{\left(a_{3} K\right)^2}{\cdots}}}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{K}=2l_{p} \vec{k}\)</span>,
+<span class="math notranslate nohighlight">\(K\)</span> is the magnitude of <span class="math notranslate nohighlight">\(\vec{K}\)</span>,
+<span class="math notranslate nohighlight">\(P_{\lambda}=p+ \lambda (\lambda+D-2)\)</span>, and
+<span class="math notranslate nohighlight">\(a_{\lambda} = \left[\frac{\lambda (\lambda+D-3)}{(2\lambda+D-2)(2\lambda+D-4)}\right]^{1/2}\)</span>.
+A detailed derivation of this <span class="math notranslate nohighlight">\(D\)</span>-dimensional solution is found in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id6"><span>[Mehraeen2008]</span></a>.
+We note that this exact solution produces identical results as those given in
+Ref. <a class="reference internal" href="references.html#spakowitz2004" id="id7"><span>[Spakowitz2004]</span></a>
+for 2- and 3-dimensional solutions.</p>
+<div class="section" id="methods-to-evaluate-the-wormlike-chain-green-s-function">
+<h2>Methods to Evaluate the Wormlike Chain Green’s Function<a class="headerlink" href="#methods-to-evaluate-the-wormlike-chain-green-s-function" title="Permalink to this headline">¶</a></h2>
+<p>The Green’s function (e.g. <a class="reference internal" href="#equation-gwlc">(1)</a>) is written in Fourier-Laplace space.
+Thus, evaluation of the Green’s function requires inversion to real space
+<span class="math notranslate nohighlight">\(\vec{R}\)</span> and <span class="math notranslate nohighlight">\(N\)</span>.
+The python module ‘wlcgreen’ contains python code to numerically invert the
+Fourier and Laplace transforms to render real-space solutions.
+The procedure followed in this module is as follows:</p>
+<ul class="simple">
+<li><p>Laplace-space inversion (from <span class="math notranslate nohighlight">\(p\)</span> to <span class="math notranslate nohighlight">\(N\)</span>): Numerical Laplace inversion using residue theorem based on evaluation of the singularities in <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<li><p>Fourier-space inversion (from <span class="math notranslate nohighlight">\(\vec{k}\)</span> to <span class="math notranslate nohighlight">\(\vec{R}\)</span>): Numerical Fourier inversion by numerical integration over <span class="math notranslate nohighlight">\(\vec{k}\)</span></p></li>
+</ul>
+<p>These steps are performed sequentially, such that Laplace inversion is first followed by Fourier inversion.
+The Spakowitz lab has utilized other numerical approaches for these steps.
+For example, numerical Laplace inversion can also be performed by numerical
+complex integration of the Bromwich integral, but this approach is not integrated into the ‘wlcgreen’ module.</p>
+<p>The orientation-independent Green’s function <span class="math notranslate nohighlight">\(G(\vec{K};p)\)</span>
+in <a class="reference internal" href="#equation-gwlc">(1)</a> serves as a useful example for our numerical procedures.
+Below, we discuss the two steps for the real-space inversion for this function.</p>
+<div class="section" id="step-1-laplace-space-inversion">
+<h3>Step 1: Laplace-space inversion<a class="headerlink" href="#step-1-laplace-space-inversion" title="Permalink to this headline">¶</a></h3>
+<p>The Laplace-space inversion requires us to determine the poles <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span>
+(all simple and generally complex).
+Mathematically, this is written as</p>
+<div class="math notranslate nohighlight">
+\[j (K; p = \mathcal{E}_{\alpha}) = \frac{1}{G(K; p = \mathcal{E}_{\alpha})} = 0\]</div>
+<p>for <span class="math notranslate nohighlight">\(\alpha = 0, 1, \ldots\)</span> gives the infinite set of poles within the infinite continued
+fraction.  In practice, the real part of <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span> becomes increasingly negative
+with increasing <span class="math notranslate nohighlight">\(\alpha\)</span>, and a cutoff <span class="math notranslate nohighlight">\(\alpha = \alpha_{\mathrm{max}}\)</span> is invoked for
+any given <span class="math notranslate nohighlight">\(N\)</span>. We note that <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha} \rightarrow -\alpha (\alpha+D-2)\)</span>
+(unperturbed eigenvalues of the hyperspherical harmonics) as
+<span class="math notranslate nohighlight">\(K \rightarrow 0\)</span> and becomes more negative with increasing <span class="math notranslate nohighlight">\(K\)</span> (see Ref <a class="reference internal" href="references.html#mehraeen2008" id="id8"><span>[Mehraeen2008]</span></a>).
+We determine <span class="math notranslate nohighlight">\(\alpha_{\mathrm{max}}\)</span> based on the <span class="math notranslate nohighlight">\(K=0\)</span> magnitude of <span class="math notranslate nohighlight">\(G\)</span> for a given <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<p>The Laplace inversion is then determined by evaluating the residues in the complex plane.
+The is written as</p>
+<div class="math notranslate nohighlight">
+\[G (K; N) = \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}}
+\mathop{\mathrm{Res}}_{p = \mathcal{E}_{\alpha}} \left[
+G(K; p) \exp \left( p N \right) \right]
+= \sum_{\alpha = 0}^{\alpha_{\mathrm{max}}} \lim_{p \rightarrow \mathcal{E}_{\alpha}}
+\left[
+( p - \mathcal{E}_{\alpha}) G(K; p) \exp \left( p N \right) \right] =
+\sum_{\alpha = 0}^{\alpha_{\mathrm{max}}} \frac{1}{\partial_{p} j (K; p = \mathcal{E}_{\alpha})}
+\exp \left( \mathcal{E}_{\alpha} N \right)\]</div>
+<p>The final form arises from the fact that all of the poles <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span> are simple.
+From this development, the Laplace inversion requires evaluation of two quantities:
+<span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span> (for <span class="math notranslate nohighlight">\(\alpha = 0, 1, \ldots, \alpha_{\mathrm{max}}\)</span>)
+and <span class="math notranslate nohighlight">\(\partial_{p} j (K; p = \mathcal{E}_{\alpha}) = \frac{\partial j (K; p = \mathcal{E}_{\alpha})}{\partial p}\)</span>.
+We leverage several numerical and asymptotic methods to find the poles <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span>
+(see <a class="reference internal" href="references.html#mehraeen2008" id="id9"><span>[Mehraeen2008]</span></a> for a detailed description of these methods).</p>
+<p>This basic approach is extended to Green’s function evaluation with fixed end orientation
+(i.e. the orientation-dependent Green’s function).
+Turning back to the general Green’s function (i.e. including end orientations),
+we have</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{K},\vec{u}|\vec{u}_{0};p) =
+\frac{1}{\Omega_{D}}
+\sum_{\lambda}  \sum_{\lambda_{0}} \sum_{\mathbf{\mu}}
+Y^{(D)}_{\lambda;\mathbf{\mu}} (\vec{u}')
+Y^{(D)*}_{\lambda_{0};\mathbf{\mu}}(\vec{u}_{0}')
+\mathcal{G}_{\lambda,\lambda_{0}}^{\mu}(K;p).\]</div>
+<p>This spherical harmonic expansion requires evaluation of the Laplace inverse
+of <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda,\lambda_{0}}^{\mu_{1}}(K;p)\)</span>
+(i.e. spherical-harmonic transform of the Green’s function).
+The evaluation of poles and residues of <span class="math notranslate nohighlight">\(\mathcal{G}_{\lambda,\lambda_{0}}^{\mu}(K;p)\)</span>
+utilizes similar approaches as outlined above and discussed in detail in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id10"><span>[Mehraeen2008]</span></a>.
+The primary difference is whether the residues and poles require evaluation for non-zero
+values of <span class="math notranslate nohighlight">\(\mu\)</span> and the residue evaluation must account for different
+<span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\lambda_{0}\)</span>.
+Poles and residues are evaluated
+for the additional index <span class="math notranslate nohighlight">\(\mu\)</span>, which defines the <span class="math notranslate nohighlight">\(z\)</span>-component of the
+angular momentum (noting the Quantum Mechanical analogy of our problem).
+Inclusion of <span class="math notranslate nohighlight">\(\mu\)</span> requires definition of the cutoff <span class="math notranslate nohighlight">\(\mu = \mu_{\mathrm{max}}\)</span>
+that restricts the otherwise infinite summations within the inversion.
+Evaluation of the residues for all possible values of <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\lambda_{0}\)</span>
+(with a cutoff <span class="math notranslate nohighlight">\(\lambda_{\mathrm{max}}\)</span>)
+results in a residue matrix defined by
+<span class="math notranslate nohighlight">\([\partial_{p} j_{\lambda,\lambda_{0}}^{\mu} (K;p = \mathcal{E}_{\alpha}^{\mu} ) ]^{-1}\)</span>,
+which is a <span class="math notranslate nohighlight">\((\lambda_{\mathrm{max}} - \mu + 1) \times (\lambda_{\mathrm{max}} - \mu + 1)\)</span>
+tensor for a given <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}^{\mu}\)</span>.</p>
+<p>The following table shows the cases of whether non-zero values of
+<span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> need to be evaluated for the Laplace-inversion.
+We define the boolean parameters
+‘mu_zero_only’ and ‘lam_zero_only’ to determine the family of residues and poles that need to
+be determined for a given Green’s function evaluation.</p>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(G(K;N)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(G(K,\vec{u}_{0};N)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(G(K,\vec{u}|\vec{u}_{0};N)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>‘mu_zero_only’</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘lam_zero_only’</p></td>
+<td><p>True</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+<p>We define a data structure that facilitates evaluation of the Laplace inversion
+but also enables the ‘wlcgreen’ module to dynamically grow the data structure,
+so residues and poles do not require re-evaluation if already evaluated at a given <span class="math notranslate nohighlight">\(K\)</span>.
+We define the ‘green_properties’ library as follows</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">green_properties</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k_val1</span><span class="p">:[</span><span class="n">mu_zero_only</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span><span class="p">],</span>
+                     <span class="n">k_val2</span><span class="p">:[</span><span class="n">mu_zero_only</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span><span class="p">],</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>For a given key in the library ‘k_val’, the elements are as follows</p>
+<ul class="simple">
+<li><p>‘mu_zero_only’ is a boolean (True or False) that determines whether the poles and residues are evaluated for non-zero values of <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p>‘lam_zero_only’ is a boolean (True or False) that determines whether the residues are evaluated for non-zero <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
+<li><p>‘poles’ is an array of poles [size <span class="math notranslate nohighlight">\((\alpha_{\mathrm{max}} + 1) \times (\mu_{\mathrm{max}} + 1)\)</span>], which accounts for the value of ‘mu_zero_only’</p></li>
+<li><p>‘residues’ is an array of residues [size <span class="math notranslate nohighlight">\((\alpha_{\mathrm{max}} + 1) \times (\mu_{\mathrm{max}} + 1)\)</span>] (to be discussed further)</p></li>
+</ul>
+</div>
+<div class="section" id="step-2-fourier-space-inversion">
+<h3>Step 2: Fourier-space inversion<a class="headerlink" href="#step-2-fourier-space-inversion" title="Permalink to this headline">¶</a></h3>
+<p>The Fourier inversion is found by numerically performing the integral</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(\vec{R};N) &amp; = &amp;
+\frac{1}{(2\pi)^{D}} \int d\vec{k} \exp \left(
+-i \vec{k} \cdot \vec{R} \right) G(K;N)
+\nonumber \\
+&amp; = &amp;
+\frac{1}{(2 l_{p})^{D}}
+\frac{1}{(2 \pi)^{D/2}}
+\int_{0}^{\infty} d K K^{D-1}
+\frac{J_{D/2-1}(NrK)}{\left(NrK\right)^{D/2-1}}
+G(K;N)\end{split}\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(\vec{K} = 2 l_{p} \vec{k}\)</span> (<span class="math notranslate nohighlight">\(K = |\vec{K}|\)</span>),
+<span class="math notranslate nohighlight">\(\vec{r} = \vec{R}/L\)</span> (<span class="math notranslate nohighlight">\(r = |\vec{r}|\)</span>),
+and <span class="math notranslate nohighlight">\(J_{n}(z)\)</span> is the Bessel function of the first kind.</p>
+<p>Integration over <span class="math notranslate nohighlight">\(K\)</span> is performed numerically
+from <span class="math notranslate nohighlight">\(K=0\)</span> to <span class="math notranslate nohighlight">\(K=K_{\mathrm{cutoff}}\)</span>,
+where <span class="math notranslate nohighlight">\(K_{\mathrm{cutoff}}\)</span> is a cutoff value
+that is sufficiently large to achieve convergence.
+The <span class="math notranslate nohighlight">\(K\)</span>-step size in the numerical integration
+is chosen such that it satisfies a global accuracy threshold.
+In our calculation, we use a tolerance of <span class="math notranslate nohighlight">\(10^{-20}\)</span>, which leads to
+an overall accuracy of <span class="math notranslate nohighlight">\(10^{-15}\)</span> for the real-space Green function.</p>
+</div>
+</div>
+<div class="section" id="module-wlcstat.wlcgreen">
+<span id="functions-contained-with-the-wlcgreen-module"></span><h2>Functions contained with the ‘wlcgreen’ module<a class="headerlink" href="#module-wlcstat.wlcgreen" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="wlcstat.wlcgreen.eval_poles_and_residues">
+<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">eval_poles_and_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_val</span></em>, <em class="sig-param"><span class="n">mu</span></em>, <em class="sig-param"><span class="n">lam_zero_only</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#eval_poles_and_residues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.eval_poles_and_residues" title="Permalink to this definition">¶</a></dt>
+<dd><p>eval_poles_and_residues - Evaluate the poles and the residues for a given value of the
+Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k_val</strong> (<em>float</em>) – The value of the Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span></p></li>
+<li><p><strong>mu</strong> (<em>int</em>) – Value of the mu parameter (<span class="math notranslate nohighlight">\(z\)</span>-component of the angular momentum)</p></li>
+<li><p><strong>lam_zero_only</strong> (<em>boolean</em>) – Determines whether residues are determined for non_zero <span class="math notranslate nohighlight">\(\lambda\)</span> (default True)</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>poles</strong> (<em>complex float</em>) – Evaluated poles for the given <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p><strong>residues</strong> (<em>complex float</em>) – Evaluated residues for the given <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id11"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcgreen.gwlc_r">
+<code class="sig-prename descclassname">wlcstat.wlcgreen.</code><code class="sig-name descname">gwlc_r</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r_val</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">k_val_max</span><span class="o">=</span><span class="default_value">100000.0</span></em>, <em class="sig-param"><span class="n">delta_k_val_max</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcgreen.html#gwlc_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcgreen.gwlc_r" title="Permalink to this definition">¶</a></dt>
+<dd><p>gwlc_r - Evaluate the orientation-independent Green’s function for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_val</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The values of the end-to-end distance <span class="math notranslate nohighlight">\(r = R/L\)</span> to be evaluated</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+<li><p><strong>k_val_max</strong> (<em>float</em>) – Cutoff value of <span class="math notranslate nohighlight">\(K\)</span> for numerical integration</p></li>
+<li><p><strong>delta_k_val_max</strong> (<em>float</em>) – Maximum value of the integration step size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>gwlc</strong> – The orientation-independent Green’s function [size len(r_val) x len(length_kuhn)]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id12"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="example-usage-of-eval-poles-and-residues">
+<h2>Example usage of ‘eval_poles_and_residues’<a class="headerlink" href="#example-usage-of-eval-poles-and-residues" title="Permalink to this headline">¶</a></h2>
+<p>This plot shows the poles for the wormlike chain in 3 dimensions over a range of <span class="math notranslate nohighlight">\(K\)</span>.
+This plot is a reproduction of Fig. 1 in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id13"><span>[Mehraeen2008]</span></a>.</p>
+<p>(<a class="reference external" href=".//wlcgreen_notes-1.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-1.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-1.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcgreen_notes-1.png" src="_images/wlcgreen_notes-1.png" />
+</div>
+<p>(<a class="reference external" href=".//wlcgreen_notes-2.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-2.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-2.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-2.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcgreen_notes-2.png" src="_images/wlcgreen_notes-2.png" />
+</div>
+<p>Another way to look at the poles is to consider the weight of the individual poles on the
+Fourier inversion.  We consider a chain length <span class="math notranslate nohighlight">\(N=0.1\)</span>, which is quite rigid.
+This plot shows the weight <span class="math notranslate nohighlight">\(\exp \left[ \mathrm{Real} (\mathcal{E}_{\alpha} ) N \right)\)</span>
+over a range of <span class="math notranslate nohighlight">\(K\)</span>.
+We note that the <span class="math notranslate nohighlight">\(y\)</span>-scale in this plot is roughly coincident with machine precision
+<span class="math notranslate nohighlight">\(10^{-14}\)</span>, so the <span class="math notranslate nohighlight">\(k\)</span>-range and the number of poles are the complete set necessary
+for Laplace inversion to machine precision accuracy for this chain length.</p>
+<p>(<a class="reference external" href=".//wlcgreen_notes-3.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-3.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-3.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-3.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcgreen_notes-3.png" src="_images/wlcgreen_notes-3.png" />
+</div>
+<p>We now demonstrate the evaluation of the residues for
+<span class="math notranslate nohighlight">\(\lambda = \lambda_{0} = 0\)</span> and
+<span class="math notranslate nohighlight">\(\mu = 0\)</span>
+We show the residues values for the first 10 eigenvalues <span class="math notranslate nohighlight">\(\mathcal{E}_{\alpha}\)</span>.
+Our numerical procedure utilizes the small-<span class="math notranslate nohighlight">\(k\)</span> and intermediate-<span class="math notranslate nohighlight">\(k\)</span> algorithms
+given in Ref. <a class="reference internal" href="references.html#mehraeen2008" id="id14"><span>[Mehraeen2008]</span></a>,
+with a cross-over frequency of <span class="math notranslate nohighlight">\(K_{\mathrm{cutoff}} = 0.01\)</span>.</p>
+<p>(<a class="reference external" href=".//wlcgreen_notes-4.py">Source code</a>, <a class="reference external" href=".//wlcgreen_notes-4.png">png</a>, <a class="reference external" href=".//wlcgreen_notes-4.hires.png">hires.png</a>, <a class="reference external" href=".//wlcgreen_notes-4.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcgreen_notes-4.png" src="_images/wlcgreen_notes-4.png" />
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wormlike Chain Green’s Function</a><ul>
+<li><a class="reference internal" href="#methods-to-evaluate-the-wormlike-chain-green-s-function">Methods to Evaluate the Wormlike Chain Green’s Function</a><ul>
+<li><a class="reference internal" href="#step-1-laplace-space-inversion">Step 1: Laplace-space inversion</a></li>
+<li><a class="reference internal" href="#step-2-fourier-space-inversion">Step 2: Fourier-space inversion</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-wlcstat.wlcgreen">Functions contained with the ‘wlcgreen’ module</a></li>
+<li><a class="reference internal" href="#example-usage-of-eval-poles-and-residues">Example usage of ‘eval_poles_and_residues’</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlcave_notes.html"
+                        title="previous chapter">Average Quantities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wlcstruc_notes.html"
+                        title="next chapter">Structure Factor</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wlcgreen_notes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlcave_notes.html" title="Average Quantities"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chain Green’s Function</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
