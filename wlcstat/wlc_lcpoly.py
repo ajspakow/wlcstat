@@ -113,7 +113,7 @@ def m_lcpoly(length_kuhn, lam, alpha_max=25, l_cont_frac_max=50):
     return m_val
 
 
-def r_2_lcpoly(length_kuhn, lam, alpha_max=25):
+def r_2_lcpoly(length_kuhn, lam, alpha_max=25, l_cont_frac_max=50):
     r"""
     Calculate the mean-square end-to-end distance for a liquid crystal polymer
 
@@ -141,10 +141,10 @@ def r_2_lcpoly(length_kuhn, lam, alpha_max=25):
 
     poles_m0 = eval_poles_lcpoly(lam, m=0, alpha_max=alpha_max)
     resi_m0 = eval_residues_lcpoly(lam, m=0, poles=poles_m0, l_zero_only=False, l_max=alpha_max,
-                                   alpha_max=alpha_max, l_cont_frac_max=50)
+                                   alpha_max=alpha_max, l_cont_frac_max=l_cont_frac_max)
     poles_m1 = eval_poles_lcpoly(lam, m=1, alpha_max=alpha_max)
     resi_m1 = eval_residues_lcpoly(lam, m=1, poles=poles_m1, l_zero_only=False, l_max=alpha_max,
-                                   alpha_max=alpha_max, l_cont_frac_max=50)
+                                   alpha_max=alpha_max, l_cont_frac_max=l_cont_frac_max)
 
     # Reset poles by subtracting zeroth pole
     max_pole = poles_m0[0]
@@ -171,28 +171,27 @@ def r_2_lcpoly(length_kuhn, lam, alpha_max=25):
     r_2_par = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
     r_2_perp = np.zeros_like(length_kuhn, dtype=type(1 + 1j))
 
-    for ind_alpha in range(0, alpha_max + 1):
+    for ind_alpha in range(0, alpha_max + 1, 2):
         # Contributions to q_val
         q_val += np.exp(poles_m0[ind_alpha] * length_kuhn) * resi_m0[0, 0, ind_alpha]
-        for ind_alpha_p in range(0, alpha_max + 1):
-            for ind_alpha_pp in range(0, alpha_max + 1):
+        for ind_alpha_p in range(1, alpha_max + 1, 2):
+            for ind_alpha_pp in range(0, alpha_max + 1, 2):
                 # Contributions to the r_2_par average
                 if ind_alpha_p <= alpha_max:
                     select_mag = np.real(
-                        np.dot(resi_m0[:, :, ind_alpha_pp], np.dot(uz_select_mat,
+                        np.dot(resi_m0[:, :, ind_alpha_pp], np.dot(np.transpose(uz_select_mat),
                         np.dot(resi_m0[:, :, ind_alpha_p], np.dot(uz_select_mat,
                         resi_m0[:, :, ind_alpha]))))[0, 0])
                     poles_vec = np.array([poles_m0[ind_alpha], poles_m0[ind_alpha_p], poles_m0[ind_alpha_pp]])
                     int_mag = calc_int_mag(length_kuhn, poles_vec)
                     r_2_par += 2 * select_mag * int_mag
-
                 # Contributions to the r_2_perp average
                 if ind_alpha_p <= (alpha_max - 1):
                     select_mag = np.real(
                         np.dot(resi_m0[:, :, ind_alpha_pp],  np.dot(np.transpose(ux_select_mat),
-                        np.dot(resi_m1[:, :, ind_alpha_p], np.dot(ux_select_mat,
+                        np.dot(resi_m1[:, :, ind_alpha_p - 1], np.dot(ux_select_mat,
                         resi_m0[:, :, ind_alpha]))))[0, 0])
-                    poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p], poles_m0[ind_alpha_pp]])
+                    poles_vec = np.array([poles_m0[ind_alpha], poles_m1[ind_alpha_p - 1], poles_m0[ind_alpha_pp]])
                     int_mag = calc_int_mag(length_kuhn, poles_vec)
                     r_2_perp += 2 * select_mag * int_mag
 

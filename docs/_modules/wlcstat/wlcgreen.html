@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wlcstat.wlcgreen &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.wlcgreen</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for wlcstat.wlcgreen</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">from</span> <span class="nn">wlcstat.util.wlc_poles_residues</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">sp</span>
+
+
+<div class="viewcode-block" id="eval_poles_and_residues"><a class="viewcode-back" href="../../wlcgreen_notes.html#wlcstat.wlcgreen.eval_poles_and_residues">[docs]</a><span class="k">def</span> <span class="nf">eval_poles_and_residues</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    eval_poles_and_residues - Evaluate the poles and the residues for a given value of the</span>
+<span class="sd">    Fourier vector magnitude :math:`K`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k_val : float</span>
+<span class="sd">        The value of the Fourier vector magnitude :math:`K`</span>
+<span class="sd">    mu : int</span>
+<span class="sd">        Value of the mu parameter (:math:`z`-component of the angular momentum)</span>
+<span class="sd">    lam_zero_only : boolean</span>
+<span class="sd">        Determines whether residues are determined for non_zero :math:`\lambda` (default True)</span>
+<span class="sd">    dimensions : int</span>
+<span class="sd">        The number of dimensions (default to 3 dimensions)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    poles : complex float</span>
+<span class="sd">        Evaluated poles for the given :math:`K` and :math:`\mu`</span>
+<span class="sd">    residues : complex float</span>
+<span class="sd">        Evaluated residues for the given :math:`K` and :math:`\mu`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref [Mehraeen2008]_)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">poles</span> <span class="o">=</span> <span class="n">eval_poles</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+    <span class="n">residues</span> <span class="o">=</span> <span class="n">eval_residues</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="n">lam_zero_only</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">poles</span><span class="p">,</span> <span class="n">residues</span></div>
+
+
+<div class="viewcode-block" id="gwlc_r"><a class="viewcode-back" href="../../wlcgreen_notes.html#wlcstat.wlcgreen.gwlc_r">[docs]</a><span class="k">def</span> <span class="nf">gwlc_r</span><span class="p">(</span><span class="n">r_val</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha_max</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">k_val_max</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">delta_k_val_max</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    gwlc_r - Evaluate the orientation-independent Green&#39;s function for the wormlike chain model</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r_val : float (array)</span>
+<span class="sd">        The values of the end-to-end distance :math:`r = R/L` to be evaluated</span>
+<span class="sd">    length_kuhn : float (array)</span>
+<span class="sd">        The length of the chain in Kuhn lengths</span>
+<span class="sd">    dimensions : int</span>
+<span class="sd">        The number of dimensions (default to 3 dimensions)</span>
+<span class="sd">    alpha_max : int</span>
+<span class="sd">        Maximum number of poles evaluated (default 25)</span>
+<span class="sd">    k_val_max : float</span>
+<span class="sd">        Cutoff value of :math:`K` for numerical integration</span>
+<span class="sd">    delta_k_val_max : float</span>
+<span class="sd">        Maximum value of the integration step size</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    gwlc : float</span>
+<span class="sd">        The orientation-independent Green&#39;s function [size len(r_val) x len(length_kuhn)]</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref [Mehraeen2008]_)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">delta_k_val</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">delta_k_val_max</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Eliminate 0 and 1 from the r_val array</span>
+    <span class="n">r_val</span><span class="p">[</span><span class="n">r_val</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-10</span>
+    <span class="n">r_val</span><span class="p">[</span><span class="n">r_val</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-10</span>
+
+    <span class="c1"># Initialize the Green&#39;s function</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">gwlc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">r_val</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gwlc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">r_val</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>
+
+    <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-15</span>
+
+    <span class="n">k_val_output</span> <span class="o">=</span> <span class="n">k_val_max</span> <span class="o">/</span> <span class="mi">100</span>
+    <span class="n">k_val</span> <span class="o">=</span> <span class="n">delta_k_val</span>
+    <span class="n">int_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">contains_nan</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="n">k_val</span> <span class="o">&lt;=</span> <span class="n">k_val_max</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">contains_nan</span><span class="p">:</span>
+        <span class="n">int_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">poles</span> <span class="o">=</span> <span class="n">eval_poles</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">)</span>
+        <span class="n">residues</span> <span class="o">=</span> <span class="n">eval_residues</span><span class="p">(</span><span class="n">k_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">int_count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">int_coef</span> <span class="o">=</span> <span class="mi">55</span> <span class="o">/</span> <span class="mi">24</span>
+        <span class="k">elif</span> <span class="n">int_count</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">int_coef</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span>
+        <span class="k">elif</span> <span class="n">int_count</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">int_coef</span> <span class="o">=</span> <span class="mi">11</span> <span class="o">/</span> <span class="mi">8</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">int_coef</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">gkwlc_kval</span> <span class="o">=</span> <span class="n">residues</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">poles</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+                <span class="n">integrand</span> <span class="o">=</span> <span class="p">(</span><span class="n">int_coef</span> <span class="o">*</span> <span class="n">k_val</span> <span class="o">**</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                             <span class="o">*</span> <span class="n">sp</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="n">dimensions</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k_val</span> <span class="o">*</span> <span class="n">r_val</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">)</span> <span class="o">*</span> <span class="n">gkwlc_kval</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">integrand</span> <span class="o">=</span> <span class="p">(</span><span class="n">int_coef</span> <span class="o">*</span> <span class="n">k_val</span> <span class="o">**</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                             <span class="o">*</span> <span class="n">sp</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="n">dimensions</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k_val</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">r_val</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">))</span>
+                             <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">r_val</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)),</span> <span class="n">gkwlc_kval</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contains_nan</span><span class="p">:</span>
+                <span class="n">contains_nan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">integrand</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contains_nan</span><span class="p">:</span>
+                <span class="n">gwlc</span> <span class="o">+=</span> <span class="n">integrand</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Encountered NaN at k_val = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k_val</span><span class="p">))</span>
+
+        <span class="n">k_val</span> <span class="o">+=</span> <span class="n">delta_k_val</span>
+        <span class="k">if</span> <span class="n">k_val</span> <span class="o">&gt;=</span> <span class="n">k_val_output</span><span class="p">:</span>
+            <span class="n">k_val_output</span> <span class="o">+=</span> <span class="n">k_val_max</span> <span class="o">/</span> <span class="mi">100</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current k_val = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k_val</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; with delta_k_val = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">delta_k_val</span><span class="p">)</span>
+                  <span class="o">+</span> <span class="s2">&quot; and k_val_max = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k_val_max</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">poles</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)))))</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">poles</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">))))</span> <span class="o">&lt;</span> <span class="n">tolerance</span> <span class="ow">and</span> <span class="n">alpha_max</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">k_val</span> <span class="o">&gt;</span> <span class="mi">2840</span><span class="p">:</span>
+            <span class="n">alpha_max</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reducing alpha_max to &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">alpha_max</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; at k_val = &quot;</span>
+                  <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k_val</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; with delta_k_val = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">delta_k_val</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">poles</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)))))</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">poles</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">))))</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Achieved accuracy of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tolerance</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; at k_val = &quot;</span>
+                  <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k_val</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; with delta_k_val = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">delta_k_val</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">poles</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)))))</span>
+            <span class="n">k_val</span> <span class="o">=</span> <span class="n">k_val_max</span> <span class="o">+</span> <span class="n">delta_k_val</span>
+
+    <span class="n">gwlc</span> <span class="o">*=</span> <span class="n">delta_k_val</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">r_val</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">dimensions</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                                                     <span class="n">length_kuhn</span> <span class="o">**</span> <span class="p">(</span><span class="n">dimensions</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">gwlc</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.wlcgreen</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

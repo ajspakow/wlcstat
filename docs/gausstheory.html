@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chain statistics as a path integral &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wormlike Chain Theory" href="wlctheory.html" />
+    <link rel="prev" title="Wormlike Chain Model Statistics (wlcstat)" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlctheory.html" title="Wormlike Chain Theory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Wormlike Chain Model Statistics (wlcstat)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chain statistics as a path integral</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="chain-statistics-as-a-path-integral">
+<span id="gausstheory"></span><h1>Chain statistics as a path integral<a class="headerlink" href="#chain-statistics-as-a-path-integral" title="Permalink to this headline">¶</a></h1>
+<p>Consider a single polymer chain, defined by a space-curve representation.
+The probability distribution (or Green function) <span class="math notranslate nohighlight">\(G(b|a)\)</span> of the chain extending from <span class="math notranslate nohighlight">\(a\)</span> to <span class="math notranslate nohighlight">\(b\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[G(b|a) = \sum_{all \; paths} \phi [x(s)]\]</div>
+<p>where the state <span class="math notranslate nohighlight">\(a\)</span> denotes location <span class="math notranslate nohighlight">\(x_{a}\)</span> at
+arclength <span class="math notranslate nohighlight">\(s_{a}\)</span> and state <span class="math notranslate nohighlight">\(b\)</span> denotes location <span class="math notranslate nohighlight">\(x_{b}\)</span>
+at arclength <span class="math notranslate nohighlight">\(s_{b}\)</span>.
+The summation over emph{all paths} indicates a sum of all possible chain conformations (or paths) that
+begin at state <span class="math notranslate nohighlight">\(a\)</span> and end at state <span class="math notranslate nohighlight">\(b\)</span>.
+This concept of a path integral is extensively developed by Feynman and Hibbs~cite{feynman}
+to describe the statistical treatment of quantum mechanical particles.
+For polymer statistics, the weighting of a path (or chain conformation) is governed by statistical
+mechanics.
+The statistical weight <span class="math notranslate nohighlight">\(\phi[x(s)]\)</span> of a path <span class="math notranslate nohighlight">\(x(s)\)</span> is given by the
+integration of the Boltzmann weighting of the path.
+Define the Action
+<span class="math notranslate nohighlight">\(S\)</span> for the particular path to be</p>
+<div class="math notranslate nohighlight">
+\[S[x(s)] = \int_{s_{a}}^{s_{b}} \mathcal{H}(x, x', x'', ...;s) ds\]</div>
+<p>Thus, the statistical weight of a path is given by</p>
+<div class="math notranslate nohighlight">
+\[\phi[x(s)] = \frac{1}{A} \exp (-\beta S[x(s)]),\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is a normalization constant to be discussed later.</p>
+<p>The Hamiltonian <span class="math notranslate nohighlight">\(\mathcal{H}\)</span> includes differential
+elastic deformation energy <span class="math notranslate nohighlight">\(e_{elas}(x',x'',...;s)\)</span>
+and a potential energy per unit length <span class="math notranslate nohighlight">\(V(x,s)\)</span>.
+The Green function <span class="math notranslate nohighlight">\(G(b|a)\)</span> is written in %the form
+path-integral form</p>
+<div class="math notranslate nohighlight">
+\[G(b|a) = \int_{a}^{b} \exp (-\beta S[x(s)]) \mathcal{D} x(s)\]</div>
+<p>Currently the derivation of the path model is in
+one dimension; however, the ideas are easily extended to higher
+dimensions.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/path-int.pdf"><img alt="Schematic of path summation in the space-arclength plane" src="_images/path-int.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic of path summation in the space-arclength plane</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="gaussian-chain-model-green-function-explicit-path-integration">
+<h2>Gaussian Chain model Green function—explicit path integration<a class="headerlink" href="#gaussian-chain-model-green-function-explicit-path-integration" title="Permalink to this headline">¶</a></h2>
+<p>Consider a polymer chain defined by the Gaussian Chain model
+in 1-D with no external field (<span class="math notranslate nohighlight">\(V=0\)</span>).
+The action is given by</p>
+<div class="math notranslate nohighlight">
+\[S[x(n)]=
+\frac{k_{B}T}{2 b^{2}}
+\int_{n_{a}}^{n_{b}} \! dn \, \left( \frac{\partial x(n)}{\partial n} \right)^{\! 2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n=s/b\)</span> is a dimensionless arclength parameter.
+This gives a statistical weight</p>
+<div class="math notranslate nohighlight">
+\[\phi[x(n)] = \frac{1}{A}
+\exp \! \left[
+-\frac{1}{2 b^{2}}
+\int_{n_{a}}^{n_{b}} \! dn \, \left( \frac{\partial x(n)}{\partial n} \right)^{\! 2}
+\right]\]</div>
+<p>For this treatment, convert the path integral into a discrete-chain
+representation.  This procedure provides a practical method to
+perform the summation over all possible chain conformations.
+Break the chain into <span class="math notranslate nohighlight">\(M\)</span> segments of length <span class="math notranslate nohighlight">\(\delta = (n_{b}-n_{a})/M\)</span>.
+The position of the <span class="math notranslate nohighlight">\(m\)</span>,
+and the endpoints are <span class="math notranslate nohighlight">\(x_{0}=x_{a}\)</span> and <span class="math notranslate nohighlight">\(x_{M}=x_{b}\)</span>.
+The limit <span class="math notranslate nohighlight">\(M \rightarrow \infty\)</span> recovers our continuous chain representation</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/discrete-path.pdf"><img alt="Discrete-chain representation converts the chain into :math:`M` segments (in this case :math:`M=6`) of length :math:`\delta=(n_{b}-n_{a})/M`." src="_images/discrete-path.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Discrete-chain representation converts the chain into <span class="math notranslate nohighlight">\(M\)</span> segments (in this case <span class="math notranslate nohighlight">\(M=6\)</span>) of length <span class="math notranslate nohighlight">\(\delta=(n_{b}-n_{a})/M\)</span>.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>The statistical weight is now approximated as</p>
+<div class="math notranslate nohighlight">
+\[\phi[x(n)] \approx \frac{1}{A}
+\exp \! \left[
+-\frac{1}{2 b^{2} \delta}
+%\int_{n_{a}}^{n_{b}} \! dn \, \left( \frac{\partial x(n)}{\partial n} \right)^{\! 2}
+\sum_{m=1}^{M} \left( x_{m}-x_{m-1} \right)^{2}
+\right]\]</div>
+<p>and the Green function is approximated as</p>
+<div class="math notranslate nohighlight">
+\[G(b|a) = \frac{1}{A}
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{1}
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{2}
+\ldots
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{M-1}
+%\left( \prod_{m'=1}^{M-1} d x_{m'} \right)
+\exp \! \left[
+-\frac{1}{2 b^{2} \delta}
+%\int_{n_{a}}^{n_{b}} \! dn \, \left( \frac{\partial x(n)}{\partial n} \right)^{\! 2}
+\sum_{m=1}^{M}
+\left( x_{m}-x_{m-1} \right)^{2}
+\right].\]</div>
+<p>The <span class="math notranslate nohighlight">\(x_{1}\)</span> integral is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\normalsize
+&amp;  &amp;
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{1}
+\exp \!  \left\{
+-\frac{1}{2 b^{2} \delta}
+\left[
+\left( x_{2}-x_{1} \right)^{2}+
+\left( x_{1}-x_{0} \right)^{2}
+\right]
+\right\}=
+\nonumber \\
+\normalsize
+&amp;  &amp;
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{1}
+\exp \! \left\{
+-\frac{1}{2 b^{2} \delta}
+\left[
+2 \left( x_{1}-x_{1}^{\star} \right)^{2}+
+\frac{1}{2} \left( x_{2}-x_{0} \right)^{2}
+\right]
+\right\}= \nonumber \\
+&amp;  &amp;
+\sqrt{\pi b^{2} \delta} \exp \! \left[
+- \frac{1}{2 b^{2} \delta} \frac{1}{2}(x_{2}-x_{0})^{2}
+\right],\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_{1}^{\star}=\frac{x_{0}+x_{2}}{2}\)</span>.</p>
+<p>The subsequent <span class="math notranslate nohighlight">\(x_{2}\)</span> integral is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\normalsize
+&amp;  &amp;
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{2}
+\exp \! \left\{
+-\frac{1}{2 b^{2} \delta}
+\left[
+\left( x_{3}-x_{2} \right)^{2}+
+\frac{1}{2} \left( x_{2}-x_{0} \right)^{2}
+\right]
+\right\}=
+\nonumber \\
+\normalsize
+&amp;  &amp;
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{2}
+\exp \! \left\{
+-\frac{1}{2 b^{2} \delta}
+\left[
+\frac{3}{2} \left( x_{2}-x_{2}^{\star} \right)^{2}+
+\frac{1}{3} \left( x_{3}-x_{0} \right)^{2}
+\right]
+\right\}= \nonumber \\
+&amp;  &amp;
+\sqrt{\frac{4\pi b^{2} \delta}{3}} \exp \! \left[
+- \frac{1}{2 b^{2} \delta} \frac{1}{3}(x_{3}-x_{0})^{2}
+\right]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_{2}^{\star}=\frac{x_{0}+2x_{3}}{3}\)</span>.
+The <span class="math notranslate nohighlight">\(x_{m}\)</span> integral after performing integrals <span class="math notranslate nohighlight">\(x_{1}\)</span>, <span class="math notranslate nohighlight">\(x_{2}\)</span>,ldots, <span class="math notranslate nohighlight">\(x_{m-1}\)</span>
+is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+\int_{-\infty}^{\infty} \! \! \! \! \! d x_{m}
+\exp \! \left\{
+-\frac{1}{2 b^{2} \delta}
+\left[
+\left( x_{m+1}-x_{m} \right)^{2}+
+\frac{1}{m} \left( x_{m}-x_{0} \right)^{2}
+\right]
+\right\}=
+\nonumber \\
+&amp;  &amp;
+\sqrt{\frac{2\pi b^{2} \delta}{1+\frac{1}{m}}} \exp \! \left[
+- \frac{1}{2 b^{2} \delta} \frac{1}{m+1}(x_{m+1}-x_{0})^{2}
+\right]\end{split}\]</div>
+<p>This gives the Green function</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(b|a) &amp; = &amp; \frac{1}{A}
+\prod_{m=1}^{M-1} \sqrt{\frac{2 \pi b^{2} \delta}{1+\frac{1}{m}}}
+\exp \! \left[
+- \frac{1}{2 b^{2} \delta} \frac{1}{M} ( x_{M}-x_{0} )^{2}
+\right]
+\nonumber \\
+&amp; = &amp; \frac{1}{A}
+\prod_{m=1}^{M-1} \sqrt{\frac{2 \pi b^{2} \delta}{1+\frac{1}{m}}}
+\exp \! \left[
+- \frac{( x_{b}-x_{a} )^{2}}{2 (n_{b}-n_{a}) b^{2}}
+\right]
+\nonumber \\
+&amp; = &amp;
+\frac{1}{\sqrt{2 \pi (n_{b}-n_{a}) b^{2} }}
+\exp \! \left[
+- \frac{( x_{b}-x_{a} )^{2}}{2 (n_{b}-n_{a}) b^{2}}
+\right]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span>
+is set to ensure <span class="math notranslate nohighlight">\(\int dx_{b} G(b|a)=1\)</span></p>
+</div>
+<div class="section" id="gaussian-chain-model-green-function-schrodinger-equation">
+<h2>Gaussian Chain model Green function—Schrödinger equation<a class="headerlink" href="#gaussian-chain-model-green-function-schrodinger-equation" title="Permalink to this headline">¶</a></h2>
+<p>Generally, it is more convenient to develop the path integral into
+a diffusion equation (or Schr&quot;{o}dinger equation) to solve for the chain statistics.
+Consider the Gaussian Chain model in 1-D with an external potential,
+giving an action</p>
+<div class="math notranslate nohighlight">
+\[S[x(n)]=
+\int_{0}^{N} \! dn \,
+\left[
+\frac{k_{B}T}{2 b^{2}}
+\left( \frac{\partial x(n)}{\partial n} \right)^{\! 2}
++ V[x(n)]
+\right]\]</div>
+<p>where we set <span class="math notranslate nohighlight">\(n_{a}=0\)</span> and <span class="math notranslate nohighlight">\(n_{b}=N\)</span> (without loss of generality),
+and assume <span class="math notranslate nohighlight">\(V=V(x)\)</span> only.
+The chain obeys Markovian statistics; thus, the Green
+function for a chain that starts at <span class="math notranslate nohighlight">\(A\)</span> (emph{i.e.} position <span class="math notranslate nohighlight">\(x_{A}\)</span> and arclength <span class="math notranslate nohighlight">\(n_{A}\)</span>)
+to state <span class="math notranslate nohighlight">\(C\)</span> (emph{i.e.} <span class="math notranslate nohighlight">\(x_{C}, n_{C}\)</span>)
+through intermediate state <span class="math notranslate nohighlight">\(B\)</span> (emph{i.e.} <span class="math notranslate nohighlight">\(x_{B}, n_{B}\)</span>) is</p>
+<div class="math notranslate nohighlight">
+\[G(x_{C},n_{C} |x_{A},n_{A}) =
+\int_{-\infty}^{\infty} \! \! \! dx_{B}
+G(x_{C}, n_{C} | x_{B}, n_{B})
+G(x_{B},n_{B} |x_{A},n_{A}).\]</div>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/markovchain.pdf"><img alt="Schematic of a chain that obeys Markovian statistics" src="_images/markovchain.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic of a chain that obeys Markovian statistics</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>Take the state <span class="math notranslate nohighlight">\(C\)</span> to differ an infinitesimal length from state <span class="math notranslate nohighlight">\(B\)</span> by setting
+<span class="math notranslate nohighlight">\(n_{C}=N+\delta\)</span> and <span class="math notranslate nohighlight">\(n_{B}=N\)</span> (<span class="math notranslate nohighlight">\(n_{A}=0\)</span>).  For simplicity, set
+<span class="math notranslate nohighlight">\(x_{A}=x_{0}\)</span>,
+<span class="math notranslate nohighlight">\(x_{B}=y\)</span>,
+<span class="math notranslate nohighlight">\(x_{C}=x\)</span>, giving</p>
+<div class="math notranslate nohighlight">
+\[G(x,N+\delta |x_{0},0) =
+\int_{-\infty}^{\infty} \! \! \! dy
+G(x, N+\delta | y,N)
+G(y,N |x_{0},0).\]</div>
+<p>In the limit <span class="math notranslate nohighlight">\(\delta \rightarrow 0\)</span>, the Green function
+<span class="math notranslate nohighlight">\(G(x, N+\delta | y,N)\)</span> will be dominated by a single path whose action is</p>
+<div class="math notranslate nohighlight">
+\[S \approx \frac{k_{B} T}{2 b^{2}} \delta
+\left( \frac{x-y}{\delta} \right)^{2} + \delta \, V \! \! \left( \frac{x+y}{2} \right).\]</div>
+<p>Assume the contribution to the integral is mainly near <span class="math notranslate nohighlight">\(y = x + \eta\)</span>
+where <span class="math notranslate nohighlight">\(\eta \ll 1\)</span>.  The Green function is thus given by</p>
+<div class="math notranslate nohighlight">
+\[G(x, N + \delta|x_{0},0) = \int_{-\infty}^{\infty} \! \! d \eta
+\frac{1}{A}
+\exp \left( - \frac{1}{2 b^{2}} \frac{ \eta^{2} }{ \delta } \right)
+\exp [- \beta \delta V( x + \eta/2)] G(x + \eta, N | x_{0},0).\]</div>
+<p>The integrand decays to zero for <span class="math notranslate nohighlight">\(\eta &gt; \sqrt{2 b^{2} \delta }\)</span>
+thus the integrand must be expanded to linear order in <span class="math notranslate nohighlight">\(\delta\)</span>
+and quadratic order in <span class="math notranslate nohighlight">\(\eta\)</span> in order to capture the lowest order
+behavior of the Green function.
+The expansion of the Green function
+yields the solvable integral</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+G(x, N|x_{0},0) + \delta \frac{\partial G(x,N|x_{0},0)}{\partial N}  =
+\int_{-\infty}^{\infty} \! \! d \eta
+\frac{1}{A}
+\exp \left( - \frac{1}{2 b^{2}} \frac{ \eta^{2} }{ \delta } \right)
+\nonumber \\
+&amp;  &amp;
+\hspace{0.4in}
+\times [1 - \beta \delta V(x)]
+\left( G (x,N|x_{0},0) + \eta \frac{\partial G(x,N|x_{0},0)}{\partial x}
++ \frac{\eta^{2}}{2} \frac{\partial^{2} G(x,N|x_{0},0}{\partial x^{2}} \right).\end{split}\]</div>
+<p>The solution for the normalization constant <span class="math notranslate nohighlight">\(A\)</span> is determined by
+solution of the leading term on the right hand side:</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{A} \int_{-\infty}^{\infty} \exp
+\left(- \frac{1}{2 b^{2}} \frac{ \eta^{2} }{ \delta } \right) d \eta = 1\]</div>
+<p>thus <span class="math notranslate nohighlight">\(A = b \sqrt{ 2 \pi \delta}\)</span>.
+The two additional
+integrals are given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{1}{A} \int_{-\infty}^{\infty} \eta
+\exp \left(- \frac{1}{2 b^{2}} \frac{ \eta^{2} }{ \delta } \right) d \eta
+&amp; = &amp; 0 \\
+\frac{1}{A} \int_{-\infty}^{\infty} \eta^{2}
+\exp \left(- \frac{1}{2 b^{2}} \frac{ \eta^{2} }{ \delta } \right) d \eta
+&amp; = &amp; b^{2} \delta.\end{split}\]</div>
+<p>The Green function is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+G(x,N|x_{0},0) + \delta \frac{\partial G(x,N|x_{0},0)}{\partial N} = \nonumber \\
+&amp;  &amp;
+G(x,N|x_{0},0) -
+\delta \beta V G(x,N|x_{0},0) + \delta \frac{b^{2}}{2}
+\frac{ \partial^{2} G(x,N|x_{0},0)}{\partial x^{2}}.\end{split}\]</div>
+<p>Thus, the Green function for the 1-D Gaussian Chain obeys</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial G(x,N|x_{0},0)}{\partial N} = -\beta V G(x,N|x_{0},0) + \frac{b^{2}}{2}
+\frac{ \partial^{2} G(x,N|x_{0},0)}{\partial x^{2}},\]</div>
+<p>with initial condition <span class="math notranslate nohighlight">\(G(x,0|x_{0},0)=\delta(x-x_{0})\)</span>.
+For <span class="math notranslate nohighlight">\(V(x)=0\)</span>, the solution for the Green function is</p>
+<div class="math notranslate nohighlight">
+\[G(x,N|x_{0},0) =
+\frac{1}{\sqrt{2 \pi N b^{2} }}
+\exp \! \left[
+- \frac{( x-x_{0} )^{2}}{2 N b^{2}}
+\right]\]</div>
+<p>which agrees with our previous derivation (Sec.~ref{chap:gaussian-explicit}).</p>
+<p>The governing differential equation for the Gaussian Chain in 3D is written as an
+extension to our 1D equation as</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial G(\vec{R},N|\vec{R}_{0},0)}{\partial N} =
+-\beta V G(\vec{R},N|\vec{R}_{0},0) + \frac{b^{2}}{6}
+\vec{\nabla}^{2} G(\vec{R},N|\vec{R}_{0},0)\]</div>
+<p>with initial condition <span class="math notranslate nohighlight">\(G(\vec{R},0|\vec{R}_{0},0)=\delta(\vec{R}-\vec{R}_{0})\)</span>.
+The solution of this differential equation subject to a given
+potential <span class="math notranslate nohighlight">\(V\)</span> gives the equilibrium probability distribution
+for the Gaussian Chain model.
+For <span class="math notranslate nohighlight">\(V(\vec{R})=0\)</span>, the solution for the Green function
+for a Gaussian Chain in 3-D is</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{R},N|\vec{R}_{0},0) =
+\left( \frac{2\pi N b^{2}}{3} \right)^{\! \! \! -3/2}
+\exp \! \left[ - \frac{3 (\vec{R} - \vec{R}_{0} )^{2}}{2Nb^{2}} \right]\]</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Chain statistics as a path integral</a><ul>
+<li><a class="reference internal" href="#gaussian-chain-model-green-function-explicit-path-integration">Gaussian Chain model Green function—explicit path integration</a></li>
+<li><a class="reference internal" href="#gaussian-chain-model-green-function-schrodinger-equation">Gaussian Chain model Green function—Schrödinger equation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Wormlike Chain Model Statistics (wlcstat)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wlctheory.html"
+                        title="next chapter">Wormlike Chain Theory</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gausstheory.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlctheory.html" title="Wormlike Chain Theory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Wormlike Chain Model Statistics (wlcstat)"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chain statistics as a path integral</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

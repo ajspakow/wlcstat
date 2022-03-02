@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appendix &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Active-Brownian Dynamics" href="active_brown.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="active_brown.html" title="Active-Brownian Dynamics"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appendix</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="appendix"></span><div class="section" id="id1">
+<h1>Appendix<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>Here, we provide standard definitions for mathematical functions and properties
+that are used throughout this repository.
+Implementation of these definitions are found within the individuals modules,
+as well as python scripts found with the utilities folder ‘util’ within the ‘wlcstat’
+repository.</p>
+<div class="section" id="coordinate-definitions">
+<h2>Coordinate Definitions<a class="headerlink" href="#coordinate-definitions" title="Permalink to this headline">¶</a></h2>
+<p>Here, we define coordinate systems and transformations of coordinate systems</p>
+<div class="section" id="spherical-coordinates">
+<h3>Spherical coordinates<a class="headerlink" href="#spherical-coordinates" title="Permalink to this headline">¶</a></h3>
+<p>Spherical coordinate system is defined such that</p>
+<div class="math notranslate nohighlight">
+\[x = r \sin \theta \cos \phi, \hspace{0.2in}
+y = r \sin \theta \sin \phi, \hspace{0.2in}
+z= r \cos \theta\]</div>
+<p>The unit triad in spherical coordinates (relative to cartesian coordinates) is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+\hat{\delta}_{r} =
+\sin \theta \cos \phi \hat{\delta}_{x} +
+\sin \theta \sin \phi \hat{\delta}_{y} +
+\cos \theta \hat{\delta}_{z}
+\nonumber \\
+&amp;  &amp;
+\hat{\delta}_{\theta} =
+\cos \theta \cos \phi \hat{\delta}_{x} +
+\cos \theta \sin \phi \hat{\delta}_{y} -
+\sin \theta \hat{\delta}_{z}
+\nonumber \\
+&amp;  &amp;
+\hat{\delta}_{\phi} =
+-\sin \phi \hat{\delta}_{x} +
+\cos \phi \hat{\delta}_{y}\end{split}\]</div>
+<p>Gradient, Divergence, Curl, and Laplacian are given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;  &amp;
+\vec{\nabla} \psi =
+\hat{\delta}_{r} \frac{\partial \psi}{\partial r}+
+\hat{\delta}_{\theta} \frac{1}{r} \frac{\partial \psi}{\partial \theta}+
+\hat{\delta}_{\phi} \frac{1}{r \sin \theta} \frac{\partial \psi}{\partial \phi}
+\nonumber \\
+&amp;  &amp;
+\vec{\nabla} \cdot \vec{A} =
+\frac{1}{r^{2}} \frac{\partial ( r^{2} A_{r})}{\partial r}+
+\frac{1}{r \sin \theta} \frac{\partial ( A_{\theta} \sin \theta)}{\partial \theta}+
+\frac{1}{r \sin \theta} \frac{\partial A_{\phi}}{\partial \phi}
+\nonumber \\
+&amp;  &amp;
+\vec{\nabla} \times \vec{A} =
+\hat{\delta}_{r}\frac{1}{r \sin \theta }  \left( \frac{\partial (A_{\phi} \sin \theta)}{\partial \theta} -
+\frac{\partial A_{\theta}}{\partial \phi} \right) +
+\hat{\delta}_{\theta} \frac{1}{r} \left( \frac{1}{\sin \theta} \frac{\partial A_{r}}{\partial \phi} -
+\frac{\partial (r A_{\phi})}{\partial r} \right) +
+\hat{\delta}_{\phi} \frac{1}{r} \left( \frac{\partial (r A_{\theta})}{\partial r} - \frac{\partial A_{r}}{\partial \theta} \right)
+\nonumber \\
+&amp;  &amp;
+\nabla^{2} \psi =
+\frac{1}{r^{2}} \frac{\partial}{\partial r} \left( r^{2} \frac{\partial \psi}{\partial r} \right) +
+\frac{1}{r^{2} \sin \theta } \frac{\partial }{\partial \theta} \left( \sin \theta \frac{\partial \psi}{\partial \theta} \right) +
+\frac{1}{r^{2} \sin^{2} \theta } \frac{\partial^{2} \psi}{\partial \phi^{2}}\end{split}\]</div>
+</div>
+<div class="section" id="rotations-by-euler-angles">
+<h3>Rotations by Euler angles<a class="headerlink" href="#rotations-by-euler-angles" title="Permalink to this headline">¶</a></h3>
+<p>We represent a 3D rotation operation using Euler angles <span class="math notranslate nohighlight">\(\phi, \theta, \psi\)</span>.  We define the rotation matrix
+<span class="math notranslate nohighlight">\(\mathbf{R}(\phi, \theta, \psi)\)</span> according the three successive rotation matrices, given by</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{R}(\phi, \theta, \psi) = \mathbf{B}(\psi) \cdot \mathbf{C}(\theta) \cdot \mathbf{D}(\phi)\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{D}(\phi) =
+    \begin{bmatrix}
+        \cos \phi &amp; \sin \phi &amp; 0 \\
+        - \sin \phi &amp; \cos \phi &amp; 0 \\
+        0 &amp; 0 &amp; 1
+    \end{bmatrix}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{C}(\theta) =
+    \begin{bmatrix}
+        1 &amp; 0 &amp; 0 \\
+        0 &amp; \cos \theta &amp; \sin \theta \\
+        0 &amp; - \sin \theta &amp; \cos \theta
+    \end{bmatrix}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{B}(\psi) =
+    \begin{bmatrix}
+        \cos \psi &amp; \sin \psi &amp; 0 \\
+        - \sin \psi &amp; \cos \psi &amp; 0 \\
+        0 &amp; 0 &amp; 1
+    \end{bmatrix}\end{split}\]</div>
+<p>The</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/euler_angles.gif"><img alt="Schematic of Euler Angles" src="_images/euler_angles.gif" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic representation of the three rotation processes for our definition of Euler Angles
+(see <a class="reference external" href="https://mathworld.wolfram.com/EulerAngles.html">https://mathworld.wolfram.com/EulerAngles.html</a>).</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="spherical-harmonics">
+<h2>Spherical Harmonics<a class="headerlink" href="#spherical-harmonics" title="Permalink to this headline">¶</a></h2>
+<p>We define the spherical harmonics <span class="math notranslate nohighlight">\(Y_{l}^{m}\)</span>
+accordingly to <a class="reference internal" href="references.html#arfken1999" id="id2"><span>[Arfken1999]</span></a>.
+The spherical harmonics form a complete basis set
+for the 3-dimensional angular Laplacian <span class="math notranslate nohighlight">\(\vec{\nabla}_{u}^{2}\)</span>.
+The range of the indices <span class="math notranslate nohighlight">\(l\)</span> and <span class="math notranslate nohighlight">\(m\)</span> are <span class="math notranslate nohighlight">\(l \in [0, \infty]\)</span> and <span class="math notranslate nohighlight">\(m \in [-l, l]\)</span>.
+We define the spherical harmonics
+as</p>
+<div class="math notranslate nohighlight">
+\[Y_{l}^{m} (\theta, \phi) =
+\sqrt{\frac{2l + 1}{4 \pi} \frac{(l-m)!}{(l+m)!}}
+P_{l}^{m} ( \cos \theta) e^{i m \phi}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P_{l}^{m} (\rho)\)</span> are the associated Legendre polynomials.
+The spherical harmonics satisfy</p>
+<div class="math notranslate nohighlight">
+\[\int d \vec{u} Y_{l}^{m} (\vec{u})
+Y_{l'}^{m'*}(\vec{u}) = \delta_{ll'} \delta_{mm'}\]</div>
+<p>This definition for spherical harmonics forms a complex-valued basis set.
+The <em>tesseral spherical harmonics</em> <span class="math notranslate nohighlight">\(Y_{lm}\)</span> are also used in this repository,
+forming a real-valued basis set that is convenient in some applications.
+The tesseral spherical harmonics are defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; &amp; Y_{lm} =
+\left\{
+    \begin{array}{c}
+        \frac{i}{\sqrt{2}} \left( Y_{l}^{m} - (-1)^{m} Y_{l}^{-m} \right)
+        \hspace{0.5in}  \mathrm{if} \, \, m &lt; 0
+        \\
+        Y_{l}^{0}
+        \hspace{1.9in}  \mathrm{if} \, \, m = 0
+        \\
+        \frac{1}{\sqrt{2}} \left( Y_{l}^{m} + (-1)^{m} Y_{l}^{-m} \right)
+        \hspace{0.5in}  \mathrm{if} \, \, m &gt; 0
+    \end{array}
+\right.\end{split}\]</div>
+<div class="section" id="rotation-of-spherical-harmonics">
+<h3>Rotation of spherical harmonics<a class="headerlink" href="#rotation-of-spherical-harmonics" title="Permalink to this headline">¶</a></h3>
+<p>For many calculations, we need to evaluate the rotated spherical harmonics.
+We define <span class="math notranslate nohighlight">\(\vec{u}'\)</span> as the orientation vector <span class="math notranslate nohighlight">\(\vec{u}\)</span> rotated by the
+Euler angles <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, and <span class="math notranslate nohighlight">\(\gamma\)</span>.
+The spherical harmonic <span class="math notranslate nohighlight">\(Y_{l}^{m}(\vec{u}')\)</span> is determined to be</p>
+<div class="math notranslate nohighlight">
+\[Y_{l}^{m}(\vec{u}') = \sum_{m' = -l}^{l} \mathcal{D}_{l}^{m m'}(\alpha, \beta, \gamma)
+Y_{l}^{m'}(\vec{u})\]</div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Appendix</a><ul>
+<li><a class="reference internal" href="#coordinate-definitions">Coordinate Definitions</a><ul>
+<li><a class="reference internal" href="#spherical-coordinates">Spherical coordinates</a></li>
+<li><a class="reference internal" href="#rotations-by-euler-angles">Rotations by Euler angles</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#spherical-harmonics">Spherical Harmonics</a><ul>
+<li><a class="reference internal" href="#rotation-of-spherical-harmonics">Rotation of spherical harmonics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="active_brown.html"
+                        title="previous chapter">Active-Brownian Dynamics</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">References</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/appendix.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="active_brown.html" title="Active-Brownian Dynamics"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appendix</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
