@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Structure Factor &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polymer Confinement" href="poly_confine.html" />
+    <link rel="prev" title="Wormlike Chain Green’s Function" href="wlcgreen_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="poly_confine.html" title="Polymer Confinement"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlcgreen_notes.html" title="Wormlike Chain Green’s Function"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Structure Factor</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="wlcstruc-notes"></span><div class="section" id="structure-factor">
+<h1>Structure Factor<a class="headerlink" href="#structure-factor" title="Permalink to this headline">¶</a></h1>
+<p>The multi-scale statistical behavior of a polymer chain is frequently characterized by the
+single-chain structure factor.
+The structure factor is directly measured in a
+scattering experiment, and correlating scattering experiments with theoretical
+models provides insight into the physical behavior in
+polymeric fluids.
+From a theoretical perspective, the single-chain structure factor acts as an
+input for treating many-chain systems including
+concentration fluctuations.
+Although the structure factors for both a flexible Gaussian chain
+and a rigid rod are easily expressible, the structure factor of a semiflexible
+polymer is considerably more difficult to predict theoretically,
+largely due to the challenges in acquiring analytical expressions for the
+governing chain statistics.
+Our goal in this section is to apply our exact results to predict the
+structure factor for the wormlike chain model that is valid over the
+entire range of scattering vectors and chain lengths.</p>
+<div class="section" id="two-point-structure-factor">
+<h2>Two-point Structure Factor<a class="headerlink" href="#two-point-structure-factor" title="Permalink to this headline">¶</a></h2>
+<p>We define the structure factor to be</p>
+<div class="math notranslate nohighlight">
+\[S(\vec{k}) = \frac{1}{L^{2}}
+\int_{0}^{L} ds_{1}
+\int_{0}^{L} ds_{2}
+\left&lt; \exp \left[ i \vec{k} \cdot \left( \vec{r}(s_{1})-\vec{r}(s_{2}) \right) \right] \right&gt;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{k}\)</span> is the scattering vector, and
+the angular brackets denote an average with respect to the
+specific model that governs the chain statistics.
+Our current manuscript contains exact results that permit the evaluation of
+the structure factor for the wormlike chain model without excluded volume
+interactions.
+Our definition for the structure factor differs from the conventional definition
+by an extra factor of <span class="math notranslate nohighlight">\(1/L\)</span>, thus rendering a dimensionless
+structure factor that tends to one at zero scattering vector.</p>
+<p>For the wormlike chain model, the structure factor is given by</p>
+<div class="math notranslate nohighlight">
+\[S(\vec{k}) = \frac{2}{N^{2}} \mathcal{L}^{-1} \left[ \frac{G(K;p)}{p^{2}} \right],\]</div>
+<p>where <span class="math notranslate nohighlight">\(K = 2 l_{p} | \vec{k} |\)</span>, <span class="math notranslate nohighlight">\(\mathcal{L}^{-1}\)</span> implies a Laplace
+inversion from <span class="math notranslate nohighlight">\(p\)</span> to <span class="math notranslate nohighlight">\(N=L/(2l_{p})\)</span>, and <span class="math notranslate nohighlight">\(G(K;p)\)</span> is the wormlike chain
+Green function.
+The structure factor is expressible in terms of the magnitude of the scattering vector
+due to the rotational invariance of the governing statistics.
+Using results given in <a class="reference internal" href="wlcgreen_notes.html#wormlike-chain-green-s-function"><span class="std std-ref">Wormlike Chain Green’s Function</span></a>,
+we write the structure factor as</p>
+<div class="math notranslate nohighlight" id="equation-skwlc">
+<span class="eqno">(1)<a class="headerlink" href="#equation-skwlc" title="Permalink to this equation">¶</a></span>\[S(\vec{k}) =
+\frac{2}{N^{2}} \left[
+\frac{N}{j_{0}^{(+)}(K;0)} -
+\frac{\partial_{p} j_{0}^{(+)}(K;0)}{j_{0}^{(+)}(K;0)^{2}}
++ \sum_{\alpha=0}^{\infty}
+\frac{\exp \left( \mathcal{E}_{\alpha} N \right)}{\mathcal{E}_{\alpha}^{2} \partial_{p} j_{0}^{(+)}(K;\mathcal{E}_{\alpha})}
+\right],\]</div>
+<p>where <span class="math notranslate nohighlight">\(j_{0}^{(+)}(K;p)\)</span> and <span class="math notranslate nohighlight">\(\partial_{p} j_{0}^{(+)}(K;p)\)</span> are
+continued-fraction functions that are defined in
+<a class="reference internal" href="wlcgreen_notes.html#wormlike-chain-green-s-function"><span class="std std-ref">Wormlike Chain Green’s Function</span></a>.
+Equation <a class="reference internal" href="#equation-skwlc">(1)</a> is evaluated using methods outlined in
+<a class="reference internal" href="wlcgreen_notes.html#wormlike-chain-green-s-function"><span class="std std-ref">Wormlike Chain Green’s Function</span></a>.
+to find the eigenvalues <span class="math notranslate nohighlight">\(\mathcal{E}_{l}\)</span> and to calculate
+<span class="math notranslate nohighlight">\(j_{0}^{(+)}\)</span> and <span class="math notranslate nohighlight">\(\partial_{p} j_{0}^{(+)}\)</span>.
+The structure factor given by Eq. <a class="reference internal" href="#equation-skwlc">(1)</a> is expressed in arbitrary number of
+dimensions <span class="math notranslate nohighlight">\(D\)</span>, which is generally useful for treating many-chain systems.</p>
+<p>In Ref. <a class="reference internal" href="references.html#spakowitz2004" id="id1"><span>[Spakowitz2004]</span></a>, we present realizations of the
+structure factor for the wormlike chain model in 3 dimensions,
+demonstrating that our exact results
+for wormlike chain statistics in 3 dimensions capture the structure factor
+over all chain lengths and scattering vectors.
+Equation <a class="reference internal" href="#equation-skwlc">(1)</a>, along with the techniques provided in
+<a class="reference internal" href="wlcgreen_notes.html#wormlike-chain-green-s-function"><span class="std std-ref">Wormlike Chain Green’s Function</span></a>,
+provide a convenient methodology for calculating the structure factor
+as a comparison with scattering experiments.
+Specifically, the infinite summation in Eq. <a class="reference internal" href="#equation-skwlc">(1)</a> is truncated at a finite cutoff,
+and the partial summation is evaluated using methods to evaluate
+<span class="math notranslate nohighlight">\(\mathcal{E}_{l}\)</span> found in <a class="reference internal" href="wlcgreen_notes.html#wormlike-chain-green-s-function"><span class="std std-ref">Wormlike Chain Green’s Function</span></a>.
+For most calculations, only a couple of terms are necessary to achieve
+accurate realizations of the structure factor.
+For example, the structure factor in 3 dimensions for a chain
+of length <span class="math notranslate nohighlight">\(N=0.1\)</span> requires only 4 terms in the summation to achieve
+accuracy within 1.76 percent difference from a more accurate calculation with
+30 terms in the summation (emph{i.e.} completely converged in its numerical behavior).
+Since the terms in the summation decay exponentially with <span class="math notranslate nohighlight">\(N\)</span>, larger <span class="math notranslate nohighlight">\(N\)</span> values
+require fewer terms.
+To illustrate this, we note that the structure factor in 3 dimensions for a slightly
+larger chain of length <span class="math notranslate nohighlight">\(N=0.5\)</span> calculated with 4 terms in the summation
+is within <span class="math notranslate nohighlight">\(1.05 \times 10^{-4}\)</span> percent difference from the calculation
+with 30 terms in the summation.
+Therefore, most practical applications of Eq. <a class="reference internal" href="#equation-skwlc">(1)</a> require the inclusion of
+only a couple of terms in the summation.</p>
+</div>
+<div class="section" id="three-point-and-four-point-density-correlation-functions">
+<h2>Three-point and Four-point Density Correlation Functions<a class="headerlink" href="#three-point-and-four-point-density-correlation-functions" title="Permalink to this headline">¶</a></h2>
+<p>We now extend the definition of the structure factor to include 3-point and 4-point
+correlation functions, as these serve as necessary input for
+a density expansion of the free energy
+under the random phase approximation (RPA) to a field-theoretic treatment of polymer solutions.
+The structure factors form the basis of the cubic and quartic vertex functions in the free energy
+expansion due to the connection between the structure factor and correlated density fluctuations
+in the solution.
+We discuss the evaluation of these functions below.</p>
+<div class="section" id="three-point-structure-factor">
+<h3>Three-point structure factor<a class="headerlink" href="#three-point-structure-factor" title="Permalink to this headline">¶</a></h3>
+<p>We define the 3-point structure factor <span class="math notranslate nohighlight">\(S^{(3)}(\vec{k}_{1}, \vec{k}_{2})\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; L) =
+\frac{1}{L^{3}}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\int_{0}^{L} \! \! ds_{3}
+\left&lt; \exp \left[
+i \vec{k}_{1} \cdot \vec{r}(s_{1}) +
+i \vec{k}_{2} \cdot \vec{r}(s_{2}) -
+i \left( \vec{k}_{1} + \vec{k}_{2} \right) \cdot \vec{r}(s_{3})
+\right] \right&gt;.\]</div>
+<p>We note that the 3-point density corelations depend on 3 k-vectors, which satisfy
+<span class="math notranslate nohighlight">\(\vec{k}_{1}+\vec{k}_{2}+\vec{k}_{3}=0\)</span> or <span class="math notranslate nohighlight">\(\vec{k}_{3} = -\vec{k}_{1}-\vec{k}_{2}\)</span>.
+For the wormlike chain model,
+we leverage the Green’s function to evaluate this average.
+For this treatment, we specialize the discussion to 3 dimensions,
+since the evaluation of the average in arbitrary dimensions requires
+rotation operations that are concretely defined in 3 dimensions.
+The 3-point structure factor is
+written in terms of the Green’s function to be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}S^{(3)}(\vec{k}_{1}, \vec{k}_{2}; L) &amp; = &amp;
+\frac{2}{N^{3}}
+\int_{0}^{N} \! \! ds_{3}
+\int_{0}^{s_{3}} \! \! ds_{2}
+\int_{0}^{s_{2}} \! \! ds_{1}
+\int \! \! d \vec{u}_{3}
+\int \! \! d \vec{u}_{2}
+\int \! \! d \vec{u}_{1}
+G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2}; s_{3} - s_{2})
+G(\vec{K}_{1}, \vec{u}_{2} | \vec{u}_{1}; s_{2} - s_{1})
+\\
+&amp;  &amp;
++ \frac{2}{N^{3}}
+\int_{0}^{N} \! \! ds_{3}
+\int_{0}^{s_{3}} \! \! ds_{2}
+\int_{0}^{s_{2}} \! \! ds_{1}
+\int \! \! d \vec{u}_{3}
+\int \! \! d \vec{u}_{2}
+\int \! \! d \vec{u}_{1}
+G(\vec{K}_{1} + \vec{K}_{2}, \vec{u}_{3} | \vec{u}_{2}; s_{3} - s_{2})
+G(\vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1}; s_{2} - s_{1})
+\\
+&amp;  &amp;
++ \frac{2}{N^{3}}
+\int_{0}^{N} \! \! ds_{3}
+\int_{0}^{s_{3}} \! \! ds_{2}
+\int_{0}^{s_{2}} \! \! ds_{1}
+\int \! \! d \vec{u}_{3}
+\int \! \! d \vec{u}_{2}
+\int \! \! d \vec{u}_{1}
+G(\vec{K}_{1}, \vec{u}_{3} | \vec{u}_{2}; s_{3} - s_{2})
+G(-\vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1}; s_{2} - s_{1})\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec{K}_{i} = 2 l_{p} \vec{k}_{i}\)</span>.
+In this calculation, we need to evaluate the rotated spherical harmonics (see <a class="reference internal" href="appendix.html#rotation-of-spherical-harmonics"><span class="std std-ref">Rotation of spherical harmonics</span></a>).</p>
+<p>We develop two methods to evaluate these integrals, which are implemented at small-<span class="math notranslate nohighlight">\(k\)</span> values and
+large-<span class="math notranslate nohighlight">\(k\)</span> values (where <span class="math notranslate nohighlight">\(k = |\vec{k}|\)</span>.  We describe these methods below.</p>
+</div>
+</div>
+<div class="section" id="module-wlcstat.wlcstruc">
+<span id="functions-contained-with-the-wlcstruc-module"></span><h2>Functions contained with the ‘wlcstruc’ module<a class="headerlink" href="#module-wlcstat.wlcstruc" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="wlcstat.wlcstruc.calc_int_mag">
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">calc_int_mag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">poles_vec</span></em>, <em class="sig-param"><span class="n">frac_zero</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#calc_int_mag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.calc_int_mag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the magnitude of the integral for a list of poles (including repeats). This algorithm includes
+cases for single, double, and triple poles (as needed in evaluation of correlation functions)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>poles_vec</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – Array of poles</p></li>
+<li><p><strong>frac_zero</strong> (<em>float</em>) – Multiplicative factor for contributions from poles at p=0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>int_mag</strong> – Value of the integral over chain length for the five poles</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcstruc.eval_legendre">
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">eval_legendre</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rho</span></em>, <em class="sig-param"><span class="n">mu</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#eval_legendre"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.eval_legendre" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the vector of Legendre polynomial values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rho</strong> (<em>float</em>) – Cos theta of the angle</p></li>
+<li><p><strong>mu</strong> (<em>int</em>) – Value of the z-momentum quantum number</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of polynomials evaluated (default 25)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>legendre_poly</strong> – Vector of Legendre polynomials</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcstruc.s2_wlc">
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s2_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s2_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s2_wlc" title="Permalink to this definition">¶</a></dt>
+<dd><p>s2_wlc - Evaluate the 2-point structure factor for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector magnitude <span class="math notranslate nohighlight">\(K\)</span></p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>s2</strong> – Structure factor for the wormlike chain model for every k_val in k_val_vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (vector)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id2"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcstruc.s3_wlc">
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s3_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1_val_vector</span></em>, <em class="sig-param"><span class="n">k2_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s3_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s3_wlc" title="Permalink to this definition">¶</a></dt>
+<dd><p>s3_wlc - Evaluate the 3-point structure factor for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k1_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{1}\)</span></p></li>
+<li><p><strong>k2_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>s3_wlc</strong> – 3-point Structure factor for the wormlike chain model for every k1_val and k2_val
+in k1_val_vector and k2_val_vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (vector)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id3"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcstruc.s4_wlc">
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s4_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1_val_vector</span></em>, <em class="sig-param"><span class="n">k2_val_vector</span></em>, <em class="sig-param"><span class="n">k3_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s4_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s4_wlc" title="Permalink to this definition">¶</a></dt>
+<dd><p>s4_wlc - Evaluate the 4-point structure factor for the wormlike chain model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k1_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{1}\)</span></p></li>
+<li><p><strong>k2_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></li>
+<li><p><strong>k3_val_vector</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The value of the Fourier vector <span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>dimensions</strong> (<em>int</em>) – The number of dimensions (default to 3 dimensions)</p></li>
+<li><p><strong>alpha_max</strong> (<em>int</em>) – Maximum number of poles evaluated (default 25)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>s4_wlc</strong> – 4-point Structure factor for the wormlike chain model for every k1_val, k2_val, k3_val
+in k1_val_vector, k2_val_vector, k3_val_vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float (vector)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See Mehraeen, et al, Phys. Rev. E, 77, 061803 (2008). (Ref <a class="reference internal" href="references.html#mehraeen2008" id="id4"><span>[Mehraeen2008]</span></a>)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="example-usage-of-s2-wlc">
+<h2>Example usage of ‘s2_wlc’<a class="headerlink" href="#example-usage-of-s2-wlc" title="Permalink to this headline">¶</a></h2>
+<p>This plot shows the structure factor for the wormlike chain in 3 dimensions over a range of <span class="math notranslate nohighlight">\(K\)</span>
+for <span class="math notranslate nohighlight">\(N = 0.1\)</span>, <span class="math notranslate nohighlight">\(0.5\)</span>, and <span class="math notranslate nohighlight">\(1.0\)</span>.
+This plot is a reproduction of Fig. 2 in Ref. <a class="reference internal" href="references.html#spakowitz2004" id="id5"><span>[Spakowitz2004]</span></a>.</p>
+<p>(<a class="reference external" href=".//wlcstruc_notes-1.py">Source code</a>, <a class="reference external" href=".//wlcstruc_notes-1.png">png</a>, <a class="reference external" href=".//wlcstruc_notes-1.hires.png">hires.png</a>, <a class="reference external" href=".//wlcstruc_notes-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/wlcstruc_notes-1.png" src="_images/wlcstruc_notes-1.png" />
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Structure Factor</a><ul>
+<li><a class="reference internal" href="#two-point-structure-factor">Two-point Structure Factor</a></li>
+<li><a class="reference internal" href="#three-point-and-four-point-density-correlation-functions">Three-point and Four-point Density Correlation Functions</a><ul>
+<li><a class="reference internal" href="#three-point-structure-factor">Three-point structure factor</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-wlcstat.wlcstruc">Functions contained with the ‘wlcstruc’ module</a></li>
+<li><a class="reference internal" href="#example-usage-of-s2-wlc">Example usage of ‘s2_wlc’</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlcgreen_notes.html"
+                        title="previous chapter">Wormlike Chain Green’s Function</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="poly_confine.html"
+                        title="next chapter">Polymer Confinement</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wlcstruc_notes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="poly_confine.html" title="Polymer Confinement"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlcgreen_notes.html" title="Wormlike Chain Green’s Function"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Structure Factor</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

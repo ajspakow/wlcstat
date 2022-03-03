@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polymer Confinement &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polymer Field Theory: Liquid Crystalline Solutions" href="wlc_lcpoly.html" />
+    <link rel="prev" title="Structure Factor" href="wlcstruc_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlc_lcpoly.html" title="Polymer Field Theory: Liquid Crystalline Solutions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polymer Confinement</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="polymer-confinement">
+<span id="poly-confine"></span><h1>Polymer Confinement<a class="headerlink" href="#polymer-confinement" title="Permalink to this headline">¶</a></h1>
+<p>We consider a flexible Gaussian chain in a spherical confinement of radius <span class="math notranslate nohighlight">\(a\)</span>.
+Within the confinement, the potential is set to zero, i.e. <span class="math notranslate nohighlight">\(V = 0\)</span> for <span class="math notranslate nohighlight">\(R &lt; a\)</span>.
+The Green function is zero outside the confinement, so we enforce the confinement by setting
+<span class="math notranslate nohighlight">\(G = 0\)</span> at <span class="math notranslate nohighlight">\(R = a\)</span> and <span class="math notranslate nohighlight">\(R_{0} = a\)</span>.
+The Green function for the 3-D Gaussian Chain within the confinement obeys</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial G(\vec{R},N|\vec{R}_{0},0)}{\partial N} =
+\frac{b^{2}}{6}
+\vec{\nabla}^{2} G(\vec{R},N|\vec{R}_{0},0)\]</div>
+<p>with the boundary condition</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(\vec{R} = a \hat{e}_{R},N|\vec{R}_{0},0) &amp; = &amp; 0 \\
+G(\vec{R},N|\vec{R}_{0} = a \hat{e}_{R_{0}},0) &amp; = &amp; 0\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{e}_{R}\)</span> and <span class="math notranslate nohighlight">\(\hat{e}_{R_{0}}\)</span> are unit vectors in the
+direction of <span class="math notranslate nohighlight">\(\vec{R}\)</span> and <span class="math notranslate nohighlight">\(\vec{R}_{0}\)</span>, respectively.</p>
+<p>We use separation of variables to solve for the Green function within the confinement.
+We define the position-dependent wavefunction <span class="math notranslate nohighlight">\(\psi_{nlm} = R_{nl}(R) Y_{l}^{m}(\hat{e})\)</span>.
+We non-dimensionalize the radial distance by <span class="math notranslate nohighlight">\(a\)</span>, defining the dimensionless position vector
+<span class="math notranslate nohighlight">\(\vec{r} = \vec{R}/a\)</span>.
+With this definition, we determine the Green function by solving the appropriate
+eigenfunction problem, given by</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{H} \psi_{nlm} =
+\vec{\nabla}^{2} \psi_{nlm} =
+- \lambda_{nlm}^{2} \psi_{nlm}\]</div>
+<p>Inserting our wavefunction into this equation gives the governing equation</p>
+<div class="math notranslate nohighlight">
+\[\left[
+\frac{1}{r^{2}} \frac{d }{dr } r^{2} \frac{d}{d r} - \frac{l(l+1)}{r^{2}}
+\right] R_{nl}(r) = - \lambda_{nl}^{2} R_{nl}(r)\]</div>
+<p>where we note that <span class="math notranslate nohighlight">\(\lambda\)</span> only depends
+on the indices <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(l\)</span>.
+This adopts the form of the spherical Bessel differential equation,
+leading to solutions of the form
+<span class="math notranslate nohighlight">\(R_{nl} = A j_{l}(\lambda_{nl} r) + B y_{l}(\lambda_{nl} r)\)</span>,
+where <span class="math notranslate nohighlight">\(j_{l}\)</span> and <span class="math notranslate nohighlight">\(y_{l}\)</span> are the spherical Bessel functions
+of the first and second kind, respectively.
+Since <span class="math notranslate nohighlight">\(r = 0\)</span> is part of the domain of interest, we exclude <span class="math notranslate nohighlight">\(y_{l}\)</span>
+from our solution, since these functions diverge as <span class="math notranslate nohighlight">\(r \rightarrow 0\)</span>.
+The boundary condition is satisfied by forcing <span class="math notranslate nohighlight">\(R(r = 1) = 0\)</span>, leading
+to the condition <span class="math notranslate nohighlight">\(j_{l} ( \lambda_{nlm}) = 0\)</span>.</p>
+<p>We then write the full solution for the Green function in the form</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{R}|\vec{R}_{0};N) =
+\sum_{nlm} \psi_{nlm} (\vec{R})
+\psi_{nlm}^{*} (\vec{R}_{0})
+\exp \left[
+- \frac{1}{6} \lambda_{nl}^{2}  \frac{b^{2} N}{a^{2}}
+\right]\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\psi_{nlm} (\vec{R}) = A_{nlm} j_{l}(\lambda_{nl} R/a) Y_{l}^{m} (\hat{e})\]</div>
+<p>The normalization constant <span class="math notranslate nohighlight">\(A_{nlm}\)</span> dictates that</p>
+<div class="math notranslate nohighlight">
+\[\int d \hat{e} \int_{0}^{a} dR R^{2} \psi_{nlm} (\vec{R}) \psi_{n'l'm'}^{*} (\vec{R})
+=
+\delta_{nn'}
+\delta_{ll'}
+\delta_{mm'}\]</div>
+<div class="section" id="chain-segmental-density-and-average-position-for-free-ends">
+<h2>Chain segmental density and average position for free ends<a class="headerlink" href="#chain-segmental-density-and-average-position-for-free-ends" title="Permalink to this headline">¶</a></h2>
+<p>From this Green function,
+we now determine the segmental density and average position of a polymer chain within a
+confinement.
+Specifically, we address the behavior for both a chain with free ends and a chain
+with both ends attached to the sphere surface (as
+applied to organization within the yeast nucleus during prophase I of meiosis).
+We define the segmental density for a
+segment at position <span class="math notranslate nohighlight">\(\Delta\)</span> for a
+chain of total length <span class="math notranslate nohighlight">\(N\)</span>.
+For free ends, the segment density is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\rho_{\mathrm{free}}(\vec{R}_{\Delta})
+&amp; = &amp;
+\frac{1}{\mathcal{N}_{\mathrm{free}}} \int d \vec{R} d \vec{R}_{0}
+G(\vec{R}|\vec{R}_{\Delta}; N - \Delta)
+G(\vec{R}_{\Delta}|\vec{R}_{0}; \Delta) \\
+&amp; = &amp;
+\frac{4 a^{-2}}{\mathcal{N}_{\mathrm{free}}}
+\int_{0}^{a} dR R^{2}
+\int_{0}^{a} dR_{0} R_{0}^{2}
+\sum_{n = 1}^{\infty}
+\sum_{n_{0} = 1}^{\infty}
+\frac{\sin (n \pi R / a)}{R}
+\frac{\sin (n \pi R_{\Delta} / a)}{R_{\Delta}}
+\frac{\sin (n_{0} \pi R_{\Delta} / a)}{R_{\Delta}}
+\frac{\sin (n_{0} \pi R_{0} / a)}{R_{0}} \\
+&amp;  &amp;
+\hspace{1in}
+\times
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} (N-\Delta)}{a^{2}}
+\right]
+\exp \left[
+- \frac{1}{6} (n_{0} \pi)^{2}  \frac{b^{2} \Delta}{a^{2}}
+\right] \\
+&amp; = &amp;
+\frac{4 a^{2}}{\mathcal{N}_{\mathrm{free}}}
+\sum_{n = 1}^{\infty}
+\sum_{n_{0} = 1}^{\infty}
+\frac{(-1)^{n}}{(n \pi)}
+\frac{(-1)^{n_{0}}}{(n_{0} \pi)}
+\frac{\sin (n \pi R_{\Delta} / a) \sin (n_{0} \pi R_{\Delta} / a)}{R_{\Delta}^{2}}
+\\
+&amp;  &amp;
+\hspace{1in}
+\times
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} (N-\Delta)}{a^{2}}
+\right]
+\exp \left[
+- \frac{1}{6} (n_{0} \pi)^{2}  \frac{b^{2} \Delta}{a^{2}}
+\right]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{N}_{\mathrm{free}}\)</span> is a normalization constant that ensures
+<span class="math notranslate nohighlight">\(\int d \vec{R}_{\Delta} \rho_{\mathrm{free}}(\vec{R}_{\Delta}) = 1\)</span>.
+With this,
+we find the normalization constant to be</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{N}_{\mathrm{free}}
+= 8 \pi a^{3}
+\sum_{n = 1}^{\infty}
+\frac{1}{(n \pi)^{2}}
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} N}{a^{2}}
+\right]\]</div>
+<p>From this, we find the average squared position of the segment within the sphere
+to be</p>
+<div class="math notranslate nohighlight">
+\[\langle
+R_{\Delta}^{2}
+\rangle_{\mathrm{free}} =
+\frac{16 \pi a^{5}}{\mathcal{N}_{\mathrm{free}}}
+\sum_{n = 1}^{\infty}
+\sum_{n_{0} = 1}^{\infty}
+\frac{(-1)^{n}}{(n \pi)}
+\frac{(-1)^{n_{0}}}{(n_{0} \pi)}
+I_{nn_{0}}
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} (N-\Delta)}{a^{2}}
+\right]
+\exp \left[
+- \frac{1}{6} (n_{0} \pi)^{2}  \frac{b^{2} \Delta}{a^{2}}
+\right]\]</div>
+<p>where the integral factor <span class="math notranslate nohighlight">\(I_{nn_{0}}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[I_{nn_{0}} =
+\frac{4 n n_{0}(-1)^{n} (-1)^{n_{0}}}{(\pi n^{2} - \pi n_{0}^{2})^{2}}\]</div>
+<p>if <span class="math notranslate nohighlight">\(n \ne n_{0}\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[I_{nn} = \frac{1}{6} - \frac{1}{4 \pi^{2} n^{2}}\]</div>
+<p>for the case <span class="math notranslate nohighlight">\(n = n_{0}\)</span>.</p>
+</div>
+<div class="section" id="chain-segmental-density-and-average-position-for-attached-ends">
+<h2>Chain segmental density and average position for attached ends<a class="headerlink" href="#chain-segmental-density-and-average-position-for-attached-ends" title="Permalink to this headline">¶</a></h2>
+<p>We now find the segmental density for the case where the chain ends are attached to the
+sphere surface.
+We assume the ends are free to move on the sphere surface, such that
+<span class="math notranslate nohighlight">\(\vec{R} = (a-\epsilon) \hat{e}\)</span> and <span class="math notranslate nohighlight">\(\vec{R}_{0} = (a-\epsilon) \hat{e}_{0}\)</span>.
+Since the Green function approaches zero on the sphere surface, we set the position a
+small distance <span class="math notranslate nohighlight">\(\epsilon\)</span> within the sphere.
+We will take the limit <span class="math notranslate nohighlight">\(\epsilon \rightarrow 0\)</span> after we find the average to
+determine the limiting behavior for surface attachment.</p>
+<p>With this development, we find the segmental density within the sphere to be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\rho_{\mathrm{surf}}(\vec{R}_{\Delta})
+&amp; = &amp;
+\frac{1}{\mathcal{N}_{\mathrm{surf}}} \int d \hat{e} d \hat{e}_{0}
+G(\vec{R}= (a-\epsilon) \hat{e}|\vec{R}_{\Delta}; N - \Delta)
+G(\vec{R}_{\Delta}|\vec{R}_{0}= (a-\epsilon) \hat{e}_{0}; \Delta) \\
+&amp; = &amp;
+\frac{4 a^{-2}}{\mathcal{N}_{\mathrm{surf}}}
+\sum_{n = 1}^{\infty}
+\sum_{n_{0} = 1}^{\infty}
+\frac{\sin [n \pi (a - \epsilon) / a]}{(a - \epsilon)}
+\frac{\sin (n \pi R_{\Delta} / a)}{R_{\Delta}}
+\frac{\sin (n_{0} \pi R_{\Delta} / a)}{R_{\Delta}}
+\frac{\sin [n_{0} \pi (a - \epsilon) / a]}{(a - \epsilon)} \\
+&amp;  &amp;
+\hspace{1in}
+\times
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} (N-\Delta)}{a^{2}}
+\right]
+\exp \left[
+- \frac{1}{6} (n_{0} \pi)^{2}  \frac{b^{2} \Delta}{a^{2}}
+\right] \\
+&amp; = &amp;
+\frac{4\epsilon^{2} a^{-6}}{\mathcal{N}_{\mathrm{surf}}}
+\sum_{n = 1}^{\infty}
+\sum_{n_{0} = 1}^{\infty}
+(-1)^{n}(n \pi)
+(-1)^{n_{0}}(n_{0} \pi)
+\frac{\sin (n \pi R_{\Delta} / a) \sin (n_{0} \pi R_{\Delta} / a)}{R_{\Delta}^{2}}
+\\
+&amp;  &amp;
+\hspace{1in}
+\times
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} (N-\Delta)}{a^{2}}
+\right]
+\exp \left[
+- \frac{1}{6} (n_{0} \pi)^{2}  \frac{b^{2} \Delta}{a^{2}}
+\right]\end{split}\]</div>
+<p>We find the normalization constant to be</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{N}_{\mathrm{surf}}
+= 8 \pi \epsilon^{2} a^{-5}
+\sum_{n = 1}^{\infty}
+(n \pi)^{2}
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} N}{a^{2}}
+\right]\]</div>
+<p>From this, we find the average squared position of the segment within the sphere
+to be</p>
+<div class="math notranslate nohighlight">
+\[\langle
+R_{\Delta}^{2}
+\rangle_{\mathrm{surf}} =
+\frac{16 \pi \epsilon^{2} a^{-3}}{\mathcal{N}_{\mathrm{surf}}}
+\sum_{n = 1}^{\infty}
+\sum_{n_{0} = 1}^{\infty}
+(-1)^{n}(n \pi)
+(-1)^{n_{0}}(n_{0} \pi)
+I_{nn_{0}}
+\exp \left[
+- \frac{1}{6} (n \pi)^{2}  \frac{b^{2} (N-\Delta)}{a^{2}}
+\right]
+\exp \left[
+- \frac{1}{6} (n_{0} \pi)^{2}  \frac{b^{2} \Delta}{a^{2}}
+\right]\]</div>
+<p>where the integral factor <span class="math notranslate nohighlight">\(I_{nn_{0}}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[I_{nn_{0}} =
+\frac{4 n n_{0}(-1)^{n} (-1)^{n_{0}}}{(\pi n^{2} - \pi n_{0}^{2})^{2}}\]</div>
+<p>if <span class="math notranslate nohighlight">\(n \ne n_{0}\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[I_{nn} = \frac{1}{6} - \frac{1}{4 \pi^{2} n^{2}}\]</div>
+<p>for the case <span class="math notranslate nohighlight">\(n = n_{0}\)</span>.</p>
+<div class="section" id="module-wlcstat.poly_confine">
+<span id="functions-contained-with-the-poly-confine-module"></span><h3>Functions contained with the ‘poly_confine’ module<a class="headerlink" href="#module-wlcstat.poly_confine" title="Permalink to this headline">¶</a></h3>
+<p>poly_confine</p>
+<p>Module containing functions for evaluating the
+statistical behavior of confined polymers</p>
+<dl class="py function">
+<dt id="wlcstat.poly_confine.eval_r2_free">
+<code class="sig-prename descclassname">wlcstat.poly_confine.</code><code class="sig-name descname">eval_r2_free</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n_max</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_confine.html#eval_r2_free"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_confine.eval_r2_free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the average <span class="math notranslate nohighlight">\(\langle R^{2} \rangle\)</span> for a polymer confined within
+a sphere with free ends</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta</strong> (<em>float</em>) – The position of the segment on the polymer for the average</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The total length of the chain (in Kuhn segments)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The value of the Kuhn length (dimensions of length</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – The radius of the confining sphere</p></li>
+<li><p><strong>n_max</strong> (<em>int</em>) – The total number of <span class="math notranslate nohighlight">\(n\)</span> modes in the Bessel function expansion</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>r2</strong> – The average <span class="math notranslate nohighlight">\(\langle R^{2} \rangle\)</span> for a polymer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.poly_confine.eval_r2_surf">
+<code class="sig-prename descclassname">wlcstat.poly_confine.</code><code class="sig-name descname">eval_r2_surf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n_max</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/poly_confine.html#eval_r2_surf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.poly_confine.eval_r2_surf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the average <span class="math notranslate nohighlight">\(\langle R^{2} \rangle\)</span> for a polymer confined within
+a sphere with surface-attached ends</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta</strong> (<em>float</em>) – The position of the segment on the polymer for the average</p></li>
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The total length of the chain (in Kuhn segments)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The value of the Kuhn length (dimensions of length</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – The radius of the confining sphere</p></li>
+<li><p><strong>n_max</strong> (<em>int</em>) – The total number of <span class="math notranslate nohighlight">\(n\)</span> modes in the Bessel function expansion</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>r2</strong> – The average <span class="math notranslate nohighlight">\(\langle R^{2} \rangle\)</span> for a polymer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Polymer Confinement</a><ul>
+<li><a class="reference internal" href="#chain-segmental-density-and-average-position-for-free-ends">Chain segmental density and average position for free ends</a></li>
+<li><a class="reference internal" href="#chain-segmental-density-and-average-position-for-attached-ends">Chain segmental density and average position for attached ends</a><ul>
+<li><a class="reference internal" href="#module-wlcstat.poly_confine">Functions contained with the ‘poly_confine’ module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wlcstruc_notes.html"
+                        title="previous chapter">Structure Factor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wlc_lcpoly.html"
+                        title="next chapter">Polymer Field Theory: Liquid Crystalline Solutions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/poly_confine.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlc_lcpoly.html" title="Polymer Field Theory: Liquid Crystalline Solutions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wlcstruc_notes.html" title="Structure Factor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polymer Confinement</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

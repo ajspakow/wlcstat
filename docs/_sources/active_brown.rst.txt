@@ -186,7 +186,7 @@ The mean-square displacement of a segment of the polymer chain is define as
     \text{MSD}(\tau) = \langle ( \vec{r}(n,t) - \vec{r}(n,0))^{2} \rangle
     :label: msd-active
 
-for the chain position n. In this work, we focus on the midpoint motion at :math:`n=N/2`, but this is easily extended
+for the n. In this work, we focus on the midpoint motion at :math:`n=N/2`, but this is easily extended
 to other polymer positions. We insert our normal-mode representation into Eq. :eq:`msd-active`,
 resulting in the expression
 
