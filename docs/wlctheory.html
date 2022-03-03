@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wormlike Chain Theory &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Average Quantities" href="wlcave_notes.html" />
+    <link rel="prev" title="Chain statistics as a path integral" href="gausstheory.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlcave_notes.html" title="Average Quantities"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gausstheory.html" title="Chain statistics as a path integral"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chain Theory</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wormlike-chain-theory">
+<span id="wlctheory"></span><h1>Wormlike Chain Theory<a class="headerlink" href="#wormlike-chain-theory" title="Permalink to this headline">¶</a></h1>
+<p>The wormlike chain model describes the polymer chain as a continuous
+thread through space that resists bending deformation <a class="reference internal" href="references.html#kratky1949" id="id1"><span>[Kratky1949]</span></a>.
+Subjecting the chain to thermal fluctuations results in a wiggling wormlike
+polymer chain.</p>
+<p>The polymer conformation is defined by a space curve <span class="math notranslate nohighlight">\(\vec{r}(s)\)</span> where
+<span class="math notranslate nohighlight">\(s\)</span> runs from zero to the contour length <span class="math notranslate nohighlight">\(L\)</span>.  The wormlike chain model has
+a fixed length (like the freely jointed chain model), which is
+enforced by setting</p>
+<div class="math notranslate nohighlight">
+\[\left( \frac{\partial \vec{r}(s)}{\partial s} \right)^{\! \! 2} =
+\left( \vec{u}(s) \right)^{2}
+= 1\]</div>
+<p>at all values of <span class="math notranslate nohighlight">\(s\)</span> along the chain, where we define the tangent vector
+<span class="math notranslate nohighlight">\(\vec{u}(s) = \frac{\partial \vec{r}(s)}{\partial s}\)</span>.
+The chain opposes bending deformation, and the bending energy is
+quadratic in the curvature of the chain.  This gives the bending energy</p>
+<div class="math notranslate nohighlight">
+\[E_{bend} = \frac{k_{B}T l_{p}}{2} \int_{0}^{L} ds \left(
+\frac{\partial^{2} \vec{r}(s)}{\partial s^{2}} \right)^{\! \! 2} =
+\frac{k_{B}T l_{p}}{2} \int_{0}^{L} ds \left(
+\frac{\partial \vec{u}(s)}{\partial s} \right)^{\! 2}\]</div>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/wlc-model.pdf"><img alt="Schematic representation of the wormlike chain model and definition of geometric parameters." src="_images/wlc-model.pdf" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Schematic representation of the wormlike chain model and definition of geometric parameters.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="wormlike-chain-model-green-function-path-integral-formulation-and-the-diffusion-equation">
+<h2>Wormlike Chain model Green function—Path integral formulation and the Diffusion equation<a class="headerlink" href="#wormlike-chain-model-green-function-path-integral-formulation-and-the-diffusion-equation" title="Permalink to this headline">¶</a></h2>
+<p>The governing differential equation for the Wormlike Chain model <a class="reference internal" href="references.html#kratky1949" id="id2"><span>[Kratky1949]</span></a> is
+given through the application of the path integral in the
+necessary dimensions.
+The differential Hamiltonian <span class="math notranslate nohighlight">\(\mathcal{H}\)</span> of the Wormlike
+chain model is given by</p>
+<div class="math notranslate nohighlight">
+\[\beta \mathcal{H} = \frac{l_{p}}{2} \left( \frac{\partial \vec{u}}{\partial s} \right)^{2} +\beta V(\vec{r}, \vec{u}),\]</div>
+<p>where the tangent <span class="math notranslate nohighlight">\(\vec{u} = \frac{\partial \vec{r}}{\partial s}\)</span>
+(with constraint <span class="math notranslate nohighlight">\(\left| \frac{\partial \vec{r}}{\partial s} \right|=1\)</span> for all <span class="math notranslate nohighlight">\(s\)</span>).
+Define the Green function <span class="math notranslate nohighlight">\(G(\vec{r}, \vec{u}|\vec{r}_{0},\vec{u}_{0}; L)\)</span> to be the
+probability of finding the chain at location <span class="math notranslate nohighlight">\(\vec{r}\)</span> with
+orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span> at length <span class="math notranslate nohighlight">\(L\)</span> given that the chain begins at
+location <span class="math notranslate nohighlight">\(\vec{r}_{0}\)</span> with orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span>.
+The Markov property of the chain is written as</p>
+<div class="math notranslate nohighlight">
+\[G (\vec{r}_{C}, \vec{u}_{C}, s_{C}|\vec{r}_{A},\vec{u}_{A}, s_{A}) = \int d \vec{r}_{B} d \vec{u}_{B} G (\vec{r}_{C}, \vec{u}_{C}, s_{C}|\vec{r}_{B},\vec{u}_{B}, s_{B}) \times G (\vec{r}_{B}, \vec{u}_{B}, s_{B}|\vec{r}_{A},\vec{u}_{A}, s_{A}).\]</div>
+<p>Set <span class="math notranslate nohighlight">\(s_{A}=0\)</span>, <span class="math notranslate nohighlight">\(s_{B}=L\)</span>, and <span class="math notranslate nohighlight">\(s_{C}=L+\delta\)</span> with
+<span class="math notranslate nohighlight">\(\vec{r}_{A}=\vec{r}_{0}\)</span>,
+<span class="math notranslate nohighlight">\(\vec{r}_{B}=\vec{r}_{1}\)</span>, and
+<span class="math notranslate nohighlight">\(\vec{r}_{C}=\vec{r}\)</span> to find the governing diffusion equation
+for <span class="math notranslate nohighlight">\(G(\vec{r},\vec{u}|\vec{r}_{0},\vec{u}_{0};L)\)</span>.</p>
+<p>In the limit <span class="math notranslate nohighlight">\(\delta \rightarrow 0\)</span>, the Green function
+<span class="math notranslate nohighlight">\(G(\vec{r},\vec{u}, N+\delta | \vec{r},\vec{u},N)\)</span> will be dominated by a single path whose action is</p>
+<div class="math notranslate nohighlight">
+\[S \approx \frac{l_{p}}{2} \delta \left( \frac{ \vec{u} - \vec{u}_{1}}{\delta} \right)^{2} + \delta \beta V \!\! \left( \frac{\vec{r}+\vec{r}_{1}}{2} \right).\]</div>
+<p>The Green function for this path is thus</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{r}, \vec{u}, L + \delta| \vec{r}_{1}, \vec{u}_{1}, L) =
+\frac{\delta (\vec{r} - \vec{r}_{1} - \vec{u} \delta )}{A} \exp \!
+\left( \frac{l_{p}}{\delta} \vec{u} \cdot \vec{u}_{1} \right) \exp (-\delta \beta V)\]</div>
+<p>where the normalization constant <span class="math notranslate nohighlight">\(A\)</span> is to be
+determined in the limit of <span class="math notranslate nohighlight">\(\delta\)</span> approaching zero, and
+the delta function is added to the Green function to conserve the path length.
+The Green function is now given by</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{r}, \vec{u}, L + \delta| \vec{r}_{0}, \vec{u}_{0}, 0)   =
+\int \frac{\delta (\vec{r} - \vec{r}_{1} - \vec{u} \delta )}{A}
+\exp \left( \frac{l_{p}}{\delta} \vec{u} \cdot \vec{u}_{1}
+\right)\exp (-\delta \beta V)  \times G(\vec{r}_{1}, \vec{u}_{1},L
+| \vec{r}_{0}, \vec{u}_{0},0) d \vec{r}_{1} d \vec{u}_{1}.\]</div>
+<p>Assume only small deviations from <span class="math notranslate nohighlight">\(\vec{r}\)</span> and <span class="math notranslate nohighlight">\(\vec{u}\)</span>
+will contribute to the integral.  Expand the Green function
+<span class="math notranslate nohighlight">\(G(\vec{r}_{1}, \vec{u}_{1}, L| \vec{r}_{0},\vec{u}_{0},0)\)</span> about <span class="math notranslate nohighlight">\(\vec{r}\)</span>
+and <span class="math notranslate nohighlight">\(\vec{u}\)</span> to quadratic order in the deviation to find the
+leading order change in the propagated Green function.</p>
+<p>The resulting expansion is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(\vec{r}_{1}, \vec{u}_{1}, L| \vec{r}_{0},\vec{u}_{0},0)
+&amp; = &amp;
+G(\vec{r}, \vec{u}, L| \vec{r}_{0},\vec{u}_{0},0)-
+\frac{\partial G}{\partial \vec{r}} \cdot \Delta \vec{r}
+- \frac{\partial G}{\partial \vec{u}} \cdot \Delta \vec{u} \nonumber \\
+&amp;   &amp;
+\hspace{-1in}
++ \frac{1}{2} \frac{\partial^{2} G}{\partial \vec{r}^{2}}
+: \Delta \vec{r} \Delta \vec{r}
++ \frac{1}{2} \frac{\partial^{2} G}{\partial \vec{u}^{2}}
+: \Delta \vec{u} \Delta \vec{u}
++ \frac{\partial^{2} G}{\partial \vec{r} \partial \vec{u}}
+: \Delta \vec{r} \Delta \vec{u}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta \vec{r} = \vec{r} - \vec{r}_{1}\)</span> and
+<span class="math notranslate nohighlight">\(\Delta \vec{u} = \vec{u} - \vec{u}_{1}\)</span>.
+The double dot operation between two tensors acts as <span class="math notranslate nohighlight">\(\textbf{A}:\textbf{B} = A_{ij} B_{ji}\)</span>.
+The normalization constant is found by requiring the leading term
+to approach unity as the time change <span class="math notranslate nohighlight">\(\delta\)</span> approaches zero.
+The following integral determines <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{1}{A} \int \delta(\vec{r} - \vec{r}_{1} - \vec{u} \delta )
+\exp \left( \frac{l_{p}}{\delta}
+\vec{u} \cdot \vec{u}_{1} \right)
+d \vec{u}_{1} d \vec{r}_{1} &amp; = &amp; \nonumber \\
+\hspace{-0.5in}
+\frac{1}{A} \int \delta(\vec{r} - \vec{r}_{1} - \vec{u} \delta )
+\left[ \int_{0}^{2 \pi} \int_{0}^{\pi}
+\exp \left( \frac{l_{p}}{\delta} \cos \theta \right) \sin \theta
+d \theta d \phi \right] d \vec{r}_{1} &amp; = &amp; \nonumber \\
+\frac{1}{A} \frac{4 \pi \delta}{l_{p}} \sinh
+\left( \frac{l_{p}}{\delta} \right) &amp; = &amp; 1\end{split}\]</div>
+<p>thus <span class="math notranslate nohighlight">\(A = \frac{4 \pi \delta}{l_{p}} \sinh \left( \frac{l_{p}}{\delta} \right)\)</span>.
+The leading order
+response of the Green function is found by evaluating the averaged
+quantities within the integrand.  Define the average of a given
+quantity to be</p>
+<div class="math notranslate nohighlight">
+\[\left&lt; ... \right&gt; = \int d \vec{u}_{1} \frac{1}{A}
+\exp (h \vec{u} \cdot \vec{u}_{1}) (...),\]</div>
+<p>where <span class="math notranslate nohighlight">\(h = \frac{l_{p}}{\delta}\)</span>.</p>
+<p>We must find the
+following quantities: <span class="math notranslate nohighlight">\(\left&lt; \Delta \vec{r} \right&gt;\)</span>,
+<span class="math notranslate nohighlight">\(\left&lt; \Delta \vec{u} \right&gt;\)</span>, and
+<span class="math notranslate nohighlight">\(\left&lt; \Delta \vec{u} \Delta \vec{u} \right&gt;\)</span>.  The other averages
+( <span class="math notranslate nohighlight">\(\left&lt; \Delta \vec{r} \Delta \vec{r} \right&gt;\)</span> and
+<span class="math notranslate nohighlight">\(\left&lt; \Delta \vec{r} \Delta \vec{u} \right&gt;\)</span> ) yield
+terms of quadratic order in <span class="math notranslate nohighlight">\(\delta\)</span>, thus they do not contribute
+to the lowest order response.
+For convenience, define the vector
+quantity <span class="math notranslate nohighlight">\(\vec{h} = h \vec{u}\)</span> for use in this derivation.
+The average quantity
+<span class="math notranslate nohighlight">\(\langle \Delta \vec{u} \rangle\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \Delta \vec{u} \rangle &amp; = &amp; \vec{u} - \langle \vec{u}_{1} \rangle \nonumber \\
+&amp; = &amp; \vec{u} - \frac{1}{A} \int d \vec{u}_{1} \exp
+( \vec{h} \cdot \vec{u}_{1} ) \vec{u}_{1} \nonumber \\
+&amp; = &amp; \vec{u} - \frac{1}{A} %\vec{\nabla}_{h}
+\frac{\partial A}{\partial \vec{h}} \nonumber \\
+&amp; = &amp; \vec{u} - \frac{4 \pi \vec{u}}{A}
+\left( \frac{ \cosh (h) }{h} - \frac{\sinh (h)}{h^{2}} \right) \nonumber \\
+&amp; = &amp; \vec{u} (1 - \coth (h) + h^{-1} ).\end{split}\]</div>
+<p>Thus, in the limit of <span class="math notranslate nohighlight">\(h \rightarrow \infty\)</span>, the quantity
+<span class="math notranslate nohighlight">\(\langle \Delta \vec{u} \rangle = \frac{\vec{u} \delta}{l_{p}}\)</span>.
+The average quantity <span class="math notranslate nohighlight">\(\langle \Delta \vec{u} \Delta \vec{u} \rangle\)</span>
+is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \Delta \vec{u} \Delta \vec{u} \rangle &amp; = &amp; \vec{u} \vec{u}
+- \vec{u} \langle \vec{u}_{1} \rangle - \langle \vec{u}_{1} \rangle \vec{u}
++ \langle \vec{u}_{1} \vec{u}_{1} \rangle \nonumber \\
+&amp; = &amp; \frac{2 \delta}{l_{p}} \vec{u} \vec{u}
+- \vec{u} \vec{u} + \langle \vec{u}_{1} \vec{u}_{1} \rangle \nonumber \\
+&amp; = &amp; \frac{2 \delta}{l_{p}} \vec{u} \vec{u}
+- \vec{u} \vec{u} + \frac{1}{A}
+\frac{\partial^{2} A}{\partial \vec{h} \partial \vec{h}}.\end{split}\]</div>
+<p>The following quantity is found to complete the derivation:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^{2} A}{\partial \vec{h} \partial \vec{h}}
+= 4 \pi \mathbf{I}
+\left( \frac{\cosh (h)}{h^{2}} - \frac{\sinh (h)}{h^{3}} \right) +
+4 \pi \vec{h} \vec{h}
+\left( \frac{ \sinh (h)}{h^{3}} - \frac{3 \cosh (h)}{h^{4}} + \frac{3 \sinh (h)}{h^{5}} \right).\]</div>
+<p>This is evaluated and the limit as <span class="math notranslate nohighlight">\(h\)</span> approaches infinity yields
+the solution of <span class="math notranslate nohighlight">\(\langle \Delta \vec{u} \Delta \vec{u} \rangle
+= \frac{\delta}{l_{p}} ( \mathbf{I} - \vec{u} \vec{u} )\)</span>.
+Altogether the Green function obeys</p>
+<div class="math notranslate nohighlight">
+\[G + \frac{\partial G}{\partial s} \delta = G - \beta V G \delta
+- \frac{\partial G}{\partial \vec{r}} \cdot \vec{u} \delta
+- \frac{\partial G}{\partial \vec{u}} \cdot  \frac{\vec{u}}{l_{p}} \delta
++ \frac{1}{2} \vec{\nabla}_{u} \vec{\nabla}_{u} G :
+\frac{\delta}{l_{p}} ( \mathbf{I} - \vec{u} \vec{u} )\]</div>
+<p>This differential equation is further simplified by noting that
+<span class="math notranslate nohighlight">\(\vec{u} \cdot \vec{\nabla}_{u} = 0\)</span> and
+<span class="math notranslate nohighlight">\(\vec{u} \vec{u} : \vec{\nabla}_{u} \vec{\nabla}_{u} = 0\)</span>.
+The final differential equation for the Green function is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial G(\vec{r}, \vec{u}, L| \vec{r}_{0}, \vec{u}_{0}, 0)}{\partial L} &amp; = &amp;
+- \beta V G(\vec{r}, \vec{u}, L| \vec{r}_{0}, \vec{u}_{0}, 0) \nonumber \\
+&amp;  &amp;
+- \vec{u} \cdot \vec{\nabla}_{r} G(\vec{r}, \vec{u}, L| \vec{r}_{0}, \vec{u}_{0}, 0) + \frac{1}{2 l_{p}}
+\vec{\nabla}_{u}^{2} G(\vec{r}, \vec{u}, L | \vec{r}_{0}, \vec{u}_{0}, 0),\end{split}\]</div>
+<p>with the initial condition <span class="math notranslate nohighlight">\(G(\vec{r}, \vec{u}, 0 | \vec{r}_{0}, \vec{u}_{0}, 0)=
+\delta(\vec{r}-\vec{r}_{0})\delta(\vec{u}-\vec{u}_{0})\)</span>.</p>
+</div>
+<div class="section" id="orientation-statistics">
+<h2>Orientation statistics<a class="headerlink" href="#orientation-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Consider the case <span class="math notranslate nohighlight">\(V=0\)</span>.
+Define the Fourier transform (and inverse transform) of a function <span class="math notranslate nohighlight">\(f(\vec{r})\)</span> from <span class="math notranslate nohighlight">\(\vec{r}\)</span> to <span class="math notranslate nohighlight">\(\vec{k}\)</span> to be</p>
+<div class="math notranslate nohighlight">
+\[\tilde{f}(\vec{k}) =
+\int d \vec{r} f(\vec{r}) \exp \left( i \vec{k} \cdot \vec{r} \right) %= \tilde{f}(\vec{k})
+\hspace{0.1in}
+\mathrm{and}
+\hspace{0.1in}
+f(\vec{r}) =
+\frac{1}{(2\pi)^{3}} \int d \vec{k} \tilde{f} ( \vec{k})\exp \left( -i \vec{k} \cdot \vec{r} \right)\]</div>
+<p>The governing differential equation for <span class="math notranslate nohighlight">\(\tilde{G}(\vec{k},\vec{u}|\vec{u}_{0};L)\)</span> for <span class="math notranslate nohighlight">\(V=0\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \tilde{G}(\vec{k},\vec{u}|\vec{u}_{0};L)}{\partial L} =
+\left(i\vec{k} \cdot \vec{u} +
+\frac{1}{2 l_{p}} \vec{\nabla}_{u}^{2}
+\right)
+\tilde{G}(\vec{k},\vec{u}|\vec{u}_{0};L)\]</div>
+<p>with initial condition
+<span class="math notranslate nohighlight">\(\tilde{G}(\vec{k},\vec{u}|\vec{u}_{0};0)=\exp (i\vec{k} \cdot \vec{r}_{0}) \delta(\vec{u}-\vec{u}_{0})\)</span></p>
+<p>The integral of the Green function over the position <span class="math notranslate nohighlight">\(\vec{r}\)</span> is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{u}|\vec{u}_{0};L) = \int d \vec{r} G(\vec{r}, \vec{u}, L | \vec{r}_{0}, \vec{u}_{0}, 0)
+= \tilde{G}(\vec{k}=\vec{0},\vec{u}|\vec{u}_{0};L),\]</div>
+<p>which gives the orientation-only chain statistics, i.e. the probability that a chain begin with
+orientation <span class="math notranslate nohighlight">\(\vec{u}_{0}\)</span> and ends with orientation <span class="math notranslate nohighlight">\(\vec{u}\)</span> regardless of the end positions.
+The orientation Green function <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L)\)</span> satisfies</p>
+<div class="math notranslate nohighlight" id="equation-gudiffeqn">
+<span class="eqno">(1)<a class="headerlink" href="#equation-gudiffeqn" title="Permalink to this equation">¶</a></span>\[\frac{\partial G(\vec{u}|\vec{u}_{0};L)}{\partial L} =
+\frac{1}{2 l_{p}} \vec{\nabla}_{u}^{2}
+G(\vec{u}|\vec{u}_{0};L)\]</div>
+<p>with initial condition <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L) = \delta(\vec{u}-\vec{u}_{0})\)</span>.</p>
+<p>Here, we note that the operator <span class="math notranslate nohighlight">\(\vec{\nabla}_{u}^{2}\)</span> has eigenfunctions <span class="math notranslate nohighlight">\(Y_{l}^{m}\)</span> that satisfy</p>
+<div class="math notranslate nohighlight">
+\[\vec{\nabla}_{u}^{2} Y_{l}^{m} = - l(l+1) Y_{l}^{m}.\]</div>
+<p>The eigenfunctions <span class="math notranslate nohighlight">\(Y_{l}^{m}\)</span> are the spherical
+harmonics <a class="reference internal" href="references.html#arfken1999" id="id3"><span>[Arfken1999]</span></a> that form a complete basis set for the 3-dimensional angular Laplacian <span class="math notranslate nohighlight">\(\vec{\nabla}_{u}^{2}\)</span>.
+This basis set is extended to arbitrary dimensions as the hyperspherical harmonics,
+and we will make use of this extension in coming chapters.
+The range of the indices <span class="math notranslate nohighlight">\(l\)</span> and <span class="math notranslate nohighlight">\(m\)</span> are <span class="math notranslate nohighlight">\(l \in [0, \infty]\)</span> and <span class="math notranslate nohighlight">\(m \in [-l, l]\)</span>.
+The spherical harmonics satisfy</p>
+<div class="math notranslate nohighlight">
+\[\int d \vec{u} Y_{l}^{m} (\vec{u})
+Y_{l'}^{m'*}(\vec{u}) = \delta_{ll'} \delta_{mm'}\]</div>
+<p>The solution for <span class="math notranslate nohighlight">\(G(\vec{u}|\vec{u}_{0};L)\)</span> is constructed as an expansion in the spherical harmonics, such that</p>
+<div class="math notranslate nohighlight" id="equation-guwlc">
+<span class="eqno">(2)<a class="headerlink" href="#equation-guwlc" title="Permalink to this equation">¶</a></span>\[G(\vec{u}|\vec{u}_{0};L) = \sum_{l=0}^{\infty} \sum_{m=-l}^{l}
+Y_{l}^{m} (\vec{u})
+Y_{l}^{m*}(\vec{u}_{0}) \exp [-l(l+1)N]\]</div>
+<p>where <span class="math notranslate nohighlight">\(N=L/(2l_{p})\)</span>.
+This form satisfies the governing Schrödinger equation (Eq. <a class="reference internal" href="#equation-gudiffeqn">(1)</a>), and the initial condition
+is captured by noting that</p>
+<div class="math notranslate nohighlight">
+\[\sum_{l=0}^{\infty} \sum_{m=-l}^{l}
+Y_{l}^{m} (\vec{u})
+Y_{l}^{m*}(\vec{u}_{0}) = \delta \left( \vec{u} - \vec{u}_{0} \right).\]</div>
+<p>This development enables the evaluations of average quantities (as discussed in the Average Quantities section).</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wormlike Chain Theory</a><ul>
+<li><a class="reference internal" href="#wormlike-chain-model-green-function-path-integral-formulation-and-the-diffusion-equation">Wormlike Chain model Green function—Path integral formulation and the Diffusion equation</a></li>
+<li><a class="reference internal" href="#orientation-statistics">Orientation statistics</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gausstheory.html"
+                        title="previous chapter">Chain statistics as a path integral</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wlcave_notes.html"
+                        title="next chapter">Average Quantities</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wlctheory.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wlcave_notes.html" title="Average Quantities"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gausstheory.html" title="Chain statistics as a path integral"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wormlike Chain Theory</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

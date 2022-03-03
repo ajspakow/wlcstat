@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wlcstat.active_brown &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.active_brown</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for wlcstat.active_brown</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Active-Brownian dynamics</span>
+
+<span class="sd">Notes</span>
+<span class="sd">-----</span>
+<span class="sd">Detailed derivations for MSD and MSCD are found in &quot;Interplay of active and thermal fluctuations in polymer dynamics&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># import mpmath</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="mscd_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.mscd_active">[docs]</a><span class="k">def</span> <span class="nf">mscd_active</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute mscd for two points on an active-Brownian polymer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : (M,) float, array_like</span>
+<span class="sd">        Times at which to evaluate the MSCD</span>
+<span class="sd">    length_kuhn : float</span>
+<span class="sd">        Length of the chain (in Kuhn segments)</span>
+<span class="sd">    delta : float</span>
+<span class="sd">        Length of the chain between loci (in Kuhn segments)</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        Active force rate constant</span>
+<span class="sd">    gamma : float</span>
+<span class="sd">        Magnitude of the active forces</span>
+<span class="sd">    b : float</span>
+<span class="sd">        The Kuhn length (in desired length units).</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        how many Rouse modes to include in the sum</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mscd : (M,) np.array&lt;float&gt;</span>
+<span class="sd">        result</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mscd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">msd_coeff</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">msd_p</span> <span class="o">=</span> <span class="n">msd_coeff</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                        <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+                                        <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                        <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ka</span> <span class="o">*</span> <span class="n">t</span><span class="p">))))</span>
+        <span class="n">mscd</span> <span class="o">+=</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">msd_p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">/</span> <span class="n">length_kuhn</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">mscd</span></div>
+
+
+<div class="viewcode-block" id="mscd_plateau_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.mscd_plateau_active">[docs]</a><span class="k">def</span> <span class="nf">mscd_plateau_active</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute mscd plateau for two points on an active-Brownian polymer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    length_kuhn : float</span>
+<span class="sd">        Length of the chain (in Kuhn segments)</span>
+<span class="sd">    delta : float, array_like</span>
+<span class="sd">        Length of the chain between loci (in Kuhn segments)</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        Active force rate constant</span>
+<span class="sd">    gamma : float</span>
+<span class="sd">        Magnitude of the active forces</span>
+<span class="sd">    b : float</span>
+<span class="sd">        The Kuhn length (in desired length units).</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        how many Rouse modes to include in the sum</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mscd_plateau : (M,) np.array&lt;float&gt;</span>
+<span class="sd">        result</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mscd_plateau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+
+    <span class="n">msd_coeff</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">msd_p</span> <span class="o">=</span> <span class="n">msd_coeff</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+                                        <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+        <span class="n">mscd_plateau</span> <span class="o">+=</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">msd_p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">/</span> <span class="n">length_kuhn</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">mscd_plateau</span></div>
+
+
+<div class="viewcode-block" id="structure_factor_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.structure_factor_active">[docs]</a><span class="k">def</span> <span class="nf">structure_factor_active</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nint</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k</span>
+<span class="sd">    t</span>
+<span class="sd">    length_kuhn</span>
+<span class="sd">    ka</span>
+<span class="sd">    gamma</span>
+<span class="sd">    b</span>
+<span class="sd">    num_nint</span>
+<span class="sd">    num_modes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">)</span>
+    <span class="n">dn</span> <span class="o">=</span> <span class="n">n_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">n_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">structure_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">i_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i_t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">t_i</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t_i</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span>
+
+        <span class="n">delta_r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">))</span>
+
+        <span class="c1"># Case 1: time == 0 (not confirmed)</span>
+        <span class="k">if</span> <span class="n">t_i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">delta_n1_n2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">n_vec</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                                 <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_vec</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="mi">1</span><span class="p">))))</span>
+
+            <span class="n">exp_diff_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ka</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ka</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="mi">1</span><span class="p">))))</span>
+            <span class="n">sum_n1_n2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">n_vec</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                               <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_vec</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="mi">1</span><span class="p">))))</span>
+
+            <span class="n">delta_r2</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">delta_n1_n2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">)</span>
+            <span class="n">delta_r2</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ka</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+                                 <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ka</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_n1_n2</span><span class="p">)</span>
+                                 <span class="o">-</span> <span class="n">exp_diff_mat</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ka</span><span class="p">)</span> <span class="o">*</span> <span class="n">sum_n1_n2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">delta_r2</span> <span class="o">*=</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Case 2: time != 0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cp_coef</span> <span class="o">=</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">cp</span> <span class="o">=</span> <span class="n">cp_coef</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_i</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                         <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+                                                 <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_i</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                                <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ka</span> <span class="o">*</span> <span class="n">t_i</span><span class="p">)))</span>
+                <span class="n">cp0</span> <span class="o">=</span> <span class="n">cp_coef</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+                <span class="n">phip1_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="n">phip1_phip2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">))</span>
+                <span class="n">delta_r2</span> <span class="o">+=</span> <span class="n">cp0</span> <span class="o">*</span> <span class="p">(</span><span class="n">phip1_2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phip1_2</span><span class="p">))</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cp</span> <span class="o">*</span> <span class="n">phip1_phip2</span>
+
+        <span class="k">for</span> <span class="n">i_k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span>
+            <span class="n">integrand_n1_n2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">k</span><span class="p">[</span><span class="n">i_k</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">delta_r2</span><span class="p">)</span>
+            <span class="n">integrand_n1</span> <span class="o">=</span> <span class="n">dn</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">integrand_n1_n2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                                 <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1_n2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1_n2</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">structure_factor</span><span class="p">[</span><span class="n">i_k</span><span class="p">,</span> <span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">dn</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">integrand_n1</span><span class="p">)</span>
+                                               <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">structure_factor</span></div>
+
+
+<div class="viewcode-block" id="flow_spec_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.flow_spec_active">[docs]</a><span class="k">def</span> <span class="nf">flow_spec_active</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nint</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k</span>
+<span class="sd">    t</span>
+<span class="sd">    length_kuhn</span>
+<span class="sd">    ka</span>
+<span class="sd">    gamma</span>
+<span class="sd">    b</span>
+<span class="sd">    num_nint</span>
+<span class="sd">    num_modes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">)</span>
+    <span class="n">dn</span> <span class="o">=</span> <span class="n">n_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">n_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">structure_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">i_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i_t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">t_i</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t_i</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span>
+        <span class="n">delta_r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">))</span>
+        <span class="n">vel_int2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">))</span>
+        <span class="n">cp_coef</span> <span class="o">=</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">vel_int1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="n">t_i</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">ka</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ka</span> <span class="o">*</span> <span class="n">t_i</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">cp</span> <span class="o">=</span> <span class="n">cp_coef</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_i</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                     <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+                                             <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_i</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                             <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ka</span> <span class="o">*</span> <span class="n">t_i</span><span class="p">)))</span>
+            <span class="n">cp0</span> <span class="o">=</span> <span class="n">cp_coef</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+            <span class="n">phip1_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_nint</span><span class="p">,</span> <span class="n">num_nint</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">phip1_phip2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n_vec</span><span class="p">))</span>
+            <span class="n">delta_r2</span> <span class="o">+=</span> <span class="n">cp0</span> <span class="o">*</span> <span class="p">(</span><span class="n">phip1_2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phip1_2</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">vel_int1</span> <span class="o">+=</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">cp0</span> <span class="o">-</span> <span class="n">cp</span><span class="p">)</span> <span class="o">*</span> <span class="n">phip1_phip2</span>
+            <span class="n">vel_int2</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">cp0</span> <span class="o">-</span> <span class="n">cp</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">phip1_2</span> <span class="o">-</span> <span class="n">phip1_phip2</span><span class="p">)</span>
+
+        <span class="n">vel_int2</span> <span class="o">=</span> <span class="n">vel_int2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">vel_int2</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i_k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span>
+            <span class="n">integrand_n1_n2</span> <span class="o">=</span> <span class="p">(</span><span class="n">vel_int1</span> <span class="o">+</span> <span class="n">vel_int2</span> <span class="o">*</span> <span class="n">k</span><span class="p">[</span><span class="n">i_k</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">k</span><span class="p">[</span><span class="n">i_k</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">delta_r2</span><span class="p">)</span>
+            <span class="n">integrand_n1</span> <span class="o">=</span> <span class="n">dn</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">integrand_n1_n2</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+                                 <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1_n2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1_n2</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">structure_factor</span><span class="p">[</span><span class="n">i_k</span><span class="p">,</span> <span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">length_kuhn</span> <span class="o">/</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dn</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">integrand_n1</span><span class="p">)</span>
+                                               <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">integrand_n1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">structure_factor</span></div>
+
+
+<div class="viewcode-block" id="phi_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.phi_active">[docs]</a><span class="k">def</span> <span class="nf">phi_active</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t</span>
+<span class="sd">    length_kuhn</span>
+<span class="sd">    ka</span>
+<span class="sd">    gamma</span>
+<span class="sd">    b</span>
+<span class="sd">    num_modes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    phia</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">phia</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">phia_coeff</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="mi">1</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ka</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ka</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">phi_p</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                        <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ka</span> <span class="o">*</span> <span class="n">t</span><span class="p">)))</span>
+        <span class="n">phia</span> <span class="o">+=</span> <span class="n">phi_p</span>
+
+    <span class="n">phia</span> <span class="o">=</span> <span class="n">phia_coeff</span> <span class="o">*</span> <span class="n">phia</span>
+
+    <span class="k">return</span> <span class="n">phia</span></div>
+
+
+<div class="viewcode-block" id="msd_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.msd_active">[docs]</a><span class="k">def</span> <span class="nf">msd_active</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">length_kuhn</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute msd for the midpoint points on an active-Brownian polymer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : (M,) float, array_like</span>
+<span class="sd">        Times at which to evaluate the MSCD</span>
+<span class="sd">    length_kuhn : float</span>
+<span class="sd">        Length of the chain (in Kuhn segments)</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        Active force rate constant</span>
+<span class="sd">    gamma : float</span>
+<span class="sd">        Magnitude of the active forces</span>
+<span class="sd">    b : float</span>
+<span class="sd">        The Kuhn length (in desired length units).</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        how many Rouse modes to include in the sum</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    msd : (M,) np.array&lt;float&gt;</span>
+<span class="sd">        result</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msd_coeff</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span><span class="p">)</span>
+    <span class="n">msd_com</span> <span class="o">=</span> <span class="n">msd_coeff</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">ka</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ka</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">msd</span> <span class="o">=</span> <span class="n">msd_com</span>
+
+    <span class="n">msd_coeff</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">msd_p</span> <span class="o">=</span> <span class="n">msd_coeff</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                        <span class="o">+</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+                                                <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                                                <span class="o">-</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ka</span> <span class="o">*</span> <span class="n">t</span><span class="p">))))</span>
+        <span class="n">msd</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">msd_p</span>
+
+    <span class="k">return</span> <span class="n">msd</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="gen_conf_rouse_active"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.gen_conf_rouse_active">[docs]</a><span class="k">def</span> <span class="nf">gen_conf_rouse_active</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">,</span> <span class="n">num_beads</span><span class="p">,</span> <span class="n">ka</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">force_calc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_modes</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a discrete chain based on the active-Brownian Rouse model</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    length_kuhn : float</span>
+<span class="sd">        Length of the chain (in Kuhn segments)</span>
+<span class="sd">    num_beads : int</span>
+<span class="sd">        Number of beads in the discrete chain</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        Active force rate constant</span>
+<span class="sd">    gamma : float</span>
+<span class="sd">        Magnitude of the active forces</span>
+<span class="sd">    b : float</span>
+<span class="sd">        Kuhn length</span>
+<span class="sd">    num_modes : int</span>
+<span class="sd">        Number of Rouse modes in calculation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    r_poly : (num_beads, 3) float</span>
+<span class="sd">        Conformation of the chain subjected to active-Brownian forces</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">force_calc</span><span class="p">:</span>
+        <span class="c1"># Calculate the conformation without determining the active and Brownian force</span>
+        <span class="n">r_poly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_beads</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_beads</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">sig_fp_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">ka</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">ka_tilde</span> <span class="o">=</span> <span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">sig_xp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sig_fp_tilde</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ka_tilde</span><span class="p">))</span>
+            <span class="n">xp_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">sig_xp</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">ind</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_beads</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">r_poly</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xp_tilde</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">r_poly</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Calculate the conformation, Brownian force, and active force</span>
+        <span class="n">r_poly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_beads</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">f_active</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_beads</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_beads</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_modes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">sig_fp_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">ka</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">ka_tilde</span> <span class="o">=</span> <span class="n">ka</span> <span class="o">*</span> <span class="n">length_kuhn</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">p</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">fp_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">sig_fp_tilde</span>
+            <span class="n">mu_xp</span> <span class="o">=</span> <span class="n">fp_tilde</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ka_tilde</span><span class="p">)</span>
+            <span class="n">sig_xp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sig_fp_tilde</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ka_tilde</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ka_tilde</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">xp_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">sig_xp</span> <span class="o">+</span> <span class="n">mu_xp</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">ind</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_beads</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">r_poly</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xp_tilde</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">f_active</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">fp_tilde</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">length_kuhn</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">b</span>
+
+        <span class="k">return</span> <span class="n">r_poly</span><span class="p">,</span> <span class="n">f_active</span></div>
+
+
+<div class="viewcode-block" id="gen_pymol_file"><a class="viewcode-back" href="../../active_brown.html#wlcstat.active_brown.gen_pymol_file">[docs]</a><span class="k">def</span> <span class="nf">gen_pymol_file</span><span class="p">(</span><span class="n">r_poly</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;r_poly.pdb&#39;</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r_poly : (num_beads, 3) float</span>
+<span class="sd">        Conformation of the chain subjected to active-Brownian forces</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        File name to write the pdb file</span>
+<span class="sd">    ring : bool</span>
+<span class="sd">        Boolean to close the polymer into a ring</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Open the file</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="n">atomname1</span> <span class="o">=</span> <span class="s2">&quot;A1&quot;</span>    <span class="c1"># Chain atom type</span>
+    <span class="n">atomname2</span> <span class="o">=</span> <span class="s2">&quot;A2&quot;</span>    <span class="c1"># Chain atom type</span>
+    <span class="n">resname</span> <span class="o">=</span> <span class="s2">&quot;SSN&quot;</span>     <span class="c1"># Type of residue (UNKnown/Single Stranded Nucleotide)</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>         <span class="c1"># Chain identifier</span>
+    <span class="n">resnum</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">numresidues</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">r_poly</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">descrip</span> <span class="o">=</span> <span class="s2">&quot;Pseudo atom representation of DNA&quot;</span>
+    <span class="n">chemicalname</span> <span class="o">=</span> <span class="s2">&quot;Body and ribbon spatial coordinates&quot;</span>
+
+    <span class="c1"># Write the preamble to the pymol file</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;HET    </span><span class="si">%3s</span><span class="s1">  </span><span class="si">%1s%4d</span><span class="s1">   </span><span class="si">%5d</span><span class="s1">     </span><span class="si">%-38s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">resname</span><span class="p">,</span> <span class="n">chain</span><span class="p">,</span> <span class="n">resnum</span><span class="p">,</span> <span class="n">numresidues</span><span class="p">,</span> <span class="n">descrip</span><span class="p">))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;HETNAM     </span><span class="si">%3s</span><span class="s1"> </span><span class="si">%-50s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">resname</span><span class="p">,</span> <span class="n">chemicalname</span><span class="p">))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;FORMUL  1   </span><span class="si">%3s</span><span class="s1">    C20 N20 P21</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">resname</span><span class="p">))</span>
+
+    <span class="c1"># Write the conformation to the pymol file</span>
+
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numresidues</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;ATOM</span><span class="si">%7d</span><span class="s1"> </span><span class="si">%4s</span><span class="s1"> </span><span class="si">%3s</span><span class="s1"> </span><span class="si">%1s</span><span class="s1">        </span><span class="si">%8.3f%8.3f%8.3f%6.2f%6.2f</span><span class="s1">           C</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">atomname1</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">chain</span><span class="p">,</span> <span class="n">r_poly</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">r_poly</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">r_poly</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">))</span>
+
+    <span class="c1"># Define the connectivity in the chain</span>
+
+    <span class="k">if</span> <span class="n">ring</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;CONECT</span><span class="si">%5d%5d%5d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">numresidues</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;CONECT</span><span class="si">%5d%5d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">numresidues</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;CONECT</span><span class="si">%5d%5d%5d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">ind</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">ring</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;CONECT</span><span class="si">%5d%5d%5d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numresidues</span><span class="p">,</span> <span class="n">numresidues</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;CONECT</span><span class="si">%5d%5d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numresidues</span><span class="p">,</span> <span class="n">numresidues</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Close the file</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;END&#39;</span><span class="p">)</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">wlcstat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wlcstat.active_brown</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
