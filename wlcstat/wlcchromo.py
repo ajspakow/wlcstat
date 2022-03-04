@@ -74,3 +74,43 @@ def s2_wlc_monomers(k_val_vector, delta, epsilon=1, length_kuhn, dimensions=3, a
                 
 
     return s2
+
+
+# Two-point structure factor weighted by protein binding to mark
+
+def s2_wlc_one_mark(k_val_vector, N, exp_sigma, epsilon=1, dimensions=3, alpha_max=25):
+    r"""
+    s2_wlc_one_mark - Evaluate the 2-point structure factor for the wormlike chain model weighted by protein binding for one protein type: sum(S_{ij}<\sigma^\alpha_j>)
+
+    Parameters
+    ----------
+    k_val_vector : float (array)
+        The value of the Fourier vector magnitude :math:`K`
+    N : int
+        The number of monomers in the polymer.
+    exp_sigma : float (N-by-1 array)
+        The expected number of proteins bound to each monomer of the polymer.
+    epsilon : float
+        The monomer length in Kuhn lengths (default 1)
+    dimensions : int
+        The number of dimensions (default to 3 dimensions)
+    alpha_max : int
+        Maximum number of poles evaluated (default 25)
+
+    Returns
+    -------
+    s2 : float (vector)
+        Sum over all monomer pairs of S_{ij}<sigma_j> for each value of k
+    """
+    
+    if type(exp_sigma) == float or type(exp_sigma) == int:
+        exp_sigma = exp_sigma*np.ones(N)
+        
+    deltas = np.arange(0, N+1)*epsilon
+    s_monos = s2_wlc_monomers(k_val_vector, deltas, epsilon, N*epsilon, dimensions, alpha_max)
+
+    s2 = np.zeros(len(k_val_vector), dtype=type(1+1j))
+
+    for ind_k_val in range(0, len(k_val_vector)):
+
+    return s2
