@@ -76,11 +76,11 @@ def s2_wlc_monomers(k_val_vector, delta, epsilon=1, length_kuhn, dimensions=3, a
     return s2
 
 
-# Two-point structure factor weighted by protein binding to mark
+# Two-point structure factors weighted by protein binding to marks
 
-def s2_wlc_one_mark(k_val_vector, N, exp_sigma, epsilon=1, dimensions=3, alpha_max=25):
+def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, dimensions=3, alpha_max=25):
     r"""
-    s2_wlc_one_mark - Evaluate the 2-point structure factor for the wormlike chain model weighted by protein binding for one protein type: sum(S_{ij}<\sigma^\alpha_j>)
+    s2_wlc_marked - Evaluate the 2-point structure factor for the wormlike chain model weighted by protein binding for various types
 
     Parameters
     ----------
@@ -88,8 +88,12 @@ def s2_wlc_one_mark(k_val_vector, N, exp_sigma, epsilon=1, dimensions=3, alpha_m
         The value of the Fourier vector magnitude :math:`K`
     N : int
         The number of monomers in the polymer.
-    exp_sigma : float (N-by-1 array)
-        The expected number of proteins bound to each monomer of the polymer.
+    M : int
+        The number of mark types.
+    exp_sigma : float (N-by-M array)
+        The expected number of proteins of each type (M) bound to each monomer (N) of the polymer.
+    exp_sigma_squared : float (N-by-M array)
+        The expected squared number <sigma^2> of proteins of each type (M) bound to each monomer (N) of the polymer.
     epsilon : float
         The monomer length in Kuhn lengths (default 1)
     dimensions : int
@@ -99,18 +103,36 @@ def s2_wlc_one_mark(k_val_vector, N, exp_sigma, epsilon=1, dimensions=3, alpha_m
 
     Returns
     -------
-    s2 : float (vector)
-        Sum over all monomer pairs of S_{ij}<sigma_j> for each value of k
+    s2List : List of float (vector)
+        First element: sum over all monomer pairs of S_{ij}<sigma_j> for each value of k and mark type
+        Second element: sum over all monomer pairs of S_{ij}<sigma_i^\alpha><sigma_j^\beta> for each value of k and pairs of mark types (1,1; 1,2; 1,3; ... 1,M; 2,2; ... M,M)
     """
     
     if type(exp_sigma) == float or type(exp_sigma) == int:
-        exp_sigma = exp_sigma*np.ones(N)
+        exp_sigma = exp_sigma*np.ones(N,M)
         
-    deltas = np.arange(0, N+1)*epsilon
-    s_monos = s2_wlc_monomers(k_val_vector, deltas, epsilon, N*epsilon, dimensions, alpha_max)
+    deltas = np.arange(0, N)
+    s_monos = s2_wlc_monomers(k_val_vector, deltas*epsilon, epsilon, N*epsilon, dimensions, alpha_max)
 
-    s2 = np.zeros(len(k_val_vector), dtype=type(1+1j))
+    s2_one_mark = np.zeros(len(k_val_vector), M, dtype=type(1+1j))
+    s2_two_marks = np.zeros(len(k_val_vector), np.round(M*(M+1)/2), dtype=type(1+1j))
 
     for ind_k_val in range(0, len(k_val_vector)):
-
-    return s2
+        for ind_delta in range(0, len(deltas)):
+            for ind_polymer in range(0,N-deltas[ind_delta]):
+                ind = 0
+                for ind_mark1 in range(0,M):
+                    s2_one_mark[ind_k_val,ind_mark1] += s_monos[k_val_vector, ind_delta]*(exp_sigma[ind_polymer,ind_mark1] + 
+                                                                                          exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
+                    for ind_mark2 in range(ind_mark1,M):
+                        if ind_mark1 == ind_mark2 and delta == 0:
+                            s2_two_marks[ind_k_val,ind] += s_monos[k_val_vector, ind_delta]*exp_sigma_squared[ind_polymer,ind_mark1]
+                            ind++
+                        else:
+                            s2_two_marks[ind_k_val,ind] += s_monos[k_val_vector, ind_delta]*(exp_sigma[ind_polymer,ind_mark1]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark2]+
+                                                                                             exp_sigma[ind_polymer,ind_mark2]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
+                            ind++             
+    s2_one_mark /= N ** 2
+    s2_two_marks /= N ** 2
+    
+    return [s2_one_mark, s2_two_marks]
