@@ -34,6 +34,9 @@ def s2_wlc_monomers(k_val_vector, delta, length_kuhn, epsilon=1, dimensions=3, a
     
     if type(delta) == float or type(delta) == int:
         delta = np.array([delta])
+        
+    if type(k_val_vector) == float or type(k_val_vector) == int:
+        k_val_vector = np.array([k_val_vector])
 
     s2 = np.zeros((len(k_val_vector), len(delta)), dtype=type(1+1j))
 
@@ -61,8 +64,8 @@ def s2_wlc_monomers(k_val_vector, delta, length_kuhn, epsilon=1, dimensions=3, a
                 s2[ind_k_val, ind_delta] *= 2 / epsilon ** 2
 
                 # Reset the s2 value if below the cutoff
-                if k_val < k_cutoff[ind_length]:
-                    s2[ind_k_val, ind_length] = 1
+                if k_val < k_cutoff:
+                    s2[ind_k_val, ind_delta] = 1
             elif delta[ind_delta] >= epsilon:
                 for alpha in range(0, alpha_max):
                     s2[ind_k_val, ind_delta] += residues[alpha]*np.exp(poles[alpha] * delta[ind_delta]) * (np.cosh(poles[alpha] * delta[ind_delta]) - 1) / poles[alpha] ** 2
@@ -70,9 +73,8 @@ def s2_wlc_monomers(k_val_vector, delta, length_kuhn, epsilon=1, dimensions=3, a
                 s2[ind_k_val, ind_delta] *= 2 / epsilon ** 2
                 
                 # Reset the s2 value if below the cutoff
-                if k_val < k_cutoff[ind_length]:
-                    s2[ind_k_val, ind_length] = 1
-                
+                if k_val < k_cutoff:
+                    s2[ind_k_val, ind_delta] = 1
     return s2
 
 
@@ -108,30 +110,34 @@ def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, d
         Second element: sum over all monomer pairs of S_{ij}<sigma_i^\alpha><sigma_j^\beta> for each value of k and pairs of mark types (1,1; 1,2; 1,3; ... 1,M; 2,2; ... M,M)
     """
     
+    if type(k_val_vector) == float or type(k_val_vector) == int:
+        k_val_vector = np.array([k_val_vector])
+    
     if type(exp_sigma) == float or type(exp_sigma) == int:
-        exp_sigma = exp_sigma*np.ones(N,M)
+        exp_sigma = exp_sigma*np.ones((N,M))
+        
+    if type(exp_sigma_squared) == float or type(exp_sigma_squared) == int:
+        exp_sigma_squared = exp_sigma_squared*np.ones((N,M))
         
     deltas = np.arange(0, N)
     s_monos = s2_wlc_monomers(k_val_vector, deltas*epsilon, N*epsilon, epsilon, dimensions, alpha_max)
 
-    s2_one_mark = np.zeros(len(k_val_vector), M, dtype=type(1+1j))
-    s2_two_marks = np.zeros(len(k_val_vector), np.round(M*(M+1)/2), dtype=type(1+1j))
+    s2_one_mark = np.zeros((len(k_val_vector), M), dtype=type(1+1j))
+    s2_two_marks = np.zeros((len(k_val_vector), int(np.round(M*(M+1)/2))), dtype=type(1+1j))
 
     for ind_k_val in range(0, len(k_val_vector)):
         for ind_delta in range(0, len(deltas)):
             for ind_polymer in range(0,N-deltas[ind_delta]):
                 ind = 0
                 for ind_mark1 in range(0,M):
-                    s2_one_mark[ind_k_val,ind_mark1] += s_monos[k_val_vector, ind_delta]*(exp_sigma[ind_polymer,ind_mark1] + 
-                                                                                          exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
+                    s2_one_mark[ind_k_val,ind_mark1] += s_monos[ind_k_val, ind_delta]*(exp_sigma[ind_polymer,ind_mark1] + exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
                     for ind_mark2 in range(ind_mark1,M):
-                        if ind_mark1 == ind_mark2 and delta == 0:
-                            s2_two_marks[ind_k_val,ind] += s_monos[k_val_vector, ind_delta]*exp_sigma_squared[ind_polymer,ind_mark1]
+                        if ind_mark1 == ind_mark2 and deltas[ind_delta] == 0:
+                            s2_two_marks[ind_k_val,ind] += s_monos[ind_k_val, ind_delta]*exp_sigma_squared[ind_polymer,ind_mark1]
                             ind += 1
                         else:
-                            s2_two_marks[ind_k_val,ind] += s_monos[k_val_vector, ind_delta]*(exp_sigma[ind_polymer,ind_mark1]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark2]+
-                                                                                             exp_sigma[ind_polymer,ind_mark2]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
-                            ind += 1             
+                            s2_two_marks[ind_k_val,ind] += s_monos[ind_k_val, ind_delta]*(exp_sigma[ind_polymer,ind_mark1]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark2]+exp_sigma[ind_polymer,ind_mark2]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
+                            ind += 1           
     s2_one_mark /= N ** 2
     s2_two_marks /= N ** 2
     
