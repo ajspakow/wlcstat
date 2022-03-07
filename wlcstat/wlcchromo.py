@@ -127,11 +127,11 @@ def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, d
                     for ind_mark2 in range(ind_mark1,M):
                         if ind_mark1 == ind_mark2 and delta == 0:
                             s2_two_marks[ind_k_val,ind] += s_monos[k_val_vector, ind_delta]*exp_sigma_squared[ind_polymer,ind_mark1]
-                            ind++
+                            ind += 1
                         else:
                             s2_two_marks[ind_k_val,ind] += s_monos[k_val_vector, ind_delta]*(exp_sigma[ind_polymer,ind_mark1]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark2]+
                                                                                              exp_sigma[ind_polymer,ind_mark2]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
-                            ind++             
+                            ind += 1             
     s2_one_mark /= N ** 2
     s2_two_marks /= N ** 2
     
