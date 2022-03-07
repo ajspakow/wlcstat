@@ -7,7 +7,7 @@ import scipy as sp
 
 # Component of structure factor between two monomers
 
-def s2_wlc_monomers(k_val_vector, delta, epsilon=1, length_kuhn, dimensions=3, alpha_max=25):
+def s2_wlc_monomers(k_val_vector, delta, length_kuhn, epsilon=1, dimensions=3, alpha_max=25):
     r"""
     s2_wlc_monomers - Evaluate the component of the 2-point structure factor between two monomers for the wormlike chain model
 
@@ -112,7 +112,7 @@ def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, d
         exp_sigma = exp_sigma*np.ones(N,M)
         
     deltas = np.arange(0, N)
-    s_monos = s2_wlc_monomers(k_val_vector, deltas*epsilon, epsilon, N*epsilon, dimensions, alpha_max)
+    s_monos = s2_wlc_monomers(k_val_vector, deltas*epsilon, N*epsilon, epsilon, dimensions, alpha_max)
 
     s2_one_mark = np.zeros(len(k_val_vector), M, dtype=type(1+1j))
     s2_two_marks = np.zeros(len(k_val_vector), np.round(M*(M+1)/2), dtype=type(1+1j))
