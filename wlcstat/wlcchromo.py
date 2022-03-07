@@ -71,8 +71,8 @@ def s2_wlc_monomers(k_val_vector, delta, epsilon=1, length_kuhn, dimensions=3, a
                 
                 # Reset the s2 value if below the cutoff
                 if k_val < k_cutoff[ind_length]:
+                    s2[ind_k_val, ind_length] = 1
                 
-
     return s2
 
 
