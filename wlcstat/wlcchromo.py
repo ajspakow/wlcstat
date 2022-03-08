@@ -80,7 +80,7 @@ def s2_wlc_monomers(k_val_vector, delta, length_kuhn, epsilon=1, dimensions=3, a
 
 # Two-point structure factors weighted by protein binding to marks
 
-def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, dimensions=3, alpha_max=25, delta_max = 10000):
+def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, dimensions=3, alpha_max=25, delta_max = np.Inf):
     r"""
     s2_wlc_marked - Evaluate the 2-point structure factor for the wormlike chain model weighted by protein binding for various types
 
@@ -124,7 +124,6 @@ def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, d
     deltas = np.arange(0, np.min([N, delta_max]))
     s_monos = s2_wlc_monomers(k_val_vector, deltas*epsilon, N*epsilon, epsilon, dimensions, alpha_max)
     
-    
     one_mark_coeffs = np.zeros((len(deltas),M))
     two_mark_coeffs = np.zeros((len(deltas),M,M))
     
@@ -140,46 +139,20 @@ def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, d
         for ind_mark1 in range(0,M):
             one_mark_coeffs[ind_delta,ind_mark1] = one_mark_coeffs[ind_delta-1,ind_mark1] - (exp_sigma[ind_delta-1,ind_mark1] + exp_sigma[-ind_delta,ind_mark1])
             for ind_mark2 in range(ind_mark1,M):
-                two_mark_coeffs[ind_delta,ind_mark1,ind_mark2] = np.dot(exp_sigma[:,ind_mark1], np.pad(exp_sigma[ind_delta:,ind_mark2],(0,ind_delta)) + np.pad(exp_sigma[:-ind_delta,ind_mark2],(ind_delta,0)))
+                two_mark_coeffs[ind_delta,ind_mark1,ind_mark2] = np.dot(exp_sigma[:-ind_delta,ind_mark1], exp_sigma[ind_delta:,ind_mark2]) + np.dot(exp_sigma[ind_delta:,ind_mark1], exp_sigma[:-ind_delta,ind_mark2])
     
     one_mark_coeffs[0,:] /= 2
         
     s2_one_mark = np.zeros((len(k_val_vector), M), dtype=type(1+1j))
     s2_two_marks = np.zeros((len(k_val_vector), int(np.round(M*(M+1)/2))), dtype=type(1+1j))
-
-
-    for ind_k_val in range(0, len(k_val_vector)):
-        for ind_delta in range(0, len(deltas)):
-            sm = 0
-            ind = 0
-            for ind_mark1 in range(0,M):
-                s2_one_mark[ind_k_val,ind_mark1] += s_monos[ind_k_val, ind_delta]*one_mark_coeffs[ind_delta,ind_mark1]
-                sm += s_monos[ind_k_val, ind_delta]*one_mark_coeffs[ind_delta,ind_mark1]
-                for ind_mark2 in range(ind_mark1,M):
-                    s2_two_marks[ind_k_val,ind] += s_monos[ind_k_val, ind_delta]*two_mark_coeffs[ind_delta,ind_mark1,ind_mark2]
-                    ind += 1        
-            #print("Delta = " + str(deltas[ind_delta]) + " and Sum = " + str(sm))
-
-    # Old code that doesn't calculate coefficients, used for testing
-    """
-    for ind_k_val in range(0, len(k_val_vector)):
-        for ind_delta in range(0, len(deltas)):
-            sm = 0
-            for ind_polymer in range(0,N-deltas[ind_delta]):
-                ind = 0
-                for ind_mark1 in range(0,M):
-                    s2_one_mark[ind_k_val,ind_mark1] += s_monos[ind_k_val, ind_delta]*(exp_sigma[ind_polymer,ind_mark1] + exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
-                    sm += s_monos[ind_k_val, ind_delta]*(exp_sigma[ind_polymer,ind_mark1] + exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
-                    for ind_mark2 in range(ind_mark1,M):
-                        if ind_mark1 == ind_mark2 and deltas[ind_delta] == 0:
-                            s2_two_marks[ind_k_val,ind] += s_monos[ind_k_val, ind_delta]*exp_sigma_squared[ind_polymer,ind_mark1]
-                            ind += 1
-                        else:
-                            s2_two_marks[ind_k_val,ind] += s_monos[ind_k_val, ind_delta]*(exp_sigma[ind_polymer,ind_mark1]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark2]+exp_sigma[ind_polymer,ind_mark2]*exp_sigma[ind_polymer+deltas[ind_delta],ind_mark1])/(1 + int(deltas[ind_delta]==0))
-                            ind += 1        
-            print("Delta = " + str(deltas[ind_delta]) + " and Sum = " + str(sm))
-    """
     
+    ind_marks = 0
+    for ind_mark1 in range(0,M):
+        s2_one_mark[:,ind_mark1] = np.tensordot(s_monos,one_mark_coeffs[:,ind_mark1],1)
+        for ind_mark2 in range(ind_mark1,M):
+            s2_two_marks[:,ind_marks] = np.tensordot(s_monos,two_mark_coeffs[:,ind_mark1,ind_mark2],1)
+            ind_marks += 1
+ 
     s2_one_mark /= N ** 2
     s2_two_marks /= N ** 2
     
