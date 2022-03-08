@@ -96,7 +96,7 @@ Geometry and topology of space curves
 Geometric quantities
 ********************
 
-The geometry of a single curve is described by :math:`\vec{r}(s)`.
+The geometry of a single curve is described by the space curve :math:`\vec{r}(s)`.
 The local deformation of the chain from a straight conformation
 described by the curvatures :math:`\omega_{i}`,
 where :math:`\omega_{1}` and :math:`\omega_{2}` are bend curvatures (related to :math:`\kappa`)
