@@ -103,7 +103,7 @@ def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, d
     alpha_max : int
         Maximum number of poles evaluated (default 25)
     delta_max : int
-        Maximum distance along polymer chain that contributes to structure factor (default 10000)
+        Maximum interaction distance along polymer chain that contributes to structure factor (default Infinity)
 
     Returns
     -------
