@@ -157,3 +157,66 @@ def s2_wlc_marked(k_val_vector, N, M, exp_sigma, exp_sigma_squared, epsilon=1, d
     s2_two_marks /= N ** 2
     
     return [s2_one_mark, s2_two_marks]
+
+
+# Calculate expected number of reader proteins bound to each nucleosome
+
+def exp_sigma_calc(marks, mu, e_bind, J, phi_p, v_p=np.pi/6):
+    r"""
+    exp_sigma_calc - Evaluate <sigma> and <sigma^2> as a function of marks
+
+    Parameters
+    ----------
+    marks : N-by-M int array
+        The number of tails marked with each mark (M) on each nucleosome (N)
+    mu : M-by-1 float array
+        Chemical potential of each reader protein (units k_BT)
+    e_bind : M-by-1 float array
+        The binding energy for each mark (units k_BT)
+    J : M-by-M float array
+        Symmetric array with coupling energy per volume between reader proteins
+    phi_p : Float, 0 < phi_p < 1
+        Volume fraction taken up by polymer vs. solvent
+    v_p : Float
+        Volume of a nucleosome in Kuhn lengths^3 (default = pi/6)
+
+    Returns
+    -------
+    sigmaList : list of two N-by-M float arrays
+        <sigma> and <sigma^2> for each mark type on each nucleosome
+    """
+    
+    N = marks.shape[0]
+    
+    if len(marks.shape) == 1:
+        marks = marks.reshape((N,1))
+        
+    M = marks.shape[1]
+    
+    # Numerically solve mean protein densities rho
+    def density_func(rho):
+        sm = np.zeros(M)
+        for i in range(0,N):            
+            kappa = mu+np.multiply(e_bind,marks[i,:])+np.sum(np.multiply(J,rho),0)
+            sm += np.divide((2*np.exp(kappa) + 2*np.exp(2*kappa)), (1+2*np.exp(kappa) + np.exp(2*kappa)))/N
+        return sm - rho*v_p/phi_p
+
+    # Avoid wells by starting search at both maximum and minimum rho
+    # One of these will often trigger a warning, but the other should be fine
+    rho_hi = sp.optimize.fsolve(density_func,np.ones(M)*2*phi_p/v_p)
+    rho_lo = sp.optimize.fsolve(density_func,np.zeros(M))
+    
+    rho = rho_lo
+    if np.linalg.norm(density_func(rho_hi)) + 1e-10 < np.linalg.norm(density_func(rho_lo)):
+        rho = rho_hi
+    print("Error = " + str(np.linalg.norm(density_func(rho))))
+        
+    sigma = np.zeros((N,M))
+    sigma_squared = np.zeros((N,M))
+    
+    for i in range(0,N):
+        kappa = mu+np.multiply(e_bind,marks[i,:])+np.sum(np.multiply(J,rho),0)
+        sigma[i,:] = np.divide((2*np.exp(kappa) + 2*np.exp(2*kappa)), (1+2*np.exp(kappa) + np.exp(2*kappa)))
+        sigma_squared[i,:] = np.divide((2*np.exp(kappa) + 4*np.exp(2*kappa)), (1+2*np.exp(kappa) + np.exp(2*kappa)))
+        
+    return [sigma,sigma_squared]
