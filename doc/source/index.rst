@@ -8,13 +8,9 @@ Theoretical background for these functions is systematically developed
 in the associated pages, including derivations and example calculations.
 These theoretical developments represent an overview of analytical theory
 developed in the Spakowitz lab at Stanford University
-(`Spakowitz lab website <https://web.stanford.edu/~ajspakow/>`_).
+(`Spakowitz lab website <https://web.stanford.edu/~ajspakow/>`_).<LIli>>
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-    Gaussian Chain Theory <gausstheory>
+    Gaussian Chain Theory <gausstheor
 
     Wormlike Chain Theory <wlctheory>
 
