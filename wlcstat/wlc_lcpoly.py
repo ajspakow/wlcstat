@@ -564,7 +564,7 @@ def eval_residues_lcpoly(lam, m, poles, l_zero_only=True, l_max=25, alpha_max=25
         j_plus[ind_l] = poles[ind_alpha] + l * (l + 1) - lam * (a_l_m[ind_l] ** 2 - 1 / 3)
         djdp_plus[ind_l] = 1
 
-        for l in reversed(range(abs(m), l_cont_frac_max, 2)):
+        for l in reversed(range(abs(m), l_cont_frac_max - 1, 2)):
             ind_l = l - abs(m)
             j_plus[ind_l] = (poles[ind_alpha] + l * (l + 1) - lam * (a_l_m[ind_l] ** 2 + a_l_m[ind_l + 1] ** 2 - 1 / 3)
                              - (a_l_m[ind_l + 1] * a_l_m[ind_l + 2] * lam) ** 2 / j_plus[ind_l + 2])
@@ -589,7 +589,7 @@ def eval_residues_lcpoly(lam, m, poles, l_zero_only=True, l_max=25, alpha_max=25
         j_plus[ind_l] = poles[ind_alpha] + l * (l + 1) - lam * (a_l_m[ind_l] ** 2 + a_l_m[ind_l + 1] ** 2 - 1 / 3)
         djdp_plus[ind_l] = 1
 
-        for l in reversed(range(abs(m) + 1, l_cont_frac_max - 1, 2)):
+        for l in reversed(range(abs(m) + 1, l_cont_frac_max - 2, 2)):
             ind_l = l - abs(m)
             j_plus[ind_l] = (poles[ind_alpha] + l * (l + 1) - lam * (a_l_m[ind_l] ** 2 + a_l_m[ind_l + 1] ** 2 - 1 / 3)
                              - (a_l_m[ind_l + 1] * a_l_m[ind_l + 2] * lam) ** 2 / j_plus[ind_l + 2])
@@ -646,7 +646,7 @@ def eval_residues_lcpoly(lam, m, poles, l_zero_only=True, l_max=25, alpha_max=25
                                                          j_minus[1:ind_alpha:2])))
                 w_prod_right = np.cumprod(lam * a_l_m[(ind_alpha + 1):(l_max - abs(m)):2] *
                                           a_l_m[(ind_alpha + 2):(l_max - abs(m) + 1):2] /
-                                          j_plus[(ind_alpha + 1):(l_max - abs(m)):2])
+                                          j_plus[(ind_alpha + 2):(l_max - abs(m) + 1):2])
                 w_prod = np.concatenate((w_prod_left, np.ones(1), w_prod_right))
                 residues[(abs(m) + 1)::2, (abs(m) + 1)::2, ind_alpha] = np.outer(w_prod, w_prod) * w_alpha
 
