@@ -6,6 +6,9 @@ References
 
 .. Spakowitz Lab references
 
+.. [Spakowitz2003]
+    A. J. Spakowitz and Z.-G. Wang. "Semiflexible polymer solutions. I. phase behavior and single-chain statistics." J. Chem. Phys. 119, 24 (2003): 13113.
+
 .. [Spakowitz2004]
     Spakowitz, Andrew J., and Zhen-Gang Wang. "Exact results for a semiflexible polymer chain in an aligning field." Macromolecules 37.15 (2004): 5814-5823.
 
@@ -16,10 +19,10 @@ References
     Spakowitz, A. J. "Wormlike chain statistics with twist and fixed ends." EPL (Europhysics Letters) 73.5 (2006): 684.
 
 .. [Mehraeen2008]
-    Mehraeen, Shafigh, et al. "End-to-end distribution for a wormlike chain in arbitrary dimensions." Physical Review E 77.6 (2008): 061803.
+    S. Mehraeen, B. Sudhanshu, E. F. Koslover, A. J. Spakowitz. "End-to-end distribution for a wormlike chain in arbitrary dimensions." Physical Review E 77.6 (2008): 061803.
 
-.. [Spakowitz2003]
-    A. J. Spakowitz and Z.-G. Wang. "Semiflexible polymer solutions. I. phase behavior and single-chain statistics." J. Chem. Phys. 119, 24 (2003): 13113.
+.. [Beltran2019]
+    B. Beltran, D. Kannan, Q. MacPherson, and A. J. Spakowitz. "Geometrical heterogeneity dominates thermal fluctuations in facilitating chromatin contacts,” Physical Review Letters 123, 208103 (2019).
 
 .. Wormlike Chain references
 

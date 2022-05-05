@@ -125,7 +125,7 @@ def s3_wlc(k1_val_vector, k2_val_vector, length_kuhn, dimensions=3, alpha_max=25
 
         # Evaluate the angular arguments for the Legendre polynomials
 
-        rho_12 = -np.dot(k1_val, k2_val) / (k1_mag * k2_mag)        # Cos angle between k1 and k2
+        rho_12 = - np.dot(k1_val, k2_val) / (k1_mag * k2_mag)        # Cos angle between k1 and k2
         rho_112 = np.dot(k1_val, k12_val) / (k1_mag * k12_mag)      # Cos angle between k1 and k2
         rho_212 = np.dot(k2_val, k12_val) / (k2_mag * k12_mag)      # Cos angle between k1 and k2
 

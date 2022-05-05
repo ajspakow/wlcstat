@@ -1,0 +1,669 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chromosomal DNA &#8212; wlcstat  documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polymer Dynamics" href="poly_dyn.html" />
+    <link rel="prev" title="Wormlike Chains with Twist, Helices, and Ribbons" href="twlc_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="poly_dyn.html" title="Polymer Dynamics"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="twlc_notes.html" title="Wormlike Chains with Twist, Helices, and Ribbons"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chromosomal DNA</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="chromo"></span><div class="section" id="chromosomal-dna">
+<h1>Chromosomal DNA<a class="headerlink" href="#chromosomal-dna" title="Permalink to this headline">¶</a></h1>
+<p>We present a model (<a class="reference internal" href="references.html#beltran2019" id="id1"><span>[Beltran2019]</span></a>) combining thermal fluctuations in the DNA linkers with the geometric effects of experimentally-relevant linker length heterogeneity. We show that almost any linker length heterogeneity is sufficient to produce the disordered chromatin structures thatare now believed to dominate nuclear architecture. The intuition behind our structural claims extends to any polymer composed of aperiodic kinks, such as the dihedral “kinks” found at junctions of block copolymers.</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/nucleosome.png"><img alt="Nucleosomal DNA structure with variable length linkers" src="_images/nucleosome.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">The structure of a nucleosome with straight linkers extrapolated from the entry (<span class="math notranslate nohighlight">\(\Omega_\text{entry}\)</span>) and exit (<span class="math notranslate nohighlight">\(\Omega_\text{exit}\)</span>) orientations of the bound DNA.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>We model each DNA linker as a twistable wormlike chain (TWLC), and the nucleosomes as the points where these linker strands connect. We label the orientation of the DNA entering the <em>i</em> th nucleosome by the matrix <span class="math notranslate nohighlight">\(\Omega^{(i)}_\text{entry}\)</span>. The exit orientation <span class="math notranslate nohighlight">\(\Omega^{(i)}_\text{exit}\)</span> must then satisfy <span class="math notranslate nohighlight">\(\Omega^{(i)}_\text{exit} = \Omega^{(i)}_\text{entry} \cdot \Omega_\text{kink}\)</span>, where <span class="math notranslate nohighlight">\(\Omega_\text{kink}\)</span> is the fixed “kink” rotation.</p>
+<p>We represent a TWLC of length <span class="math notranslate nohighlight">\(L\)</span> as a space curve <span class="math notranslate nohighlight">\(\vec{R}(s)\)</span>, where <span class="math notranslate nohighlight">\(0 &lt; s &lt; L\)</span>. The chain’s orientation at each point along this curve, <span class="math notranslate nohighlight">\(\Omega(s)\)</span>, is represented by an orthonormal triad <span class="math notranslate nohighlight">\(\vec{t}_{i}\)</span>, where <span class="math notranslate nohighlight">\(\vec{t}_{3} = \partial_s \vec{R}(s)\)</span>. We track the bend and twist of our polymer via the angular “velocity” vector <span class="math notranslate nohighlight">\(\vec{\omega}(s)\)</span>, which operates as <span class="math notranslate nohighlight">\(\partial_s \vec{t}_{i}(s) = \vec{\omega}(s) \times \vec{t}_{i}(s)\)</span>. The Green’s function</p>
+<div class="math notranslate nohighlight">
+\[G_{\text{TWLC}} (\vec{R}, \Omega | \Omega_0;L_1 ) =\!
+\int_{\Omega(0)=\Omega_0}^{\Omega(s)=\Omega}
+\hspace{-0.3in}
+\mathcal{D} [\Omega(s)]
+e^{-\beta \mathcal{E}}\delta(\vec{R} - \!\int_{0}^{L_1} \!\!\vec{t_3} ds),\]</div>
+<p>of the first linker represents the probability that a   polymer of length <span class="math notranslate nohighlight">\(L_1\)</span> that begins at the origin with initial orientation <span class="math notranslate nohighlight">\(\Omega_0\)</span> ends at position <span class="math notranslate nohighlight">\(\vec{R}\)</span> with end orientation <span class="math notranslate nohighlight">\(\Omega\)</span>. For a TWLC with no kinks, the energy is quadratic in bending and twist deformations</p>
+<div class="math notranslate nohighlight">
+\[\beta \mathcal{E} = \frac{l_p}{2}\int_{0}^{L_1} \!\ \! ds \,
+(\omega_1^2 + \omega_2 ^2) + \frac{l_t}{2}\int_{0}^{L_1} \! \! ds \,
+{\left(\omega_3 - \tau\right)}^2\]</div>
+<p>The natural twist of DNA gives <span class="math notranslate nohighlight">\(\tau = 2 \pi (\text{10.5} \, \text{bp})^{-1}\)</span>, and we set the persistence length <span class="math notranslate nohighlight">\(l_p = 50 \, \text{nm}\)</span> and twist persistence length <span class="math notranslate nohighlight">\(l_t = 10 \, \text{nm}\)</span> to match measurements of DNA elasticity.</p>
+<p>Reference <a class="reference internal" href="references.html#spakowitz2006" id="id2"><span>[Spakowitz2006]</span></a> solves <span class="math notranslate nohighlight">\(G_{\text{TWLC}}\)</span> analytically in Fourier space (<span class="math notranslate nohighlight">\(\vec{R} \rightarrow \vec{k}\)</span>) by computing the coefficients of the Wigner D-function expansion</p>
+<div class="math notranslate nohighlight">
+\[\hat{G} (\vec{k}, \Omega | \Omega_0;L_1 ) =
+\sum_{\substack{ l;\hspace{0.1em}l_0 m_0 j_0}} \!\!
+g_{l_0 m_{0} j_{0}}^{l m_0 j_0}
+\mathcal{D}_{l}^{m_0j_0}(\Omega) \mathcal{D}_{l_0}^{m_0 j_0 *}(\Omega_0).\]</div>
+<p>To account for <span class="math notranslate nohighlight">\(\Omega_\text{kink}\)</span>, we rotate the final orientation of the linker DNA, <span class="math notranslate nohighlight">\(\Omega = \Omega_\text{entry}\)</span>, to <span class="math notranslate nohighlight">\(\Omega_\text{exit}\)</span> using the formula</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{D}_l^{m_0j_0}(\Omega \cdot \Omega_\text{kink}) =
+\sum_j \sqrt{\frac{8\pi}{2l+1}} \mathcal{D}_l^{m_0j}(\Omega_\text{kink}) \mathcal{D}_l^{jj_0}(\Omega).\]</div>
+<p>The resulting Green’s function combines the effects of a DNA linker and a nucleosome, but is still a Wigner D-function expansion with modified coefficients <span class="math notranslate nohighlight">\(B_{l_{0} m_{0} j_{0}}^{l m_0 j}\)</span>.</p>
+<div class="section" id="module-wlcstat.chromo">
+<span id="functions-contained-with-the-chromo-module"></span><h2>Functions contained with the ‘chromo’ module<a class="headerlink" href="#module-wlcstat.chromo" title="Permalink to this headline">¶</a></h2>
+<p>Kinked WLC with twist and fixed ends</p>
+<p>This module calculates statistics for a series of worm-like chains with twist (DNA linkers) connected
+by kinks imposed by nucleosomes. Calculations include R^2, Kuhn length, propogator matrices,
+full Green’s function for the end-to-end distance of the polymer, and looping statistics.</p>
+<p>Code written by Bruno Beltran, Deepti Kannan, and Andy Spakowitz</p>
+<dl class="py function">
+<dt id="wlcstat.chromo.H">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">H</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#H"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parametric description of a simple left-handed helix aligned with
+<span class="math notranslate nohighlight">\(\hat{z}\)</span>.</p>
+<p>The helix is parametrized on [0,1]. Has height c, radius r, and undergoes T
+twists in that range. Centerline is the positive z-axis and starting point
+is (r,0,0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>${helix_doc}</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>X</strong> – Position coordinate for each i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,N) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.H_oriented">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">H_oriented</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#H_oriented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.H_oriented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position a helix at entry_pos and entry_rot, as returned by e.g.
+minimum_energy_no_sterics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>${helix_doc}</strong> – </p></li>
+<li><p><strong>${orientation_doc}</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>X</strong> – Position coordinate for each i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,N) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.H_rot">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">H_rot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#H_rot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.H_rot" title="Permalink to this definition">¶</a></dt>
+<dd><p>OmegaH(s). Given OmegaH(0) = [Hn, Hb, Hu].</p>
+<p>A rotation element, so det(H_rot) == 1.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.H_rot_oriented">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">H_rot_oriented</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#H_rot_oriented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.H_rot_oriented" title="Permalink to this definition">¶</a></dt>
+<dd><p>OmegaH(s) given OmegaH(0) arbitrary.</p>
+<p>A rotation element, so det(H_rot) == 1.
+For some reason, tends to produce matrices that are numerically off of
+H_rot by a factor of like 1-2% in each element for equivalent parameters?
+Off by one somewhere? That’s the order of magnitude of a bp.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Hb">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Hb</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Hb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Hb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bi-normal vector to <a class="reference internal" href="#wlcstat.chromo.H" title="wlcstat.chromo.H"><code class="xref py py-func docutils literal notranslate"><span class="pre">H()</span></code></a>. Unit vector in the direction of
+<span class="math notranslate nohighlight">\(\frac{dH}{di}\times\frac{d^2
+H}{di^2}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>${helix_doc}</strong> – </p></li>
+<li><p><strong>${normed_doc}</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>B</strong> – Bi-normal vector for each i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,N) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Hk">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Hk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Hk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Hk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Curvature of our standard helix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>${helix_params_doc}</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>k</strong> – Curvature of the helix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float64</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The curvature of a helix is a constant, in our parameterization it works
+out to <span class="math notranslate nohighlight">\(\frac{r}{\gamma}\left(\frac{2\pi T}{b}\right)^2\)</span>, where
+<span class="math notranslate nohighlight">\(\gamma = (1/b)\sqrt{4\pi^2r^2T^2 + c^2}\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Hn">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Hn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">normed</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Hn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Hn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normal vector to <a class="reference internal" href="#wlcstat.chromo.H" title="wlcstat.chromo.H"><code class="xref py py-func docutils literal notranslate"><span class="pre">H()</span></code></a>. The unit vector in the direction of
+<span class="math notranslate nohighlight">\(\frac{d^2 H}{di^2}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>${helix_doc}</strong> – </p></li>
+<li><p><strong>${normed_doc}</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>N</strong> – Normal vector for each i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,N) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Hn_oriented">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Hn_oriented</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Hn_oriented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Hn_oriented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normal to <a class="reference internal" href="#wlcstat.chromo.H_oriented" title="wlcstat.chromo.H_oriented"><code class="xref py py-func docutils literal notranslate"><span class="pre">H_oriented()</span></code></a> at entry_rot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>${helix_params_doc}</strong> – </p></li>
+<li><p><strong>${entry_rot_doc}</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>n</strong> – normal vector for each i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,N) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Htau">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Htau</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Htau"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Htau" title="Permalink to this definition">¶</a></dt>
+<dd><p>Torsion of our standard helix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>${helix_params_doc}</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tau</strong> – Torsion of the helix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float64</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The torsion of a helix is a constant, in our parameterization it works out
+to <span class="math notranslate nohighlight">\(\frac{-2\pi c T}{b} \left[4\pi^2r^2T^2 + c^2\right]^{-1/2}\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Hu">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Hu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">normed</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Hu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Hu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tangent vector to <a class="reference internal" href="#wlcstat.chromo.H" title="wlcstat.chromo.H"><code class="xref py py-func docutils literal notranslate"><span class="pre">H()</span></code></a>, <span class="math notranslate nohighlight">\(\frac{dH}{di}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>${helix_doc}</strong> – </p></li>
+<li><p><strong>${normed_doc}</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>U</strong> – Tangent vector for each i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,N) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Hu_oriented">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Hu_oriented</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Hu_oriented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Hu_oriented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tangent to <a class="reference internal" href="#wlcstat.chromo.H_oriented" title="wlcstat.chromo.H_oriented"><code class="xref py py-func docutils literal notranslate"><span class="pre">H_oriented()</span></code></a> at entry_rot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>${helix_params_doc}</strong> – </p></li>
+<li><p><strong>${entry_rot_doc}</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>U</strong> – Tangent vector for each i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,N) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.OmegaC">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">OmegaC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Lw</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#OmegaC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.OmegaC" title="Permalink to this definition">¶</a></dt>
+<dd><p>inv(H_rot(0)) &#64; H_rot(Lw)</p>
+<p>The non-twist-corrected rotation matrix that takes the n, b, and u vectors
+of the helix from the start of the helix to the exit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Lw</strong> (<em>float</em>) – Length of DNA bound to the nucleosome (#bound bp - 1)</p></li>
+<li><p><strong>helix_params</strong> (<em>(</em><em>optional</em><em>) </em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Omega_next</strong> – Rotation matrix taking the input to output orientations of the normal,
+binormal, tangent triad of the helix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3, 3) np.ndarray[float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.OmegaE2E">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">OmegaE2E</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Lw</span><span class="o">=</span><span class="default_value">146</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#OmegaE2E"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.OmegaE2E" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nucleosome core entry to exit rotation matrix</p>
+<p><span class="math notranslate nohighlight">\(\Omega_C \cdot R_z(L_w \left[ \tau_n - \tau_H \right])\)</span></p>
+<p>Should be multiplied against entry orientation from the right to get the
+exit orientation.</p>
+<p class="rubric">Example</p>
+<p>To get the exit orientation from the nucleosome assuming the bound DNA
+adopts a configuration with zero intrinsic twist is just</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">nuc_chain.geometry</span> <span class="k">as</span> <span class="nn">ncg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Omega0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Omega0Exit</span> <span class="o">=</span> <span class="n">Omega0</span> <span class="o">@</span> <span class="n">ncg</span><span class="o">.</span><span class="n">OmegaE2E</span><span class="p">(</span><span class="n">tau_n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tau_n</strong> (<em>float</em>) – the twist density of nucleosome-bound dna in radians/bp</p></li>
+<li><p><strong>Lw</strong> (<em>float</em>) – Length of DNA bound to the nucleosome (#bound bp - 1)</p></li>
+<li><p><strong>helix_params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – parameters to <a class="reference internal" href="#wlcstat.chromo.H" title="wlcstat.chromo.H"><code class="xref py py-func docutils literal notranslate"><span class="pre">H()</span></code></a> family of function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>OmegaE2E</strong> – Entry to exit rotation matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,3) np.ndarray[float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.OmegaNextAssoc">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">OmegaNextAssoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Ll</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">w_in</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">w_out</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">tau_d</span><span class="o">=</span><span class="default_value">0.5983986006837702</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#OmegaNextAssoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.OmegaNextAssoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nucleosome entry to exit (including unwrapped DNA on both sides).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.OmegaNextEntry">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">OmegaNextEntry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Ll</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">w_in</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">w_out</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">tau_d</span><span class="o">=</span><span class="default_value">0.5983986006837702</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#OmegaNextEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.OmegaNextEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nucleosome entry to entry.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.OmegaNextExit">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">OmegaNextExit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Ll</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">w_in</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">w_out</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">tau_d</span><span class="o">=</span><span class="default_value">0.5983986006837702</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#OmegaNextExit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.OmegaNextExit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nucleosome exit to exit.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Rx">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Rx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Rx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Rx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotation matrix about the x axis with angle theta.</p>
+<p class="rubric">Notes</p>
+<p>..math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">frac</span><span class="p">{</span><span class="mi">1</span><span class="p">}{</span>\<span class="n">sqrt</span><span class="p">{</span><span class="mi">3</span><span class="p">}}</span>
+\<span class="n">begin</span><span class="p">{</span><span class="n">bmatrix</span><span class="p">}</span>
+    <span class="mi">1</span> <span class="o">&amp;</span>             <span class="mi">0</span> <span class="o">&amp;</span>              <span class="mi">0</span>\\
+    <span class="mi">0</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>\\
+    <span class="mi">0</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+\<span class="n">end</span><span class="p">{</span><span class="n">bmatrix</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Ry">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Ry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Ry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Ry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotation matrix about the z axis with angle theta.</p>
+<p class="rubric">Notes</p>
+<p>..math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">frac</span><span class="p">{</span><span class="mi">1</span><span class="p">}{</span>\<span class="n">sqrt</span><span class="p">{</span><span class="mi">3</span><span class="p">}}</span>
+\<span class="n">begin</span><span class="p">{</span><span class="n">bmatrix</span><span class="p">}</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">0</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> \\
+                <span class="mi">0</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="o">&amp;</span>              <span class="mi">0</span> \\
+    <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">0</span> <span class="o">&amp;</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+\<span class="n">end</span><span class="p">{</span><span class="n">bmatrix</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.Rz">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">Rz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#Rz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.Rz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotation matrix about the z axis with angle theta.</p>
+<p class="rubric">Notes</p>
+<p>..math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">frac</span><span class="p">{</span><span class="mi">1</span><span class="p">}{</span>\<span class="n">sqrt</span><span class="p">{</span><span class="mi">3</span><span class="p">}}</span>
+\<span class="n">begin</span><span class="p">{</span><span class="n">bmatrix</span><span class="p">}</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">0</span> \\
+    <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">0</span> \\
+                <span class="mi">0</span> <span class="o">&amp;</span>             <span class="mi">0</span>  <span class="o">&amp;</span> <span class="mi">1</span>
+\<span class="n">end</span><span class="p">{</span><span class="n">bmatrix</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.build_B_matrices_for_R2">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">build_B_matrices_for_R2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">link</span></em>, <em class="sig-param"><span class="n">alpha</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">gamma</span></em>, <em class="sig-param"><span class="n">lt</span><span class="o">=</span><span class="default_value">301.2048192771084</span></em>, <em class="sig-param"><span class="n">lp</span><span class="o">=</span><span class="default_value">150.6024096385542</span></em>, <em class="sig-param"><span class="n">tau_d</span><span class="o">=</span><span class="default_value">0.5983986006837702</span></em>, <em class="sig-param"><span class="n">lmax</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#build_B_matrices_for_R2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.build_B_matrices_for_R2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to construct propogator B matrices for a single linker length link with kink
+rotation given by alpha, beta, gamma. Returns the following three matrices:</p>
+<div class="math notranslate nohighlight">
+\[B^{(n)} = \lim_{k \to 0}\frac{d^n B}{dk^n}\]</div>
+<p>for n = 0, 1, and 2. where B is defined as</p>
+<div class="math notranslate nohighlight">
+\[B^{l_f j_f}_{l_0 j_0} = \sqrt{\frac{8\pi^2}{2l_f+1}} {\mathcal{D}}^{j_f j_0}_{l_f}(-\gamma, -\beta, -\alpha) g^{j_0}_{l_f l_0}
+B^{(n)}[I_f, I_0] = M[I_f, I_0] * g^{(n)}[I_f, I_0]\]</div>
+<p>The g matrix is used for the linker propogator, and the M matrix represents the rotation due to the kink.
+All matrices are super-indexed by B[If, I0] where <span class="math notranslate nohighlight">\(I(l, j) = l^2 + l + j\)</span>. <span class="math notranslate nohighlight">\(I\)</span> can take on <span class="math notranslate nohighlight">\(l^2+2l+1\)</span> possible values.</p>
+<p class="rubric">Notes</p>
+<p>Andy adds 1 to the above formula for <span class="math notranslate nohighlight">\(I\)</span> since his script is in Matlab, which is
+one-indexed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>link</strong> (<em>float</em>) – linker length in bp</p></li>
+<li><p><strong>lt</strong> (<em>float</em>) – twist persistence length in bp</p></li>
+<li><p><strong>lp</strong> (<em>float</em>) – DNA persistence length in bp</p></li>
+<li><p><strong>tau_d</strong> (<em>float</em>) – twist density of naked DNA in rad/bp</p></li>
+<li><p><strong>lmax</strong> (<em>int</em>) – maximum eigenvalue l for which to compute wigner D’ (default lmax = 2)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>[B0, B1, B2]</strong> – list of 3 matrices, each of dimension <span class="math notranslate nohighlight">\(l_{max}^2 + 2l_{max} + 1\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(3,) list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="wlcstat.chromo.kvals">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">kvals</code><em class="property"> = array([0.00000000e+00, 3.32000000e-06, 3.32612191e-06, ...,        3.31966798e+02, 3.31983399e+02, 3.32000000e+02])</em><a class="headerlink" href="#wlcstat.chromo.kvals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Good values to use for integrating our Green’s functions. If the lp of the
+bare chain under consideration changes, these should change.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.minimum_energy_no_sterics_linker_only">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">minimum_energy_no_sterics_linker_only</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">links</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">w_ins</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">w_outs</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">tau_d</span><span class="o">=</span><span class="default_value">0.5983986006837702</span></em>, <em class="sig-param"><span class="n">lpb</span><span class="o">=</span><span class="default_value">0.332</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em>, <em class="sig-param"><span class="n">unwraps</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_phi</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#minimum_energy_no_sterics_linker_only"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.minimum_energy_no_sterics_linker_only" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the theoretical conformation of a chain of nucleosomes
+connected by straight linkers (ground state) with no steric exclusion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>links</strong> (<em>(</em><em>L</em><em>,</em><em>) </em><em>array_like</em>) – lengths of each linker segment</p></li>
+<li><p><strong>tau_n</strong> (<em>float</em>) – twist density of nucleosome-bound DNA in rad/bp</p></li>
+<li><p><strong>tau_d</strong> (<em>float</em>) – twist density of linker DNA in rad/bp</p></li>
+<li><p><strong>w_ins</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on entry side of central dyad base</p></li>
+<li><p><strong>w_outs</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on exit side of central dyad base</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>entry_rots</strong> (<em>(L+1,3,3) np.ndarray</em>) – the orientation of the material normals (as columns) of the DNA at the
+entry site</p></li>
+<li><p><strong>entry_pos</strong> (<em>(L+1,3) np.ndarray</em>) – the position of the entry site of each nucleosome (where the first bp
+is bound)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.normalize_HX">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">normalize_HX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#normalize_HX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.normalize_HX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize a list of 3-vectors of shape (N,3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>(</em><em>N</em><em>, </em><em>3</em><em>) </em><em>array_like</em>) – N input vectors to be normalized.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>U</strong> – N outputs, such that np.linalg.norm(U[i,:]) == 1 for i in range N.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(N, 3) np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.r2_kinked_twlc">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">r2_kinked_twlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">links</span></em>, <em class="sig-param"><span class="n">lt</span><span class="o">=</span><span class="default_value">301.2048192771084</span></em>, <em class="sig-param"><span class="n">lp</span><span class="o">=</span><span class="default_value">150.6024096385542</span></em>, <em class="sig-param"><span class="n">kd_unwrap</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">w_ins</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">w_outs</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">tau_d</span><span class="o">=</span><span class="default_value">0.5983986006837702</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">lmax</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em>, <em class="sig-param"><span class="n">unwraps</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_phi</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#r2_kinked_twlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.r2_kinked_twlc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Calculate the mean squared end-to-end distance, or <span class="math notranslate nohighlight">\(\langle{R^2}\rangle\)</span> of a kinked WLC with a given set of</dt><dd><p>linkers and unwrapping amounts.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>links</strong> (<em>(</em><em>L</em><em>,</em><em>) </em><em>array-like</em>) – linker length in bp</p></li>
+<li><p><strong>figname</strong> (<em>string</em>) – name of figure to be saved as pdf</p></li>
+<li><p><strong>plotfig</strong> (<em>bool</em><em> (</em><em>default = False</em><em>)</em>) – whether or not to plot R^2 vs. Rmax</p></li>
+<li><p><strong>w_ins</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on entry side of central dyad base in bp</p></li>
+<li><p><strong>w_outs</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on exit side of central dyad base in bp</p></li>
+<li><p><strong>tau_n</strong> (<em>float</em>) – twist density of nucleosome-bound DNA in rad/bp</p></li>
+<li><p><strong>tau_d</strong> (<em>float</em>) – twist density of naked DNA in rad/bp</p></li>
+<li><p><strong>lt</strong> (<em>float</em>) – twist persistence length in bp</p></li>
+<li><p><strong>lp</strong> (<em>float</em>) – DNA persistence length in bp</p></li>
+<li><p><strong>lmax</strong> (<em>int</em>) – maximum eigenvalue l for which to compute wigner D’ (default lmax = 2)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>r2</strong> (<em>(L,) array-like</em>) – mean square end-to-end distance of kinked chain as a function of chain length in nm^2</p></li>
+<li><p><strong>ldna</strong> (<em>(L,) array-like</em>) – mean square end-to-end distance of kinked chain as a function of chain length in nm</p></li>
+<li><p><strong>kuhn</strong> (<em>float</em>) – Kuhn length as defined by <span class="math notranslate nohighlight">\(\langle{R^2}\rangle / R_{max}\)</span> in long chain limit</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.resolve_wrapping_params">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">resolve_wrapping_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unwraps</span></em>, <em class="sig-param"><span class="n">w_ins</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">w_outs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">N</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">unwrap_is</span><span class="o">=</span><span class="default_value">'bp'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#resolve_wrapping_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.resolve_wrapping_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow the user to specify either one value (and tile appropriately) or
+an array of values for the number of base pairs bound to the nucleosome.
+Also allow either the number of base pairs bound on each side of the dyad to be
+specified or the number of base pairs unwrapped relative to the crystal
+structure (in which case the unwrapping is split evenly on either side of
+the dyad for simplicity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unwraps</strong> (<em>float</em><em> or </em><em>(</em><em>N</em><em>,</em><em>) </em><em>array_like</em>) – total amount of unwrapped DNA on both sides</p></li>
+<li><p><strong>(</strong><strong>optional</strong><strong>)</strong> (<em>N</em>) – wrapped DNA on entry side of dyad axis</p></li>
+<li><p><strong>(</strong><strong>optional</strong><strong>)</strong> – wrapped DNA on exit side of dyad axis</p></li>
+<li><p><strong>(</strong><strong>optional</strong><strong>)</strong> – output size, if other params are not array_like</p></li>
+<li><p><strong>unwrap_is</strong> (<em>string</em>) – ‘bp’ or ‘sites’, to specify whether we’re counting the number of bp
+bound or the number of nucleosome-to-dna contacts (respectively)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>w_in</strong> (<em>(N,) np.ndarray</em>) – N output wrapping lengths on entry side of dyad axis</p></li>
+<li><p><strong>w_out</strong> (<em>(N,) np.ndarray</em>) – N output wrapping lengths on exit side of dyad axis</p></li>
+<li><p><em>All functions take w_in, w_out directly now.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.zyz_from_matrix">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">zyz_from_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">R</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#zyz_from_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.zyz_from_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from a rotation matrix to (extrinsic zyz) Euler angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>R</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>array_like</em>) – Rotation matrix to convert</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>alpha</strong> (<em>float</em>) – The final rotation about z’’</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – The second rotation about y’</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – the initial rotation about z</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See pg. 13 of Bruno’s (NCG) nucleosome geometry notes for a detailed
+derivation of this formula. Easy to test correctness by simply
+reversing the process R == Rz(alpha)&#64;Ry(beta)&#64;Rz(gamma).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="example-usage-of-r2-kinked-twlc">
+<h2>Example usage of ‘r2_kinked_twlc’<a class="headerlink" href="#example-usage-of-r2-kinked-twlc" title="Permalink to this headline">¶</a></h2>
+<p>We plot the mean-square inter-nucleosome distance <span class="math notranslate nohighlight">\(\langle R^{2} \rangle\)</span> versus total DNA length
+(i.e. including both linker DNA and nucleosomal DNA) for a fixed linker length of 36 basepairs.
+The blue points show predictions using standard physical properties of DNA
+[<span class="math notranslate nohighlight">\(l_{p} = 50 \, \text{nm}\)</span>, <span class="math notranslate nohighlight">\(l_{t} = 100 \, \text{nm}\)</span>, <span class="math notranslate nohighlight">\(\tau = 2 \pi / (10.5 \, \text{basepairs})\)</span>].
+The orange and green curves show zero temperature predictions (i.e. no conformation fluctuations) using the
+‘r2_kinked_twlc’ code in the limit of <span class="math notranslate nohighlight">\(l_{p}, l_{t} \gg 1\)</span> (orange) and using a straight-linker algorithm (green),
+demonstrating quantitative agreement between these approaches.</p>
+<p>(<a class="reference external" href=".//chromo-1.py">Source code</a>, <a class="reference external" href=".//chromo-1.png">png</a>, <a class="reference external" href=".//chromo-1.hires.png">hires.png</a>, <a class="reference external" href=".//chromo-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/chromo-1.png" src="_images/chromo-1.png" />
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Chromosomal DNA</a><ul>
+<li><a class="reference internal" href="#module-wlcstat.chromo">Functions contained with the ‘chromo’ module</a></li>
+<li><a class="reference internal" href="#example-usage-of-r2-kinked-twlc">Example usage of ‘r2_kinked_twlc’</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="twlc_notes.html"
+                        title="previous chapter">Wormlike Chains with Twist, Helices, and Ribbons</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="poly_dyn.html"
+                        title="next chapter">Polymer Dynamics</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/chromo.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="poly_dyn.html" title="Polymer Dynamics"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="twlc_notes.html" title="Wormlike Chains with Twist, Helices, and Ribbons"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wlcstat  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chromosomal DNA</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andy Spakowitz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

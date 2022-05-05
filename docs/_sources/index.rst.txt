@@ -32,6 +32,8 @@ developed in the Spakowitz lab at Stanford University
 
     Wormlike Chains with Twist, Helices, and Ribbons <twlc_notes>
 
+    Chromosomal DNA <chromo>
+
     Polymer Dynamics <poly_dyn>
 
     Active-Brownian Dynamics <active_brown>
