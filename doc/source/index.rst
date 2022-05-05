@@ -8,9 +8,13 @@ Theoretical background for these functions is systematically developed
 in the associated pages, including derivations and example calculations.
 These theoretical developments represent an overview of analytical theory
 developed in the Spakowitz lab at Stanford University
-(`Spakowitz lab website <https://web.stanford.edu/~ajspakow/>`_).<LIli>>
+(`Spakowitz lab website <https://web.stanford.edu/~ajspakow/>`_).
 
-    Gaussian Chain Theory <gausstheor
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+    Gaussian Chain Theory <gausstheory>
 
     Wormlike Chain Theory <wlctheory>
 
@@ -27,6 +31,8 @@ developed in the Spakowitz lab at Stanford University
     Semiflexible Copolymers <wlc_copoly>
 
     Wormlike Chains with Twist, Helices, and Ribbons <twlc_notes>
+
+    Chromosomal DNA <chromo>
 
     Polymer Dynamics <poly_dyn>
 
