@@ -61,10 +61,6 @@ def r2_kinked_twlc(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=de
     ----------
     links : (L,) array-like
         linker length in bp
-    figname: string
-        name of figure to be saved as pdf
-    plotfig: bool (default = False)
-        whether or not to plot R^2 vs. Rmax
     w_ins : float or (L+1,) array_like
         amount of DNA wrapped on entry side of central dyad base in bp
     w_outs : float or (L+1,) array_like
@@ -824,3 +820,349 @@ def zyz_from_matrix(R):
     # # couldn't get this part of the formula to work for some reason
     # alpha = np.arctan2(R[0,2]/np.sin(beta), -R[1,2]/np.sin(beta))
     return alpha, beta, gamma
+
+def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=default_w_in,
+             w_outs=default_w_out, tau_d=dna_params['tau_d'], tau_n=dna_params['tau_n'],
+             lpb=dna_params['lpb'], r_dna=dna_params['r_dna'],
+             helix_params=helix_params_best, unwraps=None, random_phi=False):
+    """
+    Generate DNA and nucleosome conformation based on chain growth algorithm
+
+    Parameters
+    ----------
+    links : (L,) array-like
+        linker length in bp
+    w_ins : float or (L+1,) array_like
+        amount of DNA wrapped on entry side of central dyad base in bp
+    w_outs : float or (L+1,) array_like
+        amount of DNA wrapped on exit side of central dyad base in bp
+    tau_n : float
+        twist density of nucleosome-bound DNA in rad/bp
+    tau_d : float
+        twist density of naked DNA in rad/bp
+    lt : float
+        twist persistence length in bp
+    lp : float
+        DNA persistence length in bp
+
+    Returns
+    -------
+
+    """
+
+
+    # Put the parameters into an appropriate form
+    nbpnuc = helix_params['b']
+    num_linkers = len(links)
+    num_nuc = num_linkers + 1
+    hnuc = helix_params['c'] / 2
+    rnuc = helix_params['r']
+    ltnuc = np.sqrt(hnuc ** 2 + (2 * np.pi * rnuc) ** 2)
+    eps = lp / lpb
+    epst = lt / lpb
+    om = tau_d
+    omnuc = tau_n
+    omdna = 0.75 * np.pi
+
+    # resolve kd_unwrap
+    if kd_unwrap is not None:
+        sites_unbound_left = scipy.stats.binom(7, kd_unwrap).rvs(num_nuc)
+        sites_unbound_right = scipy.stats.binom(7, kd_unwrap).rvs(num_nuc)
+        w_ins, w_outs = resolve_wrapping_params(sites_unbound_left + sites_unbound_right,
+                w_ins, w_outs, num_nucleosomes, unwrap_is='sites')
+    else:
+        w_ins, w_outs = resolve_wrapping_params(unwraps, w_ins, w_outs, num_nuc)
+    bounds = w_ins + w_outs + 1
+
+    # Initialize the conformation
+    num_bp_total = np.sum(links) + np.sum(bounds)
+    r = np.zeros((num_bp_total, 3))
+    rdna1 = np.zeros((num_bp_total, 3))
+    rdna2 = np.zeros((num_bp_total, 3))
+    t1 = np.zeros((num_bp_total, 3))
+    t2 = np.zeros((num_bp_total, 3))
+    t3 = np.zeros((num_bp_total, 3))
+    rn = np.zeros((num_nuc, 3))
+    un = np.zeros((num_nuc, 3))
+
+    # Generate the conformation using the chain-growth algorithm
+    t10 = np.array([1, 0, 0])
+    t30 = np.array([0, 0, 1])
+    t20 = np.cross(t30, t10)
+    r0 = np.array([0, 0, 0])
+
+    count = 0
+    for inuc in range(num_nuc):
+        # Generate the nucleosomal dna
+        bound = bounds[inuc]
+        n1 = -t10
+        n3 = (2 * np.pi * rnuc / ltnuc) * t20 + (hnuc / ltnuc) * t30
+        n2 = np.cross(n3, n1)
+
+        delta = - rnuc * n1 + (hnuc * (bound - 1) * lpb / (2 * ltnuc)) * n3
+        rn[inuc, :] = r0 + delta
+        un[inuc, :] = n3
+
+        for i in range(bound):
+            s = i * lpb
+            r[count, :] = (rnuc * np.cos(2 * np.pi * s / ltnuc) * n1 +
+                           rnuc * np.sin(2 * np.pi * s / ltnuc) * n2 +
+                           (hnuc * s / ltnuc) * n3 + r0 - rnuc * n1)
+            if i == 0:
+                t1[count, :] = t10
+                t2[count, :] = t20
+                t3[count, :] = t30
+            else:
+                t3[count, :] = (- (2 * np.pi * rnuc / ltnuc) * np.sin(2 * np.pi * s / ltnuc) * n1
+                                + (2 * np.pi * rnuc / ltnuc) * np.cos(2 * np.pi * s / ltnuc) * n2
+                                + hnuc / ltnuc * n3)
+                t3[count, :] /= np.linalg.norm(t3[count, :])
+                th = np.arccos(np.dot(t3[count, :], t3[count - 1, :]))
+                phi = np.arctan2(np.dot(t3[count, :], t2[count - 1, :]), np.dot(t3[count, :], t1[count - 1, :]))
+                psi = -phi + omnuc
+
+                t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
+                       + np.cos(th) * np.sin(phi) * t2[count - 1, :]
+                       - np.sin(th) * t3[count - 1, :])
+                t1p -= np.dot(t3[count, :], t1p) * t3[count, :]
+                t1p /= np.linalg.norm(t1p)
+                t2p = np.cross(t3[count, :], t1p)
+                t1[count, :] = np.cos(psi) * t1p + np.sin(psi) * t2p
+                t2[count, :] = np.cross(t3[count, :], t1[count, :])
+
+            rdna1[count, :] = r[count, :] + t1[count, :] * r_dna
+            rdna2[count, :] = r[count, :] + r_dna * (np.cos(omdna) * t1[count, :] +
+                                                     np.sin(omdna) * t2[count, :])
+            count += 1
+
+        # Calculate the position and orientation heading into the next linker
+
+        th = np.arccos(1 / eps * np.log(
+            np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
+        phi = 2 * np.pi * np.random.uniform()
+        psi = -phi + om + np.random.normal() / np.sqrt(epst)
+
+        t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
+               + np.cos(th) * np.sin(phi) * t2[count - 1, :]
+               - np.sin(th) * t3[count - 1, :])
+        t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
+               + np.sin(th) * np.sin(phi) * t2[count - 1, :]
+               + np.cos(th) * t3[count - 1, :])
+        t3p /= np.linalg.norm(t3p)
+        t1p -= np.dot(t3p, t1p) * t3p
+        t1p /= np.linalg.norm(t1p)
+        t2p = np.cross(t3p, t1p)
+
+        t10 = np.cos(psi) * t1p + np.sin(psi) * t2p
+        t30 = t3p
+        t20 = np.cross(t30, t10)
+        r0 = r[count - 1, :] + t30 * lpb
+
+        # Generate the linker dna
+        if inuc < (num_nuc - 1):
+            link = links[inuc]
+
+            t1[count, :] = t10
+            t2[count, :] = t20
+            t3[count, :] = t30
+            r[count, :] = r0
+            rdna1[count, :] = r[count, :] + t1[count, :] * r_dna
+            rdna2[count, :] = r[count, :] + r_dna * (np.cos(omdna) * t1[count, :] +
+                                                     np.sin(omdna) * t2[count, :])
+            count += 1
+
+            for i in range(1, link):
+                th = np.arccos(1 / eps * np.log(
+                    np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
+                phi = 2 * np.pi * np.random.uniform()
+                psi = -phi + om + np.random.normal() / np.sqrt(epst)
+
+                t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
+                       + np.cos(th) * np.sin(phi) * t2[count - 1, :]
+                       - np.sin(th) * t3[count - 1, :])
+                t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
+                       + np.sin(th) * np.sin(phi) * t2[count - 1, :]
+                       + np.cos(th) * t3[count - 1, :])
+                t3p /= np.linalg.norm(t3p)
+                t1p -= np.dot(t3p, t1p) * t3p
+                t1p /= np.linalg.norm(t1p)
+                t2p = np.cross(t3p, t1p)
+
+                t1[count, :] = np.cos(psi) * t1p + np.sin(psi) * t2p
+                t3[count, :] = t3p
+                t2[count, :] = np.cross(t3[count, :], t1[count, :])
+
+                r[count, :] = r[count - 1, :] + t3[count, :] * lpb
+                rdna1[count, :] = r[count, :] + t1[count, :] * r_dna
+                rdna2[count, :] = r[count, :] + r_dna * (np.cos(omdna) * t1[count, :] +
+                                                     np.sin(omdna) * t2[count, :])
+                count += 1
+
+            # Calculate the position and orientation heading into the nucleosome
+            th = np.arccos(1 / eps * np.log(
+                np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
+            phi = 2 * np.pi * np.random.uniform()
+            psi = -phi + om + np.random.normal() / np.sqrt(epst)
+
+            t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
+                   + np.cos(th) * np.sin(phi) * t2[count - 1, :]
+                   - np.sin(th) * t3[count - 1, :])
+            t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
+                   + np.sin(th) * np.sin(phi) * t2[count - 1, :]
+                   + np.cos(th) * t3[count - 1, :])
+            t3p /= np.linalg.norm(t3p)
+            t1p -= np.dot(t3p, t1p) * t3p
+            t1p /= np.linalg.norm(t1p)
+            t2p = np.cross(t3p, t1p)
+
+            t10 = np.cos(psi) * t1p + np.sin(psi) * t2p
+            t30 = t3p
+            t20 = np.cross(t30, t10)
+
+            r0 = r[count - 1, :] + t30 * lpb
+
+    return r, rdna1, rdna2, rn, un
+
+
+def gen_chromo_pymol_file(r, rdna1, rdna2, rn, un, filename='r_poly.pdb', ring=False):
+    """
+
+    Parameters
+    ----------
+    r
+    rdna1
+    rdna2
+    rn
+    un
+    filename
+    ring
+
+    Returns
+    -------
+
+    """
+    # Setup the parameters for imaging nucleosome array
+    hnuc = 2.265571482035928
+
+    # Open the file
+    f = open(filename, 'w')
+
+    atomname1 = "A1"    # Chain atom type
+    atomname2 = "A2"    # Chain atom type
+    atomname3 = "A3"    # Chain atom type
+    atomname4 = "A4"    # Chain atom type
+    resname = "SSN"     # Type of residue (UNKnown/Single Stranded Nucleotide)
+    chain = "A"         # Chain identifier
+    resnum = 1
+    numdna = len(r[:, 0])
+    numnuc = len(rn[:, 0])
+    descrip = "Pseudo atom representation of DNA"
+    chemicalname = "Body and ribbon spatial coordinates"
+
+    # Write the preamble to the pymol file
+
+    f.write('HET    %3s  %1s%4d   %5d     %-38s\n' % (resname, chain, resnum, numdna, descrip))
+    f.write('HETNAM     %3s %-50s\n' % (resname, chemicalname))
+    f.write('FORMUL  1   %3s    C20 N20 P21\n' % (resname))
+
+    # Write the conformation to the pymol file
+
+    # Define the dna centerline positions
+    count = 1
+    for ind in range(numdna):
+        f.write('ATOM%7d %4s %3s %1s        %8.3f%8.3f%8.3f%6.2f%6.2f           C\n' %
+                    (count, atomname1, resname, chain, r[ind, 0], r[ind, 1], r[ind, 2], 1.00, 1.00))
+        count += 1
+
+    # Define the dna strand 1 positions
+    for ind in range(numdna):
+        f.write('ATOM%7d %4s %3s %1s        %8.3f%8.3f%8.3f%6.2f%6.2f           C\n' %
+                    (count, atomname2, resname, chain, rdna1[ind, 0], rdna1[ind, 1], rdna1[ind, 2], 1.00, 1.00))
+        count += 1
+
+    # Define the dna strand 2 positions
+    for ind in range(numdna):
+        f.write('ATOM%7d %4s %3s %1s        %8.3f%8.3f%8.3f%6.2f%6.2f           C\n' %
+                    (count, atomname3, resname, chain, rdna2[ind, 0], rdna2[ind, 1], rdna2[ind, 2], 1.00, 1.00))
+        count += 1
+
+    # Define the nucleosome positions
+    for ind in range(numnuc):
+        rnucind = rn[ind, :] + 0.5 * hnuc *un[ind, :]
+        f.write('ATOM%7d %4s %3s %1s        %8.3f%8.3f%8.3f%6.2f%6.2f           C\n' %
+                    (count, atomname4, resname, chain, rnucind[0], rnucind[1], rnucind[2], 1.00, 1.00))
+        count += 1
+        rnucind = rn[ind, :] - 0.5 * hnuc *un[ind, :]
+        f.write('ATOM%7d %4s %3s %1s        %8.3f%8.3f%8.3f%6.2f%6.2f           C\n' %
+                    (count, atomname4, resname, chain, rnucind[0], rnucind[1], rnucind[2], 1.00, 1.00))
+        count += 1
+
+
+
+    # Define the connectivity in the chain
+
+    # Connectivity for the center beads
+    count = 1
+    if ring:
+        f.write('CONECT%5d%5d%5d\n' % (count, count + 1, count - 1 + numdna))
+    else:
+        f.write('CONECT%5d%5d\n' % (count, count + 1))
+    count += 1
+
+    for ind in range(2, numdna):
+        f.write('CONECT%5d%5d%5d\n' % (count , count - 1, count + 1))
+        count += 1
+
+    if ring:
+        f.write('CONECT%5d%5d%5d\n' % (count, count - 1, 1 + count - numdna))
+    else:
+        f.write('CONECT%5d%5d\n' % (count, count - 1))
+    count += 1
+
+    # Connectivity for the dna chain 1 beads
+    if ring:
+        f.write('CONECT%5d%5d%5d\n' % (count, count + 1, count - 1 + numdna))
+    else:
+        f.write('CONECT%5d%5d\n' % (count, count + 1))
+    count += 1
+
+    for ind in range(2, numdna):
+        f.write('CONECT%5d%5d%5d\n' % (count , count - 1, count + 1))
+        count += 1
+
+    if ring:
+        f.write('CONECT%5d%5d%5d\n' % (count, count - 1, 1 + count - numdna))
+    else:
+        f.write('CONECT%5d%5d\n' % (count, count - 1))
+    count += 1
+
+    # Connectivity for the dna chain 2 beads
+    if ring:
+        f.write('CONECT%5d%5d%5d\n' % (count, count + 1, count - 1 + numdna))
+    else:
+        f.write('CONECT%5d%5d\n' % (count, count + 1))
+    count += 1
+
+    for ind in range(2, numdna):
+        f.write('CONECT%5d%5d%5d\n' % (count , count - 1, count + 1))
+        count += 1
+
+    if ring:
+        f.write('CONECT%5d%5d%5d\n' % (count, count - 1, 1 + count - numdna))
+    else:
+        f.write('CONECT%5d%5d\n' % (count, count - 1))
+    count += 1
+
+    # Connectivity for the nucleosome positions
+    for ind in range(numnuc):
+        f.write('CONECT%5d%5d\n' % (count, count + 1))
+        count += 1
+        f.write('CONECT%5d%5d\n' % (count, count - 1))
+        count += 1
+
+    # Close the file
+    f.write('END')
+
+    f.close()
+
+    return
