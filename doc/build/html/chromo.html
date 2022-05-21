@@ -444,6 +444,43 @@ one-indexed.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="wlcstat.chromo.gen_chromo_conf">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">gen_chromo_conf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">links</span></em>, <em class="sig-param"><span class="n">lt</span><span class="o">=</span><span class="default_value">301.2048192771084</span></em>, <em class="sig-param"><span class="n">lp</span><span class="o">=</span><span class="default_value">150.6024096385542</span></em>, <em class="sig-param"><span class="n">kd_unwrap</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">w_ins</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">w_outs</span><span class="o">=</span><span class="default_value">73</span></em>, <em class="sig-param"><span class="n">tau_d</span><span class="o">=</span><span class="default_value">0.5983986006837702</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">lpb</span><span class="o">=</span><span class="default_value">0.332</span></em>, <em class="sig-param"><span class="n">r_dna</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em>, <em class="sig-param"><span class="n">unwraps</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_phi</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#gen_chromo_conf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.gen_chromo_conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate DNA and nucleosome conformation based on chain growth algorithm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>links</strong> (<em>(</em><em>L</em><em>,</em><em>) </em><em>array-like</em>) – linker length in bp</p></li>
+<li><p><strong>w_ins</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on entry side of central dyad base in bp</p></li>
+<li><p><strong>w_outs</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on exit side of central dyad base in bp</p></li>
+<li><p><strong>tau_n</strong> (<em>float</em>) – twist density of nucleosome-bound DNA in rad/bp</p></li>
+<li><p><strong>tau_d</strong> (<em>float</em>) – twist density of naked DNA in rad/bp</p></li>
+<li><p><strong>lt</strong> (<em>float</em>) – twist persistence length in bp</p></li>
+<li><p><strong>lp</strong> (<em>float</em>) – DNA persistence length in bp</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.chromo.gen_chromo_pymol_file">
+<code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">gen_chromo_pymol_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">rdna1</span></em>, <em class="sig-param"><span class="n">rdna2</span></em>, <em class="sig-param"><span class="n">rn</span></em>, <em class="sig-param"><span class="n">un</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'r_poly.pdb'</span></em>, <em class="sig-param"><span class="n">ring</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#gen_chromo_pymol_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.gen_chromo_pymol_file" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> – </p></li>
+<li><p><strong>rdna1</strong> – </p></li>
+<li><p><strong>rdna2</strong> – </p></li>
+<li><p><strong>rn</strong> – </p></li>
+<li><p><strong>un</strong> – </p></li>
+<li><p><strong>filename</strong> – </p></li>
+<li><p><strong>ring</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py data">
 <dt id="wlcstat.chromo.kvals">
 <code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">kvals</code><em class="property"> = array([0.00000000e+00, 3.32000000e-06, 3.32612191e-06, ...,        3.31966798e+02, 3.31983399e+02, 3.32000000e+02])</em><a class="headerlink" href="#wlcstat.chromo.kvals" title="Permalink to this definition">¶</a></dt>
@@ -506,8 +543,6 @@ is bound)</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>links</strong> (<em>(</em><em>L</em><em>,</em><em>) </em><em>array-like</em>) – linker length in bp</p></li>
-<li><p><strong>figname</strong> (<em>string</em>) – name of figure to be saved as pdf</p></li>
-<li><p><strong>plotfig</strong> (<em>bool</em><em> (</em><em>default = False</em><em>)</em>) – whether or not to plot R^2 vs. Rmax</p></li>
 <li><p><strong>w_ins</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on entry side of central dyad base in bp</p></li>
 <li><p><strong>w_outs</strong> (<em>float</em><em> or </em><em>(</em><em>L+1</em><em>,</em><em>) </em><em>array_like</em>) – amount of DNA wrapped on exit side of central dyad base in bp</p></li>
 <li><p><strong>tau_n</strong> (<em>float</em>) – twist density of nucleosome-bound DNA in rad/bp</p></li>
@@ -597,6 +632,19 @@ demonstrating quantitative agreement between these approaches.</p>
 <img alt="_images/chromo-1.png" src="_images/chromo-1.png" />
 </div>
 </div>
+<div class="section" id="example-usage-of-gen-chromo-conf-and-gen-chromo-pymol-file">
+<h2>Example usage of ‘gen_chromo_conf’ and ‘gen_chromo_pymol_file’<a class="headerlink" href="#example-usage-of-gen-chromo-conf-and-gen-chromo-pymol-file" title="Permalink to this headline">¶</a></h2>
+<p>We demonstrate the usage of ‘gen_chromo_conf’ to generate the conformation of a chromosome array with 100 nucleosomes and random linker lengths between 35 and 50 basepairs. The output conformation is used to generate a PyMOL file using ‘gen_chromo_pymol_file’. The resulting file ‘r_chromo.pdb’ is loaded in PyMOL to generate an image of the chromosomal DNA.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">links</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">r</span><span class="p">,</span> <span class="n">rdna1</span><span class="p">,</span> <span class="n">rdna2</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span> <span class="n">un</span> <span class="o">=</span> <span class="n">gen_chromo_conf</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+<span class="n">gen_chromo_pymol_file</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">rdna1</span><span class="p">,</span> <span class="n">rdna2</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span> <span class="n">un</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;r_chromo.pdb&#39;</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/chromo_conf.png"><img alt="Chromosome conformation" src="_images/chromo_conf.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Image of a 100-nucleosome array generated in PyMOL using output from ‘gen_chromo_conf’ and ‘gen_chromo_pymol_file’.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div>
 </div>
 
 
@@ -611,6 +659,7 @@ demonstrating quantitative agreement between these approaches.</p>
 <li><a class="reference internal" href="#">Chromosomal DNA</a><ul>
 <li><a class="reference internal" href="#module-wlcstat.chromo">Functions contained with the ‘chromo’ module</a></li>
 <li><a class="reference internal" href="#example-usage-of-r2-kinked-twlc">Example usage of ‘r2_kinked_twlc’</a></li>
+<li><a class="reference internal" href="#example-usage-of-gen-chromo-conf-and-gen-chromo-pymol-file">Example usage of ‘gen_chromo_conf’ and ‘gen_chromo_pymol_file’</a></li>
 </ul>
 </li>
 </ul>

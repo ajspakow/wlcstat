@@ -92,3 +92,21 @@ demonstrating quantitative agreement between these approaches.
     plt.ylabel(r'Mean-square inter-nucleosome distance $\langle R^{2} \rangle$')
     plt.tight_layout()
     plt.show()
+
+Example usage of 'gen_chromo_conf' and 'gen_chromo_pymol_file'
+--------------------------------------------------------------
+
+We demonstrate the usage of 'gen_chromo_conf' to generate the conformation of a chromosome array with 100 nucleosomes and random linker lengths between 35 and 50 basepairs. The output conformation is used to generate a PyMOL file using 'gen_chromo_pymol_file'. The resulting file 'r_chromo.pdb' is loaded in PyMOL to generate an image of the chromosomal DNA.
+
+.. code:: python
+
+    links = np.random.randint(35, 50, 100)
+    r, rdna1, rdna2, rn, un = gen_chromo_conf(links)
+    gen_chromo_pymol_file(r, rdna1, rdna2, rn, un, filename='r_chromo.pdb', ring=False)
+
+.. figure:: figures/chromo_conf.png
+    :width: 600
+    :align: center
+    :alt: Chromosome conformation
+
+    Image of a 100-nucleosome array generated in PyMOL using output from 'gen_chromo_conf' and 'gen_chromo_pymol_file'.
