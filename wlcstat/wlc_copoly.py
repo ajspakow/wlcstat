@@ -311,3 +311,44 @@ def s3_wlc_diblock(k1_val_vector, k2_val_vector, length_kuhn, fa, dimensions=3, 
                 s3[ind_k_val, ind_length] = 1
 
     return s3
+
+
+def eval_legendre(rho, mu=0, alpha_max=25):
+    r"""
+    Evaluate the vector of Legendre polynomial values
+
+    Parameters
+    ----------
+    rho : float
+        Cos theta of the angle
+    mu : int
+        Value of the z-momentum quantum number
+    alpha_max : int
+        Maximum number of polynomials evaluated (default 25)
+
+    Returns
+    -------
+    legendre_poly : float
+        Vector of Legendre polynomials
+
+    """
+
+    mu = abs(mu)
+    legendre_poly = np.zeros((alpha_max - abs(mu) + 1), dtype=float)
+
+    # Define the first two Legendre polynomials
+    legendre_poly[0] = (-1) ** mu * sp.special.factorial2(2 * mu - 1) * (1 - rho ** 2) ** (mu / 2)
+    legendre_poly[1] = rho * (2 * mu + 1) * legendre_poly[0]
+
+    # Define the remaining Legendre polynomials based on the recurrence relation
+    for i_l in range(2, alpha_max - abs(mu) + 1):
+        lam = i_l + abs(mu)
+        legendre_poly[i_l] = (rho * legendre_poly[i_l - 1] * (2 * lam - 1)
+                              - legendre_poly[i_l - 2] * (lam + mu - 1)) / (lam - mu)
+
+    if mu != 0:
+        for i_l in range(alpha_max - abs(mu) + 1):
+            lam = i_l + abs(mu)
+            legendre_poly[i_l] *= np.sqrt(sp.special.factorial(lam - mu) / sp.special.factorial(lam + mu))
+
+    return legendre_poly

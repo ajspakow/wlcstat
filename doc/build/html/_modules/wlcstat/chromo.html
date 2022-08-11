@@ -490,19 +490,18 @@
 
 <div class="viewcode-block" id="OmegaE2E"><a class="viewcode-back" href="../../chromo.html#wlcstat.chromo.OmegaE2E">[docs]</a><span class="k">def</span> <span class="nf">OmegaE2E</span><span class="p">(</span><span class="n">Lw</span><span class="o">=</span><span class="n">default_Lw</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tau_n</span><span class="o">=</span><span class="n">dna_params</span><span class="p">[</span><span class="s1">&#39;tau_n&#39;</span><span class="p">],</span> <span class="n">helix_params</span><span class="o">=</span><span class="n">helix_params_best</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Nucleosome core entry to exit rotation matrix</span>
-
 <span class="sd">    :math:`\Omega_C \cdot R_z(L_w \left[ \tau_n - \tau_H \right])`</span>
-
 <span class="sd">    Should be multiplied against entry orientation from the right to get the</span>
 <span class="sd">    exit orientation.</span>
+
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
 <span class="sd">    To get the exit orientation from the nucleosome assuming the bound DNA</span>
 <span class="sd">    adopts a configuration with zero intrinsic twist is just</span>
-<span class="sd">        &gt;&gt;&gt; import nuc_chain.geometry as ncg</span>
-<span class="sd">        &gt;&gt;&gt; Omega0 = np.identity(3)</span>
-<span class="sd">        &gt;&gt;&gt; Omega0Exit = Omega0 @ ncg.OmegaE2E(tau_n=0)</span>
+<span class="sd">    &gt;&gt;&gt; import nuc_chain.geometry as ncg</span>
+<span class="sd">    &gt;&gt;&gt; Omega0 = np.identity(3)</span>
+<span class="sd">    &gt;&gt;&gt; Omega0Exit = Omega0 @ ncg.OmegaE2E(tau_n=0)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -516,7 +515,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    OmegaE2E : (3,3) np.ndarray[float64]</span>
-<span class="sd">        Entry to exit rotation matrix</span>
+<span class="sd">    Entry to exit rotation matrix</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># N basepairs -&gt; N-1 inter-base-pair segments</span>
     <span class="c1"># in other words, no +1 since e.g. if w_in=w_out=1, then there are three</span>
@@ -555,8 +554,7 @@
 
 
 <div class="viewcode-block" id="H"><a class="viewcode-back" href="../../chromo.html#wlcstat.chromo.H">[docs]</a><span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parametric description of a simple left-handed helix aligned with</span>
-<span class="sd">    :math:`\hat{z}`.</span>
+    <span class="sd">&quot;&quot;&quot;Parametric description of a simple left-handed helix aligned with :math:`\hat{z}`.</span>
 
 <span class="sd">    The helix is parametrized on [0,1]. Has height c, radius r, and undergoes T</span>
 <span class="sd">    twists in that range. Centerline is the positive z-axis and starting point</span>

@@ -88,8 +88,7 @@ full Green’s function for the end-to-end distance of the polymer, and looping 
 <dl class="py function">
 <dt id="wlcstat.chromo.H">
 <code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">H</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#H"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.H" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parametric description of a simple left-handed helix aligned with
-<span class="math notranslate nohighlight">\(\hat{z}\)</span>.</p>
+<dd><p>Parametric description of a simple left-handed helix aligned with <span class="math notranslate nohighlight">\(\hat{z}\)</span>.</p>
 <p>The helix is parametrized on [0,1]. Has height c, radius r, and undergoes T
 twists in that range. Centerline is the positive z-axis and starting point
 is (r,0,0).</p>
@@ -314,18 +313,16 @@ binormal, tangent triad of the helix.</p>
 <dl class="py function">
 <dt id="wlcstat.chromo.OmegaE2E">
 <code class="sig-prename descclassname">wlcstat.chromo.</code><code class="sig-name descname">OmegaE2E</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Lw</span><span class="o">=</span><span class="default_value">146</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">tau_n</span><span class="o">=</span><span class="default_value">0.6178156644227715</span></em>, <em class="sig-param"><span class="n">helix_params</span><span class="o">=</span><span class="default_value">{'T': 1.8375, 'b': 147, 'c': 4.531142964071856, 'r': 4.1899999999999995}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/chromo.html#OmegaE2E"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.chromo.OmegaE2E" title="Permalink to this definition">¶</a></dt>
-<dd><p>Nucleosome core entry to exit rotation matrix</p>
-<p><span class="math notranslate nohighlight">\(\Omega_C \cdot R_z(L_w \left[ \tau_n - \tau_H \right])\)</span></p>
-<p>Should be multiplied against entry orientation from the right to get the
+<dd><p>Nucleosome core entry to exit rotation matrix
+<span class="math notranslate nohighlight">\(\Omega_C \cdot R_z(L_w \left[ \tau_n - \tau_H \right])\)</span>
+Should be multiplied against entry orientation from the right to get the
 exit orientation.</p>
 <p class="rubric">Example</p>
 <p>To get the exit orientation from the nucleosome assuming the bound DNA
-adopts a configuration with zero intrinsic twist is just</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">nuc_chain.geometry</span> <span class="k">as</span> <span class="nn">ncg</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Omega0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Omega0Exit</span> <span class="o">=</span> <span class="n">Omega0</span> <span class="o">@</span> <span class="n">ncg</span><span class="o">.</span><span class="n">OmegaE2E</span><span class="p">(</span><span class="n">tau_n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
+adopts a configuration with zero intrinsic twist is just
+&gt;&gt;&gt; import nuc_chain.geometry as ncg
+&gt;&gt;&gt; Omega0 = np.identity(3)
+&gt;&gt;&gt; Omega0Exit = Omega0 &#64; ncg.OmegaE2E(tau_n=0)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -335,10 +332,11 @@ adopts a configuration with zero intrinsic twist is just</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>OmegaE2E</strong> – Entry to exit rotation matrix</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(3,3) np.ndarray[float64]</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>OmegaE2E</strong> (<em>(3,3) np.ndarray[float64]</em>)</p></li>
+<li><p><em>Entry to exit rotation matrix</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
