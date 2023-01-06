@@ -10,6 +10,13 @@ These theoretical developments represent an overview of analytical theory
 developed in the Spakowitz lab at Stanford University
 (`Spakowitz lab website <https://web.stanford.edu/~ajspakow/>`_).
 
+.. figure:: figures/semiflex.png
+    :width: 400
+    :align: center
+    :alt: Semiflexible polymer multiscale behavior
+
+    All microscopic polymer models exhibit an intermediate-scale semiflexible behavior before trending towards the Gaussian Chain Model. Demonstration of a microscopic model (Freely Rotating Chain Model) behaving as the Effective Elastic Chain at intermediate scales before approaching the Gaussian Chain Model.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

@@ -143,9 +143,6 @@ We note that the 3-point density corelations depend on 3 k-vectors, which satisf
 :math:`\vec{k}_{1}+\vec{k}_{2}+\vec{k}_{3}=0` or :math:`\vec{k}_{3} = -\vec{k}_{1}-\vec{k}_{2}`.
 For the wormlike chain model,
 we leverage the Green's function to evaluate this average.
-For this treatment, we specialize the discussion to 3 dimensions,
-since the evaluation of the average in arbitrary dimensions requires
-rotation operations that are concretely defined in 3 dimensions.
 The 3-point structure factor is
 written in terms of the Green's function to be
 
@@ -186,8 +183,87 @@ written in terms of the Green's function to be
 where :math:`\vec{K}_{i} = 2 l_{p} \vec{k}_{i}`.
 In this calculation, we need to evaluate the rotated spherical harmonics (see :ref:`Rotation of spherical harmonics`).
 
-We develop two methods to evaluate these integrals, which are implemented at small-:math:`k` values and
-large-:math:`k` values (where :math:`k = |\vec{k}|`.  We describe these methods below.
+Four-point structure factor
+****************************
+
+We define the 4-point structure factor :math:`S^{(4)}(\vec{k}_{1}, \vec{k}_{2})` as
+
+.. math::
+    S^{(4)}(\vec{k}_{1}, \vec{k}_{2}; L) =
+    \frac{1}{L^{4}}
+    \int_{0}^{L} \! \! ds_{1}
+    \int_{0}^{L} \! \! ds_{2}
+    \int_{0}^{L} \! \! ds_{3}
+    \int_{0}^{L} \! \! ds_{4}
+    \left< \exp \left[
+    i \vec{k}_{1} \cdot \vec{r}(s_{1}) +
+    i \vec{k}_{2} \cdot \vec{r}(s_{2}) +
+    i \vec{k}_{3} \cdot \vec{r}(s_{3}) -
+    i \left( \vec{k}_{1} + \vec{k}_{2} + \vec{k}_{3} \right) \cdot \vec{r}(s_{4})
+    \right] \right>.
+
+We note that the 4-point density corelations depend on 4 k-vectors, which satisfy
+:math:`\vec{k}_{1}+\vec{k}_{2}+\vec{k}_{3}+\vec{k}_{4}=0` or
+:math:`\vec{k}_{4} = -\vec{k}_{1}-\vec{k}_{2}-\vec{k}_{3}`.
+For the wormlike chain model,
+we leverage the Green's function to evaluate this average.
+The 4-point structure factor is
+written in terms of the Green's function to be
+
+.. math::
+    S^{(4)}(\vec{k}_{1}, \vec{k}_{2}; L) & = &
+    \sum_{\gamma = 1}^{12}
+    \frac{2}{N^{4}}
+    \int_{0}^{N} \! \! ds_{4}'
+    \int_{0}^{s_{4}'} \! \! ds_{3}'
+    \int_{0}^{s_{3}'} \! \! ds_{2}'
+    \int_{0}^{s_{2}'} \! \! ds_{1}'
+    \int \! \! d \vec{u}_{4}
+    \int \! \! d \vec{u}_{3}
+    \int \! \! d \vec{u}_{2}
+    \int \! \! d \vec{u}_{1}
+    \\
+    &  & \times
+    G(\vec{K}_{a}^{(\gamma)} , \vec{u}_{4} | \vec{u}_{3}; s_{4}' - s_{3}')
+    G(\vec{K}_{b}^{(\gamma)}, \vec{u}_{3} | \vec{u}_{2}; s_{3}' - s_{2}')
+    G(\vec{K}_{c}^{(\gamma)}, \vec{u}_{2} | \vec{u}_{1}; s_{2}' - s_{1}')
+
+
+where
+the summation over :math:`\gamma` cycles through the 12 variants that account for all distinct time orderings of the integrals.
+The
+
+.. table::
+    :widths: 15 40 40 40 40
+    :align: center
+
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    | :math:`\gamma` |       integral ordering         |        :math:`\vec{K}_{a}^{(\gamma)}`       | :math:`\vec{K}_{b}^{(\gamma)}`  | :math:`\vec{K}_{c}^{(\gamma)}` |
+    +================+=================================+=============================================+=================================+================================+
+    |       1        | :math:`s_{4}>s_{3}>s_{2}>s_{1}` | :math:`\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{1}+\vec{K}_{2}` | :math:`\vec{K}_{1}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       2        | :math:`s_{4}>s_{3}>s_{1}>s_{2}` | :math:`\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{1}+\vec{K}_{2}` | :math:`\vec{K}_{2}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       3        | :math:`s_{4}>s_{2}>s_{3}>s_{1}` | :math:`\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{1}+\vec{K}_{3}` | :math:`\vec{K}_{1}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       4        | :math:`s_{4}>s_{1}>s_{3}>s_{2}` | :math:`\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{2}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       5        | :math:`s_{4}>s_{2}>s_{1}>s_{3}` | :math:`\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{1}+\vec{K}_{3}` | :math:`\vec{K}_{3}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       6        | :math:`s_{4}>s_{1}>s_{2}>s_{3}` | :math:`\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{3}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       7        | :math:`s_{3}>s_{4}>s_{2}>s_{1}` | :math:`-\vec{K}_{3}`                        | :math:`\vec{K}_{1}+\vec{K}_{2}` | :math:`\vec{K}_{1}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       8        | :math:`s_{3}>s_{4}>s_{1}>s_{2}` | :math:`-\vec{K}_{3}`                        | :math:`\vec{K}_{1}+\vec{K}_{2}` | :math:`\vec{K}_{2}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |       9        | :math:`s_{2}>s_{4}>s_{3}>s_{1}` | :math:`-\vec{K}_{2}`                        | :math:`\vec{K}_{1}+\vec{K}_{3}` | :math:`\vec{K}_{1}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |      10        | :math:`s_{1}>s_{4}>s_{3}>s_{2}` | :math:`-\vec{K}_{1}`                        | :math:`\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{2}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |      11        | :math:`s_{2}>s_{4}>s_{1}>s_{3}` | :math:`-\vec{K}_{2}`                        | :math:`\vec{K}_{1}+\vec{K}_{3}` | :math:`\vec{K}_{3}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
+    |      12        | :math:`s_{1}>s_{4}>s_{2}>s_{3}` | :math:`-\vec{K}_{1}`                        | :math:`\vec{K}_{2}+\vec{K}_{3}` | :math:`\vec{K}_{3}`            |
+    +----------------+---------------------------------+---------------------------------------------+---------------------------------+--------------------------------+
 
 Functions contained with the 'wlcstruc' module
 ----------------------------------------------

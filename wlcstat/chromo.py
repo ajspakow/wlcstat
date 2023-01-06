@@ -448,19 +448,18 @@ def OmegaNextEntry(Ll, *, w_in=default_w_in, w_out=default_w_out,
 
 def OmegaE2E(Lw=default_Lw, *, tau_n=dna_params['tau_n'], helix_params=helix_params_best):
     r"""Nucleosome core entry to exit rotation matrix
-
     :math:`\Omega_C \cdot R_z(L_w \left[ \tau_n - \tau_H \right])`
-
     Should be multiplied against entry orientation from the right to get the
     exit orientation.
+
 
     Example
     -------
     To get the exit orientation from the nucleosome assuming the bound DNA
     adopts a configuration with zero intrinsic twist is just
-        >>> import nuc_chain.geometry as ncg
-        >>> Omega0 = np.identity(3)
-        >>> Omega0Exit = Omega0 @ ncg.OmegaE2E(tau_n=0)
+    >>> import nuc_chain.geometry as ncg
+    >>> Omega0 = np.identity(3)
+    >>> Omega0Exit = Omega0 @ ncg.OmegaE2E(tau_n=0)
 
     Parameters
     ----------
@@ -474,7 +473,7 @@ def OmegaE2E(Lw=default_Lw, *, tau_n=dna_params['tau_n'], helix_params=helix_par
     Returns
     -------
     OmegaE2E : (3,3) np.ndarray[float64]
-        Entry to exit rotation matrix
+    Entry to exit rotation matrix
     """
     # N basepairs -> N-1 inter-base-pair segments
     # in other words, no +1 since e.g. if w_in=w_out=1, then there are three
@@ -513,8 +512,7 @@ def OmegaC(Lw, helix_params=helix_params_best):
 
 
 def H(i, r, c, T, b):
-    """Parametric description of a simple left-handed helix aligned with
-    :math:`\hat{z}`.
+    """Parametric description of a simple left-handed helix aligned with :math:`\hat{z}`.
 
     The helix is parametrized on [0,1]. Has height c, radius r, and undergoes T
     twists in that range. Centerline is the positive z-axis and starting point

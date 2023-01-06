@@ -39,7 +39,7 @@ def eval_residue_zero(k_val, mu = 0, lam_zero_only=True, lam_max=25, dimensions=
     lam = lam_cont_frac_max
     ind_lam = lam - abs(mu)
     j_plus[ind_lam] = lam * (lam + dimensions - 2)
-    djdp_plus[ind_lam] = 1
+    djdp_plus[ind_lam] = 1.
     a_lam_mu[ind_lam] = eval_a_lam_mu(lam, mu, dimensions)
     for lam in reversed(range(abs(mu), lam_cont_frac_max)):
         ind_lam = lam - abs(mu)
