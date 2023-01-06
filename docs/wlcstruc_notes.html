@@ -164,9 +164,6 @@ i \left( \vec{k}_{1} + \vec{k}_{2} \right) \cdot \vec{r}(s_{3})
 <span class="math notranslate nohighlight">\(\vec{k}_{1}+\vec{k}_{2}+\vec{k}_{3}=0\)</span> or <span class="math notranslate nohighlight">\(\vec{k}_{3} = -\vec{k}_{1}-\vec{k}_{2}\)</span>.
 For the wormlike chain model,
 we leverage the Green’s function to evaluate this average.
-For this treatment, we specialize the discussion to 3 dimensions,
-since the evaluation of the average in arbitrary dimensions requires
-rotation operations that are concretely defined in 3 dimensions.
 The 3-point structure factor is
 written in terms of the Green’s function to be</p>
 <div class="math notranslate nohighlight">
@@ -204,15 +201,170 @@ G(\vec{K}_{1}, \vec{u}_{3} | \vec{u}_{2}; s_{3} - s_{2})
 G(-\vec{K}_{2}, \vec{u}_{2} | \vec{u}_{1}; s_{2} - s_{1})\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\vec{K}_{i} = 2 l_{p} \vec{k}_{i}\)</span>.
 In this calculation, we need to evaluate the rotated spherical harmonics (see <a class="reference internal" href="appendix.html#rotation-of-spherical-harmonics"><span class="std std-ref">Rotation of spherical harmonics</span></a>).</p>
-<p>We develop two methods to evaluate these integrals, which are implemented at small-<span class="math notranslate nohighlight">\(k\)</span> values and
-large-<span class="math notranslate nohighlight">\(k\)</span> values (where <span class="math notranslate nohighlight">\(k = |\vec{k}|\)</span>.  We describe these methods below.</p>
+</div>
+<div class="section" id="four-point-structure-factor">
+<h3>Four-point structure factor<a class="headerlink" href="#four-point-structure-factor" title="Permalink to this headline">¶</a></h3>
+<p>We define the 4-point structure factor <span class="math notranslate nohighlight">\(S^{(4)}(\vec{k}_{1}, \vec{k}_{2})\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[S^{(4)}(\vec{k}_{1}, \vec{k}_{2}; L) =
+\frac{1}{L^{4}}
+\int_{0}^{L} \! \! ds_{1}
+\int_{0}^{L} \! \! ds_{2}
+\int_{0}^{L} \! \! ds_{3}
+\int_{0}^{L} \! \! ds_{4}
+\left&lt; \exp \left[
+i \vec{k}_{1} \cdot \vec{r}(s_{1}) +
+i \vec{k}_{2} \cdot \vec{r}(s_{2}) +
+i \vec{k}_{3} \cdot \vec{r}(s_{3}) -
+i \left( \vec{k}_{1} + \vec{k}_{2} + \vec{k}_{3} \right) \cdot \vec{r}(s_{4})
+\right] \right&gt;.\]</div>
+<p>We note that the 4-point density corelations depend on 4 k-vectors, which satisfy
+<span class="math notranslate nohighlight">\(\vec{k}_{1}+\vec{k}_{2}+\vec{k}_{3}+\vec{k}_{4}=0\)</span> or
+<span class="math notranslate nohighlight">\(\vec{k}_{4} = -\vec{k}_{1}-\vec{k}_{2}-\vec{k}_{3}\)</span>.
+For the wormlike chain model,
+we leverage the Green’s function to evaluate this average.
+The 4-point structure factor is
+written in terms of the Green’s function to be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}S^{(4)}(\vec{k}_{1}, \vec{k}_{2}; L) &amp; = &amp;
+\sum_{\gamma = 1}^{12}
+\frac{2}{N^{4}}
+\int_{0}^{N} \! \! ds_{4}'
+\int_{0}^{s_{4}'} \! \! ds_{3}'
+\int_{0}^{s_{3}'} \! \! ds_{2}'
+\int_{0}^{s_{2}'} \! \! ds_{1}'
+\int \! \! d \vec{u}_{4}
+\int \! \! d \vec{u}_{3}
+\int \! \! d \vec{u}_{2}
+\int \! \! d \vec{u}_{1}
+\\
+&amp;  &amp; \times
+G(\vec{K}_{a}^{(\gamma)} , \vec{u}_{4} | \vec{u}_{3}; s_{4}' - s_{3}')
+G(\vec{K}_{b}^{(\gamma)}, \vec{u}_{3} | \vec{u}_{2}; s_{3}' - s_{2}')
+G(\vec{K}_{c}^{(\gamma)}, \vec{u}_{2} | \vec{u}_{1}; s_{2}' - s_{1}')\end{split}\]</div>
+<p>where
+the summation over <span class="math notranslate nohighlight">\(\gamma\)</span> cycles through the 12 variants that account for all distinct time orderings of the integrals.
+The</p>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\gamma\)</span></p></th>
+<th class="head"><p>integral ordering</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\vec{K}_{a}^{(\gamma)}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\vec{K}_{b}^{(\gamma)}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\vec{K}_{c}^{(\gamma)}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{4}&gt;s_{3}&gt;s_{2}&gt;s_{1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{4}&gt;s_{3}&gt;s_{1}&gt;s_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{4}&gt;s_{2}&gt;s_{3}&gt;s_{1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{4}&gt;s_{1}&gt;s_{3}&gt;s_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{4}&gt;s_{2}&gt;s_{1}&gt;s_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{3}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{4}&gt;s_{1}&gt;s_{2}&gt;s_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{3}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{3}&gt;s_{4}&gt;s_{2}&gt;s_{1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{3}&gt;s_{4}&gt;s_{1}&gt;s_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{2}&gt;s_{4}&gt;s_{3}&gt;s_{1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\vec{K}_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{1}&gt;s_{4}&gt;s_{3}&gt;s_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\vec{K}_{1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{2}&gt;s_{4}&gt;s_{1}&gt;s_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\vec{K}_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{1}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{3}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p><span class="math notranslate nohighlight">\(s_{1}&gt;s_{4}&gt;s_{2}&gt;s_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\vec{K}_{1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{2}+\vec{K}_{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vec{K}_{3}\)</span></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section" id="module-wlcstat.wlcstruc">
 <span id="functions-contained-with-the-wlcstruc-module"></span><h2>Functions contained with the ‘wlcstruc’ module<a class="headerlink" href="#module-wlcstat.wlcstruc" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="wlcstat.wlcstruc.calc_int_mag">
-<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">calc_int_mag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">poles_vec</span></em>, <em class="sig-param"><span class="n">frac_zero</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#calc_int_mag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.calc_int_mag" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">calc_int_mag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">poles_vec</span></em>, <em class="sig-param"><span class="n">frac_zero</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#calc_int_mag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.calc_int_mag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the magnitude of the integral for a list of poles (including repeats). This algorithm includes
+cases for single, double, and triple poles (as needed in evaluation of correlation functions)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_kuhn</strong> (<em>float</em>) – The length of the chain in Kuhn lengths</p></li>
+<li><p><strong>poles_vec</strong> (<em>float</em><em> (</em><em>array</em><em>)</em>) – Array of poles</p></li>
+<li><p><strong>frac_zero</strong> (<em>float</em>) – Multiplicative factor for contributions from poles at p=0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>int_mag</strong> – Value of the integral over chain length for the five poles</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wlcstat.wlcstruc.calc_s4_int_mag">
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">calc_s4_int_mag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">pole1</span></em>, <em class="sig-param"><span class="n">pole2</span></em>, <em class="sig-param"><span class="n">pole3</span></em>, <em class="sig-param"><span class="n">frac_zero</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#calc_s4_int_mag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.calc_s4_int_mag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the magnitude of the integral for a list of poles (including repeats). This algorithm includes
 cases for single, double, and triple poles (as needed in evaluation of correlation functions)</p>
 <dl class="field-list simple">
@@ -279,7 +431,7 @@ cases for single, double, and triple poles (as needed in evaluation of correlati
 
 <dl class="py function">
 <dt id="wlcstat.wlcstruc.s3_wlc">
-<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s3_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1_val_vector</span></em>, <em class="sig-param"><span class="n">k2_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s3_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s3_wlc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s3_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1_val_vector</span></em>, <em class="sig-param"><span class="n">k2_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">15</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s3_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s3_wlc" title="Permalink to this definition">¶</a></dt>
 <dd><p>s3_wlc - Evaluate the 3-point structure factor for the wormlike chain model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -305,7 +457,7 @@ in k1_val_vector and k2_val_vector</p>
 
 <dl class="py function">
 <dt id="wlcstat.wlcstruc.s4_wlc">
-<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s4_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1_val_vector</span></em>, <em class="sig-param"><span class="n">k2_val_vector</span></em>, <em class="sig-param"><span class="n">k3_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s4_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s4_wlc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">wlcstat.wlcstruc.</code><code class="sig-name descname">s4_wlc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1_val_vector</span></em>, <em class="sig-param"><span class="n">k2_val_vector</span></em>, <em class="sig-param"><span class="n">k3_val_vector</span></em>, <em class="sig-param"><span class="n">length_kuhn</span></em>, <em class="sig-param"><span class="n">dimensions</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">alpha_max</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wlcstat/wlcstruc.html#s4_wlc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wlcstat.wlcstruc.s4_wlc" title="Permalink to this definition">¶</a></dt>
 <dd><p>s4_wlc - Evaluate the 4-point structure factor for the wormlike chain model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -356,6 +508,7 @@ This plot is a reproduction of Fig. 2 in Ref. <a class="reference internal" href
 <li><a class="reference internal" href="#two-point-structure-factor">Two-point Structure Factor</a></li>
 <li><a class="reference internal" href="#three-point-and-four-point-density-correlation-functions">Three-point and Four-point Density Correlation Functions</a><ul>
 <li><a class="reference internal" href="#three-point-structure-factor">Three-point structure factor</a></li>
+<li><a class="reference internal" href="#four-point-structure-factor">Four-point structure factor</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-wlcstat.wlcstruc">Functions contained with the ‘wlcstruc’ module</a></li>
