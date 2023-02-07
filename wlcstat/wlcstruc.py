@@ -444,8 +444,8 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
                 lam_zero_only = False
                 poles_kb[mu:, mu, i_c] = eval_poles(kb_mag, mu, dimensions, alpha_max=alpha_max)
                 residues_kb[mu:, mu:, mu:, mu, i_c] = \
-                    eval_residues(kb_mag, mu, poles_kb[mu:, mu, i_c], lam_zero_only, dimensions,
-                                            lam_max, alpha_max, k_val_cutoff=1e-2, lam_cont_frac_max=50)
+                    eval_residues(kb_mag, mu, poles_kb[mu:, mu, i_c], lam_zero_only,
+                                  dimensions,lam_max, alpha_max=alpha_max)
                 residue_zero_kb[mu:, mu:, mu, i_c], ddp_residue_zero_kb[mu:, mu:, mu, i_c] = \
                     eval_residue_zero(kb_mag, mu, lam_zero_only, lam_max, dimensions)
 
@@ -460,9 +460,13 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
         # Add the contribution from the p=0 double pole
         s4_zero = np.zeros((len(length_kuhn)), dtype=type(1 + 1j))
         for mu in range(alpha_max + 1):
+            if mu == 0:
+                coef = 2.
+            else:
+                coef = 4.
             for i_c in range(12):
                 if not case_zero[i_c]:
-                    s4_zero += (length_kuhn * np.sum(
+                    s4_zero += coef * (length_kuhn * np.sum(
                         np.outer(residue_zero_ka[mu:(alpha_max + 1), mu, i_c],
                                  residue_zero_kc[mu:(alpha_max + 1), mu, i_c]) *
                         residue_zero_kb[mu:, mu:, mu, i_c] * ylm_abc[mu:, mu:, mu, i_c])
@@ -476,7 +480,7 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
                                                   residue_zero_kc[mu:(alpha_max + 1), mu, i_c]) *
                                          ddp_residue_zero_kb[mu:, mu:, mu, i_c] * ylm_abc[mu:, mu:, mu, i_c]))
 
-        s4[ind_k_val, :] += 2. * s4_zero
+        s4[ind_k_val, :] += s4_zero
 
         # Sum over the poles for the wlc green functions
 
@@ -485,6 +489,10 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
                 for alpha_b in reversed(range(0, alpha_max + 1)):
                     s4_mu = np.zeros((len(length_kuhn)), dtype=type(1 + 1j))
                     for mu in reversed(range(0, alpha_b + 1)):
+                        if mu == 0:
+                            coef = 2.
+                        else:
+                            coef = 4.
                         for i_c in range(12):
                             # Calculate the contribution for the three poles
                             pole1 = poles_ka[alpha_a, i_c]
@@ -501,11 +509,6 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
                                 integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=1.0)
                             else:
                                 integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=0.0)
-
-                            if mu == 0:
-                                coef = 2.
-                            else:
-                                coef = 4.
 
                             s4_mu += coef * np.sum(
                                 np.outer(residues_ka[mu:, 0, alpha_a, i_c],
