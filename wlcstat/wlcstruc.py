@@ -298,6 +298,7 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
     if type(length_kuhn) == float or type(length_kuhn) == int:
         length_kuhn = np.array([length_kuhn])
     s4 = np.zeros((np.size(k1_val_vector, axis=0), len(length_kuhn)), dtype=type(1 + 1j))
+    s4_0 = np.zeros((np.size(k1_val_vector, axis=0), len(length_kuhn)), dtype=type(1 + 1j))
 
     # Calculate the radius of gyration to determine a cutoff value of k
     rg2 = rg2_ave(length_kuhn, dimensions=3)
@@ -308,7 +309,8 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
     pole_tol = 1.e-3
 
     # Define the conditions for switching to the zero pole algorithm
-    k_case_zero = 100.
+#    k_case_zero = 100.
+    k_case_zero = 40.
 
     # Loop through the k values
 
@@ -465,8 +467,8 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
             else:
                 coef = 4.
             for i_c in range(12):
-                if not case_zero[i_c]:
-                    s4_zero += coef * (length_kuhn * np.sum(
+                #                if not case_zero[i_c]:
+                s4_zero += coef * (length_kuhn * np.sum(
                         np.outer(residue_zero_ka[mu:(alpha_max + 1), mu, i_c],
                                  residue_zero_kc[mu:(alpha_max + 1), mu, i_c]) *
                         residue_zero_kb[mu:, mu:, mu, i_c] * ylm_abc[mu:, mu:, mu, i_c])
@@ -480,7 +482,7 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
                                                   residue_zero_kc[mu:(alpha_max + 1), mu, i_c]) *
                                          ddp_residue_zero_kb[mu:, mu:, mu, i_c] * ylm_abc[mu:, mu:, mu, i_c]))
 
-        s4[ind_k_val, :] += s4_zero
+        s4_0[ind_k_val, :] += s4_zero
 
         # Sum over the poles for the wlc green functions
 
@@ -488,6 +490,7 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
             for alpha_c in reversed(range(0, alpha_max + 1)):
                 for alpha_b in reversed(range(0, alpha_max + 1)):
                     s4_mu = np.zeros((len(length_kuhn)), dtype=type(1 + 1j))
+                    s4_mu_0 = np.zeros((len(length_kuhn)), dtype=type(1 + 1j))
                     for mu in reversed(range(0, alpha_b + 1)):
                         if mu == 0:
                             coef = 2.
@@ -505,21 +508,30 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
                                 pole3 = pole2
                             if np.abs(pole1 - pole3) < pole_tol:
                                 pole3 = pole1
-                            if case_zero[i_c]:
-                                integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=1.0)
-                            else:
-                                integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=0.0)
+#                            if case_zero[i_c]:
+#                                integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=1.0)
+#                            else:
+#                                integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=0.0)
 
+                            integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=1.0)
+                            s4_mu += coef * np.sum(
+                                np.outer(residues_ka[mu:, 0, alpha_a, i_c],
+                                         residues_kc[mu:, 0, alpha_c, i_c]) *
+                                residues_kb[mu:, mu:, alpha_b, mu, i_c] * ylm_abc[mu:, mu:, mu, i_c]) * integ
+
+                            integ = calc_s4_int_mag(length_kuhn, pole1, pole2, pole3, frac_zero=0.0)
                             s4_mu += coef * np.sum(
                                 np.outer(residues_ka[mu:, 0, alpha_a, i_c],
                                          residues_kc[mu:, 0, alpha_c, i_c]) *
                                 residues_kb[mu:, mu:, alpha_b, mu, i_c] * ylm_abc[mu:, mu:, mu, i_c]) * integ
                     # Add the contribute at this k value to the 4-point function
                     s4[ind_k_val, :] += s4_mu
+                    s4_0[ind_k_val, :] += s4_mu_0
 
         # Rescale the values by the factor 1 / length_kuhn ** 4
         for ind_length in range(0, len(length_kuhn)):
             s4[ind_k_val, ind_length] /= length_kuhn[ind_length] ** 4.
+            s4_0[ind_k_val, ind_length] /= length_kuhn[ind_length] ** 4.
 
             # Reset the s2 value if below the cutoff
             if min(np.linalg.norm(k123_val[0, :]),
@@ -529,7 +541,7 @@ def s4_wlc(k1_val_vector, k2_val_vector, k3_val_vector, length_kuhn, dimensions=
 
     s4 = np.real(s4)
 
-    return s4
+    return s4, s4_0
 
 
 # Auxiliary functions for the calculations
