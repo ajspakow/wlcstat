@@ -17,14 +17,14 @@ CLASSIFIERS = [
 
 # Package dependencies
 INSTALL_REQUIRES = [
-    "matplotlib~=3.2.1",
-    "numba~=0.44.1",
-    "numpy~=1.18.4",
-    "pandas~=1.0.3",
+    "matplotlib~=3.5.2",
+    "numba~=0.57.1",
+    "numpy~=1.21.6",
+    "pandas~=1.3.5",
     "pathos~=0.3.1",
     "rotations~=0.0.2",
-    "scipy~=1.4.1",
-    "setuptools~=40.8.0",
+    "scipy~=1.11.1",
+    "setuptools~=68.0.0",
     "sympy~=1.4"
 ]
 
