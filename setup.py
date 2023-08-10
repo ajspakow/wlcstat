@@ -44,8 +44,15 @@ setup(
     url=URL,
     keywords=KEYWORDS,
     classifiers=CLASSIFIERS,
-    packages=find_packages(include=["wlcstat", "wlcstat.util"]),
+    packages=find_packages(
+        include=[
+            "wlcstat", "wlcstat.util", "wlcstat.util.mittag_leffler_master"
+        ]
+    ),
     include_package_data=True,
-    include_dirs=[np.get_include(), "wlcstat", "wlcstat/util"],
+    include_dirs=[
+        np.get_include(), "wlcstat", "wlcstat/util",
+        "wlcstat/util/mittag_leffler_master"
+    ],
     install_requires=INSTALL_REQUIRES,
 )
