@@ -44,7 +44,7 @@ setup(
     url=URL,
     keywords=KEYWORDS,
     classifiers=CLASSIFIERS,
-    packages=find_packages(include=["wlcstat", "wlcstat/util"]),
+    packages=find_packages(include=["wlcstat", "wlcstat.util"]),
     include_package_data=True,
     include_dirs=[np.get_include(), "wlcstat", "wlcstat/util"],
     install_requires=INSTALL_REQUIRES,
