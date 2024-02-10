@@ -855,9 +855,11 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
     num_nuc = num_linkers + 1
     hnuc = helix_params['c'] / 2
     rnuc = helix_params['r']
+    print(f"rnuc: {rnuc}")
+    print(f"hnuc: {hnuc}")
     ltnuc = np.sqrt(hnuc ** 2 + (2 * np.pi * rnuc) ** 2)
-    eps = lp / lpb
-    epst = lt / lpb
+    eps = lp / 1
+    epst = lt / 1
     om = tau_d
     omnuc = tau_n
     omdna = 0.75 * np.pi
@@ -997,27 +999,32 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
                 count += 1
 
             # Calculate the position and orientation heading into the nucleosome
-            th = np.arccos(1 / eps * np.log(
-                np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
-            phi = 2 * np.pi * np.random.uniform()
-            psi = -phi + om + np.random.normal() / np.sqrt(epst)
+            # th = np.arccos(1 / eps * np.log(
+            #     np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
+            # phi = 2 * np.pi * np.random.uniform()
+            # psi = -phi + om + np.random.normal() / np.sqrt(epst)
+            #
+            # t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
+            #        + np.cos(th) * np.sin(phi) * t2[count - 1, :]
+            #        - np.sin(th) * t3[count - 1, :])
+            # t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
+            #        + np.sin(th) * np.sin(phi) * t2[count - 1, :]
+            #        + np.cos(th) * t3[count - 1, :])
+            # t3p /= np.linalg.norm(t3p)
+            # t1p -= np.dot(t3p, t1p) * t3p
+            # t1p /= np.linalg.norm(t1p)
+            # t2p = np.cross(t3p, t1p)
+            #
+            # t10 = np.cos(psi) * t1p + np.sin(psi) * t2p
+            # t30 = t3p
+            # t20 = np.cross(t30, t10)
+            #
+            # r0 = r[count - 1, :] + t30 * lpb
 
-            t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
-                   + np.cos(th) * np.sin(phi) * t2[count - 1, :]
-                   - np.sin(th) * t3[count - 1, :])
-            t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
-                   + np.sin(th) * np.sin(phi) * t2[count - 1, :]
-                   + np.cos(th) * t3[count - 1, :])
-            t3p /= np.linalg.norm(t3p)
-            t1p -= np.dot(t3p, t1p) * t3p
-            t1p /= np.linalg.norm(t1p)
-            t2p = np.cross(t3p, t1p)
-
-            t10 = np.cos(psi) * t1p + np.sin(psi) * t2p
-            t30 = t3p
-            t20 = np.cross(t30, t10)
-
-            r0 = r[count - 1, :] + t30 * lpb
+            r0 = r[count - 1, :]
+            t30 = t3[count - 1, :]
+            t10 = t1[count - 1, :]
+            t20 = t2[count - 1, :]
 
     return r, rdna1, rdna2, rn, un
 
