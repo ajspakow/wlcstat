@@ -992,12 +992,12 @@ def gen_chromo_conf(
             )
             count += 1
 
-        # Calculate the position and orientation heading into the next linker
         # Store orientations exiting the nucleosome
         t3_outgoing.append(t3[count-1, :])
         t2_outgoing.append(t2[count-1, :])
         t1_outgoing.append(t1[count-1, :])
 
+        # Calculate the position and orientation heading into the next linker
         th = np.arccos(1 / eps * np.log(
             np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
         phi = 2 * np.pi * np.random.uniform()
