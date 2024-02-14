@@ -1060,10 +1060,30 @@ def gen_chromo_conf(
                     np.cos(omdna) * t1[count, :] + np.sin(omdna) * t2[count, :]
                 )
                 count += 1
-            r0 = r[count - 1, :]
-            t30 = t3[count - 1, :]
-            t10 = t1[count - 1, :]
-            t20 = t2[count - 1, :]
+
+            # Calculate the position and orientation heading into the nucleosome
+            th = np.arccos(1 / eps * np.log(
+                np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
+            phi = 2 * np.pi * np.random.uniform()
+            psi = -phi + om + np.random.normal() / np.sqrt(epst)
+
+            t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
+                   + np.cos(th) * np.sin(phi) * t2[count - 1, :]
+                   - np.sin(th) * t3[count - 1, :])
+            t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
+                   + np.sin(th) * np.sin(phi) * t2[count - 1, :]
+                   + np.cos(th) * t3[count - 1, :])
+            t3p /= np.linalg.norm(t3p)
+            t1p -= np.dot(t3p, t1p) * t3p
+            t1p /= np.linalg.norm(t1p)
+            t2p = np.cross(t3p, t1p)
+
+            t10 = np.cos(psi) * t1p + np.sin(psi) * t2p
+            t30 = t3p
+            t20 = np.cross(t30, t10)
+
+            r0 = r[count - 1, :] + t30 * lpb
+
     t3_incoming = np.array(t3_incoming)
     t2_incoming = np.array(t2_incoming)
     t1_incoming = np.array(t1_incoming)
