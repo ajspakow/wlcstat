@@ -819,17 +819,36 @@ def zyz_from_matrix(R):
     # alpha = np.arctan2(R[0,2]/np.sin(beta), -R[1,2]/np.sin(beta))
     return alpha, beta, gamma
 
-def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=default_w_in,
-             w_outs=default_w_out, tau_d=dna_params['tau_d'], tau_n=dna_params['tau_n'],
-             lpb=dna_params['lpb'], r_dna=dna_params['r_dna'],
-             helix_params=helix_params_best, unwraps=None, random_phi=False):
-    """
-    Generate DNA and nucleosome conformation based on chain growth algorithm
+
+def gen_chromo_conf(
+    links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=default_w_in,
+    w_outs=default_w_out, tau_d=dna_params['tau_d'], tau_n=dna_params['tau_n'],
+    lpb=dna_params['lpb'], r_dna=dna_params['r_dna'],
+    helix_params=helix_params_best, unwraps=None, return_orientations=False
+):
+    """Generate DNA and nucleosome conformation based on chain growth algorithm.
+
+    Notes
+    -----
+    We define "linker length" by the number of steps between nucleosomes.
+    Specifically, For example, if we have a linker length of 1 bp, then the
+    exit of one nucleosome is (1 bp) * 0.332 nm/bp = 0.332 nm from the entry
+    of the next nucleosome. Notice, this means that the last nucleotide of the
+    linker is the same as the first bound nucleotide of the next nucleosome.
+    Also notice that a linker length of 1 bp means that there are no unbound
+    nucleotides between nucleosomes.
 
     Parameters
     ----------
     links : (L,) array-like
         linker length in bp
+    lt : float
+        twist persistence length in bp (default = 100 nm / (0.332 nm/bp))
+    lp : float
+        DNA persistence length in bp (default = 50 nm / (0.332 nm/bp))
+    kd_unwrap : float, optional
+        Unwrapping probability from binomial distribution; if none, there is
+         no unwrapping of DNA from the nucleosome (default = None)
     w_ins : float or (L+1,) array_like
         amount of DNA wrapped on entry side of central dyad base in bp
     w_outs : float or (L+1,) array_like
@@ -838,42 +857,72 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
         twist density of nucleosome-bound DNA in rad/bp
     tau_d : float
         twist density of naked DNA in rad/bp
-    lt : float
-        twist persistence length in bp
-    lp : float
-        DNA persistence length in bp
+    lpb : float, optional
+        length per base pair in nm/bp (default = 0.332 nm/bp)
+    r_dna : float, optional
+        Half the thickness of the DNA strand (default = 1.0 nm)
+    helix_params : dict, optional
+        Dictionary of helix parameters (default = helix_params_best)
+    unwraps : (L,) array_like, optional
+        Number of unwrapped base pairs around each linker (default = None,
+        implying no unwrapping) TODO: check this description
+    return_orientations : bool, optional
+        If True, return the orientations of the DNA entering and exiting
+        each nucleosome is returned (default = False)
 
     Returns
     -------
-
+    r : (L+1, 3) array_like
+        The position of each base pair in the chain, where L is the number of
+        base pair steps in the chain
+    rdna1, rdna2 : (L+1, 3) array_like
+        The position of the two ends of each DNA nucleotide, where L is the
+        number of base pair steps in the chain
+    rn : (N+1, 3) array_like
+        The position of each nucleosome in the chain, where N is the number of
+        linkers in the chain
+    un : (N+1, 3) array_like
+        The orientation of each nucleosome in the chain, where N is the number
+        of linkers in the chain
+    orientations : dict{str: (N+1, 3) array_like}
+        T3, T2, T1 orientations entering and exiting each nucleosome; only
+        returned if return_orientations is True.
     """
-
-
     # Put the parameters into an appropriate form
-    nbpnuc = helix_params['b']
     num_linkers = len(links)
     num_nuc = num_linkers + 1
     hnuc = helix_params['c'] / 2
     rnuc = helix_params['r']
     ltnuc = np.sqrt(hnuc ** 2 + (2 * np.pi * rnuc) ** 2)
-    eps = lp / lpb
-    epst = lt / lpb
+    eps = lp / 1        # Discretization is 1 bp
+    epst = lt / 1       # Discretization is 1 bp
     om = tau_d
     omnuc = tau_n
     omdna = 0.75 * np.pi
+
+    # Store incoming and outgoing orientations
+    t3_incoming = []
+    t2_incoming = []
+    t1_incoming = []
+    t3_outgoing = []
+    t2_outgoing = []
+    t1_outgoing = []
 
     # resolve kd_unwrap
     if kd_unwrap is not None:
         sites_unbound_left = scipy.stats.binom(7, kd_unwrap).rvs(num_nuc)
         sites_unbound_right = scipy.stats.binom(7, kd_unwrap).rvs(num_nuc)
-        w_ins, w_outs = resolve_wrapping_params(sites_unbound_left + sites_unbound_right,
-                w_ins, w_outs, num_nucleosomes, unwrap_is='sites')
+        w_ins, w_outs = resolve_wrapping_params(
+            sites_unbound_left + sites_unbound_right,
+            w_ins, w_outs, num_nucleosomes, unwrap_is='sites'
+        )
     else:
         w_ins, w_outs = resolve_wrapping_params(unwraps, w_ins, w_outs, num_nuc)
     bounds = w_ins + w_outs + 1
 
     # Initialize the conformation
     num_bp_total = np.sum(links) + np.sum(bounds)
+    num_bp_total -= len(links)      # last bp of linker == first wrapped bp
     r = np.zeros((num_bp_total, 3))
     rdna1 = np.zeros((num_bp_total, 3))
     rdna2 = np.zeros((num_bp_total, 3))
@@ -901,6 +950,11 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
         rn[inuc, :] = r0 + delta
         un[inuc, :] = n3
 
+        # Store orientations going into the nucleosome
+        t3_incoming.append(t30)
+        t2_incoming.append(t20)
+        t1_incoming.append(t10)
+
         for i in range(bound):
             s = i * lpb
             r[count, :] = (rnuc * np.cos(2 * np.pi * s / ltnuc) * n1 +
@@ -911,12 +965,17 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
                 t2[count, :] = t20
                 t3[count, :] = t30
             else:
-                t3[count, :] = (- (2 * np.pi * rnuc / ltnuc) * np.sin(2 * np.pi * s / ltnuc) * n1
-                                + (2 * np.pi * rnuc / ltnuc) * np.cos(2 * np.pi * s / ltnuc) * n2
-                                + hnuc / ltnuc * n3)
+                t3[count, :] = (
+                    - (2*np.pi*rnuc/ltnuc) * np.sin(2*np.pi*s/ltnuc) * n1
+                    + (2*np.pi*rnuc/ltnuc) * np.cos(2*np.pi*s/ltnuc) * n2
+                    + hnuc / ltnuc * n3
+                )
                 t3[count, :] /= np.linalg.norm(t3[count, :])
                 th = np.arccos(np.dot(t3[count, :], t3[count - 1, :]))
-                phi = np.arctan2(np.dot(t3[count, :], t2[count - 1, :]), np.dot(t3[count, :], t1[count - 1, :]))
+                phi = np.arctan2(
+                    np.dot(t3[count, :], t2[count - 1, :]),
+                    np.dot(t3[count, :], t1[count - 1, :])
+                )
                 psi = -phi + omnuc
 
                 t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
@@ -927,14 +986,25 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
                 t2p = np.cross(t3[count, :], t1p)
                 t1[count, :] = np.cos(psi) * t1p + np.sin(psi) * t2p
                 t2[count, :] = np.cross(t3[count, :], t1[count, :])
+                assert np.isclose(np.dot(t1[count, :], t2[count, :]), 0), \
+                    "t1 and t2 are not orthogonal"
+                assert np.isclose(np.dot(t1[count, :], t3[count, :]), 0), \
+                    "t1 and t3 are not orthogonal"
+                assert np.isclose(np.dot(t2[count, :], t3[count, :]), 0), \
+                    "t2 and t3 are not orthogonal"
 
             rdna1[count, :] = r[count, :] + t1[count, :] * r_dna
-            rdna2[count, :] = r[count, :] + r_dna * (np.cos(omdna) * t1[count, :] +
-                                                     np.sin(omdna) * t2[count, :])
+            rdna2[count, :] = r[count, :] + r_dna * (
+                np.cos(omdna) * t1[count, :] + np.sin(omdna) * t2[count, :]
+            )
             count += 1
 
-        # Calculate the position and orientation heading into the next linker
+        # Store orientations exiting the nucleosome
+        t3_outgoing.append(t3[count-1, :])
+        t2_outgoing.append(t2[count-1, :])
+        t1_outgoing.append(t1[count-1, :])
 
+        # Calculate the position and orientation heading into the next linker
         th = np.arccos(1 / eps * np.log(
             np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
         phi = 2 * np.pi * np.random.uniform()
@@ -960,41 +1030,46 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
         if inuc < (num_nuc - 1):
             link = links[inuc]
 
-            t1[count, :] = t10
-            t2[count, :] = t20
-            t3[count, :] = t30
-            r[count, :] = r0
-            rdna1[count, :] = r[count, :] + t1[count, :] * r_dna
-            rdna2[count, :] = r[count, :] + r_dna * (np.cos(omdna) * t1[count, :] +
-                                                     np.sin(omdna) * t2[count, :])
-            count += 1
-
-            for i in range(1, link):
-                th = np.arccos(1 / eps * np.log(
-                    np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
-                phi = 2 * np.pi * np.random.uniform()
-                psi = -phi + om + np.random.normal() / np.sqrt(epst)
-
-                t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
-                       + np.cos(th) * np.sin(phi) * t2[count - 1, :]
-                       - np.sin(th) * t3[count - 1, :])
-                t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
-                       + np.sin(th) * np.sin(phi) * t2[count - 1, :]
-                       + np.cos(th) * t3[count - 1, :])
-                t3p /= np.linalg.norm(t3p)
-                t1p -= np.dot(t3p, t1p) * t3p
-                t1p /= np.linalg.norm(t1p)
-                t2p = np.cross(t3p, t1p)
-
-                t1[count, :] = np.cos(psi) * t1p + np.sin(psi) * t2p
-                t3[count, :] = t3p
-                t2[count, :] = np.cross(t3[count, :], t1[count, :])
-
-                r[count, :] = r[count - 1, :] + t3[count, :] * lpb
+            # If the linker length is greater than 1, then an unbound nucleotide
+            # is added to the chain (see Notes in docstring).
+            if link > 1:
+                t1[count, :] = t10
+                t2[count, :] = t20
+                t3[count, :] = t30
+                r[count, :] = r0
                 rdna1[count, :] = r[count, :] + t1[count, :] * r_dna
-                rdna2[count, :] = r[count, :] + r_dna * (np.cos(omdna) * t1[count, :] +
-                                                     np.sin(omdna) * t2[count, :])
+                rdna2[count, :] = r[count, :] + r_dna * (
+                    np.cos(omdna) * t1[count, :] + np.sin(omdna) * t2[count, :]
+                )
                 count += 1
+
+                for i in range(1, link-1):
+                    th = np.arccos(1 / eps * np.log(
+                        np.random.uniform() * 2 * np.sinh(eps) + np.exp(-eps)))
+                    phi = 2 * np.pi * np.random.uniform()
+                    psi = -phi + om + np.random.normal() / np.sqrt(epst)
+
+                    t1p = (np.cos(th) * np.cos(phi) * t1[count - 1, :]
+                           + np.cos(th) * np.sin(phi) * t2[count - 1, :]
+                           - np.sin(th) * t3[count - 1, :])
+                    t3p = (np.sin(th) * np.cos(phi) * t1[count - 1, :]
+                           + np.sin(th) * np.sin(phi) * t2[count - 1, :]
+                           + np.cos(th) * t3[count - 1, :])
+                    t3p /= np.linalg.norm(t3p)
+                    t1p -= np.dot(t3p, t1p) * t3p
+                    t1p /= np.linalg.norm(t1p)
+                    t2p = np.cross(t3p, t1p)
+
+                    t1[count, :] = np.cos(psi) * t1p + np.sin(psi) * t2p
+                    t3[count, :] = t3p
+                    t2[count, :] = np.cross(t3[count, :], t1[count, :])
+
+                    r[count, :] = r[count - 1, :] + t3[count, :] * lpb
+                    rdna1[count, :] = r[count, :] + t1[count, :] * r_dna
+                    rdna2[count, :] = r[count, :] + r_dna * (
+                        np.cos(omdna) * t1[count, :] + np.sin(omdna) * t2[count, :]
+                    )
+                    count += 1
 
             # Calculate the position and orientation heading into the nucleosome
             th = np.arccos(1 / eps * np.log(
@@ -1019,6 +1094,24 @@ def gen_chromo_conf(links, lt=default_lt, lp=default_lp, kd_unwrap=None, w_ins=d
 
             r0 = r[count - 1, :] + t30 * lpb
 
+    t3_incoming = np.array(t3_incoming)
+    t2_incoming = np.array(t2_incoming)
+    t1_incoming = np.array(t1_incoming)
+    t3_outgoing = np.array(t3_outgoing)
+    t2_outgoing = np.array(t2_outgoing)
+    t1_outgoing = np.array(t1_outgoing)
+    orientations = {
+        "t3_incoming": t3_incoming,
+        "t2_incoming": t2_incoming,
+        "t1_incoming": t1_incoming,
+        "t3_outgoing": t3_outgoing,
+        "t2_outgoing": t2_outgoing,
+        "t1_outgoing": t1_outgoing
+    }
+    # Old implementation did not return orientations
+    # Therefore, returning orientations requires new kwarg "return_orientations"
+    if return_orientations:
+        return r, rdna1, rdna2, rn, un, orientations
     return r, rdna1, rdna2, rn, un
 
 
